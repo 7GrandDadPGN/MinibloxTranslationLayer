@@ -862,7 +862,6 @@ async function connect(client, requeue, gamemode) {
 			accepted: packet.accepted
 		});
 	});
-	ClientSocket.on("CPacketShopProperties", packet => {console.log("CPacketShopProperties",packet)}); // KitPVP
 	ClientSocket.on("CPacketOpenShop", packet => {
 		if (packet.type == "KitPvP Kit"){
 			client.write('open_window', {
