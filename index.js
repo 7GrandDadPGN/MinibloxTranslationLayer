@@ -195,7 +195,7 @@ function purgePlayers(client) {
 }
 
 function convertToByte(num) {
-	new_num &= 0xFF;
+	num &= 0xFF;
 	new_num = num > 127 ? num - 256 : num;
 	return new_num;
 }
@@ -864,27 +864,25 @@ async function connect(client, requeue, gamemode) {
 	});
 	ClientSocket.on("CPacketShopProperties", packet => {console.log("CPacketShopProperties",packet)}); // KitPVP
 	ClientSocket.on("CPacketOpenShop", packet => {
-		ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 0}))
-		return
-		console.log("CPacketOpenShop",packet)
-		client.write('open_window', {
-			windowId: 2,                   // A unique ID for this window
-			inventoryType: 'minecraft:chest', // Type of inventory (chest)
-			windowTitle: JSON.stringify({ text: "KitPvP Kit" }) // Title of the chest
-		  });
-		
-		  // Create an array to represent the chest slots (27 slots for a chest)
-		  const chestContents = Array(27).fill({ 
-			blockId: 3,  // 3 is the block ID for dirt in Minecraft 1.8.9
-			itemCount: 1,
-			itemDamage: 0 
-		  }); // Empty slots initially
-		
-		  // Send the window items to the client
-		  client.write('window_items', {
-			windowId: 2,   // The same window ID used in `open_window`
-			items: chestContents // The array of items in the chest
-		  });
+		if (packet.type == "KitPvP Kit"){
+			client.write('open_window', {
+				windowId: 255,
+				inventoryType: 'minecraft:hopper',
+				windowTitle: JSON.stringify({ text: "KitPvP Kit" }),
+				slotCount: 5
+			});
+			
+			const chestContents = Array(5).fill({blockId: -1});
+
+			chestContents[1] = KITS.archer;
+			chestContents[2] = KITS.knight;
+			chestContents[3] = KITS.tank;
+			
+			client.write('window_items', {
+				windowId: 255,
+				items: chestContents
+			});
+		}
 	}); // kits
 
 	ClientSocket.connect();
@@ -1017,6 +1015,15 @@ server.on('playerJoin', async function(client) {
 		}
 	});
 	client.on('window_click', packet => {
+		if (packet.windowId == 255){
+			
+			if (packet.item.nbtData){
+				itemName = packet.item.nbtData.value.display.value.Name.value;
+				ClientSocket.sendPacket(new SPacketMessage({text: "/kit "+ itemName.toLocaleLowerCase()}));
+				ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 1}))
+				client.write('close_window', {windowId: 255})
+			}
+		}
 		let slot = Number.parseInt(packet.slot) - 5;
 		if (slot < 4) {slot = 3 - slot;}
 		if (packet.windowId != 0) {slot = Number.parseInt(packet.slot);}
