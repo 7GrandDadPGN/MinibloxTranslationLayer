@@ -874,8 +874,8 @@ async function connect(client, requeue, gamemode) {
 			
 			const chestContents = Array(5).fill({blockId: -1});
 
-			chestContents[1] = KITS.archer;
 			chestContents[2] = KITS.knight;
+			chestContents[1] = KITS.archer;
 			chestContents[3] = KITS.tank;
 			
 			client.write('window_items', {

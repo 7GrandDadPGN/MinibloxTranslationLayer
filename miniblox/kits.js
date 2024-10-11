@@ -31,9 +31,9 @@ function make_item(item,name,lore){
 }
 
 let KITPVP_KITS = {
-	knight: make_item(mcData.itemsByName.iron_sword, "Knight", ["Good ol' sword and armor"]),
-	archer: make_item(mcData.itemsByName.bow, "Archer", ["Start with a bow and some arrows"]),
-	tank: make_item(mcData.itemsByName.diamond_chestplate, "Tank", ["Tanky but slow"])
+	knight: make_item(mcData.itemsByName.iron_sword, "Knight", ["Good ol' sword and armor","Blocking with a sword will negate all arrow damage"]),
+	archer: make_item(mcData.itemsByName.bow, "Archer", ["Start with a bow and some arrows","Left click with a bow to fire a barrage of arrows"]),
+	tank: make_item(mcData.itemsByName.diamond_chestplate, "Tank", ["Tanky but slow","Crouching reduces incoming damage by 50%"])
 };
 
 
