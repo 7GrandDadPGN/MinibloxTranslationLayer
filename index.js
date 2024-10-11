@@ -658,6 +658,9 @@ async function connect(client, requeue, gamemode) {
 		}
 	});
 	ClientSocket.on("CPacketCloseWindow", packet => client.write('close_window', {windowId: packet.windowId}));
+	ClientSocket.on("CPacketOpenShop", packet => {
+		ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 0}))
+	});
 	ClientSocket.on("CPacketChunkData", packet => {
 		const chunk = createChunk(packet), chunkInd = [packet.x, packet.z].join();
 		const ind = queuedChunks.indexOf(chunkInd);
