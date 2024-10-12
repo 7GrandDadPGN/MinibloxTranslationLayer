@@ -76,8 +76,8 @@ const VERSION = "3.35.38", CELL_VOLUME = 16 * 16 * 16;
 const DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 
 function translateText(text) {
-	for (const [code, color] of Object.entries(COLOR_CODES)) new_text = text.replaceAll(code, color);
-	return new_text;
+	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, color);
+	return text;
 }
 
 function clampToBox(pos, box) {
@@ -92,7 +92,7 @@ function updateChunks(x, z, client) {
 		for (let checkZ = -7; checkZ < 7; checkZ++) {
 			const pos = [Math.floor(x / 16) + checkX, Math.floor(z / 16) + checkZ];
 			currentlyLoaded.push(pos.join());
-			if (chunks.includes(pos.join()) || queuedChunks.includes(pos.join())) {continue;}
+			if (chunks.includes(pos.join()) || queuedChunks.includes(pos.join())) continue;
 			positions.push(pos);
 		}
 	}
@@ -137,7 +137,7 @@ function createChunk(packet) {
 	const chunk = new Chunk();
 	for (const cell of packet.cells) {
 		const array = new BitArray(CELL_VOLUME, cell.bitsPerEntry, cell.bitArray);
-		if (!array) {continue;}
+		if (!array) continue;
 		for (let x = 0; x < 16; x++) {
 			for (let y = 0; y < 16; y++) {
 				for (let z = 0; z < 16; z++) {
@@ -146,7 +146,7 @@ function createChunk(packet) {
 					for (let skyY = 0; skyY < 256; skyY++) {
 						chunk.setSkyLight(new Vec3(x, skyY, z), 15);
 					}
-					if (cell.palette.length <= 0) {continue;}
+					if (cell.palette.length <= 0) continue;
 					chunk.setBlockType(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? blockdata : blockdata[0]);
 					chunk.setBlockData(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? 0 : blockdata[1]);
 				}
@@ -168,7 +168,7 @@ function translateItem(item) {
 function translateItemBack(item) {
 	let itemId;
 	for (const [mini, mc] of Object.entries(ITEMS)) {
-		if(item.blockId == mc && item != 166) {itemId = Number.parseInt(mini);}
+		if(item.blockId == mc && item != 166) itemId = Number.parseInt(mini);
 	}
 	return itemId != undefined ? new PBItemStack({
 		present: true,
@@ -195,24 +195,24 @@ function purgePlayers(client) {
 }
 
 function convertToByte(num) {
-	num &= 0xFF;
-	new_num = num > 127 ? num - 256 : num;
-	return new_num;
+	num = num & 0xFF;
+	num = num > 127 ? num - 256 : num;
+	return num;
 }
 
 function convertAngle(ang, num) {
-	new_ang = ang / 256 * Math.PI * 2;
-	new_ang = (((ang * -1) * RAD2DEG) - (num != undefined ? num : 0)) * 256 / 360;
-	return convertToByte(new_ang);
+	ang = ang / 256 * Math.PI * 2;
+	ang = (((ang * -1) * RAD2DEG) - (num != undefined ? num : 0)) * 256 / 360;
+	return convertToByte(ang);
 }
 
 function spawnEntity(packet, client) {
 	playerRotations[packet.id] = [convertAngle(packet.yaw, 180), convertAngle(packet.pitch)];
 	playerGamemodes[packet.id] = GAMEMODES[packet.gamemode ?? "survival"];
 	playerSkins[packet.id] = packet.cosmetics.skin;
-	if (playerUUIDs[packet.id] == undefined || playerPositions[packet.id] == undefined) {return;}
-	if (playerGamemodes[packet.id] == GAMEMODES.spectator) {return;}
-	if (players.includes(packet.id)) {return;}
+	if (playerUUIDs[packet.id] == undefined || playerPositions[packet.id] == undefined) return;
+	if (playerGamemodes[packet.id] == GAMEMODES.spectator) return;
+	if (players.includes(packet.id)) return;
 	players.push(packet.id);
 	client.write('named_entity_spawn', {
 		entityId: packet.id,
@@ -229,7 +229,7 @@ function spawnEntity(packet, client) {
 
 function sendActions() {
 	const newStates = {punching: lStates[0] > Date.now(), sprinting: lStates[1], sneak: lStates[2]};
-	if (newStates.punching == lastLState.punching && newStates.sprinting == lastLState.sprinting && newStates.sneak == lastLState.sneak) {return;}
+	if (newStates.punching == lastLState.punching && newStates.sprinting == lastLState.sprinting && newStates.sneak == lastLState.sneak) return;
 	ClientSocket.sendPacket(new SPacketEntityAction({
 		id: clientId,
 		punching: newStates.punching != lastLState.punching ? newStates.punching : undefined,
@@ -261,7 +261,7 @@ function disconnect() {
 async function connect(client, requeue, gamemode) {
 	if (requeue) {
 		skipKick = Date.now() + 20;
-		if (ClientSocket.socket) {ClientSocket.disconnect();}
+		if (ClientSocket.socket) ClientSocket.disconnect();
 
 		scoreData = [];
 		client.write('scoreboard_objective', {
@@ -320,7 +320,7 @@ async function connect(client, requeue, gamemode) {
 		if (!packet.canConnect) {
 			client.end(packet.errorMessage ?? "Disconnected");
 		}
-		if (requeue) {return;}
+		if (requeue) return;
 		client.write('login', {
 			entityId: mcClientId,
 			levelType: "default",
@@ -343,7 +343,7 @@ async function connect(client, requeue, gamemode) {
 
 	// MINIBLOX SERVER
 	ClientSocket.on("disconnect", reason => {
-		if (skipKick > Date.now()) {return;}
+		if (skipKick > Date.now()) return;
 		client.end(reason);
 	});
 	ClientSocket.on("CPacketPlayerPosLook", packet => {
@@ -389,11 +389,7 @@ async function connect(client, requeue, gamemode) {
 		});
 	})
 	ClientSocket.on("CPacketMessage", packet => {
-		if (packet.text) {
-			client.write('chat', {
-				message: JSON.stringify({text: translateText(packet.text)})
-			});
-		}
+		if (packet.text) client.write('chat', {message: JSON.stringify({text: translateText(packet.text)})});
 	});
 	ClientSocket.on("CPacketTabComplete", packet => client.write('tab_complete', {matches: packet.matches}));
 	ClientSocket.on("CPacketUpdateStatus", packet => {
@@ -499,8 +495,8 @@ async function connect(client, requeue, gamemode) {
 		}
 	});
 	ClientSocket.on("CPacketSpawnEntity", packet => {
-		if (ENTITIES[packet.type] == undefined) {return;}
-		if (packet.motion == undefined) {packet.motion = {x: 0, y: 0, z: 0};}
+		if (ENTITIES[packet.type] == undefined) return;
+		if (packet.motion == undefined) packet.motion = {x: 0, y: 0, z: 0};
 		client.write('spawn_entity', {
 			entityId: packet.id,
 			type: ENTITIES[packet.type],
@@ -674,7 +670,7 @@ async function connect(client, requeue, gamemode) {
 		});
 	});
 	ClientSocket.on("CPacketBlockUpdate", packet => {
-		if (!chunks.includes([Math.floor(packet.x / 16), Math.floor(packet.z / 16)].join())) {return;}
+		if (!chunks.includes([Math.floor(packet.x / 16), Math.floor(packet.z / 16)].join())) return;
 		const blockdata = BLOCKS[packet.id] ?? BLOCKS[9];
 		client.write('block_change', {
 			location: {
@@ -723,7 +719,7 @@ async function connect(client, requeue, gamemode) {
 	});
 	ClientSocket.on("CPacketEntityEquipment", packet => {
 		for (const equip of packet.equipment) {
-			if (equip.slot == 2) {continue;}
+			if (equip.slot == 2) continue;
 			client.write('entity_equipment', {
 				entityId: packet.id,
 				slot: equip.slot == 1 ? 0 : 7 - equip.slot,
@@ -839,7 +835,7 @@ async function connect(client, requeue, gamemode) {
 		}
 	});
 	ClientSocket.on("CPacketUpdateScoreboard", packet => {
-		if (scoreData[packet.index] == undefined) {return;}
+		if (scoreData[packet.index] == undefined) return;
 		const name = translateText(packet.columns.join(" "));
 		client.write('scoreboard_score', {
 			scoreName: "scoreboard",
@@ -883,7 +879,7 @@ async function connect(client, requeue, gamemode) {
 				items: chestContents
 			});
 		}
-	}); // kits
+	});
 
 	ClientSocket.connect();
 }
@@ -895,7 +891,7 @@ server.on('playerJoin', async function(client) {
 	}
 
 	client.on("end", function() {
-		if (ClientSocket.socket) {ClientSocket.disconnect();}
+		if (ClientSocket.socket) ClientSocket.disconnect();
 		disconnect();
 	});
 
@@ -1016,7 +1012,6 @@ server.on('playerJoin', async function(client) {
 	});
 	client.on('window_click', packet => {
 		if (packet.windowId == 255){
-			
 			if (packet.item.nbtData){
 				itemName = packet.item.nbtData.value.display.value.Name.value;
 				ClientSocket.sendPacket(new SPacketMessage({text: "/kit "+ itemName.toLocaleLowerCase()}));
@@ -1025,8 +1020,8 @@ server.on('playerJoin', async function(client) {
 			}
 		}
 		let slot = Number.parseInt(packet.slot) - 5;
-		if (slot < 4) {slot = 3 - slot;}
-		if (packet.windowId != 0) {slot = Number.parseInt(packet.slot);}
+		if (slot < 4) slot = 3 - slot;
+		if (packet.windowId != 0) slot = Number.parseInt(packet.slot);
 		ClientSocket.sendPacket(new SPacketClickWindow({
 			windowId: packet.windowId,
 			slotId: slot,
