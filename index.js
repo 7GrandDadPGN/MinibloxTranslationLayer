@@ -1027,7 +1027,7 @@ server.on('playerJoin', async function(client) {
 			});
 			return;
 		}
-		ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}))
+		ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}));
 	});
 	client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
 	client.on('arm_animation', _ => {
