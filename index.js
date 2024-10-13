@@ -984,7 +984,7 @@ server.on('playerJoin', async function(client) {
 					"parkour", "oitq",
 					"kitpvp", "blitzbuild", "murder",
 					"pvp"
-				]
+				].map(mode => `${packet.text.split(" ")[0]} ${mode}`)
 			})
 		}
 		ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}))
