@@ -159,25 +159,64 @@ function createChunk(packet) {
 }
 
 function translateItem(item) {
+	let data;
+	if (item.data) {
+		let parsed = JSON.parse(item.data);
+		if (parsed.ench) {
+			let enchants = [];
+			for (const ench of parsed.ench) {
+				enchants.push({lvl: {type: "short", value: ench.lvl}, id: {type: "short", value: ench.id}});
+			}
+			data = {
+				name: "",
+				type: "compound",
+				value: {
+					ench: {
+						type: "list",
+						value: {
+							type: "compound",
+							value: enchants
+						}
+					}
+				}
+			};
+		}
+	}
+
 	const itemData = item.present && (ITEMS[item.id] ?? 166);
 	return item.present ? {
 		blockId: typeof itemData == 'number' ? itemData : itemData[0],
 		itemCount: item.stackSize,
-		itemDamage: (typeof itemData == 'number' ? item.durability : itemData[1])
+		itemDamage: (typeof itemData == 'number' ? item.durability : itemData[1]),
+		nbtData: data
 	} : {blockId: -1}
 }
 
 function translateItemBack(item) {
 	let itemId;
+	let data = void 0;
 	for (const [mini, mc] of Object.entries(ITEMS)) {
-		if(item.blockId == mc && item != 166) itemId = Number.parseInt(mini);
+		const compared = typeof mc == 'number' ? mc : mc[0];
+		if (item.blockId === compared && item != 166) {
+			itemId = Number.parseInt(mini);
+			break;
+		}
 	}
+
+	if (item.nbtData && item.nbtData.value.ench) {
+		data = {ench: []};
+		for (const ench of item.nbtData.value.ench.value.value) {
+			data.ench.push({id: ench.id.value, lvl: ench.lvl.value});
+		}
+		data = JSON.stringify(data);
+	}
+
 	return itemId != undefined ? new PBItemStack({
 		present: true,
 		id: itemId,
 		stackSize: item.itemCount,
 		durability: Math.floor(item.itemDamage),
-		data: void 0
+		data: data
 	}) : new PBItemStack({present: false});
 }
 
@@ -728,7 +767,7 @@ async function connect(client, requeue, gamemode) {
 		let index = 0;
 		for (const line of packet.content) {
 			const name = translateText(line.columns.join(" "));
-			scoreData.push(name);
+			scoreData.push(name.slice(0, 40));
 			client.write('scoreboard_score', {
 				scoreName: "scoreboard",
 				itemName: name,
@@ -743,7 +782,7 @@ async function connect(client, requeue, gamemode) {
 			experienceBar: packet.experience,
 			level: packet.level,
 			totalExperience: packet.experienceTotal
-		})
+		});
 	});
 	ClientSocket.on("CPacketSetSlot", packet => {
 		client.write('set_slot', {
@@ -974,7 +1013,22 @@ server.on('playerJoin', async function(client) {
 		}
 		ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
 	});
-	client.on('tab_complete', packet => {ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}))});
+	client.on('tab_complete', packet => {
+		if (packet.text.startsWith("/play") || packet.text.startsWith("/queue")) {
+			client.write('tab_complete', {
+				matches: [
+					"skywars", "eggwars",
+					"spleef", "survival", "creative",
+					"duels_bridge", "blockhunt",
+					"parkour", "oitq",
+					"kitpvp", "blitzbuild", "murder",
+					"pvp"
+				].map(mode => `${packet.text.split(" ")[0]} ${mode}`)
+			});
+			return;
+		}
+		ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}))
+	});
 	client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
 	client.on('arm_animation', _ => {
 		ClientSocket.sendPacket(new SPacketClick({}));
