@@ -307,6 +307,7 @@ async function connect(client, requeue, gamemode) {
 	fetched = await fetched.json();
 	console.log(fetched);
 	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
+	const gameType = gamemode ?? "kitpvp";
 
 	// MINIBLOX CONNECTION
 	ClientSocket.once("connect", () => {
@@ -549,7 +550,27 @@ async function connect(client, requeue, gamemode) {
 		});
 	});
 	ClientSocket.on("CPacketMessage", packet => {
-		if (packet.text) client.write('chat', {message: JSON.stringify({text: translateText(packet.text)})});
+		if (packet.text) {
+			client.write('chat', {message: JSON.stringify({text: translateText(packet.text)})});
+			if (packet.id == undefined && packet.text.includes("Queueing")) {
+				client.write('chat', {
+					message: JSON.stringify({
+						text: "",
+						extra: [
+							{
+								text: "Click here",
+								color: "aqua",
+								clickEvent: {
+									action: "run_command",
+									value: "/play " + gameType
+								}
+							},
+							" to play again!"
+						]
+					})
+				});
+			}
+		}
 	});
 	ClientSocket.on("CPacketOpenShop", packet => {
 		const gui = GUIS[packet.type];
@@ -985,14 +1006,14 @@ server.on('playerJoin', async function(client) {
 		if (packet.target != undefined && playerPositions[packet.target] && playerPositions[mcClientId]) {
 			const newPos = clampToBox(playerPositions[mcClientId], playerPositions[packet.target]);
 			ClientSocket.sendPacket(new SPacketUseEntity({
-                id: packet.target,
-                action: packet.mouse,
-                hitVec: new PBVector3({
-                    x: newPos[0],
-                    y: newPos[1],
-                    z: newPos[2]
-                })
-            }));
+				id: packet.target,
+				action: packet.mouse,
+				hitVec: new PBVector3({
+					x: newPos[0],
+					y: newPos[1],
+					z: newPos[2]
+				})
+			}));
 		}
 	});
 	client.on('block_place', packet => {
@@ -1005,10 +1026,10 @@ server.on('playerJoin', async function(client) {
 					y: packet.location.y,
 					z: packet.location.z
 				}),
-                side: packet.direction,
-                hitX: packet.cursorX,
-                hitY: packet.cursorY,
-                hitZ: packet.cursorZ,
+				side: packet.direction,
+				hitX: packet.cursorX,
+				hitY: packet.cursorY,
+				hitZ: packet.cursorZ,
 			}));
 		}
 		ignoreInventory = true;

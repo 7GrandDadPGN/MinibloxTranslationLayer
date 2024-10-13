@@ -114,7 +114,7 @@ module.exports = {
 			if (item.nbtData) {
 				const itemName = mcData.items[item.blockId] ? mcData.items[item.blockId].name : undefined;
 				if (itemName) {
-					ClientSocket.sendPacket(new SPacketMessage({text: '/upgrade ' + (replacementNames[itemName] ?? itemName)}));
+					ClientSocket.sendPacket(new SPacketMessage({text: '/buy ' + (replacementNames[itemName] ?? itemName)}));
 					updateGui(gui, ClientSocket, client);
 				}
 			}
