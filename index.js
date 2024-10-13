@@ -974,7 +974,21 @@ server.on('playerJoin', async function(client) {
 		}
 		ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
 	});
-	client.on('tab_complete', packet => {ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}))});
+	client.on('tab_complete', packet => {
+		if (["/queue", "/play"].includes(packet.text)) {
+			client.write('tab_complete', {
+				matches: [
+					"skywars", "eggwars",
+					"spleef", "survival", "creative",
+					"duels_bridge", "blockhunt",
+					"parkour", "oitq",
+					"kitpvp", "blitzbuild", "murder",
+					"pvp"
+				]
+			})
+		}
+		ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}))
+	});
 	client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
 	client.on('arm_animation', _ => {
 		ClientSocket.sendPacket(new SPacketClick({}));
