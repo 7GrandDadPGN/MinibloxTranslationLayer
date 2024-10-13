@@ -975,7 +975,7 @@ server.on('playerJoin', async function(client) {
 		ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
 	});
 	client.on('tab_complete', packet => {
-		if (["/queue", "/play"].includes(packet.text)) {
+		if (packet.text.startsWith("/play") || packet.text.startsWith("/queue")) {
 			client.write('tab_complete', {
 				matches: [
 					"skywars", "eggwars",
