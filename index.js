@@ -792,7 +792,7 @@ async function connect(client, requeue, gamemode) {
 		});
 	});
 	ClientSocket.on("CPacketSoundEffect", packet => {
-		if(!packet.location) {
+		if (!packet.location) {
 			const pos = playerPositions[mcClientId];
 			packet.location = {x: pos.x * 8, y: pos.y * 8, z: pos.z * 8};
 		}
