@@ -3,6 +3,10 @@
   "version": "1.2.6",
   "description": "A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/7GrandDadPGN/MinibloxTranslationLayer.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
