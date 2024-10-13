@@ -10,11 +10,3 @@ A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.
 
 ## Commands
 /play (gamemode type / eggwars / skywars / kitpvp) (aliases include /queue)
-
-## KitPVP
-In order to spawn in, open and close the inventory, you should be teleported into the arena.
-
-## Eggwars
-The shopkeepers are custom NPC's & inventories that's not currently implemented, In order to buy items you must use /buy
-<br>
-/buy (iron_chestplate / iron_sword / iron_pickaxe / golden_apple / white_wool)
