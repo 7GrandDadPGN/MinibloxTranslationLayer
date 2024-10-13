@@ -1,5 +1,5 @@
 {
-  "name": "Miniblox Translation Layer",
+  "name": "miniblox-translation-layer",
   "version": "1.2.6",
   "description": "A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.",
   "main": "index.js",
