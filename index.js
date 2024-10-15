@@ -562,8 +562,8 @@ async function connect(client, requeue, gamemode) {
 		const z = Math.min(Math.max(packet.pos ? packet.pos.z : 0, -128), 127);
 		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, 180) : playerRotations[packet.id][0];
 		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : playerRotations[packet.id][1];
-		playerRotations[packet.id] = [yaw, pitch];
-		if (playerPositions[packet.id]) {
+		if (packet.yaw != undefined || packet.pitch != undefined) playerRotations[packet.id] = [yaw, pitch];
+		if (packet.pos && playerPositions[packet.id]) {
 			const pos = playerPositions[packet.id];
 			playerPositions[packet.id] = {x: pos.x + x, y: pos.y + y, z: pos.z + z};
 		}
@@ -888,7 +888,7 @@ async function connect(client, requeue, gamemode) {
 			clientId = packet.id;
 			lastLHP = [];
 		} else {
-			playerPositions[packet.id] = packet.pos;
+			playerPositions[packet.id] = {x: packet.pos.x * 32, y: packet.pos.y * 32, z: packet.pos.z * 32};
 			const specialEntity = packet.name && packet.name.includes(" ");
 			if (specialEntity) {
 				playerUUIDs[packet.id] = crypto.randomUUID();
