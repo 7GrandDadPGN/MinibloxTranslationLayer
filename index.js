@@ -112,7 +112,7 @@ function updateChunks(x, z, client) {
 		return bDist - aDist
 	});
 
-	for (; positions.length > 0 && queuedChunks.length < 2; ) {
+	for (; positions.length > 0 && queuedChunks.length < 8; ) {
 		const chunk = positions.pop();
 		queuedChunks.push(chunk.join());
 		ClientSocket.sendPacket(new SPacketRequestChunk({
@@ -148,16 +148,16 @@ function createChunk(packet) {
 		const array = new BitArray(CELL_VOLUME, cell.bitsPerEntry, cell.bitArray);
 		if (!array) continue;
 		for (let x = 0; x < 16; x++) {
-			for (let y = 0; y < 16; y++) {
-				for (let z = 0; z < 16; z++) {
-					const offset = getBlockIndex(x, y, z);
-					const blockdata = BLOCKS[cell.palette[array.get(offset)]] ?? BLOCKS[9];
-					for (let skyY = 0; skyY < 256; skyY++) {
-						chunk.setSkyLight(new Vec3(x, skyY, z), 15);
-					}
-					if (cell.palette.length <= 0) continue;
-					chunk.setBlockType(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? blockdata : blockdata[0]);
-					chunk.setBlockData(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? 0 : blockdata[1]);
+			for (let z = 0; z < 16; z++) {
+				for (let skyY = 0; skyY < 256; skyY++) {
+					chunk.setSkyLight(new Vec3(x, skyY, z), 15);
+				}
+				for (let y = 0; y < 16; y++) {
+						const offset = array.get(getBlockIndex(x, y, z));
+						if (offset == 0 || cell.palette.length <= 0) continue;
+						const blockdata = BLOCKS[cell.palette[offset]] ?? BLOCKS[9];
+						chunk.setBlockType(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? blockdata : blockdata[0]);
+						chunk.setBlockData(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? 0 : blockdata[1]);
 				}
 			}
 		}
@@ -256,9 +256,6 @@ function convertAngle(ang, num) {
 }
 
 function spawnEntity(packet, client) {
-	playerRotations[packet.id] = [convertAngle(packet.yaw, 180), convertAngle(packet.pitch)];
-	playerGamemodes[packet.id] = GAMEMODES[packet.gamemode ?? "survival"];
-	playerSkins[packet.id] = packet.cosmetics.skin;
 	if (playerUUIDs[packet.id] == undefined || playerPositions[packet.id] == undefined) return;
 	if (playerGamemodes[packet.id] == GAMEMODES.spectator) return;
 	if (players.includes(packet.id)) return;
@@ -276,7 +273,8 @@ function spawnEntity(packet, client) {
 	});
 }
 
-function sendActions() {
+function sendActions(client) {
+	if (playerPositions[mcClientId]) updateChunks(playerPositions[mcClientId].x, playerPositions[mcClientId].z, client);
 	const newStates = {punching: lStates[0] > Date.now(), sprinting: lStates[1], sneak: lStates[2]};
 	if (newStates.punching == lastLState.punching && newStates.sprinting == lastLState.sprinting && newStates.sneak == lastLState.sneak) return;
 	ClientSocket.sendPacket(new SPacketEntityAction({
@@ -352,6 +350,7 @@ async function connect(client, requeue, gamemode) {
 		client.end(fetched.statusText ?? "Disconnected");
 		return;
 	}
+
 	fetched = await fetched.json();
 	console.log(fetched);
 	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
@@ -557,23 +556,20 @@ async function connect(client, requeue, gamemode) {
 	});
 	ClientSocket.on("CPacketEntityRelPositionAndRotation", packet => {
 		playerRotations[packet.id] = playerRotations[packet.id] ?? [0, 0];
-		const x = Math.min(Math.max(packet.pos ? packet.pos.x : 0, -128), 127);
-		const y = Math.min(Math.max(packet.pos ? packet.pos.y : 0, -128), 127);
-		const z = Math.min(Math.max(packet.pos ? packet.pos.z : 0, -128), 127);
 		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, 180) : playerRotations[packet.id][0];
 		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : playerRotations[packet.id][1];
 		if (packet.yaw != undefined || packet.pitch != undefined) playerRotations[packet.id] = [yaw, pitch];
 		if (packet.pos && playerPositions[packet.id]) {
 			const pos = playerPositions[packet.id];
-			playerPositions[packet.id] = {x: pos.x + x, y: pos.y + y, z: pos.z + z};
+			playerPositions[packet.id] = {x: pos.x + packet.pos.x, y: pos.y + packet.pos.y, z: pos.z + packet.pos.z};
 		}
 
 		if (packet.pos && (packet.yaw != undefined || packet.pitch != undefined)) {
 			client.write('entity_move_look', {
 				entityId: packet.id,
-				dX: x,
-				dY: y,
-				dZ: z,
+				dX: convertToByte(packet.pos.x),
+				dY: convertToByte(packet.pos.y),
+				dZ: convertToByte(packet.pos.z),
 				yaw: yaw,
 				pitch: pitch,
 				onGround: packet.onGround
@@ -581,9 +577,9 @@ async function connect(client, requeue, gamemode) {
 		} else if (packet.pos) {
 			client.write('rel_entity_move', {
 				entityId: packet.id,
-				dX: x,
-				dY: y,
-				dZ: z,
+				dX: convertToByte(packet.pos.x),
+				dY: convertToByte(packet.pos.y),
+				dZ: convertToByte(packet.pos.z),
 				onGround: packet.onGround
 			});
 		} else {
@@ -889,6 +885,10 @@ async function connect(client, requeue, gamemode) {
 			lastLHP = [];
 		} else {
 			playerPositions[packet.id] = {x: packet.pos.x * 32, y: packet.pos.y * 32, z: packet.pos.z * 32};
+			playerRotations[packet.id] = [convertAngle(packet.yaw, 180), convertAngle(packet.pitch)];
+			playerGamemodes[packet.id] = GAMEMODES[packet.gamemode ?? "survival"];
+			playerSkins[packet.id] = packet.cosmetics.skin;
+
 			const specialEntity = packet.name && packet.name.includes(" ");
 			if (specialEntity) {
 				playerUUIDs[packet.id] = crypto.randomUUID();
@@ -905,11 +905,9 @@ async function connect(client, requeue, gamemode) {
 			}
 
 			if (playerUUIDs[packet.id] == undefined) {
-				playerRotations[packet.id] = [convertAngle(packet.yaw, 180), convertAngle(packet.pitch)];
 				queuedSpawns[packet.id] = packet;
 				return;
 			}
-
 			spawnEntity(packet, client);
 
 			if (specialEntity) {
@@ -1034,24 +1032,22 @@ server.on('playerJoin', async function(client) {
 
 	// MINECRAFT SERVER
 	client.on('flying', ({ onGround } = {}) => {
-		sendActions();
+		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({onGround: onGround}));
 	});
 	client.on('position', ({ x, y, z, onGround } = {}) => {
-		updateChunks(x, z, client);
-		sendActions();
-		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, onGround: onGround}));
 		playerPositions[mcClientId] = {x: x, y: y, z: z};
+		sendActions(client);
+		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, onGround: onGround}));
 	});
 	client.on('look', ({ yaw, pitch, onGround } = {}) => {
-		sendActions();
+		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({yaw: ((yaw * -1) - 180) * DEG2RAD, pitch: (pitch * -1) * DEG2RAD, onGround: onGround}));
 	});
 	client.on('position_look', ({ x, y, z, onGround, yaw, pitch } = {}) => {
-		updateChunks(x, z, client);
-		sendActions();
-		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, yaw: ((yaw * -1) - 180) * DEG2RAD, pitch: (pitch * -1) * DEG2RAD, onGround: onGround}));
 		playerPositions[mcClientId] = {x: x, y: y, z: z};
+		sendActions(client);
+		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, yaw: ((yaw * -1) - 180) * DEG2RAD, pitch: (pitch * -1) * DEG2RAD, onGround: onGround}));
 	});
 	client.on('chat', packet => {
 		if (packet.message.toLocaleLowerCase().startsWith("/queue") || packet.message.toLocaleLowerCase().startsWith("/play")) {
@@ -1080,7 +1076,7 @@ server.on('playerJoin', async function(client) {
 					"parkour", "oitq",
 					"kitpvp", "blitzbuild", "murder",
 					"pvp"
-				].map(mode => `${packet.text.split(" ")[0]} ${mode}`)
+				]
 			});
 			return;
 		}
