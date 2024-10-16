@@ -1,0 +1,68 @@
+name: Bug Report
+description: Report a bug in Miniblox Translation Layer
+labels: [bug]
+body:
+- type: checkboxes
+  attributes:
+    label: Preflight Checklist
+    description: Please ensure you've completed all of the following.
+    options:
+      - label: I am not a pest
+        required: true
+      - label: I am using the latest version of Miniblox Translation Layer (`git pull`)
+        required: true
+      - label: My Minecraft client is running on 1.8.9 (you can use ViaVersion)
+        required: true
+      - label: I have searched the issues of this repository and believe that this is not a duplicate
+        required: true
+- type: dropdown
+  attributes:
+    label: What OS(es) are you using?
+    multiple: true
+    options:
+      - Windows
+      - macOS
+      - Ubuntu
+      - Other Linux
+      - Other (specify below)
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Operating System Version
+    description: What operating system version are you using? On Windows, click Start button > Settings > System > About. On macOS, click the Apple Menu > About This Mac. On Linux, use lsb_release or uname -a.
+    placeholder: "e.g. Windows 10 version 1909, macOS Catalina 10.15.7, or Ubuntu 20.04"
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: What architecture are you using?
+    default: 0
+    options:
+      - x64
+      - ia32
+      - arm64 (including Apple Silicon)
+      - Other (specify below)
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Last Known Working Miniblox Translation Layer commit
+    description: What is the last commit of Miniblox Translation Layer this worked in, if applicable?
+    placeholder: ce088a0
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: A clear and concise description of what you expected to happen.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Actual Behavior
+    description: A clear description of what actually happens.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Additional Information
+    description: If your problem needs further explanation, please add more information here.
