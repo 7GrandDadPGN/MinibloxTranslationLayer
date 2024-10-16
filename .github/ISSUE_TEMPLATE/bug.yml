@@ -1,6 +1,5 @@
 name: Bug Report
 description: Report a bug in Miniblox Translation Layer
-type: 'bug'
 labels: [bug]
 body:
 - type: checkboxes
