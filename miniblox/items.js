@@ -1,5 +1,7 @@
 const mcData = require('minecraft-data')("1.8.9");
+const startTime = performance.now();
 let ITEMS = {};
+
 for (let i = 0; i < 14; i++) ITEMS[1 + i] = [mcData.itemsByName.stone.id, i];
 ITEMS[14] = mcData.itemsByName.grass.id;
 for (let i = 0; i < 2; i++) ITEMS[15 + i] = mcData.itemsByName.dirt.id;
@@ -14,7 +16,17 @@ for (let i = 0; i < 16; i++) ITEMS[157 + i] = [mcData.itemsByName.wool.id, i];
 ITEMS[235] = mcData.itemsByName.obsidian.id;
 ITEMS[244] = mcData.itemsByName.oak_stairs.id;
 ITEMS[245] = mcData.itemsByName.chest.id;
+ITEMS[246] = mcData.itemsByName.crafting_table.id;
+ITEMS[248] = mcData.itemsByName.furnace.id;
+ITEMS[249] = mcData.itemsByName.ladder.id;
 ITEMS[250] = mcData.itemsByName.cobblestone.id;
+ITEMS[251] = mcData.itemsByName.snow.id;
+ITEMS[252] = mcData.itemsByName.ice.id;
+ITEMS[253] = mcData.itemsByName.snow.id;
+ITEMS[254] = mcData.itemsByName.cactus.id;
+ITEMS[265] = mcData.itemsByName.pumpkin.id;
+ITEMS[297] = mcData.itemsByName.glass_pane.id;
+ITEMS[298] = mcData.itemsByName.melon.id;
 ITEMS[312] = mcData.itemsByName.end_stone.id;
 ITEMS[314] = mcData.itemsByName.dragon_egg.id;
 ITEMS[315] = mcData.itemsByName.sandstone_stairs.id;
@@ -26,7 +38,12 @@ ITEMS[320] = mcData.itemsByName.jungle_stairs.id;
 ITEMS[321] = mcData.itemsByName.birch_stairs.id;
 ITEMS[322] = mcData.itemsByName.birch_stairs.id;
 ITEMS[323] = mcData.itemsByName.command_block.id;
+for (let i = 0; i < 16; i++) ITEMS[354 + i] = [mcData.itemsByName.stained_hardened_clay.id, i];
 ITEMS[370] = mcData.itemsByName.barrier.id;
+ITEMS[372] = mcData.itemsByName.hay_block.id;
+for (let i = 0; i < 16; i++) ITEMS[373 + i] = [mcData.itemsByName.carpet.id, i];
+ITEMS[390] = mcData.itemsByName.packed_ice.id;
+for (let i = 0; i < 16; i++) ITEMS[400 + i] = [mcData.itemsByName.stained_glass.id, i];
 ITEMS[606] = mcData.itemsByName.tnt.id;
 ITEMS[680] = mcData.itemsByName.flint_and_steel.id;
 ITEMS[681] = mcData.itemsByName.apple.id;
@@ -160,4 +177,7 @@ ITEMS[1106] = mcData.itemsByName.diamond_helmet.id;
 ITEMS[1107] = mcData.itemsByName.diamond_chestplate.id;
 ITEMS[1108] = mcData.itemsByName.diamond_leggings.id;
 ITEMS[1109] = mcData.itemsByName.diamond_boots.id;
+
+console.log('\x1b[32m[*] Loaded items in', (Math.floor((performance.now() - startTime) * 100) / 100) + 's\x1b[0m');
+
 module.exports = ITEMS;
