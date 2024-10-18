@@ -62,10 +62,14 @@ function convertToByte(num) {
 	return num;
 }
 
-function convertAngle(ang, num) {
-	ang = ang / 256 * Math.PI * 2;
+function convertAngle(ang, ignore, num) {
+	if (!ignore) ang = ang / 256 * Math.PI * 2;
 	ang = (((ang * -1) * RAD2DEG) - (num != undefined ? num : 0)) * 256 / 360;
 	return convertToByte(ang);
+}
+
+function clampByte(byte) {
+	return Math.min(Math.max(byte, -128), 127);
 }
 
 function clampToBox(pos, box) {
@@ -193,4 +197,4 @@ function translateText(text) {
 	return text.replace(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
 }
 
-module.exports = { convertToByte, convertAngle, clampToBox, convertServerPos, createChunk, getBlockIndex, translateItem, translateItemBack, translateText };
+module.exports = { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText };
