@@ -5,6 +5,10 @@ const ENTITIES = require('./miniblox/entities.js');
 const SKINS = require('./miniblox/skins.js');
 const GUIS = require('./miniblox/guis.js');
 const mc = require('minecraft-protocol');
+const readline = require('readline').createInterface({
+	input: process.stdin,
+	output: process.stdout
+});
 const fs = require('node:fs');
 const server = mc.createServer({
 	'online-mode': false,
@@ -16,6 +20,7 @@ const server = mc.createServer({
 });
 
 let openShop = "";
+let recaptcha = "";
 let connected = false;
 let clientId = -1;
 let mcClientId = 99999;
@@ -23,19 +28,16 @@ let scoreData = [];
 
 let chunks = [];
 let queuedChunks = [];
-let queuedSpawns = {};
 
-let players = [];
+let entities = {};
 let playerUUIDs = {};
-let playerPositions = {};
-let playerRotations = {};
-let playerGamemodes = {};
 let playerSkins = {};
 
 let pingInterval, analyticsInterval;
 let filteredPing = 0;
 let ignoreInventory = false;
 let skipKick = Date.now();
+let lPosition = {x: 0, y: 0, z: 0};
 let lStates = [];
 let lastLState = {};
 let lastLHP = [];
@@ -58,12 +60,29 @@ const SLOTS = {
 	39: 8
 };
 
-const VERSION = "3.35.46", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const VERSION = "3.35.48", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
 
-function checkQueued(client) {
-	for (const [id, packet] of Object.entries(queuedSpawns)) {
-		if (spawnEntity(packet, client)) delete queuedSpawns[id];
+function canSpawn(entity) {
+	if (entity.type == -1 && ((playerUUIDs[entity.id] == undefined && !entity.special) || playerGamemodes[entity.id] == GAMEMODES.spectator)) return false;
+	if (!isEntityLoaded(entity)) return false;
+	return true;
+}
+
+function checkEntity(entity, client) {
+	if (!entity) return;
+	if (canSpawn(entity) != entity.spawned) {
+		if (entity.spawned) removeEntity(entity, client);
+		else spawnEntity(entity, client);
+	}
+}
+
+function checkEntities(client) {
+	for (const [_, entity] of Object.entries(entities)) {
+		if (canSpawn(entity) != entity.spawned) {
+			if (entity.spawned) removeEntity(entity, client);
+			else spawnEntity(entity, client);
+		}
 	}
 }
 
@@ -76,12 +95,9 @@ function disconnect() {
 
 	chunks = [];
 	queuedChunks = [];
-	queuedSpawns = {};
 
-	players = [];
+	entities = {};
 	playerUUIDs = {};
-	playerPositions = {};
-	playerRotations = {};
 	playerGamemodes = {};
 	playerSkins = {};
 
@@ -92,8 +108,8 @@ function disconnect() {
 	lastLFlying = undefined;
 }
 
-function isPlayerLoaded(id) {
-	return playerPositions[id] && chunks.includes([Math.floor((playerPositions[id].x / 32) / 16), Math.floor((playerPositions[id].z / 32) / 16)].join());
+function isEntityLoaded(entity) {
+	return chunks.includes([Math.floor((entity.pos.x / 32) / 16), Math.floor((entity.pos.z / 32) / 16)].join());
 }
 
 function purgePlayers(client) {
@@ -111,26 +127,100 @@ function purgePlayers(client) {
 	});
 }
 
-function spawnEntity(packet, client) {
-	if (playerUUIDs[packet.id] == undefined || playerPositions[packet.id] == undefined || playerGamemodes[packet.id] == GAMEMODES.spectator || !isPlayerLoaded(packet.id)) return;
-	if (players.includes(packet.id)) return;
-	players.push(packet.id);
-	client.write('named_entity_spawn', {
-		entityId: packet.id,
-		playerUUID: playerUUIDs[packet.id] ?? crypto.randomUUID(),
-		x: playerPositions[packet.id].x,
-		y: playerPositions[packet.id].y,
-		z: playerPositions[packet.id].z,
-		yaw: playerRotations[packet.id][0],
-		pitch: playerRotations[packet.id][1],
-		currentItem: 0,
-		metadata: []
-	});
+function spawnEntity(entity, client) {
+	if (!entity || entity.spawned) return;
+
+	if (entity.special) {
+		playerUUIDs[entity.id] = crypto.randomUUID();
+		client.write('player_info', {
+			action: 0,
+			data: [{
+				UUID: playerUUIDs[entity.id],
+				name: 'BOT',
+				properties: [],
+				gamemode: 1,
+				ping: 0
+			}]
+		});
+	}
+
+	entity.spawned = true;
+	if (entity.type == -1) {
+		client.write('named_entity_spawn', {
+			entityId: entity.id,
+			playerUUID: playerUUIDs[entity.id] ?? crypto.randomUUID(),
+			x: entity.pos.x,
+			y: entity.pos.y,
+			z: entity.pos.z,
+			yaw: entity.yaw,
+			pitch: entity.pitch,
+			currentItem: 0,
+			metadata: entity.metadata
+		});
+		for (const [slot, item] of Object.entries(entity.equipment)) {
+			client.write('entity_equipment', {
+				entityId: entity.id,
+				slot: slot,
+				item: item
+			});
+		}
+	} else {
+		client.write('spawn_entity', {
+			entityId: entity.id,
+			type: entity.type,
+			x: entity.pos.x,
+			y: entity.pos.y,
+			z: entity.pos.z,
+			yaw: entity.yaw,
+			pitch: entity.pitch,
+			objectData: entity.objectData
+		});
+		client.write('entity_metadata', {
+			entityId: entity.id,
+			metadata: entity.metadata
+		});
+	}
+
+	if (entity.special) {
+		client.write('player_info', {
+			action: 4,
+			data: [{"UUID": playerUUIDs[entity.id]}]
+		});
+	}
+
 	return true;
 }
 
-function sendActions() {
-	if (playerPositions[mcClientId]) updateChunks(playerPositions[mcClientId].x, playerPositions[mcClientId].z);
+async function queue(gamemode, server) {
+	if (server) return {ok: true, json: function() { return {serverId: server}; }};
+	let fetched
+	try {
+		fetched = await fetch('https://session.coolmathblox.ca/launch/queue_minigame', {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({
+				clientVersion: VERSION,
+				minigameId: gamemode ?? "kitpvp",
+				recaptcha: recaptcha
+			})
+		});
+	} catch (exception) {
+		fetched = {statusText: "Unable to connect to server"};
+	}
+	return fetched;
+}
+
+function removeEntity(entity, client) {
+	if (!entity || !entity.spawned) return;
+
+	entity.spawned = false;
+	client.write('entity_destroy', {
+		entityIds: [entity.id]
+	});
+}
+
+function sendActions(client) {
+	if (lPosition) updateChunks(lPosition.x, lPosition.z, client);
 	if (clientId < 0) return;
 	const newStates = {punching: lStates[0] > Date.now(), sprinting: lStates[1] ?? false, sneak: lStates[2] ?? false};
 	if (newStates.punching == lastLState.punching && newStates.sprinting == lastLState.sprinting && newStates.sneak == lastLState.sneak) return;
@@ -150,7 +240,7 @@ function sendAbilities() {
 	lastLFlying = newState;
 }
 
-function updateChunks(x, z) {
+function updateChunks(x, z, client) {
 	const positions = [];
 	const currentlyLoaded = [];
 
@@ -180,6 +270,15 @@ function updateChunks(x, z) {
 
 	for (const chunk of chunks) {
 		if (!currentlyLoaded.includes(chunk)) {
+			const split = chunk.split(',');
+			const cX = Number.parseInt(split[0]), cZ = Number.parseInt(split[1]);
+			client.write('map_chunk', {
+				x: cX,
+				z: cZ,
+				groundUp: true,
+				bitMap: 0,
+				chunkData: []
+			});
 			chunks.splice(chunks.indexOf(chunk), 1);
 		}
 	}
@@ -189,7 +288,7 @@ function uuid$1() {
 	return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, j => (j ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> j / 4).toString(16))
 }
 
-async function connect(client, requeue, gamemode) {
+async function connect(client, requeue, gamemode, code) {
 	if (requeue) {
 		skipKick = Date.now() + 20;
 		if (ClientSocket.socket) ClientSocket.disconnect();
@@ -214,22 +313,10 @@ async function connect(client, requeue, gamemode) {
 		});
 	}
 
-	let fetched
-	try {
-		fetched = await fetch('https://session.coolmathblox.ca/launch/queue_minigame', {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({
-				clientVersion: VERSION,
-				minigameId: gamemode ?? "kitpvp"
-			})
-		});
-	} catch (exception) {
-		fetched = {statusText: "Unable to connect to server"};
-	}
-
+	let fetched = await queue(gamemode, code);
 	if (!fetched.ok) {
-		client.end(fetched.statusText ?? "Disconnected");
+		const text = await fetched.text();
+		client.end(text ?? (fetched.statusText ?? "Disconnected"));
 		return;
 	}
 
@@ -237,11 +324,7 @@ async function connect(client, requeue, gamemode) {
 	console.log(fetched);
 	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
 	const gameType = gamemode ?? "kitpvp";
-	let session = "";
-
-	fs.readFile('login.token', 'utf8', (err, data) => {
-		if (!err && data) session = data;
-	});
+	let session = await fs.readFileSync('login.token', {encoding: 'utf8'});
 
 	// MINIBLOX CONNECTION
 	ClientSocket.once("connect", () => {
@@ -257,17 +340,20 @@ async function connect(client, requeue, gamemode) {
 		disconnect();
 		if (!packet.canConnect) {
 			client.end(packet.errorMessage ?? "Disconnected");
+			return;
 		}
-		if (requeue) return;
-		client.write('login', {
-			entityId: mcClientId,
-			gameMode: GAMEMODES[packet.gamemode ?? "survival"],
-			dimension: 0,
-			difficulty: 2,
-			maxPlayers: server.maxPlayers,
-			levelType: "default",
-			reducedDebugInfo: false
-		});
+
+		if (!requeue) {
+			client.write('login', {
+				entityId: mcClientId,
+				gameMode: GAMEMODES[packet.gamemode ?? "survival"],
+				dimension: 0,
+				difficulty: 2,
+				maxPlayers: server.maxPlayers,
+				levelType: "default",
+				reducedDebugInfo: false
+			});
+		}
 
 		pingInterval = setInterval(() => {
 			client.write('keep_alive', Math.floor(Math.random() * 10000));
@@ -317,7 +403,7 @@ async function connect(client, requeue, gamemode) {
 			bitMap: chunk.getMask(),
 			chunkData: chunk.dump()
 		});
-		checkQueued(client);
+		checkEntities(client);
 	});
 	ClientSocket.on("CPacketCloseWindow", packet => client.write('close_window', {windowId: packet.windowId}));
 	ClientSocket.on("CPacketConfirmTransaction", packet => {
@@ -328,13 +414,7 @@ async function connect(client, requeue, gamemode) {
 		});
 	});
 	ClientSocket.on("CPacketDestroyEntities", packet => {
-		for (const id of packet.ids) {
-			delete queuedSpawns[id];
-			delete playerPositions[id];
-			if (players.includes(id)) {
-				players.splice(players.indexOf(id), 1);
-			}
-		}
+		for (const id of packet.ids) delete entities[id];
 		client.write('entity_destroy', {
 			entityIds: packet.ids
 		});
@@ -360,10 +440,12 @@ async function connect(client, requeue, gamemode) {
 	ClientSocket.on("CPacketEntityEquipment", packet => {
 		for (const equip of packet.equipment) {
 			if (equip.slot == 2) continue;
+			const slot = equip.slot == 1 ? 0 : 7 - equip.slot, item = translateItem(equip.item);
+			if (entities[packet.id]) entities[packet.id].equipment[slot] = item;
 			client.write('entity_equipment', {
 				entityId: packet.id,
-				slot: equip.slot == 1 ? 0 : 7 - equip.slot,
-				item: translateItem(equip.item)
+				slot: slot,
+				item: item
 			});
 		}
 	});
@@ -410,36 +492,47 @@ async function connect(client, requeue, gamemode) {
 			props.push({key: watched.dataValueId, value: value, type: wType});
 		}
 
+		if (entities[packet.id]) entities[packet.id].metadata = props;
 		client.write('entity_metadata', {
 			entityId: packet.id == clientId ? mcClientId : packet.id,
 			metadata: props
 		});
 	});
 	ClientSocket.on("CPacketEntityPositionAndRotation", packet => {
-		playerPositions[packet.id] = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
-		playerRotations[packet.id] = [convertAngle(packet.yaw, 180), convertAngle(packet.pitch)];
+		const entity = entities[packet.id];
+		if (entity) {
+			entity.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
+			entity.yaw = convertAngle(packet.yaw, 180);
+			entity.pitch = convertAngle(packet.pitch);
+		} else return;
 		client.write('entity_teleport', {
 			entityId: packet.id,
 			x: packet.pos.x,
 			y: packet.pos.y,
 			z: packet.pos.z,
-			yaw: playerRotations[packet.id][0],
-			pitch: playerRotations[packet.id][1],
+			yaw: entity.yaw,
+			pitch: entity.pitch,
 			onGround: packet.onGround
 		});
 		client.write('entity_head_rotation', {
 			entityId: packet.id,
-			headYaw: playerRotations[packet.id][0]
+			headYaw: entity.yaw
 		});
 	});
 	ClientSocket.on("CPacketEntityRelPositionAndRotation", packet => {
-		playerRotations[packet.id] = playerRotations[packet.id] ?? [0, 0];
-		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, 180) : playerRotations[packet.id][0];
-		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : playerRotations[packet.id][1];
-		if (packet.yaw != undefined || packet.pitch != undefined) playerRotations[packet.id] = [yaw, pitch];
-		if (packet.pos && playerPositions[packet.id]) {
-			const pos = playerPositions[packet.id];
-			playerPositions[packet.id] = {x: pos.x + packet.pos.x, y: pos.y + packet.pos.y, z: pos.z + packet.pos.z};
+		const entity = entities[packet.id];
+		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, 180) : 0;
+		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : 0;
+		if (entity) {
+			if (packet.yaw != undefined || packet.pitch != undefined) {
+				entity.yaw = yaw;
+				entity.pitch = pitch;
+			}
+
+			if (packet.pos) {
+				const pos = entity.pos;
+				entity.pos = {x: pos.x + packet.pos.x, y: pos.y + packet.pos.y, z: pos.z + packet.pos.z};
+			}
 		}
 
 		if (packet.pos && (packet.yaw != undefined || packet.pitch != undefined)) {
@@ -609,7 +702,7 @@ async function connect(client, requeue, gamemode) {
 			action: 0,
 			data: newData
 		});
-		checkQueued(client);
+		checkEntities(client);
 	});
 	ClientSocket.on("CPacketPlayerPosLook", packet => {
 		if (isNaN(packet.x) || isNaN(packet.y) || isNaN(packet.z) || isNaN(packet.yaw) || isNaN(packet.pitch)) {
@@ -647,7 +740,7 @@ async function connect(client, requeue, gamemode) {
 		if (packet.client) {
 			ClientSocket.sendPacket(new SPacketRespawn$1);
 			client.write('respawn', {
-				dimension: 0,
+				dimension: packet.dimension,
 				difficulty: 2,
 				gamemode: 2,
 				levelType: "FLAT"
@@ -702,8 +795,7 @@ async function connect(client, requeue, gamemode) {
 	});
 	ClientSocket.on("CPacketSoundEffect", packet => {
 		if (!packet.location) {
-			const pos = playerPositions[mcClientId];
-			packet.location = {x: pos.x * 8, y: pos.y * 8, z: pos.z * 8};
+			packet.location = {x: lPosition.x * 8, y: lPosition.y * 8, z: lPosition.z * 8};
 		}
 
 		client.write('named_sound_effect', {
@@ -718,21 +810,23 @@ async function connect(client, requeue, gamemode) {
 	ClientSocket.on("CPacketSpawnEntity", packet => {
 		if (ENTITIES[packet.type] == undefined) return;
 		if (packet.motion == undefined) packet.motion = {x: 0, y: 0, z: 0};
-		client.write('spawn_entity', {
-			entityId: packet.id,
+		entities[packet.id] = {
+			id: packet.id,
 			type: ENTITIES[packet.type],
-			x: packet.pos.x,
-			y: packet.pos.y,
-			z: packet.pos.z,
-			pitch: convertAngle(packet.pitch),
+			pos: packet.pos,
 			yaw: convertAngle(packet.yaw, 180),
+			pitch: convertAngle(packet.pitch),
+			metadata: {},
+			equipment: {},
 			objectData: {
 				intField: packet.shooterId != null ? (packet.shooterId == clientId ? mcClientId : packet.shooterId) : 1,
 				velocityX: Math.max(Math.min(packet.motion.x * 8000, 32767), -32768),
 				velocityY: Math.max(Math.min(packet.motion.y * 8000, 32767), -32768),
 				velocityZ: Math.max(Math.min(packet.motion.z * 8000, 32767), -32768)
-			}
-		});
+			},
+			spawned: false
+		};
+		checkEntity(entities[packet.id], client);
 	});
 	ClientSocket.on("CPacketSpawnExperienceOrb", packet => {
 		client.write('spawn_entity_experience_orb', {
@@ -749,37 +843,21 @@ async function connect(client, requeue, gamemode) {
 			clientId = packet.id;
 			lastLHP = [];
 		} else {
-			playerPositions[packet.id] = {x: packet.pos.x * 32, y: packet.pos.y * 32, z: packet.pos.z * 32};
-			playerRotations[packet.id] = [convertAngle(packet.yaw, 180), convertAngle(packet.pitch)];
 			playerGamemodes[packet.id] = GAMEMODES[packet.gamemode ?? "survival"];
 			playerSkins[packet.id] = packet.cosmetics.skin;
-
-			const specialEntity = packet.name && packet.name.includes(" ");
-			if (specialEntity) {
-				playerUUIDs[packet.id] = crypto.randomUUID();
-				client.write('player_info', {
-					action: 0,
-					data: [{
-						UUID: playerUUIDs[packet.id],
-						name: 'BOT',
-						properties: [],
-						gamemode: 1,
-						ping: 0
-					}]
-				});
-			}
-
-			if (!spawnEntity(packet, client)) {
-				queuedSpawns[packet.id] = packet;
-				return;
-			}
-
-			if (specialEntity) {
-				client.write('player_info', {
-					action: 4,
-					data: [{"UUID": playerUUIDs[packet.id]}]
-				});
-			}
+			entities[packet.id] = {
+				id: packet.id,
+				type: -1,
+				special: packet.name && packet.name.includes(" "),
+				pos: {x: packet.pos.x * 32, y: packet.pos.y * 32, z: packet.pos.z * 32},
+				yaw: convertAngle(packet.yaw, 180),
+				pitch: convertAngle(packet.pitch),
+				metadata: {},
+				equipment: {},
+				spawned: entities[packet.id] ? entities[packet.id].spawned : false,
+				name: packet.name
+			};
+			checkEntity(entities[packet.id], client);
 		}
 	});
 	ClientSocket.on("CPacketTabComplete", packet => client.write('tab_complete', {matches: packet.matches}));
@@ -836,19 +914,7 @@ async function connect(client, requeue, gamemode) {
 					});
 				}
 
-				if (playerPositions[packet.id] != undefined) {
-					if (playerGamemodes[packet.id] == GAMEMODES.spectator) {
-						delete queuedSpawns[packet.id];
-						if (players.includes(packet.id)) {
-							players.splice(players.indexOf(packet.id), 1);
-							client.write('entity_destroy', {
-								entityIds: [packet.id]
-							});
-						}
-					} else {
-						if (spawnEntity({id: packet.id}, client)) delete queuedSpawns[packet.id];
-					}
-				}
+				checkEntity(entities[packet.id], client);
 			}
 		}
 	});
@@ -890,33 +956,33 @@ server.on('playerJoin', async function(client) {
 
 	// MINECRAFT SERVER
 	client.on('flying', ({ onGround } = {}) => {
-		sendActions();
+		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({onGround: onGround}));
 		sendAbilities();
 	});
 	client.on('position', ({ x, y, z, onGround } = {}) => {
-		playerPositions[mcClientId] = {x: x, y: y, z: z};
-		sendActions();
+		lPosition = {x: x, y: y, z: z};
+		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, onGround: onGround}));
 		sendAbilities();
 	});
 	client.on('look', ({ yaw, pitch, onGround } = {}) => {
-		sendActions();
+		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({yaw: ((yaw * -1) - 180) * DEG2RAD, pitch: (pitch * -1) * DEG2RAD, onGround: onGround}));
 		sendAbilities();
 	});
 	client.on('position_look', ({ x, y, z, onGround, yaw, pitch } = {}) => {
-		playerPositions[mcClientId] = {x: x, y: y, z: z};
-		sendActions();
+		lPosition = {x: x, y: y, z: z};
+		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, yaw: ((yaw * -1) - 180) * DEG2RAD, pitch: (pitch * -1) * DEG2RAD, onGround: onGround}));
 		sendAbilities();
 	});
 	client.on('chat', packet => {
-		if (packet.message.toLocaleLowerCase().startsWith("/queue") || packet.message.toLocaleLowerCase().startsWith("/play")) {
-			const split = packet.message.toLocaleLowerCase().split(" ");
-			connect(client, true, split[1]);
+		const msg = packet.message.toLocaleLowerCase()
+		if (msg.startsWith("/queue") || msg.startsWith("/play")) {
+			connect(client, true, msg.split(" ")[1]);
 			return;
-		} else if (packet.message.toLocaleLowerCase().startsWith("/login")) {
+		} else if (msg.startsWith("/login")) {
 			fs.writeFile('./login.token', packet.message.split(" ")[1] ?? "", (err) => {
 				if (err) {
 					client.write('chat', {message: JSON.stringify({text: translateText('\\red\\Failed to save file!' + err.message)})});
@@ -924,6 +990,9 @@ server.on('playerJoin', async function(client) {
 				}
 				client.write('chat', {message: JSON.stringify({text: translateText('\\green\\Successfully logged in! Rejoin the game.')})});
 			});
+			return;
+		} else if (msg.startsWith("/join")) {
+			connect(client, true, undefined, msg.split(" ")[1] ?? "");
 			return;
 		}
 		ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
@@ -973,8 +1042,8 @@ server.on('playerJoin', async function(client) {
 		}
 	});
 	client.on('use_entity', packet => {
-		if (packet.target != undefined && playerPositions[packet.target] && playerPositions[mcClientId]) {
-			const newPos = clampToBox(playerPositions[mcClientId], convertServerPos(playerPositions[packet.target]));
+		if (packet.target != undefined && entities[packet.target] && lPosition) {
+			const newPos = clampToBox(lPosition, convertServerPos(entities[packet.target].pos));
 			ClientSocket.sendPacket(new SPacketUseEntity({
 				id: packet.target,
 				action: packet.mouse,
@@ -1065,3 +1134,36 @@ server.on('playerJoin', async function(client) {
 });
 
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
+console.log('\x1b[36m[*] Checking recaptcha token...\x1b[0m');
+
+(async() => {
+	recaptcha = await fs.readFileSync('recaptcha.token', {encoding: 'utf8'});
+
+	while (true) {
+		let fetched = {};
+		if (recaptcha != "") fetched = await queue();
+		if (!fetched.ok) {
+			if (fetched.body) {
+				const text = await fetched.text();
+				console.log(text);
+			}
+			await new Promise(resolve => readline.question(`\x1b[31m[!] Invalid recaptcha token, please goto https://miniblox.io and run the code below in the console, then copy the output and paste it in here.
+grecaptcha.execute("6LcPzJ8pAAAAACKzt7v7wxbOPXFy4vSWytw6owvT", {
+	action: '/launch/queue_minigame'
+}).then($ => {
+	console.log($);
+});
+> \x1b[0m`, token => {
+				recaptcha = token;
+				resolve();
+			}));
+		} else {
+			fs.writeFile('recaptcha.token', recaptcha, (err) => {
+				if (err) throw err;
+			});
+			console.log('\x1b[32m[*] Valid token! You can now log into the server.\x1b[0m');
+			readline.close();
+			break;
+		}
+	}
+})();

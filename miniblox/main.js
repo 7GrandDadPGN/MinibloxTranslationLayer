@@ -2914,6 +2914,7 @@ const CPacketRespawn = class extends Message {
 		super();
 		ut(this, "notDeath");
 		ut(this, "client");
+		ut(this, "dimension");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -2943,6 +2944,12 @@ ut(CPacketRespawn, "fields", proto2.util.newFieldList(()=>[{
 	name: "client",
 	kind: "scalar",
 	T: 8,
+	opt: !0
+}, {
+	no: 3,
+	name: "dimension",
+	kind: "scalar",
+	T: 5,
 	opt: !0
 }]));
 const CPacketScoreboard = class extends Message {
