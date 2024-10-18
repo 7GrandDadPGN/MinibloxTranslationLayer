@@ -254,7 +254,6 @@ function removeEntity(entity, client) {
 
 function sendActions(client) {
 	if (lPosition) updateChunks(lPosition.x, lPosition.z, client);
-	if (clientId < 0) return;
 	const newStates = {punching: lStates[0] > Date.now(), sprinting: lStates[1] ?? false, sneak: lStates[2] ?? false};
 	if (newStates.punching == lastLState.punching && newStates.sprinting == lastLState.sprinting && newStates.sneak == lastLState.sneak) return;
 	ClientSocket.sendPacket(new SPacketEntityAction({
@@ -389,7 +388,7 @@ async function connect(client, requeue, gamemode, code) {
 		}
 
 		pingInterval = setInterval(() => {
-			client.write('keep_alive', Math.floor(Math.random() * 10000));
+			client.write('keep_alive', {keepAliveId: Math.floor(Math.random() * 10000)});
 		}, 1000);
 		analyticsInterval = setInterval(() => {
 			ClientSocket.sendPacket(new SPacketAnalytics({
@@ -985,22 +984,26 @@ server.on('playerJoin', async function(client) {
 
 	// MINECRAFT SERVER
 	client.on('flying', ({ onGround } = {}) => {
+		if (clientId < 0) return;
 		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({onGround: onGround}));
 		sendAbilities();
 	});
 	client.on('position', ({ x, y, z, onGround } = {}) => {
+		if (clientId < 0) return;
 		lPosition = {x: x, y: y, z: z};
 		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, onGround: onGround}));
 		sendAbilities();
 	});
 	client.on('look', ({ yaw, pitch, onGround } = {}) => {
+		if (clientId < 0) return;
 		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({yaw: ((yaw * -1) - 180) * DEG2RAD, pitch: (pitch * -1) * DEG2RAD, onGround: onGround}));
 		sendAbilities();
 	});
 	client.on('position_look', ({ x, y, z, onGround, yaw, pitch } = {}) => {
+		if (clientId < 0) return;
 		lPosition = {x: x, y: y, z: z};
 		sendActions(client);
 		ClientSocket.sendPacket(new SPacketPlayerPosLook({pos: {x: x, y: y, z: z}, yaw: ((yaw * -1) - 180) * DEG2RAD, pitch: (pitch * -1) * DEG2RAD, onGround: onGround}));
@@ -1147,6 +1150,7 @@ server.on('playerJoin', async function(client) {
 		}));
 	});
 	client.on('keep_alive', packet => {
+		console.log(packet);
 		if (packet.keepAliveId > 0) ClientSocket.sendPacket(new SPacketPing({time: BigInt(Date.now())}));
 	});
 	client.on('transaction', packet => {
