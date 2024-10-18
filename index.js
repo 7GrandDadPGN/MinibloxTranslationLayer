@@ -5,10 +5,7 @@ const ENTITIES = require('./miniblox/entities.js');
 const SKINS = require('./miniblox/skins.js');
 const GUIS = require('./miniblox/guis.js');
 const mc = require('minecraft-protocol');
-const readline = require('readline').createInterface({
-	input: process.stdin,
-	output: process.stdout
-});
+const ws = require('ws');
 const fs = require('node:fs');
 const server = mc.createServer({
 	'online-mode': false,
@@ -18,9 +15,11 @@ const server = mc.createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
+const wsServer = new ws.Server({
+	port: 6874
+});
 
 let openShop = "";
-let recaptcha = "";
 let connected = false;
 let clientId = -1;
 let mcClientId = 99999;
@@ -60,7 +59,7 @@ const SLOTS = {
 	39: 8
 };
 
-const VERSION = "3.35.48", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const VERSION = "3.35.49", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
 
 function canSpawn(entity) {
@@ -157,6 +156,7 @@ function spawnEntity(entity, client) {
 			currentItem: 0,
 			metadata: entity.metadata
 		});
+
 		for (const [slot, item] of Object.entries(entity.equipment)) {
 			client.write('entity_equipment', {
 				entityId: entity.id,
@@ -165,20 +165,25 @@ function spawnEntity(entity, client) {
 			});
 		}
 	} else {
-		client.write('spawn_entity', {
+		const entityType = ENTITIES[entity.type];
+		client.write(entityType[1] ? 'spawn_entity_living' : 'spawn_entity', {
 			entityId: entity.id,
-			type: entity.type,
+			type: entityType[0],
 			x: entity.pos.x,
 			y: entity.pos.y,
 			z: entity.pos.z,
 			yaw: entity.yaw,
 			pitch: entity.pitch,
-			objectData: entity.objectData
-		});
-		client.write('entity_metadata', {
-			entityId: entity.id,
+			objectData: entity.objectData,
 			metadata: entity.metadata
 		});
+
+		if (!entityType[1]) {
+			client.write('entity_metadata', {
+				entityId: entity.id,
+				metadata: entity.metadata
+			});
+		}
 	}
 
 	if (entity.special) {
@@ -191,21 +196,49 @@ function spawnEntity(entity, client) {
 	return true;
 }
 
+let promise;
+let sockets = [];
+wsServer.on('connection', function(socket) {
+	if (sockets.length > 0) {
+		socket.terminate();
+		return;
+	}
+	sockets.push(socket);
+
+	socket.on('message', function(msg) {
+		if (promise) {
+			promise(msg.toString('utf8'));
+			promise = undefined;
+		}
+	});
+
+	socket.on('close', function() {
+		sockets = sockets.filter(s => s !== socket);
+	});
+});
+
 async function queue(gamemode, server) {
 	if (server) return {ok: true, json: function() { return {serverId: server}; }};
 	let fetched
 	try {
+		if (sockets.length <= 0) throw 'Missing tampermonkey middleman, please check to ensure the script is running.';
+		sockets.forEach(s => s.send('request'));
+		const data = await new Promise((resolve) => {
+			promise = resolve;
+		});
+		const captchas = data.split(' ');
 		fetched = await fetch('https://session.coolmathblox.ca/launch/queue_minigame', {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify({
 				clientVersion: VERSION,
 				minigameId: gamemode ?? "kitpvp",
-				recaptcha: recaptcha
+				recaptcha: captchas[0],
+				turnstile: captchas[1]
 			})
 		});
 	} catch (exception) {
-		fetched = {statusText: "Unable to connect to server"};
+		fetched = {text: function() { return exception; }};
 	}
 	return fetched;
 }
@@ -457,7 +490,7 @@ async function connect(client, requeue, gamemode, code) {
 			switch (watched.objectType) {
 				case 2:
 					value = watched.intValue;
-					if (watched.dataValueId != 7 && watched.dataValueId != 18) {
+					if (watched.dataValueId != 7) {
 						wType = 0;
 						value = watched.dataValueId == 10 ? 127 : convertToByte(watched.intValue);
 					}
@@ -476,11 +509,7 @@ async function connect(client, requeue, gamemode, code) {
 					value = translateItem(watched.itemStack);
 					break;
 				case 6:
-					value = {
-						x: watched.blockPos.x,
-						y: watched.blockPos.y,
-						z: watched.blockPos.z
-					};
+					value = watched.blockPos;
 					break;
 				case 7:
 					value = new Vector3(watched.vector.x,watched.vector.y,watched.vector.z);
@@ -502,7 +531,7 @@ async function connect(client, requeue, gamemode, code) {
 		const entity = entities[packet.id];
 		if (entity) {
 			entity.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
-			entity.yaw = convertAngle(packet.yaw, 180);
+			entity.yaw = convertAngle(packet.yaw, entity.type == -1 ? 180 : 0);
 			entity.pitch = convertAngle(packet.pitch);
 		} else return;
 		client.write('entity_teleport', {
@@ -521,7 +550,7 @@ async function connect(client, requeue, gamemode, code) {
 	});
 	ClientSocket.on("CPacketEntityRelPositionAndRotation", packet => {
 		const entity = entities[packet.id];
-		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, 180) : 0;
+		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, (!entity || entity.type == -1) ? 180 : 0) : 0;
 		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : 0;
 		if (entity) {
 			if (packet.yaw != undefined || packet.pitch != undefined) {
@@ -812,9 +841,9 @@ async function connect(client, requeue, gamemode, code) {
 		if (packet.motion == undefined) packet.motion = {x: 0, y: 0, z: 0};
 		entities[packet.id] = {
 			id: packet.id,
-			type: ENTITIES[packet.type],
+			type: packet.type,
 			pos: packet.pos,
-			yaw: convertAngle(packet.yaw, 180),
+			yaw: convertAngle(packet.yaw),
 			pitch: convertAngle(packet.pitch),
 			metadata: {},
 			equipment: {},
@@ -1134,36 +1163,4 @@ server.on('playerJoin', async function(client) {
 });
 
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
-console.log('\x1b[36m[*] Checking recaptcha token...\x1b[0m');
-
-(async() => {
-	recaptcha = await fs.readFileSync('recaptcha.token', {encoding: 'utf8'});
-
-	while (true) {
-		let fetched = {};
-		if (recaptcha != "") fetched = await queue();
-		if (!fetched.ok) {
-			if (fetched.body) {
-				const text = await fetched.text();
-				console.log(text);
-			}
-			await new Promise(resolve => readline.question(`\x1b[31m[!] Invalid recaptcha token, please goto https://miniblox.io and run the code below in the console, then copy the output and paste it in here.
-grecaptcha.execute("6LcPzJ8pAAAAACKzt7v7wxbOPXFy4vSWytw6owvT", {
-	action: '/launch/queue_minigame'
-}).then($ => {
-	console.log($);
-});
-> \x1b[0m`, token => {
-				recaptcha = token;
-				resolve();
-			}));
-		} else {
-			fs.writeFile('recaptcha.token', recaptcha, (err) => {
-				if (err) throw err;
-			});
-			console.log('\x1b[32m[*] Valid token! You can now log into the server.\x1b[0m');
-			readline.close();
-			break;
-		}
-	}
-})();
+console.log('\x1b[36m[*] Hosting websocket on 6874...\x1b[0m');
