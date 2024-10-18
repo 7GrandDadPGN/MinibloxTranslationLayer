@@ -108,7 +108,7 @@ function convertServerPos(pos) {
 
 /**
  * Converts a chunk packet to a Minecraft chunk.
- * @param {*} packet The chunk packet.
+ * @param {import("./main.js").CPacketChunkData} packet The chunk packet.
  * @returns {import("prismarine-chunk").PCChunk} The chunk, as a Minecraft chunk.
  */
 function createChunk(packet) {
