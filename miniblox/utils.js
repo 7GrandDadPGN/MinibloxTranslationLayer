@@ -8,7 +8,7 @@ const Chunk = require('prismarine-chunk')('1.8.9');
 const Vec3 = require('vec3');
 const DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI, CELL_VOLUME = 16 * 16 * 16;
 
-const COLOR_REGEX = /\\#[A-Za-z0-9]+\\/i;
+const COLOR_REGEX = /\\#[A-Za-z0-9]+\\/g;
 const COLOR_CODES = {
 	"\\lime\\": "\u00a7a",
 	"\\aqua\\": "\u00a7b",
@@ -76,16 +76,14 @@ function convertToByte(num) {
 	return num;
 }
 
-/**
- * Converts a radian angle into a Miniblox byte angle or whatever
- * @param {number} ang The angle in radians
- * @param {number} num a number (lol)
- * @returns 
- */
-function convertAngle(ang, num) {
-	ang = ang / 256 * Math.PI * 2;
+function convertAngle(ang, ignore, num) {
+	if (!ignore) ang = ang / 256 * Math.PI * 2;
 	ang = (((ang * -1) * RAD2DEG) - (num != undefined ? num : 0)) * 256 / 360;
 	return convertToByte(ang);
+}
+
+function clampByte(byte) {
+	return Math.min(Math.max(byte, -128), 127);
 }
 
 function clampToBox(pos, box) {
@@ -252,7 +250,7 @@ function translateItemBack(item) {
  */
 function translateText(text) {
 	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, color);
-	return text.replace(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
+	return text.replaceAll(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
 }
 
-module.exports = { convertToByte, convertAngle, clampToBox, convertServerPos, createChunk, getBlockIndex, translateItem, translateItemBack, translateText };
+module.exports = { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText };

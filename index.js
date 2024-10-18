@@ -1,5 +1,5 @@
 const { ClientSocket, SPacketMessage, SPacketLoginStart, SPacketPlayerPosLook, SPacketHeldItemChange, SPacketCloseWindow, SPacketRequestChunk, SPacketAnalytics, SPacketRespawn$1, SPacketPing, PBVector3, SPacketUseEntity, SPacketClick, SPacketEntityAction, PBBlockPos, SPacketPlaceBlock, SPacketPlayerAction, SPacketUseItem, SPacketBreakBlock, SPacketClickWindow, SPacketConfirmTransaction, Vector3, SPacketTabComplete$1, SPacketPlayerAbilities } = require('./miniblox/main.js');
-const { convertToByte, convertAngle, clampToBox, convertServerPos, createChunk, getBlockIndex, translateItem, translateItemBack, translateText } = require('./miniblox/utils.js');
+const { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText } = require('./miniblox/utils.js');
 const BLOCKS = require('./miniblox/blocks.js');
 const ENTITIES = require('./miniblox/entities.js');
 const SKINS = require('./miniblox/skins.js');
@@ -151,6 +151,10 @@ function spawnEntity(entity, client) {
 			pitch: entity.pitch,
 			currentItem: 0,
 			metadata: entity.metadata
+		});
+		client.write('entity_head_rotation', {
+			entityId: entity.id,
+			headYaw: entity.yaw
 		});
 
 		for (const [slot, item] of Object.entries(entity.equipment)) {
@@ -445,6 +449,16 @@ async function connect(client, requeue, gamemode, code) {
 				animation: 0
 			});
 		}
+
+		const entity = entities[packet.id];
+		if (entity && packet.sneak != undefined) {
+			entity.sneaking = packet.sneak;
+			entity.metadata[0].value = entity.sneaking ? (entity.metadata[0].value | 1 << 1) : (entity.metadata[0].value & ~(1 << 1));
+			client.write('entity_metadata', {
+				entityId: packet.id,
+				metadata: [{key: 0, value: entity.metadata[0].value, type: 0}]
+			});
+		}
 	});
 	ClientSocket.on("CPacketEntityEffect", packet => {
 		client.write('entity_effect', {
@@ -479,6 +493,7 @@ async function connect(client, requeue, gamemode, code) {
 					if (watched.dataValueId != 7 && (watched.dataValueId != 18 || entity && entity.type != -1)) {
 						wType = 0;
 						value = watched.dataValueId == 10 ? 127 : convertToByte(watched.intValue);
+						if (watched.dataValueId == 0 && entity) value = entity.sneaking ? (value | 1 << 1) : (value & ~(1 << 1));
 					}
 					if (watched.dataValueId == 1) {
 						wType = 1;
@@ -507,7 +522,11 @@ async function connect(client, requeue, gamemode, code) {
 			props.push({key: watched.dataValueId, value: value, type: wType});
 		}
 
-		if (entity) entity.metadata = props;
+		if (entity) {
+			for (const prop of props) {
+				entity.metadata[prop.key] = prop;
+			}
+		}
 		client.write('entity_metadata', {
 			entityId: packet.id == clientId ? mcClientId : packet.id,
 			metadata: props
@@ -517,11 +536,12 @@ async function connect(client, requeue, gamemode, code) {
 		const entity = entities[packet.id];
 		if (entity) {
 			entity.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
-			entity.yaw = convertAngle(packet.yaw, entity.type == -1 ? 180 : 0);
+			entity.yaw = convertAngle(packet.yaw, false, entity.type == -1 ? 180 : 0);
 			entity.pitch = convertAngle(packet.pitch);
 		} else {
 			return;
 		}
+
 		client.write('entity_teleport', {
 			entityId: packet.id,
 			x: packet.pos.x,
@@ -538,7 +558,7 @@ async function connect(client, requeue, gamemode, code) {
 	});
 	ClientSocket.on("CPacketEntityRelPositionAndRotation", packet => {
 		const entity = entities[packet.id];
-		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, (!entity || entity.type == -1) ? 180 : 0) : 0;
+		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, false, (!entity || entity.type == -1) ? 180 : 0) : 0;
 		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : 0;
 		if (entity) {
 			if (packet.yaw != undefined || packet.pitch != undefined) {
@@ -555,9 +575,9 @@ async function connect(client, requeue, gamemode, code) {
 		if (packet.pos && (packet.yaw != undefined || packet.pitch != undefined)) {
 			client.write('entity_move_look', {
 				entityId: packet.id,
-				dX: convertToByte(packet.pos.x),
-				dY: convertToByte(packet.pos.y),
-				dZ: convertToByte(packet.pos.z),
+				dX: clampByte(packet.pos.x),
+				dY: clampByte(packet.pos.y),
+				dZ: clampByte(packet.pos.z),
 				yaw: yaw,
 				pitch: pitch,
 				onGround: packet.onGround
@@ -565,9 +585,9 @@ async function connect(client, requeue, gamemode, code) {
 		} else if (packet.pos) {
 			client.write('rel_entity_move', {
 				entityId: packet.id,
-				dX: convertToByte(packet.pos.x),
-				dY: convertToByte(packet.pos.y),
-				dZ: convertToByte(packet.pos.z),
+				dX: clampByte(packet.pos.x),
+				dY: clampByte(packet.pos.y),
+				dZ: clampByte(packet.pos.z),
 				onGround: packet.onGround
 			});
 		} else {
@@ -831,8 +851,8 @@ async function connect(client, requeue, gamemode, code) {
 			id: packet.id,
 			type: packet.type,
 			pos: packet.pos,
-			yaw: convertAngle(packet.yaw),
-			pitch: convertAngle(packet.pitch),
+			yaw: convertAngle(packet.yaw, true),
+			pitch: convertAngle(packet.pitch, true),
 			metadata: {},
 			equipment: {},
 			objectData: {
@@ -855,25 +875,53 @@ async function connect(client, requeue, gamemode, code) {
 		});
 	});
 	ClientSocket.on("CPacketSpawnPlayer", packet => {
+		const yaw = convertAngle(packet.yaw, true, 180), pitch = convertAngle(packet.pitch, true);
 		if (packet.socketId == ClientSocket.id) {
 			delete playerGamemodes[packet.id];
 			clientId = packet.id;
 			lastLHP = [];
+			client.write('position', {
+				x: packet.pos.x,
+				y: packet.pos.y,
+				z: packet.pos.z,
+				yaw: yaw,
+				pitch: pitch,
+				flags: 0x00
+			});
 		} else {
 			playerGamemodes[packet.id] = GAMEMODES[packet.gamemode ?? "survival"];
 			playerSkins[packet.id] = packet.cosmetics.skin;
+			const entity = entities[packet.id];
+
+			if (entity && entity.spawned) {
+				client.write('entity_teleport', {
+					entityId: packet.id,
+					x: packet.pos.x * 32,
+					y: packet.pos.y * 32,
+					z: packet.pos.z * 32,
+					yaw: yaw,
+					pitch: pitch,
+					onGround: packet.onGround
+				});
+				client.write('entity_head_rotation', {
+					entityId: packet.id,
+					headYaw: pitch
+				});
+			}
+
 			entities[packet.id] = {
 				id: packet.id,
 				type: -1,
 				special: packet.name && packet.name.includes(" "),
 				pos: {x: packet.pos.x * 32, y: packet.pos.y * 32, z: packet.pos.z * 32},
-				yaw: convertAngle(packet.yaw, 180),
-				pitch: convertAngle(packet.pitch),
-				metadata: {},
-				equipment: {},
-				spawned: entities[packet.id] ? entities[packet.id].spawned : false,
+				yaw: yaw,
+				pitch: pitch,
+				metadata: entity ? entity.metadata : {},
+				equipment: entity ? entity.equipment : {},
+				spawned: entity ? entity.spawned : false,
 				name: packet.name
 			};
+
 			checkEntity(entities[packet.id], client);
 		}
 	});
