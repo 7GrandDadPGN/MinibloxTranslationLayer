@@ -5,7 +5,7 @@ const Chunk = require('prismarine-chunk')('1.8.9');
 const Vec3 = require('vec3');
 const DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI, CELL_VOLUME = 16 * 16 * 16;
 
-const COLOR_REGEX = /\\#[A-Za-z0-9]+\\/i;
+const COLOR_REGEX = /\\#[A-Za-z0-9]+\\/g;
 const COLOR_CODES = {
 	"\\lime\\": "\u00a7a",
 	"\\aqua\\": "\u00a7b",
@@ -194,7 +194,7 @@ function translateItemBack(item) {
 
 function translateText(text) {
 	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, color);
-	return text.replace(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
+	return text.replaceAll(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
 }
 
 module.exports = { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText };
