@@ -1,6 +1,9 @@
 const { PBItemStack, BitArray } = require('./main.js');
 const BLOCKS = require('./blocks.js');
 const ITEMS = require('./items.js');
+/**
+ * @type {import("prismarine-chunk").PCChunk}
+ */
 const Chunk = require('prismarine-chunk')('1.8.9');
 const Vec3 = require('vec3');
 const DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI, CELL_VOLUME = 16 * 16 * 16;
@@ -46,6 +49,12 @@ const COLOR_PALETTE = {
 	"#000000": "\u00A70"
 };
 
+/**
+ * 
+ * @param {string} color1 Hex color #1
+ * @param {string} color2 Hex color #2
+ * @returns {number} The distance between {@link color1} and {@link color2} as a number.
+ */
 function colorDistance(color1, color2) {
 	const rgb1 = hexToRgb(color1);
 	const rgb2 = hexToRgb(color2);
@@ -56,12 +65,23 @@ function colorDistance(color1, color2) {
 	);
 }
 
+/**
+ * Converts {@link num} to a byte.
+ * @param {number} num The number to convert to a byte.
+ * @returns {number} The number as a byte.
+ */
 function convertToByte(num) {
 	num &= 0xFF;
 	num = num > 127 ? num - 256 : num;
 	return num;
 }
 
+/**
+ * Converts a radian angle into a Miniblox byte angle or whatever
+ * @param {number} ang The angle in radians
+ * @param {number} num a number (lol)
+ * @returns 
+ */
 function convertAngle(ang, num) {
 	ang = ang / 256 * Math.PI * 2;
 	ang = (((ang * -1) * RAD2DEG) - (num != undefined ? num : 0)) * 256 / 360;
@@ -72,10 +92,20 @@ function clampToBox(pos, box) {
 	return [Math.min(Math.max(pos.x, box.x - 0.3), box.x + 0.3), Math.min(Math.max(pos.y + 1.62, box.y), box.y + 1.8), Math.min(Math.max(pos.z, box.z - 0.3), box.z + 0.3)]
 }
 
+/**
+ * Converts a Vector 3 position to a server position by dividing its `x`, `y`, and `z` by 32.
+ * @param {Vec3} pos The position to convert to a server position
+ * @returns {@link pos} as a server position (`x / 32`, `y / 32`, and `z / 32`)
+ */
 function convertServerPos(pos) {
 	return {x: pos.x / 32, y: pos.y / 32, z: pos.z / 32};
 }
 
+/**
+ * Converts a chunk packet to a Minecraft chunk.
+ * @param {*} packet The chunk packet.
+ * @returns {import("prismarine-chunk").PCChunk} The chunk, as a Minecraft chunk.
+ */
 function createChunk(packet) {
 	const chunk = new Chunk();
 	for (const cell of packet.cells) {
@@ -100,6 +130,11 @@ function createChunk(packet) {
 	return chunk;
 }
 
+/**
+ * 
+ * @param {string} hex The hex value to return the closest Minecraft color of.
+ * @returns {string} The closest Minecraft color to {@link hex}.
+ */
 function findClosestColor(hex) {
 	let closestColor = null;
 	let closestDistance = Infinity;
@@ -113,10 +148,22 @@ function findClosestColor(hex) {
 	return COLOR_PALETTE[closestColor];
 }
 
+/**
+ * Gets the block index at the provided X, Y, and Z.
+ * @param {number} x
+ * @param {number} y 
+ * @param {number} z 
+ * @returns {number} The block index.
+ */
 function getBlockIndex(x, y, z) {
 	return (y & 15) << 8 | (z & 15) << 4 | x & 15
 }
 
+/**
+ * 
+ * @param {string} hex The hex color code.
+ * @returns {{r: number, g: number, b: number}} {@link hex} in RGB format.
+ */
 function hexToRgb(hex) {
 	const bigint = parseInt(hex.slice(1), 16);
 	return {
@@ -126,6 +173,11 @@ function hexToRgb(hex) {
 	};
 }
 
+/**
+ * Translates a Miniblox item into a Minecraft item.
+ * @param {typeof PBItemStack} item The Miniblox item to translate to a minecraft item.
+ * @returns {Item} {@link item} as a Minecraft item.
+ */
 function translateItem(item) {
 	let data;
 	if (item.data) {
@@ -160,6 +212,11 @@ function translateItem(item) {
 	} : {blockId: -1}
 }
 
+/**
+ * Converts {@link item} from a Minecraft item to a Miniblox item.
+ * @param {*} item The Minecraft item.
+ * @returns {@link item} as a Miniblox item.
+ */
 function translateItemBack(item) {
 	let itemId;
 	let data = void 0;
@@ -188,6 +245,11 @@ function translateItemBack(item) {
 	}) : new PBItemStack({present: false});
 }
 
+/**
+ * Translate {@link text} from Miniblox-formatted text to Minecraft-formatted text.
+ * @param {string} text Miniblox text
+ * @returns {string} The Minecraft version of {@link text}.
+ */
 function translateText(text) {
 	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, color);
 	return text.replace(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
