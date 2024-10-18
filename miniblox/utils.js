@@ -99,7 +99,7 @@ function clampToBox(pos, box) {
 
 /**
  * Converts a Vector 3 position to a server position by dividing its `x`, `y`, and `z` by 32.
- * @param {Vec3} pos The position to convert to a server position
+ * @param {import("vec3").Vec3} pos The position to convert to a server position
  * @returns {@link pos} as a server position (`x / 32`, `y / 32`, and `z / 32`)
  */
 function convertServerPos(pos) {
