@@ -5,7 +5,6 @@ const ENTITIES = require('./miniblox/entities.js');
 const SKINS = require('./miniblox/skins.js');
 const GUIS = require('./miniblox/guis.js');
 const mc = require('minecraft-protocol');
-const ws = require('ws');
 const fs = require('node:fs');
 const server = mc.createServer({
 	'online-mode': false,
@@ -14,9 +13,6 @@ const server = mc.createServer({
 	maxPlayers: 1,
 	keepAlive: false,
 	version: '1.8.9'
-});
-const wsServer = new ws.Server({
-	port: 6874
 });
 
 let openShop = "";
@@ -59,7 +55,7 @@ const SLOTS = {
 	39: 8
 };
 
-const VERSION = "3.35.49", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const VERSION = "3.35.50", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
 
 function canSpawn(entity) {
@@ -196,37 +192,10 @@ function spawnEntity(entity, client) {
 	return true;
 }
 
-let promise;
-let sockets = [];
-wsServer.on('connection', function(socket) {
-	if (sockets.length > 0) {
-		socket.terminate();
-		return;
-	}
-	sockets.push(socket);
-
-	socket.on('message', function(msg) {
-		if (promise) {
-			promise(msg.toString('utf8'));
-			promise = undefined;
-		}
-	});
-
-	socket.on('close', function() {
-		sockets = sockets.filter(s => s !== socket);
-	});
-});
-
 async function queue(gamemode, server) {
 	if (server) return {ok: true, json: function() { return {serverId: server}; }};
 	let fetched
 	try {
-		if (sockets.length <= 0) throw 'Missing tampermonkey middleman, please check to ensure the script is running.';
-		sockets.forEach(s => s.send('request'));
-		const data = await new Promise((resolve) => {
-			promise = resolve;
-		});
-		const captchas = data.split(' ');
 		fetched = await fetch('https://session.coolmathblox.ca/launch/queue_minigame', {
 			method: "POST",
 			headers: {
@@ -248,9 +217,7 @@ async function queue(gamemode, server) {
 			},
 			body: JSON.stringify({
 				clientVersion: VERSION,
-				minigameId: gamemode ?? "kitpvp",
-				recaptcha: captchas[0],
-				turnstile: captchas[1]
+				minigameId: gamemode ?? "kitpvp"
 			})
 		});
 	} catch (exception) {
@@ -1188,4 +1155,3 @@ server.on('playerJoin', async function(client) {
 });
 
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
-console.log('\x1b[36m[*] Hosting websocket on 6874...\x1b[0m');
