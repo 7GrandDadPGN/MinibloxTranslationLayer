@@ -428,6 +428,9 @@ ut(PBTileEntity, "fields", proto3.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 12
 }]));
+exports.CPacketChunkData = CPacketChunkData
+exports.PBCell = PBCell
+exports.PBTileEntity = PBTileEntity
 const CPacketEntityEquipment = class extends Message {
 	constructor($) {
 		super();
