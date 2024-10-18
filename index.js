@@ -229,7 +229,23 @@ async function queue(gamemode, server) {
 		const captchas = data.split(' ');
 		fetched = await fetch('https://session.coolmathblox.ca/launch/queue_minigame', {
 			method: "POST",
-			headers: {"Content-Type": "application/json"},
+			headers: {
+				"accept": "application/json, text/plain, */*",
+				"accept-language": "en-US,en;q=0.9",
+				"cache-control": "no-cache",
+				"content-type": "application/json",
+				"pragma": "no-cache",
+				"priority": "u=1, i",
+				"sec-ch-ua": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\"",
+				"sec-ch-ua-mobile": "?0",
+				"sec-ch-ua-platform": "\"Windows\"",
+				"sec-fetch-dest": "empty",
+				"sec-fetch-mode": "cors",
+				"sec-fetch-site": "cross-site",
+				"Referer": "https://miniblox.io/",
+				"Referrer-Policy": "strict-origin-when-cross-origin",
+				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+			},
 			body: JSON.stringify({
 				clientVersion: VERSION,
 				minigameId: gamemode ?? "kitpvp",
@@ -536,7 +552,9 @@ async function connect(client, requeue, gamemode, code) {
 			entity.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
 			entity.yaw = convertAngle(packet.yaw, entity.type == -1 ? 180 : 0);
 			entity.pitch = convertAngle(packet.pitch);
-		} else return;
+		} else {
+			return;
+		}
 		client.write('entity_teleport', {
 			entityId: packet.id,
 			x: packet.pos.x,
@@ -1163,7 +1181,7 @@ server.on('playerJoin', async function(client) {
 			accepted: packet.accepted
 		}));
 	});
-	client.on('close_window', packet => ClientSocket.sendPacket(new SPacketCloseWindow({windowId: packet.windowId == 255 ? 1 : packet.windowId})));
+	client.on('close_window', packet => ClientSocket.sendPacket(new SPacketCloseWindow({windowId: packet.windowId == 255 ? 0 : packet.windowId})));
 
 	await connect(client);
 	connected = true;

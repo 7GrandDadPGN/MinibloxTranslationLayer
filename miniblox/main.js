@@ -5554,7 +5554,8 @@ exports.ClientSocket = class {
 		this.socket = io(_, {
 			transports: ["websocket"],
 			extraHeaders: {
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:131.0) Gecko/20100101 Firefox/131.0'
+				'Origin': 'https://miniblox.io',
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
 			},
 			autoConnect: !1,
 			forceNew: !0,

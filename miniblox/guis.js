@@ -65,7 +65,7 @@ module.exports = {
 			if (item.nbtData) {
 				const itemName = item.nbtData.value.display.value.Name.value;
 				ClientSocket.sendPacket(new SPacketMessage({text: '/kit ' + itemName.toLocaleLowerCase()}));
-				ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 1}));
+				ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 0}));
 				client.write('close_window', {windowId: 255});
 			}
 		},
@@ -89,7 +89,7 @@ module.exports = {
 			if (item.nbtData) {
 				const itemName = item.nbtData.value.display.value.Name.value;
 				ClientSocket.sendPacket(new SPacketMessage({text: '/kit ' + itemName.toLocaleLowerCase()}));
-				ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 1}));
+				ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 0}));
 				client.write('close_window', {windowId: 255});
 			}
 		},
