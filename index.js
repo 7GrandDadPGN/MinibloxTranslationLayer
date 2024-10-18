@@ -483,13 +483,14 @@ async function connect(client, requeue, gamemode, code) {
 	});
 	ClientSocket.on("CPacketEntityMetadata", packet => {
 		let props = [];
+		const entity = entities[packet.id];
 		for (const watched of packet.data) {
 			let value;
 			let wType = watched.objectType;
 			switch (watched.objectType) {
 				case 2:
 					value = watched.intValue;
-					if (watched.dataValueId != 7) {
+					if (watched.dataValueId != 7 && (watched.dataValueId != 18 || entity && entity.type != -1)) {
 						wType = 0;
 						value = watched.dataValueId == 10 ? 127 : convertToByte(watched.intValue);
 					}
@@ -520,7 +521,7 @@ async function connect(client, requeue, gamemode, code) {
 			props.push({key: watched.dataValueId, value: value, type: wType});
 		}
 
-		if (entities[packet.id]) entities[packet.id].metadata = props;
+		if (entity) entity.metadata = props;
 		client.write('entity_metadata', {
 			entityId: packet.id == clientId ? mcClientId : packet.id,
 			metadata: props
