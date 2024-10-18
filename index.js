@@ -1150,7 +1150,6 @@ server.on('playerJoin', async function(client) {
 		}));
 	});
 	client.on('keep_alive', packet => {
-		console.log(packet);
 		if (packet.keepAliveId > 0) ClientSocket.sendPacket(new SPacketPing({time: BigInt(Date.now())}));
 	});
 	client.on('transaction', packet => {
