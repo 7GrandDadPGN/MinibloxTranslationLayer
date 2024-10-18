@@ -76,6 +76,13 @@ function convertToByte(num) {
 	return num;
 }
 
+/**
+ * Converts a radian angle into a Miniblox byte angle or whatever
+ * @param {number} ang The angle in radians
+ * @param {boolean} ignore Controls if the angle shouldn't be divided by 256 and multiplied by Math.PI & 2
+ * @param {number} num a number (lol)
+ * @returns 
+ */
 function convertAngle(ang, ignore, num) {
 	if (!ignore) ang = ang / 256 * Math.PI * 2;
 	ang = (((ang * -1) * RAD2DEG) - (num != undefined ? num : 0)) * 256 / 360;
