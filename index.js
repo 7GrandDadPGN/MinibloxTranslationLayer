@@ -356,7 +356,10 @@ async function connect(client, requeue, gamemode, code) {
 	console.log(fetched);
 	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
 	const gameType = gamemode ?? "kitpvp";
-	let session = await fs.readFileSync('login.token', {encoding: 'utf8'});
+	let session = '';
+	try {
+		session = await fs.readFileSync('login.token', {encoding: 'utf8'});
+	} catch (exception) {}
 
 	// MINIBLOX CONNECTION
 	ClientSocket.once("connect", () => {
