@@ -17,3 +17,6 @@ A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.
 3. Install the tampermonkey script included in the files
 4. Open a webbrowser and goto https://miniblox.io
 5. Join the translation layer!
+
+## Brave Browser
+Please turn off the adblocker / tracker blocker for miniblox, or else the tampermonkey script won't work.
