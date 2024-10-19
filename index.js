@@ -32,7 +32,7 @@ let entities = {};
 let playerUUIDs = {};
 let playerSkins = {};
 
-let pingInterval, analyticsInterval;
+let pingInterval, analyticsInterval, lastTeleport;
 let filteredPing = 0;
 let ignoreInventory = false;
 let skipKick = Date.now();
@@ -101,6 +101,7 @@ function disconnect() {
 	playerSkins = {};
 
 	ignoreInventory = false;
+	lastTeleport = undefined;
 	lStates = [];
 	lastLState = {};
 	lastLHP = [];
@@ -785,6 +786,7 @@ async function connect(client, requeue, gamemode, code) {
 			return
 		}
 
+		lastTeleport = packet;
 		client.write('position', {
 			x: packet.x,
 			y: packet.y,
@@ -1100,6 +1102,19 @@ server.on('playerJoin', async function(client) {
 			return;
 		} else if (msg.startsWith("/join")) {
 			connect(client, true, undefined, msg.split(" ")[1] ?? "");
+			return;
+		} else if (msg.startsWith('/resync')) {
+			if (lastTeleport) {
+				client.write('position', {
+					x: lastTeleport.x,
+					y: lastTeleport.y,
+					z: lastTeleport.z,
+					yaw: (((lastTeleport.yaw * -1) * RAD2DEG) - 180),
+					pitch: (lastTeleport.pitch * -1) * RAD2DEG,
+					flags: 0x00
+				});
+				client.write('chat', {message: JSON.stringify({text: translateText('\\green\\Resynced!')})});
+			}
 			return;
 		}
 		ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
