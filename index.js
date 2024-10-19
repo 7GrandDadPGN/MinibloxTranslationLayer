@@ -350,13 +350,18 @@ async function connect(client, requeue, gamemode, code) {
 
 	// MINIBLOX CONNECTION
 	ClientSocket.once("connect", () => {
-		ClientSocket.sendPacket(new SPacketLoginStart({
-			requestedUuid: void 0,
-			session: session,
-			hydration: "0",
-			metricsId: uuid$1(),
-			clientVersion: VERSION
-		}));
+		ClientSocket.once("CPacketSessionToken", async packet => {
+			//const it = await getRecaptchaToken(nt.token);
+			ClientSocket.sendPacket(new SPacketLoginStart({
+				requestedUuid: void 0,
+				session: session,
+				hydration: "0",
+				metricsId: uuid$1(),
+				clientVersion: VERSION,
+				recaptchaToken: 'lol',
+				sessionToken: packet.token
+			}));
+		});
 	});
 	ClientSocket.once("CPacketJoinGame", packet => {
 		disconnect();

@@ -2373,6 +2373,33 @@ ut(CPacketLeaderboard, "fields", proto2.util.newFieldList(()=>[{
 	T: 9,
 	repeated: !0
 }]));
+const CPacketSessionToken = class extends Message {
+	constructor($) {
+		super();
+		ut(this, "token");
+		proto2.util.initPartial($, this)
+	}
+	static fromBinary($, et) {
+		return new CPacketSessionToken().fromBinary($, et)
+	}
+	static fromJson($, et) {
+		return new CPacketSessionToken().fromJson($, et)
+	}
+	static fromJsonString($, et) {
+		return new CPacketSessionToken().fromJsonString($, et)
+	}
+	static equals($, et) {
+		return proto2.util.equals(CPacketSessionToken, $, et)
+	}
+};
+ut(CPacketSessionToken, "runtime", proto2),
+ut(CPacketSessionToken, "typeName", "CPacketSessionToken"),
+ut(CPacketSessionToken, "fields", proto2.util.newFieldList( () => [{
+	no: 1,
+	name: "token",
+	kind: "scalar",
+	T: 9
+}]));
 const CPacketLocalStorage = class extends Message {
 	constructor($) {
 		super();
@@ -5365,6 +5392,7 @@ const CPACKET_MAP = {
 	CPacketEntityAttach,
 	CPacketServerMetadata,
 	CPacketTimeUpdate,
+	CPacketSessionToken,
 	ClientBoundCombined
 }
   , SPACKET_MAP = {
