@@ -721,7 +721,6 @@ async function connect(client, requeue, gamemode, code) {
 		}
 	});
 	ClientSocket.on("CPacketOpenWindow", packet => {
-		console.log(packet);
 		if (packet.guiID === "chest") {
 			client.write('open_window', {
 				windowId: packet.windowId,
