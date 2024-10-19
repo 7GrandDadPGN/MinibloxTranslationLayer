@@ -58,6 +58,7 @@ const SLOTS = {
 	38: 7,
 	39: 8
 };
+const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Double Chest': '{"translate":"container.doublechest"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
 
 const VERSION = "3.35.52", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
@@ -721,11 +722,11 @@ async function connect(client, requeue, gamemode, code) {
 		}
 	});
 	ClientSocket.on("CPacketOpenWindow", packet => {
-		if (packet.guiID === "chest") {
+		if (packet.guiID == "chest" || packet.guiID == "container") {
 			client.write('open_window', {
 				windowId: packet.windowId,
 				inventoryType: "minecraft:container",
-				windowTitle: packet.title,
+				windowTitle: WINDOW_NAMES[packet.title] ?? packet.title.replaceAll(' ', ''),
 				slotCount: packet.size,
 				entityId: mcClientId
 			});
