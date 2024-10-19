@@ -945,7 +945,7 @@ async function connect(client, requeue, gamemode, code) {
 				});
 				client.write('entity_head_rotation', {
 					entityId: packet.id,
-					headYaw: pitch
+					headYaw: yaw
 				});
 			}
 
