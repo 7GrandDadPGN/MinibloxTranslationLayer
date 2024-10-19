@@ -60,7 +60,7 @@ const SLOTS = {
 };
 const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Double Chest': '{"translate":"container.doublechest"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
 
-const VERSION = "3.35.52", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const VERSION = "3.35.53", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
 
 function canSpawn(entity) {
