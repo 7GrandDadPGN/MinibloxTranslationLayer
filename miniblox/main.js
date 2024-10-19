@@ -26,6 +26,8 @@ const SPacketLoginStart = class extends Message {
 		ut(this, "metricsId");
 		ut(this, "requestedUuid");
 		ut(this, "clientVersion");
+		ut(this, "recaptchaToken");
+		ut(this, "sessionToken");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -70,6 +72,16 @@ ut(SPacketLoginStart, "fields", proto2.util.newFieldList(()=>[{
 }, {
 	no: 5,
 	name: "client_version",
+	kind: "scalar",
+	T: 9
+}, {
+	no: 6,
+	name: "recaptcha_token",
+	kind: "scalar",
+	T: 9
+}, {
+	no: 7,
+	name: "session_token",
 	kind: "scalar",
 	T: 9
 }]));

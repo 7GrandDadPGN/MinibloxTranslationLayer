@@ -10,3 +10,10 @@ A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.
 
 ## Commands
 /play (gamemode type / eggwars / skywars / kitpvp) (aliases include /queue)
+
+## Migation to the latest update (below v3.35.51)
+1. Delete node_modules from the folder you had before
+2. Rerun npm install & node index.js
+3. Install the tampermonkey script included in the files
+4. Open a webbrowser and goto https://miniblox.io
+5. Join the translation layer!
