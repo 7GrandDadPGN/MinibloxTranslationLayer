@@ -5,6 +5,7 @@ const ENTITIES = require('./miniblox/entities.js');
 const SKINS = require('./miniblox/skins.js');
 const GUIS = require('./miniblox/guis.js');
 const mc = require('minecraft-protocol');
+const ws = require('ws');
 const fs = require('node:fs');
 const server = mc.createServer({
 	'online-mode': false,
@@ -13,6 +14,9 @@ const server = mc.createServer({
 	maxPlayers: 1,
 	keepAlive: false,
 	version: '1.8.9'
+});
+const wsServer = new ws.Server({
+	port: 6874
 });
 
 let openShop = "";
@@ -28,7 +32,7 @@ let entities = {};
 let playerUUIDs = {};
 let playerSkins = {};
 
-let pingInterval, analyticsInterval;
+let pingInterval, analyticsInterval, lastTeleport;
 let filteredPing = 0;
 let ignoreInventory = false;
 let skipKick = Date.now();
@@ -54,8 +58,9 @@ const SLOTS = {
 	38: 7,
 	39: 8
 };
+const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Double Chest': '{"translate":"container.doublechest"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
 
-const VERSION = "3.35.50", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const VERSION = "3.35.52", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
 
 function canSpawn(entity) {
@@ -97,6 +102,7 @@ function disconnect() {
 	playerSkins = {};
 
 	ignoreInventory = false;
+	lastTeleport = undefined;
 	lStates = [];
 	lastLState = {};
 	lastLHP = [];
@@ -195,6 +201,27 @@ function spawnEntity(entity, client) {
 
 	return true;
 }
+
+let promise;
+let sockets = [];
+wsServer.on('connection', function(socket) {
+	if (sockets.length > 0) {
+		socket.terminate();
+		return;
+	}
+	sockets.push(socket);
+
+	socket.on('message', function(msg) {
+		if (promise) {
+			promise(msg.toString('utf8'));
+			promise = undefined;
+		}
+	});
+
+	socket.on('close', function() {
+		sockets = sockets.filter(s => s !== socket);
+	});
+});
 
 async function queue(gamemode, server) {
 	if (server) return {ok: true, json: function() { return {serverId: server}; }};
@@ -350,13 +377,25 @@ async function connect(client, requeue, gamemode, code) {
 
 	// MINIBLOX CONNECTION
 	ClientSocket.once("connect", () => {
-		ClientSocket.sendPacket(new SPacketLoginStart({
-			requestedUuid: void 0,
-			session: session,
-			hydration: "0",
-			metricsId: uuid$1(),
-			clientVersion: VERSION
-		}));
+		ClientSocket.once("CPacketSessionToken", async packet => {
+			if (sockets.length <= 0) {
+				client.end('Missing tampermonkey middleman, please check to ensure the script is running.');
+				return;
+			}
+			sockets.forEach(s => s.send('request|' + packet.token));
+			const captchaToken = await new Promise((resolve) => {
+				promise = resolve;
+			});
+			ClientSocket.sendPacket(new SPacketLoginStart({
+				requestedUuid: void 0,
+				session: session,
+				hydration: "0",
+				metricsId: uuid$1(),
+				clientVersion: VERSION,
+				recaptchaToken: captchaToken,
+				sessionToken: packet.token
+			}));
+		});
 	});
 	ClientSocket.once("CPacketJoinGame", packet => {
 		disconnect();
@@ -683,11 +722,11 @@ async function connect(client, requeue, gamemode, code) {
 		}
 	});
 	ClientSocket.on("CPacketOpenWindow", packet => {
-		if (packet.guiID === "chest") {
+		if (packet.guiID == "chest" || packet.guiID == "container") {
 			client.write('open_window', {
 				windowId: packet.windowId,
 				inventoryType: "minecraft:container",
-				windowTitle: packet.title,
+				windowTitle: WINDOW_NAMES[packet.title] ?? packet.title.replaceAll(' ', ''),
 				slotCount: packet.size,
 				entityId: mcClientId
 			});
@@ -747,6 +786,7 @@ async function connect(client, requeue, gamemode, code) {
 			return
 		}
 
+		lastTeleport = packet;
 		client.write('position', {
 			x: packet.x,
 			y: packet.y,
@@ -905,7 +945,7 @@ async function connect(client, requeue, gamemode, code) {
 				});
 				client.write('entity_head_rotation', {
 					entityId: packet.id,
-					headYaw: pitch
+					headYaw: yaw
 				});
 			}
 
@@ -1063,6 +1103,19 @@ server.on('playerJoin', async function(client) {
 		} else if (msg.startsWith("/join")) {
 			connect(client, true, undefined, msg.split(" ")[1] ?? "");
 			return;
+		} else if (msg.startsWith('/resync')) {
+			if (lastTeleport) {
+				client.write('position', {
+					x: lastTeleport.x,
+					y: lastTeleport.y,
+					z: lastTeleport.z,
+					yaw: (((lastTeleport.yaw * -1) * RAD2DEG) - 180),
+					pitch: (lastTeleport.pitch * -1) * RAD2DEG,
+					flags: 0x00
+				});
+				client.write('chat', {message: JSON.stringify({text: translateText('\\green\\Resynced!')})});
+			}
+			return;
 		}
 		ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
 	});
@@ -1203,3 +1256,4 @@ server.on('playerJoin', async function(client) {
 });
 
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
+console.log('\x1b[36m[*] Hosting websocket on 6874...\x1b[0m');

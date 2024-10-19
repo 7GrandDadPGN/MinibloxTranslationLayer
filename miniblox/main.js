@@ -26,6 +26,8 @@ const SPacketLoginStart = class extends Message {
 		ut(this, "metricsId");
 		ut(this, "requestedUuid");
 		ut(this, "clientVersion");
+		ut(this, "recaptchaToken");
+		ut(this, "sessionToken");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -70,6 +72,16 @@ ut(SPacketLoginStart, "fields", proto2.util.newFieldList(()=>[{
 }, {
 	no: 5,
 	name: "client_version",
+	kind: "scalar",
+	T: 9
+}, {
+	no: 6,
+	name: "recaptcha_token",
+	kind: "scalar",
+	T: 9
+}, {
+	no: 7,
+	name: "session_token",
 	kind: "scalar",
 	T: 9
 }]));
@@ -2417,6 +2429,33 @@ ut(CPacketLeaderboard, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 9,
 	repeated: !0
+}]));
+const CPacketSessionToken = class extends Message {
+	constructor($) {
+		super();
+		ut(this, "token");
+		proto2.util.initPartial($, this)
+	}
+	static fromBinary($, et) {
+		return new CPacketSessionToken().fromBinary($, et)
+	}
+	static fromJson($, et) {
+		return new CPacketSessionToken().fromJson($, et)
+	}
+	static fromJsonString($, et) {
+		return new CPacketSessionToken().fromJsonString($, et)
+	}
+	static equals($, et) {
+		return proto2.util.equals(CPacketSessionToken, $, et)
+	}
+};
+ut(CPacketSessionToken, "runtime", proto2),
+ut(CPacketSessionToken, "typeName", "CPacketSessionToken"),
+ut(CPacketSessionToken, "fields", proto2.util.newFieldList( () => [{
+	no: 1,
+	name: "token",
+	kind: "scalar",
+	T: 9
 }]));
 const CPacketLocalStorage = class extends Message {
 	constructor($) {
@@ -5410,6 +5449,7 @@ const CPACKET_MAP = {
 	CPacketEntityAttach,
 	CPacketServerMetadata,
 	CPacketTimeUpdate,
+	CPacketSessionToken,
 	ClientBoundCombined
 }
   , SPACKET_MAP = {
