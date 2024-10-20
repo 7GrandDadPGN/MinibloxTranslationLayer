@@ -1,5 +1,5 @@
 const { ClientSocket, SPacketMessage, SPacketLoginStart, SPacketPlayerPosLook, SPacketHeldItemChange, SPacketCloseWindow, SPacketRequestChunk, SPacketAnalytics, SPacketRespawn$1, SPacketPing, PBVector3, SPacketUseEntity, SPacketClick, SPacketEntityAction, PBBlockPos, SPacketPlaceBlock, SPacketPlayerAction, SPacketUseItem, SPacketBreakBlock, SPacketClickWindow, SPacketConfirmTransaction, Vector3, SPacketTabComplete$1, SPacketPlayerAbilities } = require('./miniblox/main.js');
-const { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText } = require('./miniblox/utils.js');
+const { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR } = require('./miniblox/utils.js');
 const BLOCKS = require('./miniblox/blocks.js');
 const ENTITIES = require('./miniblox/entities.js');
 const SKINS = require('./miniblox/skins.js');
@@ -674,7 +674,7 @@ async function connect(client, requeue, gamemode, code) {
 	ClientSocket.on("CPacketMessage", packet => {
 		if (packet.text) {
 			client.write('chat', {message: JSON.stringify({text: translateText(packet.text)})});
-			if (packet.id == undefined && packet.text.includes("Queueing")) {
+			if (packet.id == undefined && packet.text.includes("Summary")) {
 				client.write('chat', {
 					message: JSON.stringify({
 						text: "",
@@ -766,8 +766,8 @@ async function connect(client, requeue, gamemode, code) {
 				team: uuid.slice(0, 16),
 				mode: 0,
 				name: uuid.slice(0, 32),
-				prefix: ((nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(" ")) : "") + translateText(`\\${(entity.color != "white" ? entity.color : undefined) ?? (entity.id == clientId ? "white" : "reset")}\\`)).slice(0, 16),
-				suffix: "",
+				prefix: (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(" ")) + ' ' : "").slice(0, 14) + translateText(`\\${(entity.color != "white" ? entity.color : undefined) ?? (entity.id == clientId ? "white" : "reset")}\\`),
+				suffix: (entity.level && entity.level > 0) ? translateText(`\\${entity.level ? LEVEL_TO_COLOUR[entity.level] : 'white'}\\ (${entity.level})`) : '',
 				friendlyFire: true,
 				nameTagVisibility: "all",
 				color: 0,
