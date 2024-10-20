@@ -22,24 +22,15 @@ async function getRecaptchaToken(url) {
 	});
 }
 
-(function() {
+(async function() {
 	'use strict';
 	const screen = document.createElement('div');
-	console.log(screen);
 	screen.id = 'vectorisstupid';
 	screen.style = "position: absolute; width: 100%; height: 100%; z-index: 10";
 	const status = document.createElement('h');
 	status.textContent = 'Miniblox Communication Script Status: Not Connected';
 	status.style = "font-size: 2.2em; color: #FFF";
 	screen.appendChild(status);
-	setTimeout(() => {
-		const loadingScreen = document.getElementById('loading-screen');
-		if (loadingScreen) {
-			loadingScreen.remove();
-			document.body.style = 'background-color: #000';
-		}
-		document.body.appendChild(screen);
-	}, 600);
 
 	// https://stackoverflow.com/questions/22141205/intercept-and-alter-a-sites-javascript-using-greasemonkey
 	if(navigator.userAgent.indexOf("Firefox") != -1) {
@@ -82,4 +73,21 @@ async function getRecaptchaToken(url) {
 	web.onclose = async (event) => {
 		status.textContent = 'Miniblox Communication Script Status: Not Connected';
 	};
+
+	await new Promise(resolve => {
+		let loop;
+		loop = setInterval(() => {
+			if (document.body != undefined) {
+				clearInterval(loop);
+				resolve();
+			}
+		});
+	});
+
+	const loadingScreen = document.getElementById('loading-screen');
+	if (loadingScreen) {
+		loadingScreen.remove();
+		document.body.style = 'background-color: #000';
+	}
+	document.body.appendChild(screen);
 })();

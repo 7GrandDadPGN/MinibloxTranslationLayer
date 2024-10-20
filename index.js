@@ -1,5 +1,5 @@
 const { ClientSocket, SPacketMessage, SPacketLoginStart, SPacketPlayerPosLook, SPacketHeldItemChange, SPacketCloseWindow, SPacketRequestChunk, SPacketAnalytics, SPacketRespawn$1, SPacketPing, PBVector3, SPacketUseEntity, SPacketClick, SPacketEntityAction, PBBlockPos, SPacketPlaceBlock, SPacketPlayerAction, SPacketUseItem, SPacketBreakBlock, SPacketClickWindow, SPacketConfirmTransaction, Vector3, SPacketTabComplete$1, SPacketPlayerAbilities } = require('./miniblox/main.js');
-const { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText } = require('./miniblox/utils.js');
+const { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR } = require('./miniblox/utils.js');
 const BLOCKS = require('./miniblox/blocks.js');
 const ENTITIES = require('./miniblox/entities.js');
 const SKINS = require('./miniblox/skins.js');
@@ -58,9 +58,9 @@ const SLOTS = {
 	38: 7,
 	39: 8
 };
-const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Double Chest': '{"translate":"container.doublechest"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
+const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Large Chest': '{"translate":"container.chestDouble"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
 
-const VERSION = "3.35.52", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const VERSION = "3.35.53", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
 
 function canSpawn(entity) {
@@ -89,7 +89,6 @@ function checkEntities(client) {
 function disconnect() {
 	if (pingInterval) clearInterval(pingInterval);
 	if (analyticsInterval) clearInterval(analyticsInterval);
-	connected = false;
 	clientId = -1;
 	scoreData = [];
 
@@ -367,9 +366,11 @@ async function connect(client, requeue, gamemode, code) {
 	}
 
 	fetched = await fetched.json();
-	console.log(fetched);
-	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
+	console.log(`\x1b[36m[*] Connecting to ${fetched.serverId}\x1b[0m`);
+	if (client.ended) return;
+
 	const gameType = gamemode ?? "kitpvp";
+	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
 	let session = '';
 	try {
 		session = await fs.readFileSync('login.token', {encoding: 'utf8'});
@@ -505,7 +506,7 @@ async function connect(client, requeue, gamemode, code) {
 			effectId: packet.effectId,
 			amplifier: packet.amplifier,
 			duration: packet.duration,
-			hideParticles: packet.hideParticles
+			hideParticles: !packet.hideParticles
 		});
 	});
 	ClientSocket.on("CPacketEntityEquipment", packet => {
@@ -552,7 +553,7 @@ async function connect(client, requeue, gamemode, code) {
 					value = watched.blockPos;
 					break;
 				case 7:
-					value = new Vector3(watched.vector.x,watched.vector.y,watched.vector.z);
+					value = new Vector3(watched.vector.x, watched.vector.y, watched.vector.z);
 					break;
 				default:
 					value = watched.intValue;
@@ -674,7 +675,7 @@ async function connect(client, requeue, gamemode, code) {
 	ClientSocket.on("CPacketMessage", packet => {
 		if (packet.text) {
 			client.write('chat', {message: JSON.stringify({text: translateText(packet.text)})});
-			if (packet.id == undefined && packet.text.includes("Queueing")) {
+			if (packet.id == undefined && packet.text.includes("Summary")) {
 				client.write('chat', {
 					message: JSON.stringify({
 						text: "",
@@ -704,7 +705,7 @@ async function connect(client, requeue, gamemode, code) {
 			client.write('open_window', {
 				windowId: 255,
 				inventoryType: "minecraft:container",
-				windowTitle: gui.name,
+				windowTitle: JSON.stringify({text: gui.name}),
 				slotCount: itemCount,
 				entityId: mcClientId
 			});
@@ -723,10 +724,11 @@ async function connect(client, requeue, gamemode, code) {
 	});
 	ClientSocket.on("CPacketOpenWindow", packet => {
 		if (packet.guiID == "chest" || packet.guiID == "container") {
+			const translation = WINDOW_NAMES[packet.title];
 			client.write('open_window', {
 				windowId: packet.windowId,
-				inventoryType: "minecraft:container",
-				windowTitle: WINDOW_NAMES[packet.title] ?? packet.title.replaceAll(' ', ''),
+				inventoryType: (translation && translation.indexOf('.chest') != -1) ? "minecraft:chest" : "minecraft:container",
+				windowTitle: translation ?? JSON.stringify({text: packet.title}),
 				slotCount: packet.size,
 				entityId: mcClientId
 			});
@@ -766,8 +768,8 @@ async function connect(client, requeue, gamemode, code) {
 				team: uuid.slice(0, 16),
 				mode: 0,
 				name: uuid.slice(0, 32),
-				prefix: ((nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(" ")) : "") + translateText(`\\${(entity.color != "white" ? entity.color : undefined) ?? (entity.id == clientId ? "white" : "reset")}\\`)).slice(0, 16),
-				suffix: "",
+				prefix: (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(" ")) + ' ' : "").slice(0, 14) + translateText(`\\${(entity.color != "white" ? entity.color : undefined) ?? (entity.id == clientId ? "white" : "reset")}\\`),
+				suffix: (entity.level && entity.level > 0) ? translateText(`\\${entity.level ? LEVEL_TO_COLOUR[entity.level] : 'white'}\\ (${entity.level})`) : '',
 				friendlyFire: true,
 				nameTagVisibility: "all",
 				color: 0,
@@ -1056,6 +1058,7 @@ server.on('playerJoin', async function(client) {
 
 	client.on("end", function() {
 		if (ClientSocket.socket) ClientSocket.disconnect();
+		connected = false;
 		disconnect();
 	});
 
@@ -1252,7 +1255,7 @@ server.on('playerJoin', async function(client) {
 	client.on('close_window', packet => ClientSocket.sendPacket(new SPacketCloseWindow({windowId: packet.windowId == 255 ? 0 : packet.windowId})));
 
 	await connect(client);
-	connected = true;
+	connected = !client.ended;
 });
 
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
