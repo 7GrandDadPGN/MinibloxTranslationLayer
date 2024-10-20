@@ -752,7 +752,8 @@ async function connect(client, requeue, gamemode, code) {
 		purgePlayers(client);
 		let newData = [];
 		for (const entity of packet.players) {
-			const nameSplit = entity.id == clientId ? [client.username] : entity.name.split(" ");
+			let nameSplit = entity.name.split(" ");
+			if (entity.id == clientId) nameSplit[nameSplit.length - 1] = client.username;
 			const realName = nameSplit[nameSplit.length - 1].slice(0, 16);
 			const uuid = entity.id == clientId ? client.uuid : entity.uuid;
 			const skin = playerSkins[entity.id] != undefined && SKINS[playerSkins[entity.id]] != undefined ? SKINS[playerSkins[entity.id]] : SKINS.granddad;
