@@ -780,6 +780,10 @@ async function connect(client, requeue, gamemode, code) {
 			action: 0,
 			data: newData
 		});
+		client.write('playerlist_header', {
+			header: JSON.stringify({text: translateText('\\cyan\\You are playing on \\lime\\miniblox.io')}),
+			footer: JSON.stringify({text: translateText('\\gold\\Translation layer made by 7GrandDad')})
+		});
 		checkEntities(client);
 	});
 	ClientSocket.on("CPacketPlayerPosLook", packet => {
@@ -844,6 +848,8 @@ async function connect(client, requeue, gamemode, code) {
 			position: 1,
 			name: "scoreboard"
 		});
+		packet.content.push({columns: ['']});
+		packet.content.push({columns: ['\\yellow\\miniblox.io']});
 
 		let index = 0;
 		for (const line of packet.content) {

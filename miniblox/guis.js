@@ -109,7 +109,7 @@ module.exports = {
 		]
 	},
 	'Item Shop': {
-		name: "Shop",
+		name: "Item Shop",
 		command: function(item, ClientSocket, client, gui) {
 			if (item.nbtData) {
 				const itemName = mcData.items[item.blockId] ? mcData.items[item.blockId].name : undefined;
@@ -157,7 +157,7 @@ module.exports = {
 		]
 	},
 	'Upgrade Shop': {
-		name: "Upgrades",
+		name: "Upgrade Shop",
 		command: function(item, ClientSocket, client, gui) {
 			if (item.nbtData) {
 				const itemName = item.nbtData.value.display.value.Name.value;
@@ -176,7 +176,7 @@ module.exports = {
 		]
 	},
 	'Team Select': {
-		name: "Teams",
+		name: "Team Select",
 		command: function(item, ClientSocket, client, gui) {
 			if (item.nbtData) {
 				const itemName = item.nbtData.value.display.value.Name.value;
