@@ -58,7 +58,7 @@ const SLOTS = {
 	38: 7,
 	39: 8
 };
-const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Double Chest': '{"translate":"container.doublechest"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
+const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Large Chest': '{"translate":"container.chestDouble"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
 
 const VERSION = "3.35.53", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
@@ -89,7 +89,6 @@ function checkEntities(client) {
 function disconnect() {
 	if (pingInterval) clearInterval(pingInterval);
 	if (analyticsInterval) clearInterval(analyticsInterval);
-	connected = false;
 	clientId = -1;
 	scoreData = [];
 
@@ -367,9 +366,11 @@ async function connect(client, requeue, gamemode, code) {
 	}
 
 	fetched = await fetched.json();
-	console.log(fetched);
-	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
+	console.log(`\x1b[36m[*] Connecting to ${fetched.serverId}\x1b[0m`);
+	if (client.ended) return;
+
 	const gameType = gamemode ?? "kitpvp";
+	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
 	let session = '';
 	try {
 		session = await fs.readFileSync('login.token', {encoding: 'utf8'});
@@ -505,7 +506,7 @@ async function connect(client, requeue, gamemode, code) {
 			effectId: packet.effectId,
 			amplifier: packet.amplifier,
 			duration: packet.duration,
-			hideParticles: packet.hideParticles
+			hideParticles: !packet.hideParticles
 		});
 	});
 	ClientSocket.on("CPacketEntityEquipment", packet => {
@@ -552,7 +553,7 @@ async function connect(client, requeue, gamemode, code) {
 					value = watched.blockPos;
 					break;
 				case 7:
-					value = new Vector3(watched.vector.x,watched.vector.y,watched.vector.z);
+					value = new Vector3(watched.vector.x, watched.vector.y, watched.vector.z);
 					break;
 				default:
 					value = watched.intValue;
@@ -704,7 +705,7 @@ async function connect(client, requeue, gamemode, code) {
 			client.write('open_window', {
 				windowId: 255,
 				inventoryType: "minecraft:container",
-				windowTitle: gui.name,
+				windowTitle: JSON.stringify({text: gui.name}),
 				slotCount: itemCount,
 				entityId: mcClientId
 			});
@@ -723,10 +724,11 @@ async function connect(client, requeue, gamemode, code) {
 	});
 	ClientSocket.on("CPacketOpenWindow", packet => {
 		if (packet.guiID == "chest" || packet.guiID == "container") {
+			const translation = WINDOW_NAMES[packet.title];
 			client.write('open_window', {
 				windowId: packet.windowId,
-				inventoryType: "minecraft:container",
-				windowTitle: WINDOW_NAMES[packet.title] ?? packet.title.replaceAll(' ', ''),
+				inventoryType: (translation && translation.indexOf('.chest') != -1) ? "minecraft:chest" : "minecraft:container",
+				windowTitle: translation ?? JSON.stringify({text: packet.title}),
 				slotCount: packet.size,
 				entityId: mcClientId
 			});
@@ -1056,6 +1058,7 @@ server.on('playerJoin', async function(client) {
 
 	client.on("end", function() {
 		if (ClientSocket.socket) ClientSocket.disconnect();
+		connected = false;
 		disconnect();
 	});
 
@@ -1252,7 +1255,7 @@ server.on('playerJoin', async function(client) {
 	client.on('close_window', packet => ClientSocket.sendPacket(new SPacketCloseWindow({windowId: packet.windowId == 255 ? 0 : packet.windowId})));
 
 	await connect(client);
-	connected = true;
+	connected = !client.ended;
 });
 
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
