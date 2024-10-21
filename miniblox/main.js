@@ -26,8 +26,6 @@ const SPacketLoginStart = class extends Message {
 		ut(this, "metricsId");
 		ut(this, "requestedUuid");
 		ut(this, "clientVersion");
-		ut(this, "recaptchaToken");
-		ut(this, "sessionToken");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -72,16 +70,6 @@ ut(SPacketLoginStart, "fields", proto2.util.newFieldList(()=>[{
 }, {
 	no: 5,
 	name: "client_version",
-	kind: "scalar",
-	T: 9
-}, {
-	no: 6,
-	name: "recaptcha_token",
-	kind: "scalar",
-	T: 9
-}, {
-	no: 7,
-	name: "session_token",
 	kind: "scalar",
 	T: 9
 }]));
@@ -1851,7 +1839,7 @@ ut(CPacketEntityPositionAndRotation, "fields", proto2.util.newFieldList(()=>[{
 	T: 8,
 	opt: !0
 }]));
-const CPacketEntityRelPositionAndRotation = class extends Message {
+const CPacketEntityRelativePositionAndRotation = class extends Message {
 	constructor($) {
 		super();
 		ut(this, "id");
@@ -1863,22 +1851,22 @@ const CPacketEntityRelPositionAndRotation = class extends Message {
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
-		return new CPacketEntityRelPositionAndRotation().fromBinary($, et)
+		return new CPacketEntityRelativePositionAndRotation().fromBinary($, et)
 	}
 	static fromJson($, et) {
-		return new CPacketEntityRelPositionAndRotation().fromJson($, et)
+		return new CPacketEntityRelativePositionAndRotation().fromJson($, et)
 	}
 	static fromJsonString($, et) {
-		return new CPacketEntityRelPositionAndRotation().fromJsonString($, et)
+		return new CPacketEntityRelativePositionAndRotation().fromJsonString($, et)
 	}
 	static equals($, et) {
-		return proto2.util.equals(CPacketEntityRelPositionAndRotation, $, et)
+		return proto2.util.equals(CPacketEntityRelativePositionAndRotation, $, et)
 	}
 };
-exports.CPacketEntityRelPositionAndRotation = CPacketEntityRelPositionAndRotation,
-ut(CPacketEntityRelPositionAndRotation, "runtime", proto2),
-ut(CPacketEntityRelPositionAndRotation, "typeName", "CPacketEntityRelPositionAndRotation"),
-ut(CPacketEntityRelPositionAndRotation, "fields", proto2.util.newFieldList(()=>[{
+exports.CPacketEntityRelativePositionAndRotation = CPacketEntityRelativePositionAndRotation,
+ut(CPacketEntityRelativePositionAndRotation, "runtime", proto2),
+ut(CPacketEntityRelativePositionAndRotation, "typeName", "CPacketEntityRelativePositionAndRotation"),
+ut(CPacketEntityRelativePositionAndRotation, "fields", proto2.util.newFieldList(()=>[{
 	no: 1,
 	name: "id",
 	kind: "scalar",
@@ -2384,33 +2372,6 @@ ut(CPacketLeaderboard, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 9,
 	repeated: !0
-}]));
-const CPacketSessionToken = class extends Message {
-	constructor($) {
-		super();
-		ut(this, "token");
-		proto2.util.initPartial($, this)
-	}
-	static fromBinary($, et) {
-		return new CPacketSessionToken().fromBinary($, et)
-	}
-	static fromJson($, et) {
-		return new CPacketSessionToken().fromJson($, et)
-	}
-	static fromJsonString($, et) {
-		return new CPacketSessionToken().fromJsonString($, et)
-	}
-	static equals($, et) {
-		return proto2.util.equals(CPacketSessionToken, $, et)
-	}
-};
-ut(CPacketSessionToken, "runtime", proto2),
-ut(CPacketSessionToken, "typeName", "CPacketSessionToken"),
-ut(CPacketSessionToken, "fields", proto2.util.newFieldList( () => [{
-	no: 1,
-	name: "token",
-	kind: "scalar",
-	T: 9
 }]));
 const CPacketLocalStorage = class extends Message {
 	constructor($) {
@@ -4989,9 +4950,9 @@ ut(ClientBoundCombined_CPacket, "fields", proto2.util.newFieldList(()=>[{
 	oneof: "packet"
 }, {
 	no: 16,
-	name: "CPacketEntityRelPositionAndRotation",
+	name: "CPacketEntityRelativePositionAndRotation",
 	kind: "message",
-	T: CPacketEntityRelPositionAndRotation,
+	T: CPacketEntityRelativePositionAndRotation,
 	oneof: "packet"
 }, {
 	no: 17,
@@ -5359,7 +5320,7 @@ const CPACKET_MAP = {
 	CPacketEntityEquipment,
 	CPacketEntityMetadata,
 	CPacketEntityPositionAndRotation,
-	CPacketEntityRelPositionAndRotation,
+	CPacketEntityRelativePositionAndRotation,
 	CPacketEntityStatus,
 	CPacketEntityVelocity,
 	CPacketExplosion,
@@ -5404,7 +5365,6 @@ const CPACKET_MAP = {
 	CPacketEntityAttach,
 	CPacketServerMetadata,
 	CPacketTimeUpdate,
-	CPacketSessionToken,
 	ClientBoundCombined
 }
   , SPACKET_MAP = {

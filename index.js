@@ -15,9 +15,6 @@ const server = mc.createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
-const wsServer = new ws.Server({
-	port: 6874
-});
 
 let openShop = "";
 let connected = false;
@@ -60,7 +57,7 @@ const SLOTS = {
 };
 const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Large Chest': '{"translate":"container.chestDouble"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
 
-const VERSION = "3.35.55", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const VERSION = "3.37.1", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 const viewDistance = 7;
 
 function canSpawn(entity) {
@@ -200,27 +197,6 @@ function spawnEntity(entity, client) {
 
 	return true;
 }
-
-let promise;
-let sockets = [];
-wsServer.on('connection', function(socket) {
-	if (sockets.length > 0) {
-		socket.terminate();
-		return;
-	}
-	sockets.push(socket);
-
-	socket.on('message', function(msg) {
-		if (promise) {
-			promise(msg.toString('utf8'));
-			promise = undefined;
-		}
-	});
-
-	socket.on('close', function() {
-		sockets = sockets.filter(s => s !== socket);
-	});
-});
 
 async function queue(gamemode, server) {
 	if (server) return {ok: true, json: function() { return {serverId: server}; }};
@@ -378,25 +354,13 @@ async function connect(client, requeue, gamemode, code) {
 
 	// MINIBLOX CONNECTION
 	ClientSocket.once("connect", () => {
-		ClientSocket.once("CPacketSessionToken", async packet => {
-			if (sockets.length <= 0) {
-				client.end('Missing tampermonkey middleman, please check to ensure the script is running.');
-				return;
-			}
-			sockets.forEach(s => s.send('request|' + packet.token));
-			const captchaToken = await new Promise((resolve) => {
-				promise = resolve;
-			});
-			ClientSocket.sendPacket(new SPacketLoginStart({
-				requestedUuid: void 0,
-				session: session,
-				hydration: "0",
-				metricsId: uuid$1(),
-				clientVersion: VERSION,
-				recaptchaToken: captchaToken,
-				sessionToken: packet.token
-			}));
-		});
+		ClientSocket.sendPacket(new SPacketLoginStart({
+			requestedUuid: void 0,
+			session: session,
+			hydration: "0",
+			metricsId: uuid$1(),
+			clientVersion: VERSION
+		}));
 	});
 	ClientSocket.once("CPacketJoinGame", packet => {
 		disconnect();
@@ -599,7 +563,7 @@ async function connect(client, requeue, gamemode, code) {
 			headYaw: entity.yaw
 		});
 	});
-	ClientSocket.on("CPacketEntityRelPositionAndRotation", packet => {
+	ClientSocket.on("CPacketEntityRelativePositionAndRotation", packet => {
 		const entity = entities[packet.id];
 		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, false, (!entity || entity.type == -1) ? 180 : 0) : 0;
 		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : 0;
@@ -1328,4 +1292,3 @@ server.on('playerJoin', async function(client) {
 });
 
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
-console.log('\x1b[36m[*] Hosting websocket on 6874...\x1b[0m');
