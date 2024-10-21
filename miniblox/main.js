@@ -285,6 +285,22 @@ ut(CPacketEntityVelocity, "fields", proto2.util.newFieldList(()=>[{
 	T: PBFloatVector3
 }]));
 const CPacketChunkData = class extends Message {
+	/**
+	 * @type {number}
+	 */
+	x;
+	/**
+	 * @type {number}
+	 */
+	z;
+	/**
+	 * @type {PBCell[]}
+	 */
+	cells;
+	/**
+	 * @type {PBTileEntity[]}
+	 */
+	tileEntities;
 	constructor($) {
 		super();
 		ut(this, "x", 0);
@@ -332,6 +348,26 @@ ut(CPacketChunkData, "fields", proto3.util.newFieldList(()=>[{
 	repeated: !0
 }]));
 const PBCell = class extends Message {
+	/**
+	 * @type {number}
+	 */
+	y
+	/**
+	 * @type {number}
+	 */
+	bitsPerEntry
+	/**
+	 * @type {number[]}
+	 */
+	palette
+	/**
+	 * @type {Uint8Array}
+	 */
+	bitArray
+	/**
+	 * @type {number}
+	 */
+	blockRefCount
 	constructor($) {
 		super();
 		ut(this, "y", 0);
@@ -384,6 +420,12 @@ ut(PBCell, "fields", proto3.util.newFieldList(()=>[{
 	T: 13
 }]));
 const PBTileEntity = class extends Message {
+	/** @type {number} */
+	x;
+	/** @type {number} */
+	y;
+	/** @type {number} */
+	z;
 	constructor($) {
 		super();
 		ut(this, "x", 0);
@@ -428,6 +470,9 @@ ut(PBTileEntity, "fields", proto3.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 12
 }]));
+exports.CPacketChunkData = CPacketChunkData
+exports.PBCell = PBCell
+exports.PBTileEntity = PBTileEntity
 const CPacketEntityEquipment = class extends Message {
 	constructor($) {
 		super();
