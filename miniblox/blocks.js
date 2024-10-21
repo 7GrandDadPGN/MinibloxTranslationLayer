@@ -245,7 +245,7 @@ for (let i = 0; i < 3888; i++) BLOCKS[11117 + i] = mcData.blocksByName.cobblesto
 
 BLOCK_ID[80] = mcData.blocksByName.noteblock.id;
 BLOCK_ID[80] = mcData.blocksByName.noteblock.id;
-BLOCK_ID[151] = mcData.blocksByName.spawner.id;
+BLOCK_ID[151] = mcData.blocksByName.mob_spawner.id;
 BLOCK_ID[153] = mcData.blocksByName.chest.id;
 BLOCK_ID[283] = mcData.blocksByName.ender_chest.id;
 BLOCK_ID[291] = mcData.blocksByName.beacon.id;
