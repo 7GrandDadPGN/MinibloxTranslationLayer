@@ -1,5 +1,5 @@
 const { PBItemStack, BitArray } = require('./main.js');
-const BLOCKS = require('./blocks.js');
+const { BLOCKS } = require('./blocks.js');
 const ITEMS = require('./items.js');
 const Chunk = require('prismarine-chunk')('1.8.9');
 const Vec3 = require('vec3');
@@ -176,7 +176,8 @@ function clampByte(byte) {
 }
 
 function clampToBox(pos, box) {
-	return [Math.min(Math.max(pos.x, box.x - 0.3), box.x + 0.3), Math.min(Math.max(pos.y + 1.62, box.y), box.y + 1.8), Math.min(Math.max(pos.z, box.z - 0.3), box.z + 0.3)]
+	box = convertServerPos(box);
+	return [Math.min(Math.max(pos.x, box.x - 0.4), box.x + 0.4), Math.min(Math.max(pos.y + 1.62, box.y - 0.1), box.y + 1.9), Math.min(Math.max(pos.z, box.z - 0.4), box.z + 0.4)]
 }
 
 function convertServerPos(pos) {
