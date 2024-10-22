@@ -482,6 +482,7 @@ const self = class EntityHandler extends Handler {
 				} else {
 					this.gamemodes[packet.id] = GAMEMODES[packet.mode ?? 'survival'];
 					if (tablist.entries[packet.id]) {
+						tablist.tabs[packet.id].checks.gamemode = this.gamemodes[packet.id];
 						client.write('player_info', {
 							action: 1,
 							data: [{UUID: tablist.entries[packet.id], gamemode: this.gamemodes[packet.id]}]
