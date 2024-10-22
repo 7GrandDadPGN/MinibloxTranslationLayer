@@ -1,11 +1,6 @@
-const { ClientSocket, SPacketMessage, SPacketLoginStart, SPacketPlayerPosLook, SPacketHeldItemChange, SPacketCloseWindow, SPacketRequestChunk, SPacketAnalytics, SPacketRespawn$1, SPacketPing, PBVector3, SPacketUseEntity, SPacketClick, SPacketEntityAction, PBBlockPos, SPacketPlaceBlock, SPacketPlayerAction, SPacketUseItem, SPacketBreakBlock, SPacketClickWindow, SPacketConfirmTransaction, Vector3, SPacketTabComplete$1, SPacketPlayerAbilities, SPacketInput, SPacketUpdateSign } = require('./miniblox/main.js');
-const { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR } = require('./miniblox/utils.js');
-const { BLOCKS, BLOCK_ID } = require('./miniblox/blocks.js');
-const ENTITIES = require('./miniblox/entities.js');
-const SKINS = require('./miniblox/skins.js');
-const GUIS = require('./miniblox/guis.js');
+const { ClientSocket, SPacketLoginStart } = require('./miniblox/main.js');
+const handlers = require('./miniblox/handlers/init.js');
 const mc = require('minecraft-protocol');
-const ws = require('ws');
 const fs = require('node:fs');
 const server = mc.createServer({
 	'online-mode': false,
@@ -15,187 +10,13 @@ const server = mc.createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
+const VERSION = '3.37.1';
+const GAMEMODES = require('./miniblox/types/gamemodes.js');
+let connected, skipKick = Date.now();
 
-let openShop = "";
-let connected = false;
-let clientId = -1;
-let mcClientId = 99999;
-let scoreData = [];
-
-let chunks = [];
-let queuedChunks = [];
-
-let entities = {};
-let playerUUIDs = {};
-let playerSkins = {};
-
-let pingInterval, analyticsInterval, lastTeleport;
-let filteredPing = 0;
-let ignoreInventory = false;
-let skipKick = Date.now();
-let lPosition = {x: 0, y: 0, z: 0};
-let lStates = [];
-let lastLState = {};
-let lastLHP = [];
-let lastLFlying;
-
-const GAMEMODES = {"survival": 0, "creative": 1, "adventure": 2, "spectator": 3};
-const SLOTS = {
-	0: 36,
-	1: 37,
-	2: 38,
-	3: 39,
-	4: 40,
-	5: 41,
-	6: 42,
-	7: 43,
-	8: 44,
-	36: 5,
-	37: 6,
-	38: 7,
-	39: 8
-};
-const WINDOW_NAMES = {'Chest': '{"translate":"container.chest"}', 'Large Chest': '{"translate":"container.chestDouble"}', 'Ender Chest': '{"translate":"container.enderchest"}'};
-
-const VERSION = "3.37.1", DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
-const viewDistance = 7;
-
-function canSpawn(entity) {
-	if (entity.type == -1 && ((playerUUIDs[entity.id] == undefined && !entity.special) || playerGamemodes[entity.id] == GAMEMODES.spectator)) return false;
-	if (!isEntityLoaded(entity)) return false;
-	return true;
-}
-
-function checkEntity(entity, client) {
-	if (!entity) return;
-	if (canSpawn(entity) != entity.spawned) {
-		if (entity.spawned) removeEntity(entity, client);
-		else spawnEntity(entity, client);
-	}
-}
-
-function checkEntities(client) {
-	for (const [_, entity] of Object.entries(entities)) {
-		if (canSpawn(entity) != entity.spawned) {
-			if (entity.spawned) removeEntity(entity, client);
-			else spawnEntity(entity, client);
-		}
-	}
-}
-
-function disconnect() {
-	if (pingInterval) clearInterval(pingInterval);
-	if (analyticsInterval) clearInterval(analyticsInterval);
-	clientId = -1;
-	scoreData = [];
-
-	chunks = [];
-	queuedChunks = [];
-
-	entities = {};
-	playerUUIDs = {};
-	playerGamemodes = {};
-	playerSkins = {};
-
-	ignoreInventory = false;
-	lastTeleport = undefined;
-	lStates = [];
-	lastLState = {};
-	lastLHP = [];
-	lastLFlying = undefined;
-}
-
-function isEntityLoaded(entity) {
-	return chunks.includes([Math.floor((entity.pos.x / 32) / 16), Math.floor((entity.pos.z / 32) / 16)].join());
-}
-
-function purgePlayers(client) {
-	let newData = [];
-	for (const [_, uuid] of Object.entries(playerUUIDs)) {
-		newData.push({"UUID": uuid});
-		client.write('scoreboard_team', {
-			team: uuid.slice(0, 16),
-			mode: 1
-		});
-	}
-	client.write('player_info', {
-		action: 4,
-		data: newData
-	});
-}
-
-function spawnEntity(entity, client) {
-	if (!entity || entity.spawned) return;
-
-	if (entity.special) {
-		playerUUIDs[entity.id] = crypto.randomUUID();
-		client.write('player_info', {
-			action: 0,
-			data: [{
-				UUID: playerUUIDs[entity.id],
-				name: 'BOT',
-				properties: [],
-				gamemode: 1,
-				ping: 0
-			}]
-		});
-	}
-
-	entity.spawned = true;
-	if (entity.type == -1) {
-		client.write('named_entity_spawn', {
-			entityId: entity.id,
-			playerUUID: playerUUIDs[entity.id] ?? crypto.randomUUID(),
-			x: entity.pos.x,
-			y: entity.pos.y,
-			z: entity.pos.z,
-			yaw: entity.yaw,
-			pitch: entity.pitch,
-			currentItem: 0,
-			metadata: entity.metadata
-		});
-		client.write('entity_head_rotation', {
-			entityId: entity.id,
-			headYaw: entity.yaw
-		});
-
-		for (const [slot, item] of Object.entries(entity.equipment)) {
-			client.write('entity_equipment', {
-				entityId: entity.id,
-				slot: slot,
-				item: item
-			});
-		}
-	} else {
-		const entityType = ENTITIES[entity.type];
-		client.write(entityType[1] ? 'spawn_entity_living' : 'spawn_entity', {
-			entityId: entity.id,
-			type: entityType[0],
-			x: entity.pos.x,
-			y: entity.pos.y,
-			z: entity.pos.z,
-			yaw: entity.yaw,
-			pitch: entity.pitch,
-			objectData: entity.objectData,
-			metadata: entity.metadata
-		});
-
-		if (!entityType[1]) {
-			client.write('entity_metadata', {
-				entityId: entity.id,
-				metadata: entity.metadata
-			});
-		}
-	}
-
-	if (entity.special) {
-		client.write('player_info', {
-			action: 4,
-			data: [{"UUID": playerUUIDs[entity.id]}]
-		});
-	}
-
-	return true;
+function cleanup(teleport) {
+	connected = teleport ?? false;
+	Object.values(handlers).forEach((handler) => handler.cleanup(teleport));
 }
 
 async function queue(gamemode, server) {
@@ -203,27 +24,27 @@ async function queue(gamemode, server) {
 	let fetched
 	try {
 		fetched = await fetch('https://session.coolmathblox.ca/launch/queue_minigame', {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"accept": "application/json, text/plain, */*",
-				"accept-language": "en-US,en;q=0.9",
-				"cache-control": "no-cache",
-				"content-type": "application/json",
-				"pragma": "no-cache",
-				"priority": "u=1, i",
-				"sec-ch-ua": "\"Microsoft Edge\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\"",
-				"sec-ch-ua-mobile": "?0",
-				"sec-ch-ua-platform": "\"Windows\"",
-				"sec-fetch-dest": "empty",
-				"sec-fetch-mode": "cors",
-				"sec-fetch-site": "cross-site",
-				"Referer": "https://miniblox.io/",
-				"Referrer-Policy": "strict-origin-when-cross-origin",
-				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0"
+				'accept': 'application/json, text/plain, */*',
+				'accept-language': 'en-US,en;q=0.9',
+				'cache-control': 'no-cache',
+				'content-type': 'application/json',
+				'pragma': 'no-cache',
+				'priority': 'u=1, i',
+				'sec-ch-ua': '"Microsoft Edge";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+				'sec-ch-ua-mobile': '?0',
+				'sec-ch-ua-platform': '"Windows"',
+				'sec-fetch-dest': 'empty',
+				'sec-fetch-mode': 'cors',
+				'sec-fetch-site': 'cross-site',
+				'Referer': 'https://miniblox.io/',
+				'Referrer-Policy': 'strict-origin-when-cross-origin',
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
 			},
 			body: JSON.stringify({
 				clientVersion: VERSION,
-				minigameId: gamemode ?? "kitpvp"
+				minigameId: gamemode ?? 'kitpvp'
 			})
 		});
 	} catch (exception) {
@@ -232,81 +53,8 @@ async function queue(gamemode, server) {
 	return fetched;
 }
 
-function removeEntity(entity, client) {
-	if (!entity || !entity.spawned) return;
-
-	entity.spawned = false;
-	client.write('entity_destroy', {
-		entityIds: [entity.id]
-	});
-}
-
-function sendActions(client) {
-	if (lPosition) updateChunks(lPosition.x, lPosition.z, client);
-	const newStates = {punching: lStates[0] > Date.now(), sprinting: lStates[1] ?? false, sneak: lStates[2] ?? false};
-	if (newStates.punching == lastLState.punching && newStates.sprinting == lastLState.sprinting && newStates.sneak == lastLState.sneak) return;
-	ClientSocket.sendPacket(new SPacketEntityAction({
-		id: clientId,
-		punching: newStates.punching != lastLState.punching ? newStates.punching : undefined,
-		sprinting: newStates.sprinting != lastLState.sprinting ? newStates.sprinting : undefined,
-		sneak: newStates.sneak != lastLState.sneak ? newStates.sneak : undefined
-	}));
-	lastLState = newStates;
-}
-
-function sendAbilities() {
-	const newState = false;
-	if (newState == lastLFlying) return;
-	ClientSocket.sendPacket(new SPacketPlayerAbilities({isFlying: newState}));
-	lastLFlying = newState;
-}
-
-function updateChunks(x, z, client) {
-	const positions = [];
-	const currentlyLoaded = [];
-
-	for (let checkX = -viewDistance; checkX < viewDistance; checkX++) {
-		for (let checkZ = -viewDistance; checkZ < viewDistance; checkZ++) {
-			const pos = [Math.floor(x / 16) + checkX, Math.floor(z / 16) + checkZ];
-			currentlyLoaded.push(pos.join());
-			if (chunks.includes(pos.join()) || queuedChunks.includes(pos.join())) continue;
-			positions.push(pos);
-		}
-	}
-
-	positions.sort((a, b) => {
-		const aDist = Math.sqrt((a[0] - Math.floor(x / 16)) * (a[0] - Math.floor(x / 16)) + (a[1] - Math.floor(z / 16)) * (a[1] - Math.floor(z / 16)));
-		const bDist = Math.sqrt((b[0] - Math.floor(x / 16)) * (b[0] - Math.floor(x / 16)) + (b[1] - Math.floor(z / 16)) * (b[1] - Math.floor(z / 16)));
-		return bDist - aDist
-	});
-
-	for (; positions.length > 0 && queuedChunks.length < 8; ) {
-		const chunk = positions.pop();
-		queuedChunks.push(chunk.join());
-		ClientSocket.sendPacket(new SPacketRequestChunk({
-			x: chunk[0],
-			z: chunk[1]
-		}));
-	}
-
-	for (const chunk of chunks) {
-		if (!currentlyLoaded.includes(chunk)) {
-			const split = chunk.split(',');
-			const cX = Number.parseInt(split[0]), cZ = Number.parseInt(split[1]);
-			client.write('map_chunk', {
-				x: cX,
-				z: cZ,
-				groundUp: true,
-				bitMap: 0,
-				chunkData: []
-			});
-			chunks.splice(chunks.indexOf(chunk), 1);
-		}
-	}
-}
-
-function uuid$1() {
-	return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, j => (j ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> j / 4).toString(16))
+function uuid() {
+	return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, j => (j ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> j / 4).toString(16));
 }
 
 async function connect(client, requeue, gamemode, code) {
@@ -314,30 +62,24 @@ async function connect(client, requeue, gamemode, code) {
 		skipKick = Date.now() + 20;
 		if (ClientSocket.socket) ClientSocket.disconnect();
 
-		scoreData = [];
-		client.write('scoreboard_objective', {
-			name: "scoreboard",
-			action: 1
-		});
-		purgePlayers(client);
 		client.write('respawn', {
 			dimension: 1,
 			difficulty: 2,
 			gamemode: 2,
-			levelType: "FLAT"
+			levelType: 'FLAT'
 		});
 		client.write('respawn', {
 			dimension: 0,
 			difficulty: 2,
 			gamemode: 2,
-			levelType: "FLAT"
+			levelType: 'FLAT'
 		});
 	}
 
 	let fetched = await queue(gamemode, code);
 	if (!fetched.ok) {
 		const text = await fetched.text();
-		client.end(text ?? (fetched.statusText ?? "Disconnected"));
+		client.end(text ?? (fetched.statusText ?? 'Disconnected'));
 		return;
 	}
 
@@ -345,7 +87,7 @@ async function connect(client, requeue, gamemode, code) {
 	console.log(`\x1b[36m[*] Connecting to ${fetched.serverId}\x1b[0m`);
 	if (client.ended) return;
 
-	const gameType = gamemode ?? "kitpvp";
+	const gameType = gamemode ?? 'kitpvp';
 	ClientSocket.setUrl(`https://${fetched.serverId}.servers.coolmathblox.ca`, void 0);
 	let session = '';
 	try {
@@ -353,942 +95,63 @@ async function connect(client, requeue, gamemode, code) {
 	} catch (exception) {}
 
 	// MINIBLOX CONNECTION
-	ClientSocket.once("connect", () => {
+	ClientSocket.once('connect', () => {
 		ClientSocket.sendPacket(new SPacketLoginStart({
 			requestedUuid: void 0,
 			session: session,
-			hydration: "0",
-			metricsId: uuid$1(),
+			hydration: '0',
+			metricsId: uuid(),
 			clientVersion: VERSION
 		}));
 	});
-	ClientSocket.once("CPacketJoinGame", packet => {
-		disconnect();
+	ClientSocket.once('CPacketJoinGame', packet => {
+		cleanup(true);
 		if (!packet.canConnect) {
-			client.end(packet.errorMessage ?? "Disconnected");
+			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
 
 		if (!requeue) {
 			client.write('login', {
-				entityId: mcClientId,
-				gameMode: GAMEMODES[packet.gamemode ?? "survival"],
+				entityId: handlers.entity.local.mcId,
+				gameMode: GAMEMODES[packet.gamemode ?? 'survival'],
 				dimension: 0,
 				difficulty: 2,
 				maxPlayers: server.maxPlayers,
-				levelType: "default",
+				levelType: 'default',
 				reducedDebugInfo: false
 			});
 		}
-
-		pingInterval = setInterval(() => {
-			client.write('keep_alive', {keepAliveId: Math.floor(Math.random() * 10000)});
-		}, 1000);
-		analyticsInterval = setInterval(() => {
-			ClientSocket.sendPacket(new SPacketAnalytics({
-				fps: 60 - Math.random(),
-				ping: filteredPing
-			}));
-		}, 30000);
 	});
 
-	// MINIBLOX SERVER
-	ClientSocket.socket.io.on("reconnect_failed", () => {
+	ClientSocket.socket.io.on('reconnect_failed', () => {
 		client.end('Failed to connect to the server.');
 	});
-	ClientSocket.on("disconnect", reason => {
+	ClientSocket.on('disconnect', reason => {
 		if (skipKick > Date.now()) return;
 		client.end(reason);
 	});
-	ClientSocket.on("CPacketAnimation", packet => client.write('animation', {
-		entityId: packet.id == clientId ? mcClientId : packet.id,
-		animation: packet.type
-	}));
-	ClientSocket.on("CPacketBlockAction", packet => {
-		if (!chunks.includes([Math.floor(packet.blockPos.x / 16), Math.floor(packet.blockPos.z / 16)].join()) || !BLOCK_ID[packet.blockId]) return;
-		client.write('block_action', {
-			location: {
-				x: packet.blockPos.x,
-				y: packet.blockPos.y,
-				z: packet.blockPos.z
-			},
-			byte1: convertToByte(packet.instrument),
-			byte2: convertToByte(packet.pitch),
-			blockId: BLOCK_ID[packet.blockId]
-		});
-	});
-	ClientSocket.on("CPacketBlockUpdate", packet => {
-		if (!chunks.includes([Math.floor(packet.x / 16), Math.floor(packet.z / 16)].join())) return;
-		const blockdata = BLOCKS[packet.id] ?? BLOCKS[9];
-		client.write('block_change', {
-			location: {
-				x: packet.x,
-				y: packet.y,
-				z: packet.z
-			},
-			type: (typeof blockdata == 'number' ? blockdata : blockdata[0]) << 4 | (typeof blockdata == 'number' ? 0 : blockdata[1])
-		});
-	});
-	ClientSocket.on("CPacketChunkData", packet => {
-		const chunk = createChunk(packet), chunkInd = [packet.x, packet.z].join();
-		const ind = queuedChunks.indexOf(chunkInd);
-		if (ind != -1) {
-			chunks.push(chunkInd);
-			queuedChunks.splice(ind, 1);
-		}
-		client.write('map_chunk', {
-			x: packet.x,
-			z: packet.z,
-			groundUp: true,
-			bitMap: chunk.getMask(),
-			chunkData: chunk.dump()
-		});
-		checkEntities(client);
-	});
-	ClientSocket.on("CPacketCloseWindow", packet => client.write('close_window', {windowId: packet.windowId}));
-	ClientSocket.on("CPacketConfirmTransaction", packet => client.write('transaction', {
-		windowId: packet.windowId,
-		action: packet.uid,
-		accepted: packet.accepted
-	}));
-	ClientSocket.on("CPacketDestroyEntities", packet => {
-		for (const id of packet.ids) delete entities[id];
-		client.write('entity_destroy', {
-			entityIds: packet.ids
-		});
-	});
-	ClientSocket.on("CPacketDisconnect", packet => client.end(packet.reason));
-	ClientSocket.on("CPacketEntityAction", packet => {
-		if (packet.punching) {
-			client.write('animation', {
-				entityId: packet.id,
-				animation: 0
-			});
-		}
-
-		const entity = entities[packet.id];
-		if (entity && packet.sneak != undefined) {
-			entity.sneaking = packet.sneak;
-			entity.metadata[0].value = entity.sneaking ? (entity.metadata[0].value | 1 << 1) : (entity.metadata[0].value & ~(1 << 1));
-			client.write('entity_metadata', {
-				entityId: packet.id,
-				metadata: [{key: 0, value: entity.metadata[0].value, type: 0}]
-			});
-		}
-	});
-	ClientSocket.on("CPacketEntityEquipment", packet => {
-		for (const equip of packet.equipment) {
-			if (equip.slot == 2) continue;
-			const slot = equip.slot == 1 ? 0 : 7 - equip.slot, item = translateItem(equip.item);
-			if (entities[packet.id]) entities[packet.id].equipment[slot] = item;
-			client.write('entity_equipment', {
-				entityId: packet.id,
-				slot: slot,
-				item: item
-			});
-		}
-	});
-	ClientSocket.on("CPacketEntityMetadata", packet => {
-		let props = [];
-		const entity = entities[packet.id];
-		for (const watched of packet.data) {
-			let value;
-			let wType = watched.objectType;
-			switch (watched.objectType) {
-				case 2:
-					value = watched.intValue;
-					if (watched.dataValueId != 7 && (watched.dataValueId != 18 || entity && entity.type != -1)) {
-						wType = 0;
-						value = watched.dataValueId == 10 ? 127 : convertToByte(watched.intValue);
-						if (watched.dataValueId == 0 && entity) value = entity.sneaking ? (value | 1 << 1) : (value & ~(1 << 1));
-					}
-					if (watched.dataValueId == 1) {
-						wType = 1;
-						value = watched.intValue;
-					}
-					break;
-				case 3:
-					value = watched.floatValue;
-					break;
-				case 4:
-					value = watched.stringValue;
-					break;
-				case 5:
-					value = translateItem(watched.itemStack);
-					break;
-				case 6:
-					value = watched.blockPos;
-					break;
-				case 7:
-					value = new Vector3(watched.vector.x, watched.vector.y, watched.vector.z);
-					break;
-				default:
-					value = watched.intValue;
-					break;
-			}
-			props.push({key: watched.dataValueId, value: value, type: wType});
-		}
-
-		if (entity) {
-			for (const prop of props) {
-				entity.metadata[prop.key] = prop;
-			}
-		}
-		client.write('entity_metadata', {
-			entityId: packet.id == clientId ? mcClientId : packet.id,
-			metadata: props
-		});
-	});
-	ClientSocket.on("CPacketEntityPositionAndRotation", packet => {
-		const entity = entities[packet.id];
-		if (entity) {
-			entity.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
-			entity.yaw = convertAngle(packet.yaw, false, entity.type == -1 ? 180 : 0);
-			entity.pitch = convertAngle(packet.pitch);
-		} else {
-			return;
-		}
-
-		client.write('entity_teleport', {
-			entityId: packet.id,
-			x: packet.pos.x,
-			y: packet.pos.y,
-			z: packet.pos.z,
-			yaw: entity.yaw,
-			pitch: entity.pitch,
-			onGround: packet.onGround
-		});
-		client.write('entity_head_rotation', {
-			entityId: packet.id,
-			headYaw: entity.yaw
-		});
-	});
-	ClientSocket.on("CPacketEntityRelativePositionAndRotation", packet => {
-		const entity = entities[packet.id];
-		const yaw = packet.yaw != undefined ? convertAngle(packet.yaw, false, (!entity || entity.type == -1) ? 180 : 0) : 0;
-		const pitch = packet.pitch != undefined ? convertAngle(packet.pitch) : 0;
-		if (entity) {
-			if (packet.yaw != undefined || packet.pitch != undefined) {
-				entity.yaw = yaw;
-				entity.pitch = pitch;
-			}
-
-			if (packet.pos) {
-				const pos = entity.pos;
-				entity.pos = {x: pos.x + packet.pos.x, y: pos.y + packet.pos.y, z: pos.z + packet.pos.z};
-			}
-		}
-
-		if (packet.pos && (packet.yaw != undefined || packet.pitch != undefined)) {
-			client.write('entity_move_look', {
-				entityId: packet.id,
-				dX: clampByte(packet.pos.x),
-				dY: clampByte(packet.pos.y),
-				dZ: clampByte(packet.pos.z),
-				yaw: yaw,
-				pitch: pitch,
-				onGround: packet.onGround
-			});
-		} else if (packet.pos) {
-			client.write('rel_entity_move', {
-				entityId: packet.id,
-				dX: clampByte(packet.pos.x),
-				dY: clampByte(packet.pos.y),
-				dZ: clampByte(packet.pos.z),
-				onGround: packet.onGround
-			});
-		} else {
-			client.write('entity_look', {
-				entityId: packet.id,
-				yaw: yaw,
-				pitch: pitch,
-				onGround: packet.onGround
-			});
-		}
-
-		if (packet.yaw) {
-			client.write('entity_head_rotation', {
-				entityId: packet.id,
-				headYaw: yaw
-			});
-		}
-	});
-	ClientSocket.on("CPacketEntityStatus", packet => client.write('entity_status', {
-		entityId: packet.entityId == clientId ? mcClientId : packet.entityId,
-		entityStatus: packet.entityStatus
-	}));
-	ClientSocket.on("CPacketEntityVelocity", packet => client.write('entity_velocity', {
-		entityId: packet.id == clientId ? mcClientId : packet.id,
-		velocityX: Math.max(Math.min(packet.motion.x * 8000, 32767), -32768),
-		velocityY: Math.max(Math.min(packet.motion.y * 8000, 32767), -32768),
-		velocityZ: Math.max(Math.min(packet.motion.z * 8000, 32767), -32768)
-	}));
-	ClientSocket.on("CPacketExplosion", packet => client.write('explosion', {
-		x: packet.pos.x,
-		y: packet.pos.y,
-		z: packet.pos.z,
-		radius: packet.strength,
-		affectedBlockOffsets: [],
-		playerMotionX: packet.playerPos.x,
-		playerMotionY: packet.playerPos.y,
-		playerMotionZ: packet.playerPos.z
-	}));
-	ClientSocket.on("CPacketMessage", packet => {
-		if (packet.text) {
-			client.write('chat', {message: JSON.stringify({text: translateText(packet.text)})});
-			if (packet.id == undefined && packet.text.includes("Summary")) {
-				client.write('chat', {
-					message: JSON.stringify({
-						text: "",
-						extra: [
-							{
-								text: "Click here",
-								color: "aqua",
-								clickEvent: {
-									action: "run_command",
-									value: "/play " + gameType
-								}
-							},
-							" to play again!"
-						]
-					})
-				});
-			}
-		}
-	});
-	ClientSocket.on("CPacketOpenWindow", packet => {
-		if (packet.guiID == "chest" || packet.guiID == "container") {
-			const translation = WINDOW_NAMES[packet.title];
-			client.write('open_window', {
-				windowId: packet.windowId,
-				inventoryType: (translation && translation.indexOf('.chest') != -1) ? "minecraft:chest" : "minecraft:container",
-				windowTitle: translation ?? JSON.stringify({text: packet.title}),
-				slotCount: packet.size,
-				entityId: mcClientId
-			});
-		}
-	});
-	ClientSocket.on("CPacketParticles", packet => client.write('world_particles', {
-		particleId: packet.particleId,
-		longDistance: false,
-		x: packet.x,
-		y: packet.y,
-		z: packet.z,
-		offsetX: packet.xOffset,
-		offsetY: packet.yOffset,
-		offsetZ: packet.zOffset,
-		particleData: packet.speed,
-		particles: packet.count
-	}));
-	ClientSocket.on("CPacketPlayerList", packet => {
-		purgePlayers(client);
-		let newData = [];
-		for (const entity of packet.players) {
-			let nameSplit = entity.name.split(" ");
-			if (entity.id == clientId) nameSplit[nameSplit.length - 1] = client.username;
-			const realName = nameSplit[nameSplit.length - 1].slice(0, 16);
-			const uuid = entity.id == clientId ? client.uuid : entity.uuid;
-			const skin = playerSkins[entity.id] != undefined && SKINS[playerSkins[entity.id]] != undefined ? SKINS[playerSkins[entity.id]] : SKINS.granddad;
-			playerUUIDs[entity.id] = uuid;
-			newData.push({
-				UUID: uuid,
-				name: realName,
-				properties: [{name: "textures", value: skin[0], signature: skin[1]}],
-				gamemode: playerGamemodes[entity.id] != undefined ? playerGamemodes[entity.id] : 0,
-				ping: entity.ping
-			});
-			client.write('scoreboard_team', {
-				team: uuid.slice(0, 16),
-				mode: 0,
-				name: uuid.slice(0, 32),
-				prefix: (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(" ")) + ' ' : "").slice(0, 14) + translateText(`\\${(entity.color != "white" ? entity.color : undefined) ?? (entity.id == clientId ? "white" : "reset")}\\`),
-				suffix: (entity.level && entity.level > 0) ? translateText(`\\${entity.level ? LEVEL_TO_COLOUR[entity.level] : 'white'}\\ (${entity.level})`) : '',
-				friendlyFire: true,
-				nameTagVisibility: "all",
-				color: 0,
-				players: [realName]
-			});
-		}
-		client.write('player_info', {
-			action: 0,
-			data: newData
-		});
-		client.write('playerlist_header', {
-			header: JSON.stringify({text: translateText('\\cyan\\You are playing on \\lime\\miniblox.io')}),
-			footer: JSON.stringify({text: translateText('\\gold\\Translation layer made by 7GrandDad')})
-		});
-		checkEntities(client);
-	});
-	ClientSocket.on("CPacketPlayerPosition", packet => {
-		lPosition = {x: packet.x, y: packet.y, z: packet.z};
-		client.write('position', {
-			x: packet.x,
-			y: packet.y,
-			z: packet.z,
-			yaw: 0,
-			pitch: 0,
-			flags: 24
-		});
-	});
-	ClientSocket.on("CPacketPlayerPosLook", packet => {
-		if (isNaN(packet.x) || isNaN(packet.y) || isNaN(packet.z) || isNaN(packet.yaw) || isNaN(packet.pitch)) {
-			client.end("Received invalid player position and look packet");
-			return
-		}
-
-		lastTeleport = packet;
-		lPosition = {x: packet.x, y: packet.y, z: packet.z};
-		client.write('position', {
-			x: packet.x,
-			y: packet.y,
-			z: packet.z,
-			yaw: (((packet.yaw * -1) * RAD2DEG) - 180),
-			pitch: (packet.pitch * -1) * RAD2DEG,
-			flags: 0x00
-		});
-	});
-	ClientSocket.on("CPacketPong", packet => {
-		filteredPing += (Math.max(Date.now() - Number(packet.time), 1) - filteredPing) / 3;
-	});
-	ClientSocket.on("CPacketRespawn", packet => {
-		if (packet.client) {
-			ClientSocket.sendPacket(new SPacketRespawn$1);
-			client.write('respawn', {
-				dimension: packet.dimension,
-				difficulty: 2,
-				gamemode: 2,
-				levelType: "FLAT"
-			});
-		}
-	});
-	ClientSocket.on("CPacketScoreboard", packet => {
-		if (scoreData.length > 0) {
-			client.write('scoreboard_objective', {
-				name: "scoreboard",
-				action: 1
-			});
-			scoreData = [];
-		}
-		client.write('scoreboard_objective', {
-			name: "scoreboard",
-			action: 0,
-			displayText: translateText(packet.title),
-			type: "INTEGER"
-		});
-		client.write('scoreboard_display_objective', {
-			position: 1,
-			name: "scoreboard"
-		});
-		if (packet.content.length < 15) {
-			packet.content.push({columns: ['']});
-			packet.content.push({columns: ['\\yellow\\miniblox.io']});
-		}
-
-		let index = 0;
-		for (const line of packet.content) {
-			const name = translateText(line.columns.join(" "));
-			scoreData.push(name.slice(0, 40));
-			client.write('scoreboard_score', {
-				scoreName: "scoreboard",
-				itemName: name,
-				action: 0,
-				value: packet.content.length - index
-			});
-			index++;
-		}
-	});
-	ClientSocket.on("CPacketSetSlot", packet => client.write('set_slot', {
-		windowId: packet.windowId,
-		slot: packet.windowId == 0 && SLOTS[packet.slot] != undefined ? SLOTS[packet.slot] : packet.slot,
-		item: translateItem(packet.slotData)
-	}));
-	ClientSocket.on("CPacketSignEditorOpen", packet => client.write('open_sign_entity', {
-		location: {
-			x: packet.signPosition.x,
-			y: packet.signPosition.y,
-			z: packet.signPosition.z
-		}
-	}));
-	ClientSocket.on("CPacketSoundEffect", packet => {
-		if (!packet.location) packet.location = {x: lPosition.x * 8, y: lPosition.y * 8, z: lPosition.z * 8};
-
-		client.write('named_sound_effect', {
-			soundName: packet.sound,
-			x: packet.location.x,
-			y: packet.location.y,
-			z: packet.location.z,
-			volume: packet.volume,
-			pitch: packet.pitch * 63
-		});
-	});
-	ClientSocket.on("CPacketSpawnEntity", packet => {
-		if (ENTITIES[packet.type] == undefined) return;
-		if (packet.motion == undefined) packet.motion = {x: 0, y: 0, z: 0};
-		entities[packet.id] = {
-			id: packet.id,
-			type: packet.type,
-			pos: packet.pos,
-			yaw: convertAngle(packet.yaw, true),
-			pitch: convertAngle(packet.pitch, true),
-			metadata: {},
-			equipment: {},
-			objectData: {
-				intField: packet.shooterId != null ? (packet.shooterId == clientId ? mcClientId : packet.shooterId) : 1,
-				velocityX: Math.max(Math.min(packet.motion.x * 8000, 32767), -32768),
-				velocityY: Math.max(Math.min(packet.motion.y * 8000, 32767), -32768),
-				velocityZ: Math.max(Math.min(packet.motion.z * 8000, 32767), -32768)
-			},
-			spawned: false
-		};
-		checkEntity(entities[packet.id], client);
-	});
-	ClientSocket.on("CPacketSpawnPlayer", packet => {
-		const yaw = convertAngle(packet.yaw, true, 180), pitch = convertAngle(packet.pitch, true);
-		if (packet.socketId == ClientSocket.id) {
-			delete playerGamemodes[packet.id];
-			clientId = packet.id;
-			lastLHP = [];
-			lPosition = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
-			client.write('position', {
-				x: packet.pos.x,
-				y: packet.pos.y,
-				z: packet.pos.z,
-				yaw: yaw,
-				pitch: pitch,
-				flags: 0x00
-			});
-		} else {
-			playerGamemodes[packet.id] = GAMEMODES[packet.gamemode ?? "survival"];
-			playerSkins[packet.id] = packet.cosmetics.skin;
-			const entity = entities[packet.id];
-
-			if (entity && entity.spawned) {
-				client.write('entity_teleport', {
-					entityId: packet.id,
-					x: packet.pos.x * 32,
-					y: packet.pos.y * 32,
-					z: packet.pos.z * 32,
-					yaw: yaw,
-					pitch: pitch,
-					onGround: packet.onGround
-				});
-				client.write('entity_head_rotation', {
-					entityId: packet.id,
-					headYaw: yaw
-				});
-			}
-
-			entities[packet.id] = {
-				id: packet.id,
-				type: -1,
-				special: packet.name && packet.name.includes(" "),
-				pos: {x: packet.pos.x * 32, y: packet.pos.y * 32, z: packet.pos.z * 32},
-				yaw: yaw,
-				pitch: pitch,
-				metadata: entity ? entity.metadata : {},
-				equipment: entity ? entity.equipment : {},
-				spawned: entity ? entity.spawned : false,
-				name: packet.name
-			};
-
-			checkEntity(entities[packet.id], client);
-		}
-	});
-	ClientSocket.on("CPacketTabComplete", packet => client.write('tab_complete', {matches: packet.matches}));
-	ClientSocket.on("CPacketTitle", packet => {
-		client.write('title', {
-			action: 2,
-			fadeIn: 6,
-			stay: Math.floor(packet.duration / 50),
-			fadeOut: 6
-		});
-		client.write('title', {
-			action: 0,
-			text: JSON.stringify({text: translateText(packet.title)})
-		});
-	});
-	ClientSocket.on("CPacketUpdateHealth", packet => {
-		if (packet.id == clientId) {
-			lastLHP[0] = packet.hp != undefined ? packet.hp : (lastLHP[0] != undefined ? lastLHP[0] : 20);
-			lastLHP[1] = packet.food != undefined ? packet.food : (lastLHP[1] != undefined ? lastLHP[1] : 20);
-			lastLHP[2] = packet.foodSaturation != undefined ? packet.foodSaturation : (lastLHP[2] != undefined ? lastLHP[2] : 20);
-			client.write('update_health', {
-				health: lastLHP[0],
-				food: lastLHP[1],
-				foodSaturation: lastLHP[2]
-			});
-		}
-	});
-	ClientSocket.on("CPacketUpdateScoreboard", packet => {
-		if (scoreData[packet.index] == undefined) return;
-		const name = translateText(packet.columns.join(" "));
-		client.write('scoreboard_score', {
-			scoreName: "scoreboard",
-			itemName: scoreData[packet.index],
-			action: 1
-		});
-		client.write('scoreboard_score', {
-			scoreName: "scoreboard",
-			itemName: name,
-			action: 0,
-			value: scoreData.length - packet.index
-		});
-		scoreData[packet.index] = name;
-	});
-	ClientSocket.on("CPacketUpdateSign", packet => client.write('update_sign', {
-		location: {
-			x: packet.pos.x,
-			y: packet.pos.y,
-			z: packet.pos.z
-		},
-		text1: packet.lines[0] ?? '',
-		text2: packet.lines[1] ?? '',
-		text3: packet.lines[2] ?? '',
-		text4: packet.lines[3] ?? ''
-	}));
-	ClientSocket.on("CPacketUpdateStatus", packet => {
-		if (packet.mode) {
-			if (packet.id == clientId) {
-				client.write('game_state_change', {reason: 3, gameMode: GAMEMODES[packet.mode ?? "survival"]});
-			} else {
-				playerGamemodes[packet.id] = GAMEMODES[packet.mode ?? "survival"];
-				if (playerUUIDs[packet.id] != undefined) {
-					client.write('player_info', {
-						action: 1,
-						data: [{UUID: playerUUIDs[packet.id], gamemode: playerGamemodes[packet.id]}]
-					});
-				}
-
-				checkEntity(entities[packet.id], client);
-			}
-		}
-	});
-	ClientSocket.on("CPacketWindowItems", packet => {
-		if (ignoreInventory) {
-			ignoreInventory = false;
-			return;
-		}
-
-		let items = Array(packet.items.length).fill({blockId: -1});
-		for (let i = 0; i < packet.items.length; i++) {
-			items[packet.windowId == 0 && SLOTS[i] != undefined ? SLOTS[i] : i] = translateItem(packet.items[i]);
-		}
-		client.write('window_items', {
-			windowId: packet.windowId,
-			items: items
-		});
-	});
-	ClientSocket.on("CPacketUseBed", packet => client.write('bed', {
-		entityId: packet.id == clientId ? mcClientId : packet.id,
-		location: {
-			x: packet.bedPos.x,
-			y: packet.bedPos.y,
-			z: packet.bedPos.z
-		}
-	}));
-	ClientSocket.on("CPacketQueueNext", packet => connect(client, true, packet.minigameId));
-	ClientSocket.on("CPacketSpawnExperienceOrb", packet => client.write('spawn_entity_experience_orb', {
-		entityId: packet.id,
-		x: packet.x,
-		y: packet.y,
-		z: packet.z,
-		count: packet.xpValue
-	}));
-	ClientSocket.on("CPacketSetExperience", packet => client.write('experience', {
-		experienceBar: packet.experience,
-		level: packet.level,
-		totalExperience: packet.experienceTotal
-	}));
-	ClientSocket.on("CPacketOpenShop", packet => {
-		const gui = GUIS[packet.type];
-		if (gui) {
-			const itemCount = Math.ceil(gui.items.length / 9) * 9;
-			client.write('open_window', {
-				windowId: 255,
-				inventoryType: "minecraft:container",
-				windowTitle: JSON.stringify({text: gui.name}),
-				slotCount: itemCount,
-				entityId: mcClientId
-			});
-			openShop = packet.type;
-
-			const contents = Array(itemCount).fill({blockId: -1});
-			for (let i = 0; i < gui.items.length; i++) {
-				contents[i] = gui.items[i];
-			}
-
-			client.write('window_items', {
-				windowId: 255,
-				items: contents
-			});
-		}
-	});
-	ClientSocket.on("CPacketEntityEffect", packet => client.write('entity_effect', {
-		entityId: packet.id == clientId ? mcClientId : packet.id,
-		effectId: packet.effectId,
-		amplifier: packet.amplifier,
-		duration: packet.duration,
-		hideParticles: !packet.hideParticles
-	}));
-	ClientSocket.on("CPacketRemoveEntityEffect", packet => client.write('remove_entity_effect', {
-		entityId: packet.id == clientId ? mcClientId : packet.id,
-		effectId: packet.effectId
-	}));
-	ClientSocket.on("CPacketEntityAttach", packet => client.write('attach_entity', {
-		entityId: packet.entity == clientId ? clientId : packet.entity,
-		vehicleId: packet.vehicle == clientId ? clientId : packet.vehicleId,
-		leash: packet.leash == 0
-	}));
-	ClientSocket.on("CPacketTimeUpdate", packet => client.write('update_time', {
-		age: [0, packet.totalTime],
-		time: [0, packet.worldTime]
-	}));
+	Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
 
 	ClientSocket.connect();
 }
 
 server.on('playerJoin', async function(client) {
 	if (connected) {
-		client.end("A player is already logged in!");
+		client.end('A player is already logged in!');
 		return;
 	}
 
-	client.on("end", function() {
+	client.on('end', function() {
 		if (ClientSocket.socket) ClientSocket.disconnect();
-		connected = false;
-		disconnect();
+		cleanup();
 	});
 
-	// MINECRAFT SERVER
-	client.on('flying', ({ onGround } = {}) => {
-		if (clientId < 0) return;
-		sendActions(client);
-		ClientSocket.sendPacket(new SPacketPlayerPosLook({onGround: onGround}));
-		sendAbilities();
-	});
-	client.on('position', ({ x, y, z, onGround } = {}) => {
-		if (clientId < 0) return;
-		lPosition = {x: x, y: y, z: z};
-		sendActions(client);
-		ClientSocket.sendPacket(new SPacketPlayerPosLook({
-			pos: {
-				x: x,
-				y: y,
-				z: z
-			},
-			onGround: onGround
-		}));
-		sendAbilities();
-	});
-	client.on('look', ({ yaw, pitch, onGround } = {}) => {
-		if (clientId < 0) return;
-		sendActions(client);
-		ClientSocket.sendPacket(new SPacketPlayerPosLook({
-			yaw: ((yaw * -1) - 180) * DEG2RAD,
-			pitch: (pitch * -1) * DEG2RAD,
-			onGround: onGround
-		}));
-		sendAbilities();
-	});
-	client.on('position_look', ({ x, y, z, onGround, yaw, pitch } = {}) => {
-		if (clientId < 0) return;
-		lPosition = {x: x, y: y, z: z};
-		sendActions(client);
-		ClientSocket.sendPacket(new SPacketPlayerPosLook({
-			pos: {
-				x: x,
-				y: y,
-				z: z
-			},
-			yaw: ((yaw * -1) - 180) * DEG2RAD,
-			pitch: (pitch * -1) * DEG2RAD,
-			onGround: onGround
-		}));
-		sendAbilities();
-	});
-	client.on('steer_vehicle', ({ sideways, forward, jump } = {}) => {
-		ClientSocket.sendPacket(new SPacketInput({
-			strafe: sideways,
-			forward: forward,
-			jump: (jump & 1) == 1,
-			sneak: (jump & 2) == 1
-		}));
-	});
-	client.on('chat', packet => {
-		const msg = packet.message.toLocaleLowerCase()
-		if (msg.startsWith("/queue") || msg.startsWith("/play")) {
-			connect(client, true, msg.split(" ")[1]);
-			return;
-		} else if (msg.startsWith("/login")) {
-			fs.writeFile('./login.token', packet.message.split(" ")[1] ?? "", (err) => {
-				if (err) {
-					client.write('chat', {message: JSON.stringify({text: translateText('\\red\\Failed to save file!' + err.message)})});
-					throw err;
-				}
-				client.write('chat', {message: JSON.stringify({text: translateText('\\green\\Successfully logged in! Rejoin the game.')})});
-			});
-			return;
-		} else if (msg.startsWith("/join")) {
-			connect(client, true, undefined, msg.split(" ")[1] ?? "");
-			return;
-		} else if (msg.startsWith('/resync')) {
-			if (lastTeleport) {
-				client.write('position', {
-					x: lastTeleport.x,
-					y: lastTeleport.y,
-					z: lastTeleport.z,
-					yaw: (((lastTeleport.yaw * -1) * RAD2DEG) - 180),
-					pitch: (lastTeleport.pitch * -1) * RAD2DEG,
-					flags: 0x00
-				});
-				client.write('chat', {message: JSON.stringify({text: translateText('\\green\\Resynced!')})});
-			}
-			return;
-		}
-		ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
-	});
-	client.on('tab_complete', packet => {
-		if ((packet.text.startsWith("/queue") || packet.text.startsWith("/play")) && packet.text.indexOf(" ") != -1) {
-			const split = packet.text.split(" ")[1].toLocaleLowerCase();
-			client.write('tab_complete', {
-				matches: [
-					"skywars", "eggwars",
-					"spleef", "survival", "creative",
-					"duels_bridge", "blockhunt",
-					"parkour", "oitq",
-					"kitpvp", "blitzbuild", "murder",
-					"pvp"
-				].filter((str) => str.substring(0, split.length) == split)
-			});
-			return;
-		}
-		ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}));
-	});
-	client.on('update_sign', packet => ClientSocket.sendPacket(new SPacketUpdateSign({
-		pos: new PBBlockPos({
-			x: packet.location.x,
-			y: packet.location.y,
-			z: packet.location.z
-		}),
-		lines: [packet.text1, packet.text2, packet.text3, packet.text4]
-	})));
-	client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
-	client.on('arm_animation', _ => {
-		ClientSocket.sendPacket(new SPacketClick({}));
-		lStates[0] = Date.now() + 300;
-	});
-	client.on('entity_action', packet => {
-		switch (packet.actionId) {
-			case 0:
-				lStates[2] = true;
-				break;
-			case 1:
-				lStates[2] = false;
-				break;
-			case 2:
-				ClientSocket.sendPacket(new SPacketEntityAction({
-					id: clientId,
-					stopSleeping: true
-				}));
-				break;
-			case 3:
-				lStates[1] = true;
-				break;
-			case 4:
-				lStates[1] = false;
-				break;
-		}
-	});
-	client.on('use_entity', packet => {
-		if (packet.target != undefined && entities[packet.target] && lPosition) {
-			const newPos = clampToBox(lPosition, entities[packet.target].pos);
-			ClientSocket.sendPacket(new SPacketUseEntity({
-				id: packet.target,
-				action: packet.mouse,
-				hitVec: new PBVector3({
-					x: newPos[0],
-					y: newPos[1],
-					z: newPos[2]
-				})
-			}));
-		}
-	});
-	client.on('block_place', packet => {
-		if (packet.direction == -1) {
-			ClientSocket.sendPacket(new SPacketUseItem);
-		} else {
-			ClientSocket.sendPacket(new SPacketPlaceBlock({
-				positionIn: new PBBlockPos({
-					x: packet.location.x,
-					y: packet.location.y,
-					z: packet.location.z
-				}),
-				side: packet.direction,
-				hitX: packet.cursorX,
-				hitY: packet.cursorY,
-				hitZ: packet.cursorZ,
-			}));
-		}
-		ignoreInventory = true;
-	});
-	client.on('block_dig', packet => {
-		const location = new PBBlockPos({
-			x: packet.location.x,
-			y: packet.location.y,
-			z: packet.location.z
-		});
-		switch (packet.status) {
-			case 2:
-				ClientSocket.sendPacket(new SPacketBreakBlock({location: location, start: false}));
-				break;
-			case 0:
-				ClientSocket.sendPacket(new SPacketClick({location: location}));
-				ClientSocket.sendPacket(new SPacketBreakBlock({location: location, start: true}));
-				break;
-		}
-		ClientSocket.sendPacket(new SPacketPlayerAction({
-			position: location,
-			facing: packet.face,
-			action: packet.status
-		}));
-	});
-	client.on('client_command', packet => {
-		if (packet.payload == 0) {
-			ClientSocket.sendPacket(new SPacketRespawn$1);
-		}
-	});
-	client.on('window_click', packet => {
-		let slot = Number.parseInt(packet.slot) - 5;
-		if (slot < 4) slot = 3 - slot;
-		if (packet.windowId != 0) slot = Number.parseInt(packet.slot);
-		if (packet.windowId == 255) {
-			const gui = GUIS[openShop];
-			if (gui) gui.command(packet.item, ClientSocket, client, gui);
-			return;
-		}
-		ClientSocket.sendPacket(new SPacketClickWindow({
-			windowId: packet.windowId,
-			slotId: slot,
-			button: packet.mouseButton,
-			mode: packet.mode,
-			itemStack: translateItemBack(packet.item),
-			transactionId: packet.action
-		}));
-	});
-	client.on('keep_alive', packet => {
-		if (packet.keepAliveId > 0) ClientSocket.sendPacket(new SPacketPing({time: BigInt(Date.now())}));
-	});
-	client.on('transaction', packet => {
-		ClientSocket.sendPacket(new SPacketConfirmTransaction({
-			windowId: packet.windowId,
-			actionNumber: packet.action,
-			accepted: packet.accepted
-		}));
-	});
-	client.on('close_window', packet => ClientSocket.sendPacket(new SPacketCloseWindow({windowId: packet.windowId == 255 ? 0 : packet.windowId})));
+	Object.values(handlers).forEach((handler) => handler.minecraft(client));
 
 	await connect(client);
 	connected = !client.ended;
 });
 
+Object.values(handlers).forEach((handler) => handler.obtainHandlers(handlers, connect));
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');

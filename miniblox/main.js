@@ -2,7 +2,7 @@ const io = require("socket.io-client");
 const brotli = require("brotli");
 const { Decoder, protocol } = require("socket.io-msgpack-parser");
 const { encode, decode } = require("@msgpack/msgpack");
-const { Message, proto2, proto3 } = require("./proto.js");
+const { Message, proto2, proto3 } = require("./types/proto.js");
 
 var yT = Object.defineProperty;
 var xT = (j,_,$)=>_ in j ? yT(j, _, {

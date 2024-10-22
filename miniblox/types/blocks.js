@@ -252,4 +252,4 @@ BLOCK_ID[291] = mcData.blocksByName.beacon.id;
 
 console.log('\x1b[32m[*] Loaded blocks in', (Math.floor((performance.now() - startTime) * 100) / 100) + 's\x1b[0m');
 
-module.exports = {BLOCKS, BLOCK_ID};
+module.exports = { BLOCKS, BLOCK_ID };
