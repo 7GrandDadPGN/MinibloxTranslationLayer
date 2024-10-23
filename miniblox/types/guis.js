@@ -41,8 +41,7 @@ const replacementNames = {
 }
 
 function updateGui(gui, client) {
-	const itemCount = Math.ceil(gui.items.length / 9) * 9;
-	const contents = Array(itemCount).fill({blockId: -1});
+	const contents = Array((Math.ceil(gui.items.length / 9) * 9) + 36).fill({blockId: -1});
 	for (let i = 0; i < gui.items.length; i++) {
 		contents[i] = gui.items[i];
 	}

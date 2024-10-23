@@ -141,10 +141,10 @@ const self = class EntityHandler extends Handler {
 		}));
 		this.local.lastState = newState;
 	}
-	abilities() {
+	abilities(movement) {
 		ClientSocket.sendPacket(new SPacketInput({
 			strafe: 0,
-			forward: 0,
+			forward: movement ? 0.98 : 0,
 			jump: false,
 			sneak: false
 		}));
@@ -523,7 +523,7 @@ const self = class EntityHandler extends Handler {
 				pos: this.local.pos,
 				onGround: onGround
 			}));
-			this.abilities();
+			this.abilities(true);
 		});
 		client.on('look', ({ yaw, pitch, onGround } = {}) => {
 			if (this.local.id < 0) return;
@@ -545,7 +545,7 @@ const self = class EntityHandler extends Handler {
 				pitch: (pitch * -1) * DEG2RAD,
 				onGround: onGround
 			}));
-			this.abilities();
+			this.abilities(true);
 		});
 		client.on('steer_vehicle', ({ sideways, forward, jump } = {}) => ClientSocket.sendPacket(new SPacketInput({
 			strafe: sideways,

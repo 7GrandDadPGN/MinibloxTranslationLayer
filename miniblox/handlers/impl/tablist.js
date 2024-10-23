@@ -101,7 +101,6 @@ const self = class TabListHandler extends Handler {
 		if (this.pingLoop) clearInterval(this.pingLoop);
 		if (this.analyticsLoop) clearInterval(this.analyticsLoop);
 		if (requeue) {
-			console.log('set!');
 			this.pingLoop = setInterval(() => {
 				client.write('keep_alive', {keepAliveId: Math.floor(Math.random() * 10000)});
 			}, 1000);
