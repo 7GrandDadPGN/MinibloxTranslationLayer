@@ -19,5 +19,5 @@ module.exports = {
     18: [mcData.entitiesByName.Creeper.id, true],
     19: [mcData.entitiesByName.Slime.id, true],
     20: [mcData.entitiesByName.Spider.id, true],
-    21: [mcData.entitiesByName.Boat.id, true]
+    21: [mcData.entitiesByName.Boat.id, false]
 };

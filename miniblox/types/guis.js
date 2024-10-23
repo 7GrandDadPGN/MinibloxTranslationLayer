@@ -76,7 +76,13 @@ module.exports = {
 	WINDOW_NAMES: {
 		'Chest': '{"translate":"container.chest"}',
 		'Large Chest': '{"translate":"container.chestDouble"}',
-		'Ender Chest': '{"translate":"container.enderchest"}'
+		'Ender Chest': '{"translate":"container.enderchest"}',
+		'Furnace': '{"translate":"container.furnace"}'
+	},
+	WINDOW_TYPES: {
+		chest: 'minecraft:chest',
+		container: 'minecraft:container',
+		furnace: 'minecraft:furnace'
 	},
 	GUIS: {
 		'KitPvP Kit': {

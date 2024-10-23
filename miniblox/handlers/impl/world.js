@@ -99,10 +99,8 @@ const self = class WorldHandler extends Handler {
 		ClientSocket.on('CPacketChunkData', packet => {
 			const chunk = this.createChunk(packet), chunkInd = [packet.x, packet.z].join();
 			const ind = this.queued.indexOf(chunkInd);
-			if (ind != -1) {
-				this.chunks.push(chunkInd);
-				this.queued.splice(ind, 1);
-			}
+			if (ind != -1) this.queued.splice(ind, 1);
+			this.chunks.push(chunkInd);
 			client.write('map_chunk', {
 				x: packet.x,
 				z: packet.z,
@@ -189,13 +187,18 @@ const self = class WorldHandler extends Handler {
 		client.on('block_dig', packet => {
 			const location = new PBBlockPos(packet.location);
 			switch (packet.status) {
-				case 2:
-					ClientSocket.sendPacket(new SPacketBreakBlock({location: location, start: false}));
-					break;
 				case 0:
+					this.breaking = true;
 					ClientSocket.sendPacket(new SPacketClick({location: location}));
 					ClientSocket.sendPacket(new SPacketBreakBlock({location: location, start: true}));
-					break;
+					return;
+				case 1:
+					this.breaking = false;
+					return;
+				case 2:
+					this.breaking = false;
+					ClientSocket.sendPacket(new SPacketBreakBlock({location: location, start: false}));
+					return;
 			}
 			ClientSocket.sendPacket(new SPacketPlayerAction({
 				position: location,
@@ -212,6 +215,7 @@ const self = class WorldHandler extends Handler {
 		client = requeue ? client : undefined;
 		this.chunks = [];
 		this.queued = [];
+		this.breaking = false;
 	}
 	obtainHandlers(handlers) {
 		entity = handlers.entity;

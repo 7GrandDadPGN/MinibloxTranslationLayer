@@ -1,5 +1,4 @@
 const mcData = require('minecraft-data')("1.8.9");
-const startTime = performance.now();
 let BLOCKS = {}, BLOCK_ID = {};
 
 function createStair(start, id) {
@@ -162,7 +161,14 @@ BLOCKS[3412] = mcData.blocksByName.diamond_block.id;
 BLOCKS[3413] = mcData.blocksByName.crafting_table.id;
 for (let i = 0; i < 8; i++) BLOCKS[3414 + i] = [mcData.blocksByName.wheat.id, i];
 for (let i = 0; i < 8; i++) BLOCKS[3422 + i] = [mcData.blocksByName.farmland.id, i];
-for (let i = 0; i < 8; i++) BLOCKS[3430 + i] = [mcData.blocksByName.furnace.id, 2 + (i % 4)];
+BLOCKS[3430] = [mcData.blocksByName.lit_furnace.id, 3];
+BLOCKS[3431] = [mcData.blocksByName.furnace.id, 3];
+BLOCKS[3432] = [mcData.blocksByName.lit_furnace.id, 4];
+BLOCKS[3433] = [mcData.blocksByName.furnace.id, 4];
+BLOCKS[3434] = [mcData.blocksByName.lit_furnace.id, 2];
+BLOCKS[3435] = [mcData.blocksByName.furnace.id, 2];
+BLOCKS[3436] = [mcData.blocksByName.lit_furnace.id, 5];
+BLOCKS[3437] = [mcData.blocksByName.furnace.id, 5];
 for (let i = 0; i < 192; i++) BLOCKS[3438 + i] = [mcData.blocksByName.standing_sign.id, i % 16];
 createDoor(3630, mcData.blocksByName.wooden_door.id);
 for (let i = 0; i < 8; i++) BLOCKS[3694 + i] = [mcData.blocksByName.ladder.id, 2];
@@ -346,7 +352,5 @@ BLOCK_ID[151] = mcData.blocksByName.mob_spawner.id;
 BLOCK_ID[153] = mcData.blocksByName.chest.id;
 BLOCK_ID[283] = mcData.blocksByName.ender_chest.id;
 BLOCK_ID[291] = mcData.blocksByName.beacon.id;
-
-console.log('\x1b[32m[*] Loaded blocks in', (Math.floor((performance.now() - startTime) * 100) / 100) + 's\x1b[0m');
 
 module.exports = { BLOCKS, BLOCK_ID };

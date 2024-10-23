@@ -1,19 +1,20 @@
 const Handler = require('./../handler.js');
 const { ClientSocket, SPacketClickWindow, SPacketConfirmTransaction, SPacketCloseWindow } = require('./../../main.js');
-const { GUIS, SLOTS, WINDOW_NAMES } = require('./../../types/guis.js');
+const { GUIS, SLOTS, WINDOW_NAMES, WINDOW_TYPES } = require('./../../types/guis.js');
 const { translateItem, translateItemBack } = require('./../../utils.js');
 let client, entity;
 
 const self = class GuiHandler extends Handler {
 	miniblox() {
 		ClientSocket.on('CPacketOpenWindow', packet => {
-			if (packet.guiID == 'chest' || packet.guiID == 'container') {
-				const translation = WINDOW_NAMES[packet.title];
+			if (WINDOW_TYPES[packet.guiID]) {
+				let translation = WINDOW_NAMES[packet.title];
+				if (packet.guiID == 'furnace') translation = WINDOW_NAMES.Furnace;
 				client.write('open_window', {
 					windowId: packet.windowId,
-					inventoryType: (translation && translation.indexOf('.chest') != -1) ? 'minecraft:chest' : 'minecraft:container',
-					windowTitle: translation ?? JSON.stringify({text: packet.title}),
-					slotCount: packet.size,
+					inventoryType: WINDOW_TYPES[packet.guiID],
+					windowTitle: translation ?? JSON.stringify({text: packet.title ?? 'None'}),
+					slotCount: packet.size ?? 0,
 					entityId: entity.local.mcId
 				});
 			}
@@ -57,6 +58,11 @@ const self = class GuiHandler extends Handler {
 				items: items
 			});
 		});
+		ClientSocket.on('CPacketWindowProperty', packet => client.write('craft_progress_bar', {
+			windowId: packet.windowId,
+			property: packet.varIndex,
+			value: packet.varValue
+		}));
 		ClientSocket.on('CPacketSetSlot', packet => client.write('set_slot', {
 			windowId: packet.windowId,
 			slot: packet.windowId == 0 && SLOTS[packet.slot] != undefined ? SLOTS[packet.slot] : packet.slot,

@@ -297,6 +297,15 @@ const self = class EntityHandler extends Handler {
 							value = watched.dataValueId == 10 ? 127 : convertToByte(watched.intValue);
 							if (watched.dataValueId == 0 && entity) value = entity.sneaking ? (value | 1 << 1) : (value & ~(1 << 1));
 						}
+						if (entity && entity.type == 21) {
+							if (watched.dataValueId == 17 || watched.dataValueId == 18) {
+								wType = watched.objectType;
+								value = watched.intValue;
+							} else if (watched.dataValueId == 19) {
+								wType = 3;
+								value = watched.floatValue ?? watched.intValue;
+							}
+						}
 						if (watched.dataValueId == 1) {
 							wType = 1;
 							value = watched.intValue;
@@ -429,7 +438,7 @@ const self = class EntityHandler extends Handler {
 		ClientSocket.on('CPacketEntityAttach', packet => client.write('attach_entity', {
 			entityId: this.convertId(packet.entity),
 			vehicleId: this.convertId(packet.vehicle),
-			leash: packet.leash == 0
+			leash: packet.leash != 0
 		}));
 
 		// LOCAL
@@ -555,7 +564,7 @@ const self = class EntityHandler extends Handler {
 		})));
 		client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
 		client.on('arm_animation', () => {
-			ClientSocket.sendPacket(new SPacketClick({}));
+			if (!world.breaking) ClientSocket.sendPacket(new SPacketClick({}));
 			this.local.state[0] = Date.now() + 300;
 		});
 		client.on('entity_action', packet => {
