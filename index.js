@@ -10,7 +10,7 @@ const server = mc.createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
-const VERSION = '3.37.1';
+const VERSION = '3.37.7';
 const GAMEMODES = require('./miniblox/types/gamemodes.js');
 let connected, skipKick = Date.now();
 
@@ -75,6 +75,7 @@ async function connect(client, requeue, gamemode, code) {
 			levelType: 'FLAT'
 		});
 	}
+	cleanup(true);
 
 	let fetched = await queue(gamemode, code);
 	if (!fetched.ok) {
@@ -105,7 +106,6 @@ async function connect(client, requeue, gamemode, code) {
 		}));
 	});
 	ClientSocket.once('CPacketJoinGame', packet => {
-		cleanup(true);
 		if (!packet.canConnect) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;

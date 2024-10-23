@@ -139,7 +139,7 @@ const self = class WorldHandler extends Handler {
 		}));
 		ClientSocket.on('CPacketSignEditorOpen', packet => client.write('open_sign_entity', {location: packet.signPosition}));
 		ClientSocket.on('CPacketSoundEffect', packet => {
-			if (!packet.location) packet.location = {x: lPosition.x * 8, y: lPosition.y * 8, z: lPosition.z * 8};
+			if (!packet.location) packet.location = {x: entity.local.pos.x * 8, y: entity.local.pos.y * 8, z: entity.local.pos.z * 8};
 
 			client.write('named_sound_effect', {
 				soundName: packet.sound,

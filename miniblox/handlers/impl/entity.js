@@ -142,6 +142,12 @@ const self = class EntityHandler extends Handler {
 		this.local.lastState = newState;
 	}
 	abilities() {
+		ClientSocket.sendPacket(new SPacketInput({
+			strafe: 0,
+			forward: 0,
+			jump: false,
+			sneak: false
+		}));
 		if (this.local.flying == false) return;
 		ClientSocket.sendPacket(new SPacketPlayerAbilities({isFlying: false}));
 		this.local.flying = false;
@@ -181,13 +187,14 @@ const self = class EntityHandler extends Handler {
 				delete this.gamemodes[packet.id];
 				this.local.id = packet.id;
 				this.local.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
+				this.teleport = this.local.pos;
 				client.write('position', {
 					x: packet.pos.x,
 					y: packet.pos.y,
 					z: packet.pos.z,
 					yaw: yaw,
 					pitch: pitch,
-					flags: 0x00
+					flags: 0
 				});
 			} else {
 				const entity = this.entities[packet.id];
@@ -428,6 +435,7 @@ const self = class EntityHandler extends Handler {
 		// LOCAL
 		ClientSocket.on('CPacketPlayerPosition', packet => {
 			this.local.pos = {x: packet.x, y: packet.y, z: packet.z};
+			this.teleport = this.local.pos;
 			client.write('position', {
 				x: packet.x,
 				y: packet.y,
@@ -443,15 +451,15 @@ const self = class EntityHandler extends Handler {
 				return
 			}
 
-			this.teleport = packet;
 			this.local.pos = {x: packet.x, y: packet.y, z: packet.z};
+			this.teleport = this.local.pos;
 			client.write('position', {
 				x: packet.x,
 				y: packet.y,
 				z: packet.z,
 				yaw: (((packet.yaw * -1) * RAD2DEG) - 180),
 				pitch: (packet.pitch * -1) * RAD2DEG,
-				flags: 0x00
+				flags: 0
 			});
 		});
 		ClientSocket.on('CPacketRespawn', packet => {
@@ -482,7 +490,7 @@ const self = class EntityHandler extends Handler {
 				} else {
 					this.gamemodes[packet.id] = GAMEMODES[packet.mode ?? 'survival'];
 					if (tablist.entries[packet.id]) {
-						tablist.tabs[packet.id].checks.gamemode = this.gamemodes[packet.id];
+						tablist.tabs[packet.id].gamemode = this.gamemodes[packet.id];
 						client.write('player_info', {
 							action: 1,
 							data: [{UUID: tablist.entries[packet.id], gamemode: this.gamemodes[packet.id]}]

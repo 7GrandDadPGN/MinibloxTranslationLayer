@@ -68,9 +68,9 @@ const self = class ChatHandler extends Handler {
 						x: entity.teleport.x,
 						y: entity.teleport.y,
 						z: entity.teleport.z,
-						yaw: (((entity.teleport.yaw * -1) * RAD2DEG) - 180),
-						pitch: (entity.teleport.pitch * -1) * RAD2DEG,
-						flags: 0x00
+						yaw: 0,
+						pitch: 0,
+						flags: 24
 					});
 					client.write('chat', {message: JSON.stringify({text: translateText('\\green\\Resynced!')})});
 				}
