@@ -26,15 +26,19 @@ const self = class WorldHandler extends Handler {
 		chunk.load(lightData);
 		for (const cell of packet.cells) {
 			const array = new BitArray(CELL_VOLUME, cell.bitsPerEntry, cell.bitArray);
-			if (!array || cell.palette.length <= 0) continue;
+			if (!array) continue;
 			for (let x = 0; x < 16; x++) {
 				for (let z = 0; z < 16; z++) {
 					for (let y = 0; y < 16; y++) {
 						const offset = array.get(getBlockIndex(x, y, z));
 						if (offset == 0) continue;
 						const blockdata = BLOCKS[cell.palette[offset]] ?? BLOCKS[9], vec = new Vec3(x, cell.y + y, z);
-						chunk.setBlockType(vec, typeof blockdata == 'number' ? blockdata : blockdata[0]);
-						chunk.setBlockData(vec, typeof blockdata == 'number' ? 0 : blockdata[1]);
+						if (typeof blockdata == 'number') {
+							chunk.setBlockType(vec, blockdata);
+						} else {
+							chunk.setBlockType(vec, blockdata[0]);
+							chunk.setBlockData(vec, blockdata[1]);
+						}
 					}
 				}
 			}
@@ -156,10 +160,10 @@ const self = class WorldHandler extends Handler {
 		}));
 		ClientSocket.on('CPacketUpdateSign', packet => client.write('update_sign', {
 			location: packet.pos,
-			text1: packet.lines[0] ?? '',
-			text2: packet.lines[1] ?? '',
-			text3: packet.lines[2] ?? '',
-			text4: packet.lines[3] ?? ''
+			text1: JSON.stringify({text: packet.lines[0] ?? ''}),
+			text2: JSON.stringify({text: packet.lines[1] ?? ''}),
+			text3: JSON.stringify({text: packet.lines[2] ?? ''}),
+			text4: JSON.stringify({text: packet.lines[3] ?? ''})
 		}));
 		ClientSocket.on('CPacketUseBed', packet => client.write('bed', {
 			entityId: packet.id == clientId ? mcClientId : packet.id,
