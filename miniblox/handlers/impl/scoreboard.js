@@ -5,16 +5,18 @@ const SKINS = require('./../../types/skins.js');
 let client;
 
 const self = class TabListHandler extends Handler {
+	clear() {
+		if (this.score.length > 0) {
+			client.write('scoreboard_objective', {
+				name: 'scoreboard',
+				action: 1
+			});
+			this.score = [];
+		}
+	}
 	miniblox() {
 		ClientSocket.on('CPacketScoreboard', packet => {
-			if (this.score.length > 0) {
-				client.write('scoreboard_objective', {
-					name: 'scoreboard',
-					action: 1
-				});
-				this.score = [];
-			}
-
+			this.clear();
 			client.write('scoreboard_objective', {
 				name: 'scoreboard',
 				action: 0,
@@ -65,12 +67,7 @@ const self = class TabListHandler extends Handler {
 	}
 	cleanup(requeue) {
 		client = requeue ? client : undefined;
-		if (client) {
-			client.write('scoreboard_objective', {
-				name: 'scoreboard',
-				action: 1
-			});
-		}
+		if (client) this.clear();
 		this.score = [];
 	}
 };
