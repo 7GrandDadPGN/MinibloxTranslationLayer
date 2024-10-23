@@ -1,7 +1,7 @@
 const Handler = require('./../handler.js');
 const { ClientSocket, SPacketMessage, SPacketTabComplete$1 } = require('./../../main.js');
 const { translateText } = require('./../../utils.js');
-const DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
+const fs = require('node:fs');
 let client, entity, connect;
 
 const self = class ChatHandler extends Handler {
