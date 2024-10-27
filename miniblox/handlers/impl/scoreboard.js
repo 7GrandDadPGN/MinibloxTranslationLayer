@@ -20,7 +20,7 @@ const self = class TabListHandler extends Handler {
 			client.write('scoreboard_objective', {
 				name: 'scoreboard',
 				action: 0,
-				displayText: translateText(packet.title),
+				displayText: translateText(packet.title).slice(0, 40),
 				type: 'INTEGER'
 			});
 			client.write('scoreboard_display_objective', {
@@ -34,8 +34,8 @@ const self = class TabListHandler extends Handler {
 
 			let index = 0;
 			for (const line of packet.content) {
-				const name = translateText(line.columns.join(' '));
-				this.score.push(name.slice(0, 40));
+				const name = translateText(line.columns.join(' ')).slice(0, 40);
+				this.score.push(name);
 				client.write('scoreboard_score', {
 					scoreName: 'scoreboard',
 					itemName: name,
@@ -47,7 +47,7 @@ const self = class TabListHandler extends Handler {
 		});
 		ClientSocket.on('CPacketUpdateScoreboard', packet => {
 			if (!this.score[packet.index]) return;
-			const name = translateText(packet.columns.join(' '));
+			const name = translateText(packet.columns.join(' ')).slice(0, 40);
 			client.write('scoreboard_score', {
 				scoreName: 'scoreboard',
 				itemName: this.score[packet.index],
