@@ -144,7 +144,7 @@ const self = class EntityHandler extends Handler {
 	abilities(movement) {
 		ClientSocket.sendPacket(new SPacketInput({
 			strafe: 0,
-			forward: movement ? 0.98 : 0,
+			forward: movement ? -0.98 : 0,
 			jump: false,
 			sneak: false
 		}));

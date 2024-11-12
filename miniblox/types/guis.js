@@ -207,8 +207,10 @@ module.exports = {
 				if (item.nbtData) {
 					const itemName = item.nbtData.value.display.value.Name.value;
 					if (itemName) {
-						ClientSocket.sendPacket(new SPacketMessage({text: '/team ' + itemName.toLocaleLowerCase().split(' ')[0]}));
-						updateGui(gui, client);
+						const team = itemName.toLocaleLowerCase().split(' ')[0];
+						if (team != "random") ClientSocket.sendPacket(new SPacketMessage({text: '/team ' + team}));
+						ClientSocket.sendPacket(new SPacketCloseWindow({windowId: 0}));
+						client.write('close_window', {windowId: 255});
 					}
 				}
 			},
