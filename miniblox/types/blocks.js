@@ -1,6 +1,21 @@
 const mcData = require('minecraft-data')("1.8.9");
-let BLOCKS = {}, BLOCK_ID = {};
+/**
+ * @type {Map<number, number | [number, number]>}
+ */
+let BLOCKS = {},
+	/**
+	 * The IDs for some blocks.
+	 * The key is the Miniblox block ID and the value is the Minecraft block ID.
+	 * @type {Map<number, number>}
+	 */
+	BLOCK_ID = {};
 
+/**
+ * Populates the BLOCKS object with a sequence of block IDs to create a stair pattern.
+ * 
+ * @param {number} start - The starting index for the stair pattern in the BLOCKS object.
+ * @param {number} id - The block ID to be used for the stair pattern.
+ */
 function createStair(start, id) {
 	for (let i = 0; i < 80; i++) BLOCKS[start + i] = id;
 	BLOCKS[start + 1] = [id, 6];
@@ -13,12 +28,25 @@ function createStair(start, id) {
 	BLOCKS[start + 71] = id;
 }
 
+/**
+ * Populates the BLOCKS object with a sequence of block IDs to create a slab pattern.
+ * 
+ * @param {number} start - The starting index for the slab pattern in the BLOCKS object.
+ * @param {number} id - The block ID to be used for the slab pattern.
+ * @param {number|Array<number>} enddata - The ID of the uppermost block in the slab, or an array with two elements, where the first is the block ID and the second is the metadata.
+ */
 function createSlab(start, id, enddata) {
 	for (let i = 0; i < 6; i++) BLOCKS[start + i] = id;
 	BLOCKS[start + 1] = [id, 8];
 	BLOCKS[start + 5] = enddata;
 }
 
+/**
+ * Populates the BLOCKS object with a sequence of block IDs to create a button pattern.
+ * 
+ * @param {number} offset - The starting index for the button pattern in the BLOCKS object.
+ * @param {number} id - The block ID to be used for the button pattern.
+ */
 function createButton(offset, id) {
 	for (let i = 0; i < 8; i += 2) {
 		BLOCKS[offset + i] = [id, 13];
@@ -38,6 +66,12 @@ function createButton(offset, id) {
 	BLOCKS[offset + 15] = [id, 1];
 }
 
+/**
+ * Populates the BLOCKS object with a sequence of block IDs to create a door pattern.
+ * 
+ * @param {number} offset - The starting index for the door pattern in the BLOCKS object.
+ * @param {number} id - The block ID to be used for the door pattern.
+ */
 function createDoor(offset, id) {
 	for (let i = 0; i < 64; i += 16) {
 		for (let i2 = 0; i2 < 8; i2++) BLOCKS[offset + i + i2] = [id, 8 + Math.floor(i2 / 4)];
@@ -45,6 +79,12 @@ function createDoor(offset, id) {
 	}
 }
 
+/**
+ * Populates the BLOCKS object with a sequence of block IDs to create a trapdoor pattern.
+ * 
+ * @param {number} offset - The starting index for the trapdoor pattern in the BLOCKS object.
+ * @param {number} id - The block ID to be used for the trapdoor pattern.
+ */
 function createTrapdoor(offset, id) {
 	BLOCKS[offset + 3] = [id, 13];
 	BLOCKS[offset + 7] = [id, 9];
@@ -64,6 +104,12 @@ function createTrapdoor(offset, id) {
 	BLOCKS[offset + 63] = [id, 3];
 }
 
+/**
+ * Populates the BLOCKS object with a sequence of block IDs to create a torch pattern.
+ * 
+ * @param {number} offset - The starting index for the torch pattern in the BLOCKS object.
+ * @param {number} id - The block ID to be used for the torch pattern.
+ */
 function createTorch(offset, id) {
 	BLOCKS[offset] = [id, 5];
 	BLOCKS[offset + 1] = [id, 3];
