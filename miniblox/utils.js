@@ -2,12 +2,6 @@ const { PBItemStack } = require('./main.js');
 const BLOCKS = require('./types/blocks.js');
 const ITEMS = require('./types/items.js');
 const { COLOR_PALETTE, COLOR_REGEX, COLOR_CODES, LEVEL_TO_COLOUR } = require('./types/colors.js');
-/**
- * @type {import("prismarine-chunk").PCChunk}
- */
-const Chunk = require('prismarine-chunk')('1.8.9');
-const Vec3 = require('vec3');
-const DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI, CELL_VOLUME = 16 * 16 * 16;
 
 /**
  * 
