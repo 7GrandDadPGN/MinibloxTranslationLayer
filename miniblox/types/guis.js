@@ -2,6 +2,18 @@ const { SPacketMessage, SPacketCloseWindow } = require('./../main.js');
 const mcData = require('minecraft-data')("1.8.9");
 
 // thanks again roblox thot :money:
+
+/**
+ * Creates a structured item object for Minecraft with given attributes.
+ *
+ * @param {Object} item - The item details.
+ * @param {string} item.item - The name of the item.
+ * @param {number} [item.itemDamage=0] - The damage value of the item.
+ * @param {string} [item.name] - The custom display name for the item.
+ * @param {Array<string>} [item.lore] - The lore or description lines for the item.
+ * @returns {Object} An object representing the item with blockId, itemCount, itemDamage, and nbtData properties.
+ * If the item is not found, returns an object with blockId set to -1.
+ */
 function make_item(item) {
 	const realItem = mcData.itemsByName[item.item];
 	if (!realItem) return {blockId: -1};

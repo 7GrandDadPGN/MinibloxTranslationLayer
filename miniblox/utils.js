@@ -1,7 +1,14 @@
 const { PBItemStack } = require('./main.js');
+const BLOCKS = require('./types/blocks.js');
 const ITEMS = require('./types/items.js');
 const { COLOR_PALETTE, COLOR_REGEX, COLOR_CODES, LEVEL_TO_COLOUR } = require('./types/colors.js');
 
+/**
+ * 
+ * @param {string} color1 Hex color #1
+ * @param {string} color2 Hex color #2
+ * @returns {number} The distance between {@link color1} and {@link color2} as a number.
+ */
 function colorDistance(color1, color2) {
 	const rgb1 = hexToRgb(color1);
 	const rgb2 = hexToRgb(color2);
@@ -12,6 +19,11 @@ function colorDistance(color1, color2) {
 	);
 }
 
+/**
+ * 
+ * @param {string} hex The hex value to return the closest Minecraft color of.
+ * @returns {string} The closest Minecraft color to {@link hex}.
+ */
 function findClosestColor(hex) {
 	let closestColor = null;
 	let closestDistance = Infinity;
@@ -24,7 +36,11 @@ function findClosestColor(hex) {
 	}
 	return COLOR_PALETTE[closestColor];
 }
-
+/**
+ * 
+ * @param {string} hex The hex color code.
+ * @returns {{r: number, g: number, b: number}} {@link hex} in RGB format.
+ */
 function hexToRgb(hex) {
 	const bigint = parseInt(hex.slice(1), 16);
 	return {
@@ -34,6 +50,11 @@ function hexToRgb(hex) {
 	};
 }
 
+/**
+ * Translates a Miniblox item into a Minecraft item.
+ * @param {typeof PBItemStack} item The Miniblox item to translate to a minecraft item.
+ * @returns {Item} {@link item} as a Minecraft item.
+ */
 function translateItem(item) {
 	let data;
 	if (item.data) {
@@ -68,6 +89,11 @@ function translateItem(item) {
 	} : {blockId: -1}
 }
 
+/**
+ * Converts {@link item} from a Minecraft item to a Miniblox item.
+ * @param {*} item The Minecraft item.
+ * @returns {@link item} as a Miniblox item.
+ */
 function translateItemBack(item) {
 	let itemId;
 	let data = void 0;
@@ -96,6 +122,11 @@ function translateItemBack(item) {
 	}) : new PBItemStack({present: false});
 }
 
+/**
+ * Translate {@link text} from Miniblox-formatted text to Minecraft-formatted text.
+ * @param {string} text Miniblox text
+ * @returns {string} The Minecraft version of {@link text}.
+ */
 function translateText(text) {
 	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, color);
 	return text.replaceAll(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
