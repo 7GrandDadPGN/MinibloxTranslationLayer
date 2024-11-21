@@ -1,4 +1,4 @@
-const { PBItemStack, BitArray } = require('./main.js');
+const { PBItemStack } = require('./main.js');
 const BLOCKS = require('./types/blocks.js');
 const ITEMS = require('./types/items.js');
 const { COLOR_PALETTE, COLOR_REGEX, COLOR_CODES, LEVEL_TO_COLOUR } = require('./types/colors.js');
