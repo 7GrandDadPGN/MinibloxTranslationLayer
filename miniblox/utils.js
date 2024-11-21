@@ -169,76 +169,6 @@ function colorDistance(color1, color2) {
 }
 
 /**
- * Converts {@link num} to a byte.
- * @param {number} num The number to convert to a byte.
- * @returns {number} The number as a byte.
- */
-function convertToByte(num) {
-	num &= 0xFF;
-	num = num > 127 ? num - 256 : num;
-	return num;
-}
-
-/**
- * Converts a radian angle into a Miniblox byte angle or whatever
- * @param {number} ang The angle in radians
- * @param {boolean} ignore Controls if the angle shouldn't be divided by 256 and multiplied by Math.PI & 2
- * @param {number} num a number (lol)
- * @returns 
- */
-function convertAngle(ang, ignore, num) {
-	if (!ignore) ang = ang / 256 * Math.PI * 2;
-	ang = (((ang * -1) * RAD2DEG) - (num != undefined ? num : 0)) * 256 / 360;
-	return convertToByte(ang);
-}
-
-function clampByte(byte) {
-	return Math.min(Math.max(byte, -128), 127);
-}
-
-function clampToBox(pos, box) {
-	return [Math.min(Math.max(pos.x, box.x - 0.3), box.x + 0.3), Math.min(Math.max(pos.y + 1.62, box.y), box.y + 1.8), Math.min(Math.max(pos.z, box.z - 0.3), box.z + 0.3)]
-}
-
-/**
- * Converts a Vector 3 position to a server position by dividing its `x`, `y`, and `z` by 32.
- * @param {import("vec3").Vec3} pos The position to convert to a server position
- * @returns {@link pos} as a server position (`x / 32`, `y / 32`, and `z / 32`)
- */
-function convertServerPos(pos) {
-	return {x: pos.x / 32, y: pos.y / 32, z: pos.z / 32};
-}
-
-/**
- * Converts a chunk packet to a Minecraft chunk.
- * @param {import("./main.js").CPacketChunkData} packet The chunk packet.
- * @returns {import("prismarine-chunk").PCChunk} The chunk, as a Minecraft chunk.
- */
-function createChunk(packet) {
-	const chunk = new Chunk();
-	for (const cell of packet.cells) {
-		const array = new BitArray(CELL_VOLUME, cell.bitsPerEntry, cell.bitArray);
-		if (!array) continue;
-		for (let x = 0; x < 16; x++) {
-			for (let z = 0; z < 16; z++) {
-				for (let skyY = 0; skyY < 256; skyY++) {
-					chunk.setSkyLight(new Vec3(x, skyY, z), 15);
-				}
-				for (let y = 0; y < 16; y++) {
-					const offset = array.get(getBlockIndex(x, y, z));
-					if (offset == 0 || cell.palette.length <= 0) continue;
-					const blockdata = BLOCKS[cell.palette[offset]] ?? BLOCKS[9];
-
-					chunk.setBlockType(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? blockdata : blockdata[0]);
-					chunk.setBlockData(new Vec3(x, cell.y + y, z), typeof blockdata == 'number' ? 0 : blockdata[1]);
-				}
-			}
-		}
-	}
-	return chunk;
-}
-
-/**
  * 
  * @param {string} hex The hex value to return the closest Minecraft color of.
  * @returns {string} The closest Minecraft color to {@link hex}.
@@ -255,18 +185,6 @@ function findClosestColor(hex) {
 	}
 	return COLOR_PALETTE[closestColor];
 }
-
-/**
- * Gets the block index at the provided X, Y, and Z.
- * @param {number} x
- * @param {number} y 
- * @param {number} z 
- * @returns {number} The block index.
- */
-function getBlockIndex(x, y, z) {
-	return (y & 15) << 8 | (z & 15) << 4 | x & 15
-}
-
 /**
  * 
  * @param {string} hex The hex color code.
@@ -363,4 +281,4 @@ function translateText(text) {
 	return text.replaceAll(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
 }
 
-module.exports = { convertToByte, convertAngle, clampByte, clampToBox, convertServerPos, createChunk, translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR };
+module.exports = { translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR };
