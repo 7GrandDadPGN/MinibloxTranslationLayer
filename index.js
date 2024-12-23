@@ -10,7 +10,7 @@ const server = mc.createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
-const VERSION = '3.37.10';
+const VERSION = '3.39.3';
 const GAMEMODES = require('./miniblox/types/gamemodes.js');
 let connected, skipKick = Date.now();
 
@@ -32,7 +32,7 @@ async function queue(gamemode, server) {
 				'content-type': 'application/json',
 				'pragma': 'no-cache',
 				'priority': 'u=1, i',
-				'sec-ch-ua': '"Microsoft Edge";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+				'sec-ch-ua': '"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
 				'sec-ch-ua-mobile': '?0',
 				'sec-ch-ua-platform': '"Windows"',
 				'sec-fetch-dest': 'empty',
@@ -40,7 +40,7 @@ async function queue(gamemode, server) {
 				'sec-fetch-site': 'cross-site',
 				'Referer': 'https://miniblox.io/',
 				'Referrer-Policy': 'strict-origin-when-cross-origin',
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0'
 			},
 			body: JSON.stringify({
 				clientVersion: VERSION,

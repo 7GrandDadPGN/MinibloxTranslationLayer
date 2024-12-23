@@ -419,7 +419,7 @@ const self = class EntityHandler extends Handler {
 			entityStatus: packet.entityStatus
 		}));
 		ClientSocket.on('CPacketEntityVelocity', packet => client.write('entity_velocity', {
-			entityId: this.convertId(packet.entityId),
+			entityId: this.convertId(packet.id),
 			velocityX: Math.max(Math.min(packet.motion.x * 8000, 32767), -32768),
 			velocityY: Math.max(Math.min(packet.motion.y * 8000, 32767), -32768),
 			velocityZ: Math.max(Math.min(packet.motion.z * 8000, 32767), -32768)
