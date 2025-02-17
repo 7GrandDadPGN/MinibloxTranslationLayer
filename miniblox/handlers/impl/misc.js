@@ -9,7 +9,10 @@ const self = class ChatHandler extends Handler {
 		ClientSocket.on('CPacketMessage', packet => {
 			if (packet.text) {
 				client.write('chat', {
-					message: JSON.stringify({extra: [translateText(packet.text)], text: ''}),
+					message: JSON.stringify({
+						extra: [translateText(packet.text)],
+						text: ''
+					}),
 					position: packet.id == undefined ? 1 : 0
 				});
 
