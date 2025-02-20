@@ -377,6 +377,25 @@ const self = class EntityHandler extends Handler {
 				if (packet.pos) {
 					const pos = entity.pos;
 					entity.pos = {x: pos.x + packet.pos.x, y: pos.y + packet.pos.y, z: pos.z + packet.pos.z};
+
+					if (clampByte(packet.pos.x) != packet.pos.x || clampByte(packet.pos.y) != packet.pos.y || clampByte(packet.pos.z) != packet.pos.z) {
+						client.write('entity_teleport', {
+							entityId: entity.id,
+							x: entity.pos.x,
+							y: entity.pos.y,
+							z: entity.pos.z,
+							yaw: entity.yaw,
+							pitch: entity.pitch,
+							onGround: packet.onGround
+						});
+
+						client.write('entity_head_rotation', {
+							entityId: entity.id,
+							headYaw: entity.yaw
+						});
+
+						return;
+					}
 				}
 			}
 
