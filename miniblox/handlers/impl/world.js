@@ -164,7 +164,7 @@ const self = class WorldHandler extends Handler {
 			text4: JSON.stringify({text: packet.lines[3] ?? ''})
 		}));
 		ClientSocket.on('CPacketUseBed', packet => client.write('bed', {
-			entityId: packet.id == clientId ? mcClientId : packet.id,
+			entityId: packet.id == entity.local.id ? mcClientId : packet.id,
 			location: packet.bedPos
 		}));
 	}
