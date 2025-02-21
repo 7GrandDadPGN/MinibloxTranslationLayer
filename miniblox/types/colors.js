@@ -14,6 +14,7 @@ module.exports = {
         "\\gray\\": "\u00a77",
         "\\grey\\": "\u00a77",
         "\\silver\\": "\u00a77",
+        "\\magenta\\": "\u00a7d",
         "\\blue\\": "\u00a79",
         "\\black\\": "\u00a70",
         "\\bold\\": "\u00a7l",
