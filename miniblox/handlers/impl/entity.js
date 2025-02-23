@@ -263,7 +263,12 @@ const self = class EntityHandler extends Handler {
 					animation: 0
 				});
 			}
-
+			if (entity && packet.fire != undefined) {
+				client.write("entity_status", {
+					entityId: packet.id,
+					entityStatus: packet.fire ? 2 : 0
+				});
+			}
 			if (entity && packet.sneak != undefined) {
 				entity.sneaking = packet.sneak;
 				entity.metadata[0].value = entity.sneaking ? (entity.metadata[0].value | 1 << 1) : (entity.metadata[0].value & ~(1 << 1));
