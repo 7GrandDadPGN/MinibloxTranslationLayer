@@ -1,3 +1,6 @@
+> [!WARNING]
+> The translation layer is no longer usable as of 02/24/2025, vector implemented a semi simulation anticheat that expects proper physics.
+
 # MinibloxTranslationLayer
 A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.
 
