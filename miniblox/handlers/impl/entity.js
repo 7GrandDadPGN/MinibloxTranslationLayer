@@ -1,5 +1,5 @@
 const Handler = require('./../handler.js');
-const { ClientSocket, SPacketPlayerPosLook, SPacketInput, SPacketEntityAction, SPacketPlayerAbilities, SPacketHeldItemChange, SPacketClick, SPacketRespawn$1, SPacketUseEntity, PBVector3 } = require('./../../main.js');
+const { ClientSocket, SPacketPlayerPosLook, SPacketPlayerInput, SPacketEntityAction, SPacketPlayerAbilities, SPacketHeldItemChange, SPacketClick, SPacketRespawn$1, SPacketUseEntity, PBVector3 } = require('./../../main.js');
 const ENTITIES = require('./../../types/entities.js');
 const GAMEMODES = require('./../../types/gamemodes.js');
 const { translateItem } = require('./../../utils.js');
@@ -142,12 +142,6 @@ const self = class EntityHandler extends Handler {
 		this.local.lastState = newState;
 	}
 	abilities(movement) {
-		ClientSocket.sendPacket(new SPacketInput({
-			strafe: 0,
-			forward: movement ? -0.98 : 0,
-			jump: false,
-			sneak: false
-		}));
 		if (this.local.flying == false) return;
 		ClientSocket.sendPacket(new SPacketPlayerAbilities({isFlying: false}));
 		this.local.flying = false;
@@ -490,6 +484,21 @@ const self = class EntityHandler extends Handler {
 				flags: 0
 			});
 		});
+		ClientSocket.on('CPacketPlayerReconciliation', packet => {
+			if (packet.reset) {
+				this.local.inputSequenceNumber = 0;
+				this.local.pos = {x: packet.x, y: packet.y, z: packet.z};
+				this.teleport = this.local.pos;
+				client.write('position', {
+					x: packet.x,
+					y: packet.y,
+					z: packet.z,
+					yaw: 0,
+					pitch: 0,
+					flags: 24
+				});
+			}
+		});
 		ClientSocket.on('CPacketRespawn', packet => {
 			if (packet.client) {
 				ClientSocket.sendPacket(new SPacketRespawn$1);
@@ -555,10 +564,12 @@ const self = class EntityHandler extends Handler {
 		});
 		client.on('look', ({ yaw, pitch, onGround } = {}) => {
 			if (this.local.id < 0) return;
+			this.local.yaw = ((yaw * -1) - 180) * DEG2RAD;
+			this.local.pitch = (pitch * -1) * DEG2RAD;
 			this.actions();
 			ClientSocket.sendPacket(new SPacketPlayerPosLook({
-				yaw: ((yaw * -1) - 180) * DEG2RAD,
-				pitch: (pitch * -1) * DEG2RAD,
+				yaw: this.local.yaw,
+				pitch: this.local.pitch,
 				onGround: onGround
 			}));
 			this.abilities();
@@ -566,21 +577,32 @@ const self = class EntityHandler extends Handler {
 		client.on('position_look', ({ x, y, z, onGround, yaw, pitch } = {}) => {
 			if (this.local.id < 0) return;
 			this.local.pos = {x: x, y: y, z: z};
+			this.local.yaw = ((yaw * -1) - 180) * DEG2RAD;
+			this.local.pitch = (pitch * -1) * DEG2RAD;
 			this.actions();
 			ClientSocket.sendPacket(new SPacketPlayerPosLook({
 				pos: this.local.pos,
-				yaw: ((yaw * -1) - 180) * DEG2RAD,
-				pitch: (pitch * -1) * DEG2RAD,
+				yaw: this.local.yaw,
+				pitch: this.local.pitch,
 				onGround: onGround
 			}));
 			this.abilities(true);
 		});
-		client.on('steer_vehicle', ({ sideways, forward, jump } = {}) => ClientSocket.sendPacket(new SPacketInput({
-			strafe: sideways,
-			forward: forward,
-			jump: (jump & 1) == 1,
-			sneak: (jump & 2) == 1
-		})));
+		client.on('steer_vehicle', ({ sideways, forward, jump } = {}) => {
+			this.local.inputSequenceNumber++;
+			ClientSocket.sendPacket(new SPacketPlayerInput({
+				sequenceNumber: this.local.inputSequenceNumber,
+				left: sideways > 0,
+				right: sideways < 0,
+				up: forward > 0,
+				down: forward < 0,
+				yaw: this.local.yaw,
+				pitch: this.local.pitch,
+				jump: (jump & 1) > 0,
+				sneak: (jump & 2) > 0,
+				sprint: this.local.state[1] ?? false
+			}));
+		});
 		client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
 		client.on('arm_animation', () => {
 			if (!world.breaking) ClientSocket.sendPacket(new SPacketClick({}));
@@ -631,6 +653,9 @@ const self = class EntityHandler extends Handler {
 		this.local = {
 			id: -1,
 			mcId: 99999,
+			inputSequenceNumber: 0,
+			yaw: 0,
+			pitch: 0,
 			pos: {x: 0, y: 0, z: 0},
 			state: [],
 			lastState: [],
