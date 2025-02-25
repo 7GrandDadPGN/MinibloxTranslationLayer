@@ -2,7 +2,7 @@ const Handler = require('./../handler.js');
 const { ClientSocket, SPacketMessage, SPacketTabComplete$1 } = require('./../../main.js');
 const { translateText } = require('./../../utils.js');
 const fs = require('node:fs');
-let client, entity, connect;
+let client, entity, connect, world;
 
 const self = class ChatHandler extends Handler {
 	miniblox(gameType) {
@@ -103,6 +103,9 @@ const self = class ChatHandler extends Handler {
 					});
 				}
 				return;
+			} else if (msg.startsWith('/reloadchunks')) {
+				world.chunks = [];
+				world.queued = [];
 			}
 			ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
 		});
@@ -130,6 +133,7 @@ const self = class ChatHandler extends Handler {
 	obtainHandlers(handlers, connectFunction) {
 		connect = connectFunction;
 		entity = handlers.entity;
+		world = handlers.world;
 	}
 };
 
