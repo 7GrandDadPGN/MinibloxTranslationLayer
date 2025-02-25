@@ -291,6 +291,8 @@ const CPacketChunkData = class extends Message {
 		ut(this, "z", 0);
 		ut(this, "cells", []);
 		ut(this, "tileEntities", []);
+		ut(this, "dimension", 0);
+		ut(this, "biomes", []);
 		proto3.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -329,6 +331,17 @@ ut(CPacketChunkData, "fields", proto3.util.newFieldList(()=>[{
 	name: "tileEntities",
 	kind: "message",
 	T: PBTileEntity,
+	repeated: !0
+}, {
+	no: 5,
+	name: "dimension",
+	kind: "scalar",
+	T: 5
+}, {
+	no: 6,
+	name: "biomes",
+	kind: "scalar",
+	T: 13,
 	repeated: !0
 }]));
 const PBCell = class extends Message {
@@ -1377,6 +1390,7 @@ const CPacketBlockUpdate = class extends Message {
 		ut(this, "x");
 		ut(this, "y");
 		ut(this, "z");
+		ut(this, "prerender");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -1415,6 +1429,12 @@ ut(CPacketBlockUpdate, "fields", proto2.util.newFieldList(()=>[{
 	name: "z",
 	kind: "scalar",
 	T: 17
+}, {
+	no: 5,
+	name: "prerender",
+	kind: "scalar",
+	T: 8,
+	opt: !0
 }]));
 const CPacketChangeServers = class extends Message {
 	constructor($) {
@@ -2063,6 +2083,7 @@ const CPacketServerInfo = class extends Message {
 		ut(this, "startTime");
 		ut(this, "playerPermissionEntries", []);
 		ut(this, "metadata");
+		ut(this, "commandBlocksEnabled");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -2151,6 +2172,12 @@ ut(CPacketServerInfo, "fields", proto2.util.newFieldList(()=>[{
 	name: "metadata",
 	kind: "scalar",
 	T: 9,
+	opt: !0
+}, {
+	no: 14,
+	name: "command_blocks_enabled",
+	kind: "scalar",
+	T: 8,
 	opt: !0
 }]));
 const PlayerPermissionEntry = class extends Message {
@@ -2868,6 +2895,71 @@ ut(CPacketPlayerPosition, "fields", proto2.util.newFieldList(()=>[{
 	name: "z",
 	kind: "scalar",
 	T: 2
+}]));
+const CPacketPlayerReconciliation = class CPacketPlayerReconciliation extends Message {
+	constructor($) {
+		super();
+		ut(this, "x");
+		ut(this, "y");
+		ut(this, "z");
+		ut(this, "yaw");
+		ut(this, "pitch");
+		ut(this, "lastProcessedInput");
+		ut(this, "reset");
+		proto2.util.initPartial($, this)
+	}
+	static fromBinary($, et) {
+		return new CPacketPlayerReconciliation().fromBinary($, et)
+	}
+	static fromJson($, et) {
+		return new CPacketPlayerReconciliation().fromJson($, et)
+	}
+	static fromJsonString($, et) {
+		return new CPacketPlayerReconciliation().fromJsonString($, et)
+	}
+	static equals($, et) {
+		return proto2.util.equals(CPacketPlayerReconciliation, $, et)
+	}
+};
+exports.CPacketPlayerReconciliation = CPacketPlayerReconciliation,
+ut(CPacketPlayerReconciliation, "runtime", proto2),
+ut(CPacketPlayerReconciliation, "typeName", "CPacketPlayerReconciliation"),
+ut(CPacketPlayerReconciliation, "fields", proto2.util.newFieldList(()=>[{
+	no: 1,
+	name: "x",
+	kind: "scalar",
+	T: 2
+}, {
+	no: 2,
+	name: "y",
+	kind: "scalar",
+	T: 2
+}, {
+	no: 3,
+	name: "z",
+	kind: "scalar",
+	T: 2
+}, {
+	no: 4,
+	name: "yaw",
+	kind: "scalar",
+	T: 2
+}, {
+	no: 5,
+	name: "pitch",
+	kind: "scalar",
+	T: 2
+}, {
+	no: 6,
+	name: "lastProcessedInput",
+	kind: "scalar",
+	T: 13
+}, {
+	no: 7,
+	name: "reset",
+	kind: "scalar",
+	T: 8,
+	opt: !0
 }]));
 const CPacketPong = class extends Message {
 	constructor($) {
@@ -4287,49 +4379,85 @@ ut(SPacketHeldItemChange, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 5
 }]));
-const SPacketInput = class extends Message {
+const SPacketPlayerInput = class extends Message {
 	constructor($) {
 		super();
-		ut(this, "strafe");
-		ut(this, "forward");
+		ut(this, "sequenceNumber");
+		ut(this, "left");
+		ut(this, "right");
+		ut(this, "up");
+		ut(this, "down");
+		ut(this, "yaw");
+		ut(this, "pitch");
 		ut(this, "jump");
 		ut(this, "sneak");
+		ut(this, "sprint");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
-		return new SPacketInput().fromBinary($, et)
+		return new SPacketPlayerInput().fromBinary($, et)
 	}
 	static fromJson($, et) {
-		return new SPacketInput().fromJson($, et)
+		return new SPacketPlayerInput().fromJson($, et)
 	}
 	static fromJsonString($, et) {
-		return new SPacketInput().fromJsonString($, et)
+		return new SPacketPlayerInput().fromJsonString($, et)
 	}
 	static equals($, et) {
-		return proto2.util.equals(SPacketInput, $, et)
+		return proto2.util.equals(SPacketPlayerInput, $, et)
 	}
 };
-exports.SPacketInput = SPacketInput,
-ut(SPacketInput, "runtime", proto2),
-ut(SPacketInput, "typeName", "SPacketInput"),
-ut(SPacketInput, "fields", proto2.util.newFieldList(()=>[{
+exports.SPacketPlayerInput = SPacketPlayerInput,
+ut(SPacketPlayerInput, "runtime", proto2),
+ut(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
+ut(SPacketPlayerInput, "fields", proto2.util.newFieldList(()=>[{
 	no: 1,
-	name: "strafe",
+	name: "sequenceNumber",
 	kind: "scalar",
-	T: 2
+	T: 13
 }, {
 	no: 2,
-	name: "forward",
+	name: "left",
 	kind: "scalar",
-	T: 2
+	T: 8
 }, {
 	no: 3,
-	name: "jump",
+	name: "right",
 	kind: "scalar",
 	T: 8
 }, {
 	no: 4,
+	name: "up",
+	kind: "scalar",
+	T: 8
+}, {
+	no: 5,
+	name: "down",
+	kind: "scalar",
+	T: 8
+}, {
+	no: 6,
+	name: "yaw",
+	kind: "scalar",
+	T: 2
+}, {
+	no: 7,
+	name: "pitch",
+	kind: "scalar",
+	T: 2
+}, {
+	no: 8,
+	name: "jump",
+	kind: "scalar",
+	T: 8
+}, {
+	no: 9,
 	name: "sneak",
+	kind: "scalar",
+	T: 8
+}, {
+	no: 10,
+	name: "sprint",
 	kind: "scalar",
 	T: 8
 }]));
@@ -5200,6 +5328,12 @@ ut(ClientBoundCombined_CPacket, "fields", proto2.util.newFieldList(()=>[{
 	kind: "message",
 	T: CPacketTimeUpdate,
 	oneof: "packet"
+}, {
+	no: 58,
+	name: "CPacketPlayerReconciliation",
+	kind: "message",
+	T: CPacketPlayerReconciliation,
+	oneof: "packet"
 }]));
 const SPacketEnchantItem = class extends Message {
 	constructor($) {
@@ -5333,6 +5467,7 @@ const CPACKET_MAP = {
 	CPacketPlayerList,
 	CPacketPlayerPosition,
 	CPacketPlayerPosLook,
+	CPacketPlayerReconciliation,
 	CPacketPong,
 	CPacketRespawn,
 	CPacketScoreboard,
@@ -5389,7 +5524,7 @@ const CPACKET_MAP = {
 	SPacketUseEntity,
 	SPacketUpdateCommandBlock,
 	SPacketQueueNext,
-	SPacketInput,
+	SPacketPlayerInput,
 	SPacketBreakBlock,
 	SPacketClick,
 	SPacketCraftItem,
