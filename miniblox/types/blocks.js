@@ -1,4 +1,4 @@
-const mcData = require('minecraft-data')("1.8.9");
+const mcData = (await import('minecraft-data')).default("1.8.9");
 let BLOCKS = {}, BLOCK_ID = {};
 
 function createStair(start, id) {
@@ -353,4 +353,5 @@ BLOCK_ID[153] = mcData.blocksByName.chest.id;
 BLOCK_ID[283] = mcData.blocksByName.ender_chest.id;
 BLOCK_ID[291] = mcData.blocksByName.beacon.id;
 
-module.exports = { BLOCKS, BLOCK_ID };
+export default BLOCKS;
+export { BLOCKS, BLOCK_ID };
