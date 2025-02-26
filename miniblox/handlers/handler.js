@@ -6,4 +6,4 @@ class Handler {
 	obtainHandlers(handler) {}
 }
 
-module.exports = Handler;
+export default Handler;
