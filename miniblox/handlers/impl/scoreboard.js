@@ -1,7 +1,7 @@
-const Handler = require('./../handler.js');
-const { ClientSocket } = require('./../../main.js');
-const { translateText } = require('./../../utils.js');
-const SKINS = require('./../../types/skins.js');
+import Handler from './../handler.js';
+import { ClientSocket } from './../../main.js';
+import { translateText } from './../../utils.js';
+import SKINS from './../../types/skins.js';
 let client;
 
 const self = class TabListHandler extends Handler {
@@ -72,4 +72,4 @@ const self = class TabListHandler extends Handler {
 	}
 };
 
-module.exports = new self();
+export default new self();

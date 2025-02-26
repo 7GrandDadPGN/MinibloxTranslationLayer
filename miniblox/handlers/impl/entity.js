@@ -1,8 +1,8 @@
-const Handler = require('./../handler.js');
-const { ClientSocket, SPacketPlayerPosLook, SPacketPlayerInput, SPacketEntityAction, SPacketPlayerAbilities, SPacketHeldItemChange, SPacketClick, SPacketRespawn$1, SPacketUseEntity, PBVector3 } = require('./../../main.js');
-const ENTITIES = require('./../../types/entities.js');
-const GAMEMODES = require('./../../types/gamemodes.js');
-const { translateItem } = require('./../../utils.js');
+import Handler from './../handler.js';
+import { ClientSocket, SPacketPlayerPosLook, SPacketPlayerInput, SPacketEntityAction, SPacketPlayerAbilities, SPacketHeldItemChange, SPacketClick, SPacketRespawn$1, SPacketUseEntity, PBVector3 } from './../../main.js';
+import ENTITIES from './../../types/entities.js';
+import GAMEMODES, { spectator } from './../../types/gamemodes.js';
+import { translateItem } from './../../utils.js';
 const DEG2RAD = Math.PI / 180, RAD2DEG = 180 / Math.PI;
 let client, tablist, world;
 
@@ -48,7 +48,7 @@ function desyncMath(pos, serverPos, range) {
 
 const self = class EntityHandler extends Handler {
 	canSpawn(entity) {
-		if (entity.type == -1 && ((!tablist.entries[entity.id] && !entity.special) || this.gamemodes[entity.id] == GAMEMODES.spectator)) return false;
+		if (entity.type == -1 && ((!tablist.entries[entity.id] && !entity.special) || this.gamemodes[entity.id] == spectator)) return false;
 		if (!world.isEntityLoaded(entity)) return false;
 		return true;
 	}
@@ -705,4 +705,4 @@ const self = class EntityHandler extends Handler {
 	}
 };
 
-module.exports = new self();
+export default new self();
