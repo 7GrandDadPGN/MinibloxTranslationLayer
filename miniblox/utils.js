@@ -1,8 +1,9 @@
-const { PBItemStack } = require('./main.js');
-const ITEMS = require('./types/items.js');
-const { COLOR_PALETTE, COLOR_REGEX, COLOR_CODES, LEVEL_TO_COLOUR } = require('./types/colors.js');
+import { PBItemStack } from './main.js';
+import ITEMS from './types/items.js';
+import { COLOR_PALETTE, COLOR_REGEX, COLOR_CODES } from './types/colors.js';
+export { LEVEL_TO_COLOUR } from './types/colors.js';
 
-function colorDistance(color1, color2) {
+export function colorDistance(color1, color2) {
 	const rgb1 = hexToRgb(color1);
 	const rgb2 = hexToRgb(color2);
 	return Math.sqrt(
@@ -12,7 +13,7 @@ function colorDistance(color1, color2) {
 	);
 }
 
-function findClosestColor(hex) {
+export function findClosestColor(hex) {
 	let closestColor = null;
 	let closestDistance = Infinity;
 	for (const color in COLOR_PALETTE) {
@@ -25,7 +26,7 @@ function findClosestColor(hex) {
 	return COLOR_PALETTE[closestColor];
 }
 
-function hexToRgb(hex) {
+export function hexToRgb(hex) {
 	const bigint = parseInt(hex.slice(1), 16);
 	return {
 		r: (bigint >> 16) & 255,
@@ -34,7 +35,7 @@ function hexToRgb(hex) {
 	};
 }
 
-function translateItem(item) {
+export function translateItem(item) {
 	let data;
 	if (item.data) {
 		let parsed = JSON.parse(item.data);
@@ -68,7 +69,7 @@ function translateItem(item) {
 	} : {blockId: -1}
 }
 
-function translateItemBack(item) {
+export function translateItemBack(item) {
 	let itemId;
 	let data = void 0;
 	for (const [mini, mc] of Object.entries(ITEMS)) {
@@ -96,9 +97,7 @@ function translateItemBack(item) {
 	}) : new PBItemStack({present: false});
 }
 
-function translateText(text) {
+export function translateText(text) {
 	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, color);
 	return text.replaceAll(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
 }
-
-module.exports = { translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR };
