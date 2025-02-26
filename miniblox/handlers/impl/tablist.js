@@ -1,7 +1,7 @@
-const Handler = require('./../handler.js');
-const { ClientSocket, SPacketPing, SPacketAnalytics } = require('./../../main.js');
-const { translateText, LEVEL_TO_COLOUR } = require('./../../utils.js');
-const SKINS = require('./../../types/skins.js');
+import Handler from './../handler.js';
+import { ClientSocket, SPacketPing, SPacketAnalytics } from './../../main.js';
+import { translateText, LEVEL_TO_COLOUR } from './../../utils.js';
+import SKINS, { granddad } from './../../types/skins.js';
 let client, entities;
 
 const self = class TabListHandler extends Handler {
@@ -13,7 +13,7 @@ const self = class TabListHandler extends Handler {
 				if (entry.id == entities.local.id) nameSplit[nameSplit.length - 1] = client.username;
 				const name = nameSplit[nameSplit.length - 1].slice(0, 16);
 				const uuid = entry.id == entities.local.id ? client.uuid : entry.uuid;
-				const skin = entities.skins[entry.id] != undefined ? (SKINS[entities.skins[entry.id]] ?? SKINS.granddad) : SKINS.granddad;
+				const skin = entities.skins[entry.id] != undefined ? (SKINS[entities.skins[entry.id]] ?? granddad) : granddad;
 				const prefix = (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(' ')) + ' ' : '').slice(0, 14) + translateText(`\\${(entry.color != 'white' ? entry.color : undefined) ?? (entry.id == entities.local.id ? 'white' : 'reset')}\\`);
 				const suffix = (entry.level && entry.level > 0) ? translateText(`\\${entry.level ? LEVEL_TO_COLOUR[entry.level] : 'white'}\\ (${entry.level})`) : '';
 				const gamemode = entities.gamemodes[entry.id] ?? 0;
@@ -134,4 +134,4 @@ const self = class TabListHandler extends Handler {
 	}
 };
 
-module.exports = new self();
+export default new self();
