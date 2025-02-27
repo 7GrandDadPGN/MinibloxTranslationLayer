@@ -4379,39 +4379,39 @@ ut(SPacketHeldItemChange, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 5
 }]));
-const SPacketPlayerInput = class extends Message$2 {
-    constructor(h) {
+const SPacketPlayerInput = class extends Message {
+    constructor($) {
         super();
-        I(this, "sequenceNumber");
-        I(this, "left");
-        I(this, "right");
-        I(this, "up");
-        I(this, "down");
-        I(this, "yaw");
-        I(this, "pitch");
-        I(this, "jump");
-        I(this, "sneak");
-        I(this, "sprint");
-        I(this, "pos");
-        proto2.util.initPartial(h, this)
+        ut(this, "sequenceNumber");
+        ut(this, "left");
+        ut(this, "right");
+        ut(this, "up");
+        ut(this, "down");
+        ut(this, "yaw");
+        ut(this, "pitch");
+        ut(this, "jump");
+        ut(this, "sneak");
+        ut(this, "sprint");
+        ut(this, "pos");
+        proto2.util.initPartial($, this)
     }
-    static fromBinary(h, p) {
-        return new SPacketPlayerInput().fromBinary(h, p)
-    }
-    static fromJson(h, p) {
-        return new SPacketPlayerInput().fromJson(h, p)
-    }
-    static fromJsonString(h, p) {
-        return new SPacketPlayerInput().fromJsonString(h, p)
-    }
-    static equals(h, p) {
-        return proto2.util.equals(yc, h, p)
-    }
-}
-;
-I(SPacketPlayerInput, "runtime", proto2),
-I(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
-I(SPacketPlayerInput, "fields", proto2.util.newFieldList( () => [{
+	static fromBinary($, et) {
+		return new SPacketPlayerInput().fromBinary($, et)
+	}
+	static fromJson($, et) {
+		return new SPacketPlayerInput().fromJson($, et)
+	}
+	static fromJsonString($, et) {
+		return new SPacketPlayerInput().fromJsonString($, et)
+	}
+	static equals($, et) {
+		return proto2.util.equals(SPacketPlayerInput, $, et)
+	}
+};
+exports.SPacketPlayerInput = SPacketPlayerInput,
+ut(SPacketPlayerInput, "runtime", proto2),
+ut(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
+ut(SPacketPlayerInput, "fields", proto2.util.newFieldList( () => [{
     no: 1,
     name: "sequenceNumber",
     kind: "scalar",
