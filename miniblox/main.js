@@ -4379,87 +4379,93 @@ ut(SPacketHeldItemChange, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 5
 }]));
-const SPacketPlayerInput = class extends Message {
-	constructor($) {
-		super();
-		ut(this, "sequenceNumber");
-		ut(this, "left");
-		ut(this, "right");
-		ut(this, "up");
-		ut(this, "down");
-		ut(this, "yaw");
-		ut(this, "pitch");
-		ut(this, "jump");
-		ut(this, "sneak");
-		ut(this, "sprint");
-		proto2.util.initPartial($, this)
-	}
-	static fromBinary($, et) {
-		return new SPacketPlayerInput().fromBinary($, et)
-	}
-	static fromJson($, et) {
-		return new SPacketPlayerInput().fromJson($, et)
-	}
-	static fromJsonString($, et) {
-		return new SPacketPlayerInput().fromJsonString($, et)
-	}
-	static equals($, et) {
-		return proto2.util.equals(SPacketPlayerInput, $, et)
-	}
-};
-exports.SPacketPlayerInput = SPacketPlayerInput,
-ut(SPacketPlayerInput, "runtime", proto2),
-ut(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
-ut(SPacketPlayerInput, "fields", proto2.util.newFieldList(()=>[{
-	no: 1,
-	name: "sequenceNumber",
-	kind: "scalar",
-	T: 13
+const SPacketPlayerInput = class extends Message$2 {
+    constructor(h) {
+        super();
+        I(this, "sequenceNumber");
+        I(this, "left");
+        I(this, "right");
+        I(this, "up");
+        I(this, "down");
+        I(this, "yaw");
+        I(this, "pitch");
+        I(this, "jump");
+        I(this, "sneak");
+        I(this, "sprint");
+        I(this, "pos");
+        proto2.util.initPartial(h, this)
+    }
+    static fromBinary(h, p) {
+        return new SPacketPlayerInput().fromBinary(h, p)
+    }
+    static fromJson(h, p) {
+        return new SPacketPlayerInput().fromJson(h, p)
+    }
+    static fromJsonString(h, p) {
+        return new SPacketPlayerInput().fromJsonString(h, p)
+    }
+    static equals(h, p) {
+        return proto2.util.equals(yc, h, p)
+    }
+}
+;
+I(SPacketPlayerInput, "runtime", proto2),
+I(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
+I(SPacketPlayerInput, "fields", proto2.util.newFieldList( () => [{
+    no: 1,
+    name: "sequenceNumber",
+    kind: "scalar",
+    T: 13
 }, {
-	no: 2,
-	name: "left",
-	kind: "scalar",
-	T: 8
+    no: 2,
+    name: "left",
+    kind: "scalar",
+    T: 8
 }, {
-	no: 3,
-	name: "right",
-	kind: "scalar",
-	T: 8
+    no: 3,
+    name: "right",
+    kind: "scalar",
+    T: 8
 }, {
-	no: 4,
-	name: "up",
-	kind: "scalar",
-	T: 8
+    no: 4,
+    name: "up",
+    kind: "scalar",
+    T: 8
 }, {
-	no: 5,
-	name: "down",
-	kind: "scalar",
-	T: 8
+    no: 5,
+    name: "down",
+    kind: "scalar",
+    T: 8
 }, {
-	no: 6,
-	name: "yaw",
-	kind: "scalar",
-	T: 2
+    no: 6,
+    name: "yaw",
+    kind: "scalar",
+    T: 2
 }, {
-	no: 7,
-	name: "pitch",
-	kind: "scalar",
-	T: 2
+    no: 7,
+    name: "pitch",
+    kind: "scalar",
+    T: 2
 }, {
-	no: 8,
-	name: "jump",
-	kind: "scalar",
-	T: 8
+    no: 8,
+    name: "jump",
+    kind: "scalar",
+    T: 8
 }, {
-	no: 9,
-	name: "sneak",
-	kind: "scalar",
-	T: 8
+    no: 9,
+    name: "sneak",
+    kind: "scalar",
+    T: 8
 }, {
-	no: 10,
-	name: "sprint",
-	kind: "scalar",
-	T: 8
+    no: 10,
+    name: "sprint",
+    kind: "scalar",
+    T: 8
+}, {
+    no: 11,
+    name: "pos",
+    kind: "message",
+    T: PBFloatVector3
 }]));
 const SPacketPing = class extends Message {
 	constructor($) {
