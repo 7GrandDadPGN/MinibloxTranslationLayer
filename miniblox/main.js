@@ -4380,21 +4380,21 @@ ut(SPacketHeldItemChange, "fields", proto2.util.newFieldList(()=>[{
 	T: 5
 }]));
 const SPacketPlayerInput = class extends Message {
-    constructor($) {
-        super();
-        ut(this, "sequenceNumber");
-        ut(this, "left");
-        ut(this, "right");
-        ut(this, "up");
-        ut(this, "down");
-        ut(this, "yaw");
-        ut(this, "pitch");
-        ut(this, "jump");
-        ut(this, "sneak");
-        ut(this, "sprint");
-        ut(this, "pos");
-        proto2.util.initPartial($, this)
-    }
+	constructor($) {
+		super();
+		ut(this, "sequenceNumber");
+		ut(this, "left");
+		ut(this, "right");
+		ut(this, "up");
+		ut(this, "down");
+		ut(this, "yaw");
+		ut(this, "pitch");
+		ut(this, "jump");
+		ut(this, "sneak");
+		ut(this, "sprint");
+		ut(this, "pos");
+		proto2.util.initPartial($, this)
+	}
 	static fromBinary($, et) {
 		return new SPacketPlayerInput().fromBinary($, et)
 	}
@@ -4412,60 +4412,60 @@ exports.SPacketPlayerInput = SPacketPlayerInput,
 ut(SPacketPlayerInput, "runtime", proto2),
 ut(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
 ut(SPacketPlayerInput, "fields", proto2.util.newFieldList( () => [{
-    no: 1,
-    name: "sequenceNumber",
-    kind: "scalar",
-    T: 13
+	no: 1,
+	name: "sequenceNumber",
+	kind: "scalar",
+	T: 13
 }, {
-    no: 2,
-    name: "left",
-    kind: "scalar",
-    T: 8
+	no: 2,
+	name: "left",
+	kind: "scalar",
+	T: 8
 }, {
-    no: 3,
-    name: "right",
-    kind: "scalar",
-    T: 8
+	no: 3,
+	name: "right",
+	kind: "scalar",
+	T: 8
 }, {
-    no: 4,
-    name: "up",
-    kind: "scalar",
-    T: 8
+	no: 4,
+	name: "up",
+	kind: "scalar",
+	T: 8
 }, {
-    no: 5,
-    name: "down",
-    kind: "scalar",
-    T: 8
+	no: 5,
+	name: "down",
+	kind: "scalar",
+	T: 8
 }, {
-    no: 6,
-    name: "yaw",
-    kind: "scalar",
-    T: 2
+	no: 6,
+	name: "yaw",
+	kind: "scalar",
+	T: 2
 }, {
-    no: 7,
-    name: "pitch",
-    kind: "scalar",
-    T: 2
+	no: 7,
+	name: "pitch",
+	kind: "scalar",
+	T: 2
 }, {
-    no: 8,
-    name: "jump",
-    kind: "scalar",
-    T: 8
+	no: 8,
+	name: "jump",
+	kind: "scalar",
+	T: 8
 }, {
-    no: 9,
-    name: "sneak",
-    kind: "scalar",
-    T: 8
+	no: 9,
+	name: "sneak",
+	kind: "scalar",
+	T: 8
 }, {
-    no: 10,
-    name: "sprint",
-    kind: "scalar",
-    T: 8
+	no: 10,
+	name: "sprint",
+	kind: "scalar",
+	T: 8
 }, {
-    no: 11,
-    name: "pos",
-    kind: "message",
-    T: PBFloatVector3
+	no: 11,
+	name: "pos",
+	kind: "message",
+	T: PBFloatVector3
 }]));
 const SPacketPing = class extends Message {
 	constructor($) {
