@@ -4392,6 +4392,7 @@ const SPacketPlayerInput = class extends Message {
 		ut(this, "jump");
 		ut(this, "sneak");
 		ut(this, "sprint");
+		ut(this, "pos");
 		proto2.util.initPartial($, this)
 	}
 	static fromBinary($, et) {
@@ -4410,7 +4411,7 @@ const SPacketPlayerInput = class extends Message {
 exports.SPacketPlayerInput = SPacketPlayerInput,
 ut(SPacketPlayerInput, "runtime", proto2),
 ut(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
-ut(SPacketPlayerInput, "fields", proto2.util.newFieldList(()=>[{
+ut(SPacketPlayerInput, "fields", proto2.util.newFieldList( () => [{
 	no: 1,
 	name: "sequenceNumber",
 	kind: "scalar",
@@ -4460,6 +4461,11 @@ ut(SPacketPlayerInput, "fields", proto2.util.newFieldList(()=>[{
 	name: "sprint",
 	kind: "scalar",
 	T: 8
+}, {
+	no: 11,
+	name: "pos",
+	kind: "message",
+	T: PBFloatVector3
 }]));
 const SPacketPing = class extends Message {
 	constructor($) {

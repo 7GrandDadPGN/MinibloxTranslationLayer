@@ -600,7 +600,8 @@ const self = class EntityHandler extends Handler {
 				pitch: this.local.pitch,
 				jump: (jump & 1) > 0,
 				sneak: (jump & 2) > 0,
-				sprint: this.local.state[1] ?? false
+				sprint: this.local.state[1] ?? false,
+				pos: this.local.pos
 			}));
 		});
 		client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
