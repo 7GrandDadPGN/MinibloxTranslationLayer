@@ -35,6 +35,17 @@ function convertServerPos(pos) {
 	return {x: pos.x / 32, y: pos.y / 32, z: pos.z / 32};
 }
 
+function desyncMath(pos, serverPos, range) {
+	const moveVec = {x: (pos.x - serverPos.x), y: (pos.y - serverPos.y), z: (pos.z - serverPos.z)};
+	const moveMag = Math.sqrt(moveVec.x * moveVec.x + moveVec.y * moveVec.y + moveVec.z * moveVec.z);
+
+	return moveMag > range ? {
+		x: serverPos.x + ((moveVec.x / moveMag) * range),
+		y: serverPos.y + ((moveVec.y / moveMag) * range),
+		z: serverPos.z + ((moveVec.z / moveMag) * range)
+	} : pos;
+}
+
 const self = class EntityHandler extends Handler {
 	canSpawn(entity) {
 		if (entity.type == -1 && ((!tablist.entries[entity.id] && !entity.special) || this.gamemodes[entity.id] == GAMEMODES.spectator)) return false;
@@ -498,6 +509,8 @@ const self = class EntityHandler extends Handler {
 					flags: 24
 				});
 			}
+
+			this.local.serverPos = {x: packet.x, y: packet.y, z: packet.z};
 		});
 		ClientSocket.on('CPacketRespawn', packet => {
 			if (packet.client) {
@@ -589,7 +602,23 @@ const self = class EntityHandler extends Handler {
 			this.abilities(true);
 		});
 		client.on('steer_vehicle', ({ sideways, forward, jump } = {}) => {
-			this.local.inputSequenceNumber++;
+			if (!this.desyncFlag) {
+				this.local.inputSequenceNumber++;
+			} else {
+				client.write('world_particles', {
+					particleId: 13,
+					longDistance: true,
+					x: this.local.serverPos.x - 0.25,
+					y: this.local.serverPos.y - 0.25,
+					z: this.local.serverPos.z - 0.25,
+					offsetX: 0.25,
+					offsetY: 0.25,
+					offsetZ: 0.25,
+					particleData: 1,
+					particles: 4
+				});
+			}
+
 			ClientSocket.sendPacket(new SPacketPlayerInput({
 				sequenceNumber: this.local.inputSequenceNumber,
 				left: sideways > 0,
@@ -601,7 +630,7 @@ const self = class EntityHandler extends Handler {
 				jump: (jump & 1) > 0,
 				sneak: (jump & 2) > 0,
 				sprint: this.local.state[1] ?? false,
-				pos: this.local.pos
+				pos: this.desyncFlag ? desyncMath(this.local.pos, this.local.serverPos, 1.98) : this.local.pos
 			}));
 		});
 		client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
@@ -651,6 +680,7 @@ const self = class EntityHandler extends Handler {
 		this.entities = {};
 		this.skins = {};
 		this.gamemodes = {};
+		this.desyncFlag = false;
 		this.local = {
 			id: -1,
 			mcId: 99999,
@@ -658,6 +688,7 @@ const self = class EntityHandler extends Handler {
 			yaw: 0,
 			pitch: 0,
 			pos: {x: 0, y: 0, z: 0},
+			serverPos: {x: 0, y: 0, z: 0},
 			state: [],
 			lastState: [],
 			health: {hp: 20, food: 20, foodSaturation: 20},

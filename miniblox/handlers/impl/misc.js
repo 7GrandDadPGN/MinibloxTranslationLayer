@@ -106,6 +106,10 @@ const self = class ChatHandler extends Handler {
 			} else if (msg.startsWith('/reloadchunks')) {
 				world.chunks = [];
 				world.queued = [];
+				return;
+			} else if (msg.startsWith('/desync')) {
+				entity.desyncFlag = !entity.desyncFlag;
+				return;
 			}
 			ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
 		});
