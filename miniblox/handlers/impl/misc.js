@@ -1,7 +1,7 @@
-const Handler = require('./../handler.js');
-const { ClientSocket, SPacketMessage, SPacketTabComplete$1 } = require('./../../main.js');
-const { translateText } = require('./../../utils.js');
-const fs = require('node:fs');
+import Handler from './../handler.js';
+import { ClientSocket, SPacketMessage, SPacketTabComplete$1 } from './../../main.js';
+import { translateText } from './../../utils.js';
+import { writeFile } from 'node:fs';
 let client, entity, connect, world;
 
 const self = class ChatHandler extends Handler {
@@ -59,7 +59,7 @@ const self = class ChatHandler extends Handler {
 				connect(client, true, msg.split(' ')[1]);
 				return;
 			} else if (msg.startsWith('/login')) {
-				fs.writeFile('./login.token', packet.message.split(' ')[1] ?? '', (err) => {
+				writeFile('./login.token', packet.message.split(' ')[1] ?? '', (err) => {
 					if (err) {
 						client.write('chat', {
 							message: JSON.stringify({
@@ -141,4 +141,4 @@ const self = class ChatHandler extends Handler {
 	}
 };
 
-module.exports = new self();
+export default new self();

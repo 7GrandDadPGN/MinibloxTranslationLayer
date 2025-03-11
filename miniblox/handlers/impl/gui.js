@@ -1,7 +1,7 @@
-const Handler = require('./../handler.js');
-const { ClientSocket, SPacketClickWindow, SPacketConfirmTransaction, SPacketCloseWindow } = require('./../../main.js');
-const { GUIS, SLOTS, WINDOW_NAMES, WINDOW_TYPES } = require('./../../types/guis.js');
-const { translateItem, translateItemBack } = require('./../../utils.js');
+import Handler from './../handler.js';
+import { ClientSocket, SPacketClickWindow, SPacketConfirmTransaction, SPacketCloseWindow } from './../../main.js';
+import { GUIS, SLOTS, WINDOW_NAMES, WINDOW_TYPES } from './../../types/guis.js';
+import { translateItem, translateItemBack } from './../../utils.js';
 let client, entity;
 
 const self = class GuiHandler extends Handler {
@@ -113,4 +113,4 @@ const self = class GuiHandler extends Handler {
 	}
 };
 
-module.exports = new self();
+export default new self();

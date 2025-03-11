@@ -1754,7 +1754,7 @@ class InternalOneofInfo {
         return this._lookup[_]
     }
 }
-exports.proto3 = makeProtoRuntime("proto3", makeJsonFormatProto3(), makeBinaryFormatProto3(), Object.assign(Object.assign({}, makeUtilCommon()), {
+export const proto3 = makeProtoRuntime("proto3", makeJsonFormatProto3(), makeBinaryFormatProto3(), Object.assign(Object.assign({}, makeUtilCommon()), {
     newFieldList(j) {
         return new InternalFieldList(j,normalizeFieldInfosProto3)
     },
@@ -1941,7 +1941,7 @@ function normalizeFieldInfosProto2(j) {
     }
     return tt
 }
-exports.proto2 = makeProtoRuntime("proto2", makeJsonFormatProto2(), makeBinaryFormatProto2(), Object.assign(Object.assign({}, makeUtilCommon()), {
+export const proto2 = makeProtoRuntime("proto2", makeJsonFormatProto2(), makeBinaryFormatProto2(), Object.assign(Object.assign({}, makeUtilCommon()), {
     newFieldList(j) {
         return new InternalFieldList(j,normalizeFieldInfosProto2)
     },
@@ -1966,4 +1966,4 @@ exports.proto2 = makeProtoRuntime("proto2", makeJsonFormatProto2(), makeBinaryFo
         }
     }
 }));
-exports.Message = Message$2;
+export const Message = Message$2;
