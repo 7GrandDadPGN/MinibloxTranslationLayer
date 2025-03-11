@@ -10,7 +10,7 @@ const server = createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
-const VERSION = '3.41.7';
+const VERSION = '3.41.10';
 import GAMEMODES from './miniblox/types/gamemodes.js';
 let connected, skipKick = Date.now();
 
