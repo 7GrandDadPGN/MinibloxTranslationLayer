@@ -1,8 +1,8 @@
-const Handler = require('./../handler.js');
-const { ClientSocket, SPacketRequestChunk, SPacketUseItem, SPacketPlaceBlock, SPacketBreakBlock, SPacketPlayerAction, SPacketClick, SPacketUpdateSign, BitArray, PBBlockPos } = require('./../../main.js');
-const { BLOCKS, BLOCK_ID } = require('./../../types/blocks.js');
-const Chunk = require('prismarine-chunk')('1.8.9');
-const Vec3 = require('vec3');
+import Handler from './../handler.js';
+import { ClientSocket, SPacketRequestChunk, SPacketUseItem, SPacketPlaceBlock, SPacketBreakBlock, SPacketPlayerAction, SPacketClick, SPacketUpdateSign, BitArray, PBBlockPos } from './../../main.js';
+import { BLOCKS, BLOCK_ID } from './../../types/blocks.js';
+const Chunk = (await import('prismarine-chunk')).default('1.8.9');
+import Vec3 from 'vec3';
 const viewDistance = 7, CELL_VOLUME = 16 * 16 * 16;
 let client, entity, gui;
 
@@ -223,4 +223,4 @@ const self = class WorldHandler extends Handler {
 	}
 };
 
-module.exports = new self();
+export default new self();

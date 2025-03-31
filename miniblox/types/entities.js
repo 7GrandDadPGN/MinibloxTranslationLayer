@@ -1,5 +1,5 @@
-const mcData = require('minecraft-data')("1.8.9");
-module.exports = {
+const mcData = (await import('minecraft-data')).default("1.8.9");
+export default {
     1: [mcData.entitiesByName.Item.id, false],
     3: [mcData.entitiesByName.Arrow.id, false],
     4: [mcData.entitiesByName.Snowball.id, false],

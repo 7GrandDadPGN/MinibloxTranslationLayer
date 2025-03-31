@@ -1,6 +1,7 @@
-exports.entity = require('./impl/entity.js');
-exports.world = require('./impl/world.js');
-exports.tablist = require('./impl/tablist.js');
-exports.gui = require('./impl/gui.js');
-exports.scoreboard = require('./impl/scoreboard.js');
-exports.misc = require('./impl/misc.js');
+export const entity = (await import("./impl/entity.js")).default;
+export const world = (await import("./impl/world.js")).default;
+export const tablist = (await import("./impl/tablist.js")).default;
+export const gui = (await import("./impl/gui.js")).default;
+export const scoreboard = (await import("./impl/scoreboard.js")).default;
+export const misc = (await import("./impl/misc.js")).default;
+export default {entity, world, tablist, gui, scoreboard, misc};

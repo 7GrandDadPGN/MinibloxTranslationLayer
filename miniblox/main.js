@@ -1,8 +1,8 @@
-const io = require("socket.io-client");
-const brotli = require("brotli");
-const { Decoder, protocol } = require("socket.io-msgpack-parser");
-const { encode, decode } = require("@msgpack/msgpack");
-const { Message, proto2, proto3 } = require("./types/proto.js");
+import io from "socket.io-client";
+import { decompress } from "brotli";
+import { Decoder, protocol } from "socket.io-msgpack-parser";
+import { encode, decode } from "@msgpack/msgpack";
+import { Message, proto2, proto3 } from "./types/proto.js";
 
 var yT = Object.defineProperty;
 var xT = (j,_,$)=>_ in j ? yT(j, _, {
@@ -17,6 +17,8 @@ var ST = (j,_)=>()=>(_ || j((_ = {
 _.exports);
 var ut = (j,_,$)=>(xT(j, typeof _ != "symbol" ? _ + "" : _, $),
 $);
+
+const exports = {};
 
 const SPacketLoginStart = class extends Message {
 	constructor($) {
@@ -41,7 +43,7 @@ const SPacketLoginStart = class extends Message {
 		return proto2.util.equals(SPacketLoginStart, $, et)
 	}
 };
-exports.SPacketLoginStart = SPacketLoginStart,
+export { SPacketLoginStart };
 ut(SPacketLoginStart, "runtime", proto2),
 ut(SPacketLoginStart, "typeName", "SPacketLoginStart"),
 ut(SPacketLoginStart, "fields", proto2.util.newFieldList(()=>[{
@@ -97,7 +99,7 @@ const PBItemStack = class extends Message {
 	}
 }
 ;
-exports.PBItemStack = PBItemStack,
+export { PBItemStack };
 ut(PBItemStack, "runtime", proto2),
 ut(PBItemStack, "typeName", "PBItemStack"),
 ut(PBItemStack, "fields", proto2.util.newFieldList(()=>[{
@@ -151,7 +153,7 @@ const PBBlockPos = class extends Message {
 		return proto2.util.equals(PBBlockPos, $, et)
 	}
 };
-exports.PBBlockPos = PBBlockPos,
+export { PBBlockPos };
 ut(PBBlockPos, "runtime", proto2),
 ut(PBBlockPos, "typeName", "PBBlockPos"),
 ut(PBBlockPos, "fields", proto2.util.newFieldList(()=>[{
@@ -170,7 +172,7 @@ ut(PBBlockPos, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 17
 }]));
-const PBVector3 = class extends Message {
+export const PBVector3 = class extends Message {
 	constructor($) {
 		super();
 		ut(this, "x");
@@ -191,7 +193,6 @@ const PBVector3 = class extends Message {
 		return proto2.util.equals(PBVector3, $, et)
 	}
 };
-exports.PBVector3 = PBVector3,
 ut(PBVector3, "runtime", proto2),
 ut(PBVector3, "typeName", "PBVector3"),
 ut(PBVector3, "fields", proto2.util.newFieldList(()=>[{
@@ -210,7 +211,7 @@ ut(PBVector3, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 17
 }]));
-const PBFloatVector3 = class extends Message {
+export const PBFloatVector3 = class extends Message {
 	constructor($) {
 		super();
 		ut(this, "x");
@@ -231,7 +232,6 @@ const PBFloatVector3 = class extends Message {
 		return proto2.util.equals(PBFloatVector3, $, et)
 	}
 };
-exports.PBFloatVector3 = PBFloatVector3,
 ut(PBFloatVector3, "runtime", proto2),
 ut(PBFloatVector3, "typeName", "PBFloatVector3"),
 ut(PBFloatVector3, "fields", proto2.util.newFieldList(()=>[{
@@ -270,7 +270,7 @@ const CPacketEntityVelocity = class extends Message {
 		return proto2.util.equals(CPacketEntityVelocity, $, et)
 	}
 };
-exports.CPacketEntityVelocity = CPacketEntityVelocity,
+export { CPacketEntityVelocity };
 ut(CPacketEntityVelocity, "runtime", proto2),
 ut(CPacketEntityVelocity, "typeName", "CPacketEntityVelocity"),
 ut(CPacketEntityVelocity, "fields", proto2.util.newFieldList(()=>[{
@@ -461,7 +461,7 @@ const CPacketEntityEquipment = class extends Message {
 		return proto2.util.equals(CPacketEntityEquipment, $, et)
 	}
 };
-exports.CPacketEntityEquipment = CPacketEntityEquipment,
+export { CPacketEntityEquipment };
 ut(CPacketEntityEquipment, "runtime", proto2),
 ut(CPacketEntityEquipment, "typeName", "CPacketEntityEquipment"),
 ut(CPacketEntityEquipment, "fields", proto2.util.newFieldList(()=>[{
@@ -496,7 +496,7 @@ const Equipment = class extends Message {
 		return proto2.util.equals(Equipment, $, et)
 	}
 };
-exports.Equipment = Equipment,
+export { Equipment };
 ut(Equipment, "runtime", proto2),
 ut(Equipment, "typeName", "Equipment"),
 ut(Equipment, "fields", proto2.util.newFieldList(()=>[{
@@ -561,7 +561,7 @@ const SPacketUpdateInventory = class extends Message {
 		return proto2.util.equals(SPacketUpdateInventory, $, et)
 	}
 };
-exports.SPacketUpdateInventory = SPacketUpdateInventory,
+export { SPacketUpdateInventory };
 ut(SPacketUpdateInventory, "runtime", proto2),
 ut(SPacketUpdateInventory, "typeName", "SPacketUpdateInventory"),
 ut(SPacketUpdateInventory, "fields", proto2.util.newFieldList(()=>[{
@@ -602,7 +602,7 @@ const CPacketUpdateSign = class extends Message {
 		return proto2.util.equals(CPacketUpdateSign, $, et)
 	}
 };
-exports.CPacketUpdateSign = CPacketUpdateSign,
+export { CPacketUpdateSign };
 ut(CPacketUpdateSign, "runtime", proto2),
 ut(CPacketUpdateSign, "typeName", "CPacketUpdateSign"),
 ut(CPacketUpdateSign, "fields", proto2.util.newFieldList(()=>[{
@@ -639,7 +639,7 @@ const CPacketUpdateCommandBlock = class extends Message {
 		return proto2.util.equals(CPacketUpdateCommandBlock, $, et)
 	}
 };
-exports.CPacketUpdateCommandBlock = CPacketUpdateCommandBlock,
+export { CPacketUpdateCommandBlock };
 ut(CPacketUpdateCommandBlock, "runtime", proto2),
 ut(CPacketUpdateCommandBlock, "typeName", "CPacketUpdateCommandBlock"),
 ut(CPacketUpdateCommandBlock, "fields", proto2.util.newFieldList(()=>[{
@@ -685,7 +685,7 @@ const SPacketCloseWindow = class extends Message {
 		return proto2.util.equals(SPacketCloseWindow, $, et)
 	}
 };
-exports.SPacketCloseWindow = SPacketCloseWindow,
+export { SPacketCloseWindow };
 ut(SPacketCloseWindow, "runtime", proto2),
 ut(SPacketCloseWindow, "typeName", "SPacketCloseWindow"),
 ut(SPacketCloseWindow, "fields", proto2.util.newFieldList(()=>[{
@@ -718,7 +718,7 @@ const SPacketEntityAction = class extends Message {
 		return proto2.util.equals(SPacketEntityAction, $, et)
 	}
 };
-exports.SPacketEntityAction = SPacketEntityAction,
+export { SPacketEntityAction };
 ut(SPacketEntityAction, "runtime", proto2),
 ut(SPacketEntityAction, "typeName", "SPacketEntityAction"),
 ut(SPacketEntityAction, "fields", proto2.util.newFieldList(()=>[{
@@ -776,7 +776,7 @@ const SPacketPlayerAbilities = class extends Message {
 		return proto2.util.equals(SPacketPlayerAbilities, $, et)
 	}
 };
-exports.SPacketPlayerAbilities = SPacketPlayerAbilities,
+export { SPacketPlayerAbilities };
 ut(SPacketPlayerAbilities, "runtime", proto2),
 ut(SPacketPlayerAbilities, "typeName", "SPacketPlayerAbilities"),
 ut(SPacketPlayerAbilities, "fields", proto2.util.newFieldList(()=>[{
@@ -808,7 +808,7 @@ const SPacketPlayerPosLook = class extends Message {
 		return proto2.util.equals(SPacketPlayerPosLook, $, et)
 	}
 };
-exports.SPacketPlayerPosLook = SPacketPlayerPosLook,
+export { SPacketPlayerPosLook };
 ut(SPacketPlayerPosLook, "runtime", proto2),
 ut(SPacketPlayerPosLook, "typeName", "SPacketPlayerPosLook"),
 ut(SPacketPlayerPosLook, "fields", proto2.util.newFieldList(()=>[{
@@ -835,7 +835,7 @@ ut(SPacketPlayerPosLook, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 8
 }]));
-const Vector3 = class extends Message {
+export const Vector3 = class extends Message {
 	constructor($) {
 		super();
 		ut(this, "x");
@@ -856,7 +856,6 @@ const Vector3 = class extends Message {
 		return proto2.util.equals(Vector3, $, et)
 	}
 };
-exports.Vector3 = Vector3,
 ut(Vector3, "runtime", proto2),
 ut(Vector3, "typeName", "Vector3"),
 ut(Vector3, "fields", proto2.util.newFieldList(()=>[{
@@ -875,7 +874,7 @@ ut(Vector3, "fields", proto2.util.newFieldList(()=>[{
 	kind: "scalar",
 	T: 2
 }]));
-let SPacketRespawn$1 = class extends Message {
+export let SPacketRespawn$1 = class extends Message {
 	constructor(_) {
 		super(),
 		proto2.util.initPartial(_, this)
@@ -893,7 +892,6 @@ let SPacketRespawn$1 = class extends Message {
 		return proto2.util.equals(SPacketRespawn$1, _, $)
 	}
 };
-exports.SPacketRespawn$1 = SPacketRespawn$1,
 ut(SPacketRespawn$1, "runtime", proto2),
 ut(SPacketRespawn$1, "typeName", "SPacketRespawn"),
 ut(SPacketRespawn$1, "fields", proto2.util.newFieldList(()=>[]));
@@ -915,7 +913,7 @@ const SPacketOpenShop = class extends Message {
 		return proto2.util.equals(SPacketOpenShop, _, $)
 	}
 };
-exports.SPacketOpenShop = SPacketOpenShop,
+export { SPacketOpenShop };
 ut(SPacketOpenShop, "runtime", proto2),
 ut(SPacketOpenShop, "typeName", "SPacketOpenShop"),
 ut(SPacketOpenShop, "fields", proto2.util.newFieldList(()=>[]));
@@ -933,7 +931,8 @@ j[j.DROP_ALL_ITEMS = 3] = "DROP_ALL_ITEMS",
 j[j.DROP_ITEM = 4] = "DROP_ITEM",
 j[j.RELEASE_USE_ITEM = 5] = "RELEASE_USE_ITEM",
 j))(PBAction || {});
-exports.PBAction = PBAction;
+const _PBAction = PBAction;
+export { _PBAction as PBAction };
 proto2.util.setEnumType(PBAction, "PBAction", [{
 	no: 0,
 	name: "START_DESTROY_BLOCK"
@@ -961,7 +960,8 @@ j[j.SOUTH = 4] = "SOUTH",
 j[j.WEST = 5] = "WEST",
 j[j.EAST = 6] = "EAST",
 j))(PBEnumFacing || {});
-exports.PBEnumFacing = PBEnumFacing;
+const _PBEnumFacing = PBEnumFacing;
+export { _PBEnumFacing as PBEnumFacing };
 proto2.util.setEnumType(PBEnumFacing, "PBEnumFacing", [{
 	no: 0,
 	name: "UNDEFINED_FACE"
@@ -1004,7 +1004,7 @@ const SPacketBreakBlock = class extends Message {
 		return proto2.util.equals(SPacketBreakBlock, $, et)
 	}
 };
-exports.SPacketBreakBlock = SPacketBreakBlock,
+export { SPacketBreakBlock };
 ut(SPacketBreakBlock, "runtime", proto2),
 ut(SPacketBreakBlock, "typeName", "SPacketBreakBlock"),
 ut(SPacketBreakBlock, "fields", proto2.util.newFieldList(() => [{
@@ -1038,7 +1038,7 @@ const SPacketClick = class extends Message {
 		return proto2.util.equals(SPacketClick, $, et)
 	}
 };
-exports.SPacketClick = SPacketClick,
+export { SPacketClick };
 ut(SPacketClick, "runtime", proto2),
 ut(SPacketClick, "typeName", "SPacketClick"),
 ut(SPacketClick, "fields", proto2.util.newFieldList(()=>[{
@@ -1071,7 +1071,7 @@ const SPacketPlaceBlock = class extends Message {
 		return proto2.util.equals(SPacketPlaceBlock, $, et)
 	}
 };
-exports.SPacketPlaceBlock = SPacketPlaceBlock,
+export { SPacketPlaceBlock };
 ut(SPacketPlaceBlock, "runtime", proto2),
 ut(SPacketPlaceBlock, "typeName", "SPacketPlaceBlock"),
 ut(SPacketPlaceBlock, "fields", proto2.util.newFieldList(()=>[{
@@ -1118,7 +1118,7 @@ const SPacketUseItem = class extends Message {
 		return proto2.util.equals(SPacketUseItem, _, $)
 	}
 };
-exports.SPacketUseItem = SPacketUseItem,
+export { SPacketUseItem };
 ut(SPacketUseItem, "runtime", proto2),
 ut(SPacketUseItem, "typeName", "SPacketUseItem"),
 ut(SPacketUseItem, "fields", proto2.util.newFieldList(()=>[]));
@@ -1146,7 +1146,7 @@ const SPacketClickWindow = class extends Message {
 		return proto2.util.equals(SPacketClickWindow, $, et)
 	}
 };
-exports.SPacketClickWindow = SPacketClickWindow,
+export { SPacketClickWindow };
 ut(SPacketClickWindow, "runtime", proto2),
 ut(SPacketClickWindow, "typeName", "SPacketClickWindow"),
 ut(SPacketClickWindow, "fields", proto2.util.newFieldList(()=>[{
@@ -1201,7 +1201,7 @@ const SPacketPlayerAction = class extends Message {
 		return proto2.util.equals(SPacketPlayerAction, $, et)
 	}
 };
-exports.SPacketPlayerAction = SPacketPlayerAction,
+export { SPacketPlayerAction };
 ut(SPacketPlayerAction, "runtime", proto2),
 ut(SPacketPlayerAction, "typeName", "SPacketPlayerAction"),
 ut(SPacketPlayerAction, "fields", proto2.util.newFieldList(()=>[{
@@ -1241,7 +1241,7 @@ const SPacketUseEntity = class extends Message {
 		return proto2.util.equals(SPacketUseEntity, $, et)
 	}
 };
-exports.SPacketUseEntity = SPacketUseEntity,
+export { SPacketUseEntity };
 ut(SPacketUseEntity, "runtime", proto2),
 ut(SPacketUseEntity, "typeName", "SPacketUseEntity"),
 ut(SPacketUseEntity, "fields", proto2.util.newFieldList(()=>[{
@@ -1294,7 +1294,7 @@ const SPacketMessage = class extends Message {
 		return proto2.util.equals(SPacketMessage, $, et)
 	}
 };
-exports.SPacketMessage = SPacketMessage,
+export { SPacketMessage };
 ut(SPacketMessage, "runtime", proto2),
 ut(SPacketMessage, "typeName", "SPacketMessage"),
 ut(SPacketMessage, "fields", proto2.util.newFieldList(()=>[{
@@ -1323,7 +1323,7 @@ const CPacketAnimation = class extends Message {
 		return proto2.util.equals(CPacketAnimation, $, et)
 	}
 };
-exports.CPacketAnimation = CPacketAnimation,
+export { CPacketAnimation };
 ut(CPacketAnimation, "runtime", proto2),
 ut(CPacketAnimation, "typeName", "CPacketAnimation"),
 ut(CPacketAnimation, "fields", proto2.util.newFieldList(()=>[{
@@ -1359,7 +1359,7 @@ const CPacketBlockAction = class extends Message {
 		return proto2.util.equals(CPacketBlockAction, $, et)
 	}
 };
-exports.CPacketBlockAction = CPacketBlockAction,
+export { CPacketBlockAction };
 ut(CPacketBlockAction, "runtime", proto2),
 ut(CPacketBlockAction, "typeName", "CPacketBlockAction"),
 ut(CPacketBlockAction, "fields", proto2.util.newFieldList(()=>[{
@@ -1406,7 +1406,7 @@ const CPacketBlockUpdate = class extends Message {
 		return proto2.util.equals(CPacketBlockUpdate, $, et)
 	}
 };
-exports.CPacketBlockUpdate = CPacketBlockUpdate,
+export { CPacketBlockUpdate };
 ut(CPacketBlockUpdate, "runtime", proto2),
 ut(CPacketBlockUpdate, "typeName", "CPacketBlockUpdate"),
 ut(CPacketBlockUpdate, "fields", proto2.util.newFieldList(()=>[{
@@ -1455,7 +1455,7 @@ const CPacketChangeServers = class extends Message {
 		return proto2.util.equals(CPacketChangeServers, $, et)
 	}
 };
-exports.CPacketChangeServers = CPacketChangeServers,
+export { CPacketChangeServers };
 ut(CPacketChangeServers, "runtime", proto2),
 ut(CPacketChangeServers, "typeName", "CPacketChangeServers"),
 ut(CPacketChangeServers, "fields", proto2.util.newFieldList(()=>[{
@@ -1483,7 +1483,7 @@ const CPacketCloseWindow = class extends Message {
 		return proto2.util.equals(CPacketCloseWindow, $, et)
 	}
 };
-exports.CPacketCloseWindow = CPacketCloseWindow,
+export { CPacketCloseWindow };
 ut(CPacketCloseWindow, "runtime", proto2),
 ut(CPacketCloseWindow, "typeName", "CPacketCloseWindow"),
 ut(CPacketCloseWindow, "fields", proto2.util.newFieldList(()=>[{
@@ -1513,7 +1513,7 @@ const CPacketConfirmTransaction = class extends Message {
 		return proto2.util.equals(CPacketConfirmTransaction, $, et)
 	}
 };
-exports.CPacketConfirmTransaction = CPacketConfirmTransaction,
+export { CPacketConfirmTransaction };
 ut(CPacketConfirmTransaction, "runtime", proto2),
 ut(CPacketConfirmTransaction, "typeName", "CPacketConfirmTransaction"),
 ut(CPacketConfirmTransaction, "fields", proto2.util.newFieldList(()=>[{
@@ -1551,7 +1551,7 @@ const CPacketDestroyEntities = class extends Message {
 		return proto2.util.equals(CPacketDestroyEntities, $, et)
 	}
 };
-exports.CPacketDestroyEntities = CPacketDestroyEntities,
+export { CPacketDestroyEntities };
 ut(CPacketDestroyEntities, "runtime", proto2),
 ut(CPacketDestroyEntities, "typeName", "CPacketDestroyEntities"),
 ut(CPacketDestroyEntities, "fields", proto2.util.newFieldList(()=>[{
@@ -1580,7 +1580,7 @@ const CPacketDisconnect = class extends Message {
 		return proto2.util.equals(CPacketDisconnect, $, et)
 	}
 };
-exports.CPacketDisconnect = CPacketDisconnect,
+export { CPacketDisconnect };
 ut(CPacketDisconnect, "runtime", proto2),
 ut(CPacketDisconnect, "typeName", "CPacketDisconnect"),
 ut(CPacketDisconnect, "fields", proto2.util.newFieldList(()=>[{
@@ -1612,7 +1612,7 @@ const CPacketEntityAction = class extends Message {
 		return proto2.util.equals(CPacketEntityAction, $, et)
 	}
 };
-exports.CPacketEntityAction = CPacketEntityAction,
+export { CPacketEntityAction };
 ut(CPacketEntityAction, "runtime", proto2),
 ut(CPacketEntityAction, "typeName", "CPacketEntityAction"),
 ut(CPacketEntityAction, "fields", proto2.util.newFieldList(()=>[{
@@ -1666,7 +1666,7 @@ const CPacketEntityAttach = class extends Message {
 		return proto2.util.equals(CPacketEntityAttach, $, et)
 	}
 };
-exports.CPacketEntityAttach = CPacketEntityAttach,
+export { CPacketEntityAttach };
 ut(CPacketEntityAttach, "runtime", proto2),
 ut(CPacketEntityAttach, "typeName", "CPacketEntityAttach"),
 ut(CPacketEntityAttach, "fields", proto2.util.newFieldList(()=>[{
@@ -1705,7 +1705,7 @@ const CPacketEntityMetadata = class extends Message {
 		return proto2.util.equals(CPacketEntityMetadata, $, et)
 	}
 };
-exports.CPacketEntityMetadata = CPacketEntityMetadata,
+export { CPacketEntityMetadata };
 ut(CPacketEntityMetadata, "runtime", proto2),
 ut(CPacketEntityMetadata, "typeName", "CPacketEntityMetadata"),
 ut(CPacketEntityMetadata, "fields", proto2.util.newFieldList(()=>[{
@@ -1746,7 +1746,7 @@ const PBWatchableObject = class extends Message {
 		return proto2.util.equals(PBWatchableObject, $, et)
 	}
 };
-exports.PBWatchableObject = PBWatchableObject,
+export { PBWatchableObject };
 ut(PBWatchableObject, "runtime", proto2),
 ut(PBWatchableObject, "typeName", "PBWatchableObject"),
 ut(PBWatchableObject, "fields", proto2.util.newFieldList(()=>[{
@@ -1820,7 +1820,7 @@ const CPacketEntityPositionAndRotation = class extends Message {
 		return proto2.util.equals(CPacketEntityPositionAndRotation, $, et)
 	}
 };
-exports.CPacketEntityPositionAndRotation = CPacketEntityPositionAndRotation,
+export { CPacketEntityPositionAndRotation };
 ut(CPacketEntityPositionAndRotation, "runtime", proto2),
 ut(CPacketEntityPositionAndRotation, "typeName", "CPacketEntityPositionAndRotation"),
 ut(CPacketEntityPositionAndRotation, "fields", proto2.util.newFieldList(()=>[{
@@ -1883,7 +1883,7 @@ const CPacketEntityRelativePositionAndRotation = class extends Message {
 		return proto2.util.equals(CPacketEntityRelativePositionAndRotation, $, et)
 	}
 };
-exports.CPacketEntityRelativePositionAndRotation = CPacketEntityRelativePositionAndRotation,
+export { CPacketEntityRelativePositionAndRotation };
 ut(CPacketEntityRelativePositionAndRotation, "runtime", proto2),
 ut(CPacketEntityRelativePositionAndRotation, "typeName", "CPacketEntityRelativePositionAndRotation"),
 ut(CPacketEntityRelativePositionAndRotation, "fields", proto2.util.newFieldList(()=>[{
@@ -1942,7 +1942,7 @@ const CPacketEntityStatus = class extends Message {
 		return proto2.util.equals(CPacketEntityStatus, $, et)
 	}
 };
-exports.CPacketEntityStatus = CPacketEntityStatus,
+export { CPacketEntityStatus };
 ut(CPacketEntityStatus, "runtime", proto2),
 ut(CPacketEntityStatus, "typeName", "CPacketEntityStatus"),
 ut(CPacketEntityStatus, "fields", proto2.util.newFieldList(()=>[{
@@ -1978,7 +1978,7 @@ const CPacketExplosion = class extends Message {
 		return proto2.util.equals(CPacketExplosion, $, et)
 	}
 };
-exports.CPacketExplosion = CPacketExplosion,
+export { CPacketExplosion };
 ut(CPacketExplosion, "runtime", proto2),
 ut(CPacketExplosion, "typeName", "CPacketExplosion"),
 ut(CPacketExplosion, "fields", proto2.util.newFieldList(()=>[{
@@ -2027,7 +2027,7 @@ const PBCosmetics = class extends Message {
 		return proto2.util.equals(PBCosmetics, $, et)
 	}
 };
-exports.PBCosmetics = PBCosmetics,
+export { PBCosmetics };
 ut(PBCosmetics, "runtime", proto2),
 ut(PBCosmetics, "typeName", "PBCosmetics"),
 ut(PBCosmetics, "fields", proto2.util.newFieldList(()=>[{
@@ -2099,7 +2099,7 @@ const CPacketServerInfo = class extends Message {
 		return proto2.util.equals(CPacketServerInfo, $, et)
 	}
 };
-exports.CPacketServerInfo = CPacketServerInfo,
+export { CPacketServerInfo };
 ut(CPacketServerInfo, "runtime", proto2),
 ut(CPacketServerInfo, "typeName", "CPacketServerInfo"),
 ut(CPacketServerInfo, "fields", proto2.util.newFieldList(()=>[{
@@ -2205,7 +2205,7 @@ const PlayerPermissionEntry = class extends Message {
 		return proto2.util.equals(PlayerPermissionEntry, $, et)
 	}
 };
-exports.PlayerPermissionEntry = PlayerPermissionEntry,
+export { PlayerPermissionEntry };
 ut(PlayerPermissionEntry, "runtime", proto2),
 ut(PlayerPermissionEntry, "typeName", "PlayerPermissionEntry"),
 ut(PlayerPermissionEntry, "fields", proto2.util.newFieldList(()=>[{
@@ -2277,7 +2277,7 @@ const CPacketJoinGame = class extends Message {
 		return proto2.util.equals(CPacketJoinGame, $, et)
 	}
 };
-exports.CPacketJoinGame = CPacketJoinGame,
+export { CPacketJoinGame };
 ut(CPacketJoinGame, "runtime", proto2),
 ut(CPacketJoinGame, "typeName", "CPacketJoinGame"),
 ut(CPacketJoinGame, "fields", proto2.util.newFieldList(()=>[{
@@ -2369,7 +2369,7 @@ const CPacketLeaderboard = class extends Message {
 		return proto2.util.equals(CPacketLeaderboard, $, et)
 	}
 };
-exports.CPacketLeaderboard = CPacketLeaderboard,
+export { CPacketLeaderboard };
 ut(CPacketLeaderboard, "runtime", proto2),
 ut(CPacketLeaderboard, "typeName", "CPacketLeaderboard"),
 ut(CPacketLeaderboard, "fields", proto2.util.newFieldList(()=>[{
@@ -2421,7 +2421,7 @@ const CPacketLocalStorage = class extends Message {
 		return proto2.util.equals(CPacketLocalStorage, $, et)
 	}
 };
-exports.CPacketLocalStorage = CPacketLocalStorage,
+export { CPacketLocalStorage };
 ut(CPacketLocalStorage, "runtime", proto2),
 ut(CPacketLocalStorage, "typeName", "CPacketLocalStorage"),
 ut(CPacketLocalStorage, "fields", proto2.util.newFieldList(()=>[{
@@ -2479,7 +2479,7 @@ const CPacketMessage = class extends Message {
 		return proto2.util.equals(CPacketMessage, $, et)
 	}
 };
-exports.CPacketMessage = CPacketMessage,
+export { CPacketMessage };
 ut(CPacketMessage, "runtime", proto2),
 ut(CPacketMessage, "typeName", "CPacketMessage"),
 ut(CPacketMessage, "fields", proto2.util.newFieldList(()=>[{
@@ -2538,7 +2538,7 @@ const CPacketOpenShop = class extends Message {
 		return proto2.util.equals(CPacketOpenShop, $, et)
 	}
 };
-exports.CPacketOpenShop = CPacketOpenShop,
+export { CPacketOpenShop };
 ut(CPacketOpenShop, "runtime", proto2),
 ut(CPacketOpenShop, "typeName", "CPacketOpenShop"),
 ut(CPacketOpenShop, "fields", proto2.util.newFieldList(()=>[{
@@ -2569,7 +2569,7 @@ const CPacketOpenWindow = class extends Message {
 		return proto2.util.equals(CPacketOpenWindow, $, et)
 	}
 };
-exports.CPacketOpenWindow = CPacketOpenWindow,
+export { CPacketOpenWindow };
 ut(CPacketOpenWindow, "runtime", proto2),
 ut(CPacketOpenWindow, "typeName", "CPacketOpenWindow"),
 ut(CPacketOpenWindow, "fields", proto2.util.newFieldList(()=>[{
@@ -2624,7 +2624,7 @@ const CPacketParticles = class extends Message {
 		return proto2.util.equals(CPacketParticles, $, et)
 	}
 };
-exports.CPacketParticles = CPacketParticles,
+export { CPacketParticles };
 ut(CPacketParticles, "runtime", proto2),
 ut(CPacketParticles, "typeName", "CPacketParticles"),
 ut(CPacketParticles, "fields", proto2.util.newFieldList(()=>[{
@@ -2712,7 +2712,7 @@ const CPacketPlayerList = class extends Message {
 		return proto2.util.equals(CPacketPlayerList, $, et)
 	}
 };
-exports.CPacketPlayerList = CPacketPlayerList,
+export { CPacketPlayerList };
 ut(CPacketPlayerList, "runtime", proto2),
 ut(CPacketPlayerList, "typeName", "CPacketPlayerList"),
 ut(CPacketPlayerList, "fields", proto2.util.newFieldList(()=>[{
@@ -2749,7 +2749,7 @@ const PlayerData = class extends Message {
 		return proto2.util.equals(PlayerData, $, et)
 	}
 };
-exports.PlayerData = PlayerData,
+export { PlayerData };
 ut(PlayerData, "runtime", proto2),
 ut(PlayerData, "typeName", "PlayerData"),
 ut(PlayerData, "fields", proto2.util.newFieldList(()=>[{
@@ -2827,7 +2827,7 @@ const CPacketPlayerPosLook = class extends Message {
 		return proto2.util.equals(CPacketPlayerPosLook, $, et)
 	}
 };
-exports.CPacketPlayerPosLook = CPacketPlayerPosLook,
+export { CPacketPlayerPosLook };
 ut(CPacketPlayerPosLook, "runtime", proto2),
 ut(CPacketPlayerPosLook, "typeName", "CPacketPlayerPosLook"),
 ut(CPacketPlayerPosLook, "fields", proto2.util.newFieldList(()=>[{
@@ -2877,7 +2877,7 @@ const CPacketPlayerPosition = class extends Message {
 		return proto2.util.equals(CPacketPlayerPosition, $, et)
 	}
 };
-exports.CPacketPlayerPosition = CPacketPlayerPosition,
+export { CPacketPlayerPosition };
 ut(CPacketPlayerPosition, "runtime", proto2),
 ut(CPacketPlayerPosition, "typeName", "CPacketPlayerPosition"),
 ut(CPacketPlayerPosition, "fields", proto2.util.newFieldList(()=>[{
@@ -2921,7 +2921,7 @@ const CPacketPlayerReconciliation = class CPacketPlayerReconciliation extends Me
 		return proto2.util.equals(CPacketPlayerReconciliation, $, et)
 	}
 };
-exports.CPacketPlayerReconciliation = CPacketPlayerReconciliation,
+export { CPacketPlayerReconciliation };
 ut(CPacketPlayerReconciliation, "runtime", proto2),
 ut(CPacketPlayerReconciliation, "typeName", "CPacketPlayerReconciliation"),
 ut(CPacketPlayerReconciliation, "fields", proto2.util.newFieldList(()=>[{
@@ -2982,7 +2982,7 @@ const CPacketPong = class extends Message {
 		return proto2.util.equals(CPacketPong, $, et)
 	}
 };
-exports.CPacketPong = CPacketPong,
+export { CPacketPong };
 ut(CPacketPong, "runtime", proto2),
 ut(CPacketPong, "typeName", "CPacketPong"),
 ut(CPacketPong, "fields", proto2.util.newFieldList(()=>[{
@@ -3022,7 +3022,7 @@ const CPacketRespawn = class extends Message {
 		return proto2.util.equals(CPacketRespawn, $, et)
 	}
 };
-exports.CPacketRespawn = CPacketRespawn,
+export { CPacketRespawn };
 ut(CPacketRespawn, "runtime", proto2),
 ut(CPacketRespawn, "typeName", "CPacketRespawn"),
 ut(CPacketRespawn, "fields", proto2.util.newFieldList(()=>[{
@@ -3064,7 +3064,7 @@ const CPacketScoreboard = class extends Message {
 		return proto2.util.equals(CPacketScoreboard, $, et)
 	}
 };
-exports.CPacketScoreboard = CPacketScoreboard,
+export { CPacketScoreboard };
 ut(CPacketScoreboard, "runtime", proto2),
 ut(CPacketScoreboard, "typeName", "CPacketScoreboard"),
 ut(CPacketScoreboard, "fields", proto2.util.newFieldList(()=>[{
@@ -3098,7 +3098,7 @@ const ScoreboardContent = class extends Message {
 		return proto2.util.equals(ScoreboardContent, $, et)
 	}
 };
-exports.ScoreboardContent = ScoreboardContent,
+export { ScoreboardContent };
 ut(ScoreboardContent, "runtime", proto2),
 ut(ScoreboardContent, "typeName", "ScoreboardContent"),
 ut(ScoreboardContent, "fields", proto2.util.newFieldList(()=>[{
@@ -3127,7 +3127,7 @@ const CPacketServerMetadata = class extends Message {
 		return proto2.util.equals(CPacketServerMetadata, $, et)
 	}
 };
-exports.CPacketServerMetadata = CPacketServerMetadata,
+export { CPacketServerMetadata };
 ut(CPacketServerMetadata, "runtime", proto2),
 ut(CPacketServerMetadata, "typeName", "CPacketServerMetadata"),
 ut(CPacketServerMetadata, "fields", proto2.util.newFieldList(()=>[{
@@ -3157,7 +3157,7 @@ const CPacketSetSlot = class extends Message {
 		return proto2.util.equals(CPacketSetSlot, $, et)
 	}
 };
-exports.CPacketSetSlot = CPacketSetSlot,
+export { CPacketSetSlot };
 ut(CPacketSetSlot, "runtime", proto2),
 ut(CPacketSetSlot, "typeName", "CPacketSetSlot"),
 ut(CPacketSetSlot, "fields", proto2.util.newFieldList(()=>[{
@@ -3195,7 +3195,7 @@ const CPacketSignEditorOpen = class extends Message {
 		return proto2.util.equals(CPacketSignEditorOpen, $, et)
 	}
 };
-exports.CPacketSignEditorOpen = CPacketSignEditorOpen,
+export { CPacketSignEditorOpen };
 ut(CPacketSignEditorOpen, "runtime", proto2),
 ut(CPacketSignEditorOpen, "typeName", "CPacketSignEditorOpen"),
 ut(CPacketSignEditorOpen, "fields", proto2.util.newFieldList(()=>[{
@@ -3226,7 +3226,7 @@ const CPacketSoundEffect = class extends Message {
 		return proto2.util.equals(CPacketSoundEffect, $, et)
 	}
 };
-exports.CPacketSoundEffect = CPacketSoundEffect,
+export { CPacketSoundEffect };
 ut(CPacketSoundEffect, "runtime", proto2),
 ut(CPacketSoundEffect, "typeName", "CPacketSoundEffect"),
 ut(CPacketSoundEffect, "fields", proto2.util.newFieldList(()=>[{
@@ -3281,7 +3281,7 @@ const CPacketSpawnEntity = class extends Message {
 		return proto2.util.equals(CPacketSpawnEntity, $, et)
 	}
 };
-exports.CPacketSpawnEntity = CPacketSpawnEntity,
+export { CPacketSpawnEntity };
 ut(CPacketSpawnEntity, "runtime", proto2),
 ut(CPacketSpawnEntity, "typeName", "CPacketSpawnEntity"),
 ut(CPacketSpawnEntity, "fields", proto2.util.newFieldList(()=>[{
@@ -3366,7 +3366,7 @@ const CPacketSpawnExperienceOrb = class extends Message {
 		return proto2.util.equals(CPacketSpawnExperienceOrb, $, et)
 	}
 };
-exports.CPacketSpawnExperienceOrb = CPacketSpawnExperienceOrb,
+export { CPacketSpawnExperienceOrb };
 ut(CPacketSpawnExperienceOrb, "runtime", proto2),
 ut(CPacketSpawnExperienceOrb, "typeName", "CPacketSpawnExperienceOrb"),
 ut(CPacketSpawnExperienceOrb, "fields", proto2.util.newFieldList(()=>[{
@@ -3423,7 +3423,7 @@ const CPacketSpawnPlayer = class extends Message {
 		return proto2.util.equals(CPacketSpawnPlayer, $, et)
 	}
 };
-exports.CPacketSpawnPlayer = CPacketSpawnPlayer,
+export { CPacketSpawnPlayer };
 ut(CPacketSpawnPlayer, "runtime", proto2),
 ut(CPacketSpawnPlayer, "typeName", "CPacketSpawnPlayer"),
 ut(CPacketSpawnPlayer, "fields", proto2.util.newFieldList(()=>[{
@@ -3498,7 +3498,7 @@ const CPacketTabComplete = class extends Message {
 		return proto2.util.equals(CPacketTabComplete, $, et)
 	}
 };
-exports.CPacketTabComplete = CPacketTabComplete,
+export { CPacketTabComplete };
 ut(CPacketTabComplete, "runtime", proto2),
 ut(CPacketTabComplete, "typeName", "CPacketTabComplete"),
 ut(CPacketTabComplete, "fields", proto2.util.newFieldList(()=>[{
@@ -3528,7 +3528,7 @@ const CPacketTitle = class extends Message {
 		return proto2.util.equals(CPacketTitle, $, et)
 	}
 };
-exports.CPacketTitle = CPacketTitle,
+export { CPacketTitle };
 ut(CPacketTitle, "runtime", proto2),
 ut(CPacketTitle, "typeName", "CPacketTitle"),
 ut(CPacketTitle, "fields", proto2.util.newFieldList(()=>[{
@@ -3565,7 +3565,7 @@ const CPacketUpdateHealth = class extends Message {
 		return proto2.util.equals(CPacketUpdateHealth, $, et)
 	}
 };
-exports.CPacketUpdateHealth = CPacketUpdateHealth,
+export { CPacketUpdateHealth };
 ut(CPacketUpdateHealth, "runtime", proto2),
 ut(CPacketUpdateHealth, "typeName", "CPacketUpdateHealth"),
 ut(CPacketUpdateHealth, "fields", proto2.util.newFieldList(()=>[{
@@ -3618,7 +3618,7 @@ const CPacketUpdateLeaderboard = class extends Message {
 		return proto2.util.equals(CPacketUpdateLeaderboard, $, et)
 	}
 };
-exports.CPacketUpdateLeaderboard = CPacketUpdateLeaderboard,
+export { CPacketUpdateLeaderboard };
 ut(CPacketUpdateLeaderboard, "runtime", proto2),
 ut(CPacketUpdateLeaderboard, "typeName", "CPacketUpdateLeaderboard"),
 ut(CPacketUpdateLeaderboard, "fields", proto2.util.newFieldList(()=>[{
@@ -3653,7 +3653,7 @@ const CPacketUpdateScoreboard = class extends Message {
 		return proto2.util.equals(CPacketUpdateScoreboard, $, et)
 	}
 };
-exports.CPacketUpdateScoreboard = CPacketUpdateScoreboard,
+export { CPacketUpdateScoreboard };
 ut(CPacketUpdateScoreboard, "runtime", proto2),
 ut(CPacketUpdateScoreboard, "typeName", "CPacketUpdateScoreboard"),
 ut(CPacketUpdateScoreboard, "fields", proto2.util.newFieldList(()=>[{
@@ -3691,7 +3691,7 @@ const CPacketUpdateStatus = class extends Message {
 		return proto2.util.equals(CPacketUpdateStatus, $, et)
 	}
 };
-exports.CPacketUpdateStatus = CPacketUpdateStatus,
+export { CPacketUpdateStatus };
 ut(CPacketUpdateStatus, "runtime", proto2),
 ut(CPacketUpdateStatus, "typeName", "CPacketUpdateStatus"),
 ut(CPacketUpdateStatus, "fields", proto2.util.newFieldList(()=>[{
@@ -3745,7 +3745,7 @@ const CPacketUpdate = class extends Message {
 		return proto2.util.equals(CPacketUpdate, $, et)
 	}
 };
-exports.CPacketUpdate = CPacketUpdate,
+export { CPacketUpdate };
 ut(CPacketUpdate, "runtime", proto2),
 ut(CPacketUpdate, "typeName", "CPacketUpdate"),
 ut(CPacketUpdate, "fields", proto2.util.newFieldList(()=>[{
@@ -3784,7 +3784,7 @@ const CPacketWindowItems = class extends Message {
 		return proto2.util.equals(CPacketWindowItems, $, et)
 	}
 };
-exports.CPacketWindowItems = CPacketWindowItems,
+export { CPacketWindowItems };
 ut(CPacketWindowItems, "runtime", proto2),
 ut(CPacketWindowItems, "typeName", "CPacketWindowItems"),
 ut(CPacketWindowItems, "fields", proto2.util.newFieldList(()=>[{
@@ -3820,7 +3820,7 @@ const CPacketWindowProperty = class extends Message {
 		return proto2.util.equals(CPacketWindowProperty, $, et)
 	}
 };
-exports.CPacketWindowProperty = CPacketWindowProperty,
+export { CPacketWindowProperty };
 ut(CPacketWindowProperty, "runtime", proto2),
 ut(CPacketWindowProperty, "typeName", "CPacketWindowProperty"),
 ut(CPacketWindowProperty, "fields", proto2.util.newFieldList(()=>[{
@@ -3857,12 +3857,12 @@ const SPacketRespawn = class extends Message {
 		return proto2.util.equals(SPacketRespawn, _, $)
 	}
 };
-exports.SPacketRespawn = SPacketRespawn,
+export { SPacketRespawn };
 ut(SPacketRespawn, "runtime", proto2),
 ut(SPacketRespawn, "typeName", "SPacketRespawn"),
 ut(SPacketRespawn, "fields", proto2.util.newFieldList(()=>[]));
 var su;
-let SPacketTabComplete$1 = class extends Message {
+export let SPacketTabComplete$1 = class extends Message {
 	constructor($) {
 		super();
 		ut(this, "message");
@@ -3881,7 +3881,6 @@ let SPacketTabComplete$1 = class extends Message {
 		return proto2.util.equals(SPacketTabComplete$1, $, et)
 	}
 };
-exports.SPacketTabComplete$1 = SPacketTabComplete$1,
 ut(SPacketTabComplete$1, "runtime", proto2),
 ut(SPacketTabComplete$1, "typeName", "SPacketTabComplete"),
 ut(SPacketTabComplete$1, "fields", proto2.util.newFieldList(()=>[{
@@ -3909,7 +3908,7 @@ const SPacketCraftItem = class extends Message {
 		return proto2.util.equals(SPacketCraftItem, $, et)
 	}
 };
-exports.SPacketCraftItem = SPacketCraftItem,
+export { SPacketCraftItem };
 ut(SPacketCraftItem, "runtime", proto2),
 ut(SPacketCraftItem, "typeName", "SPacketCraftItem"),
 ut(SPacketCraftItem, "fields", proto2.util.newFieldList(()=>[{
@@ -3938,7 +3937,7 @@ const SPacketRequestChunk = class extends Message {
 		return proto2.util.equals(SPacketRequestChunk, $, et)
 	}
 };
-exports.SPacketRequestChunk = SPacketRequestChunk,
+export { SPacketRequestChunk };
 ut(SPacketRequestChunk, "runtime", proto2),
 ut(SPacketRequestChunk, "typeName", "SPacketRequestChunk"),
 ut(SPacketRequestChunk, "fields", proto2.util.newFieldList(()=>[{
@@ -3973,7 +3972,7 @@ const SPacketAdminAction = class extends Message {
 		return proto2.util.equals(SPacketAdminAction, $, et)
 	}
 };
-exports.SPacketAdminAction = SPacketAdminAction,
+export { SPacketAdminAction };
 ut(SPacketAdminAction, "runtime", proto2),
 ut(SPacketAdminAction, "typeName", "SPacketAdminAction"),
 ut(SPacketAdminAction, "fields", proto2.util.newFieldList(()=>[{
@@ -4050,7 +4049,7 @@ const KickPlayer = class extends Message {
 		return proto2.util.equals(KickPlayer, $, et)
 	}
 };
-exports.KickPlayer = KickPlayer,
+export { KickPlayer };
 ut(KickPlayer, "runtime", proto2),
 ut(KickPlayer, "typeName", "KickPlayer"),
 ut(KickPlayer, "fields", proto2.util.newFieldList(()=>[{
@@ -4078,7 +4077,7 @@ const BanPlayer = class extends Message {
 		return proto2.util.equals(BanPlayer, $, et)
 	}
 };
-exports.BanPlayer = BanPlayer,
+export { BanPlayer };
 ut(BanPlayer, "runtime", proto2),
 ut(BanPlayer, "typeName", "BanPlayer"),
 ut(BanPlayer, "fields", proto2.util.newFieldList(()=>[{
@@ -4106,7 +4105,7 @@ const UnbanPlayer = class extends Message {
 		return proto2.util.equals(UnbanPlayer, $, et)
 	}
 };
-exports.UnbanPlayer = UnbanPlayer,
+export { UnbanPlayer };
 ut(UnbanPlayer, "runtime", proto2),
 ut(UnbanPlayer, "typeName", "UnbanPlayer"),
 ut(UnbanPlayer, "fields", proto2.util.newFieldList(()=>[{
@@ -4133,7 +4132,7 @@ const StopServer = class extends Message {
 		return proto2.util.equals(StopServer, _, $)
 	}
 };
-exports.StopServer = StopServer,
+export { StopServer };
 ut(StopServer, "runtime", proto2),
 ut(StopServer, "typeName", "StopServer"),
 ut(StopServer, "fields", proto2.util.newFieldList(()=>[]));
@@ -4156,7 +4155,7 @@ const PromotePlayer = class extends Message {
 		return proto2.util.equals(PromotePlayer, $, et)
 	}
 };
-exports.PromotePlayer = PromotePlayer,
+export { PromotePlayer };
 ut(PromotePlayer, "runtime", proto2),
 ut(PromotePlayer, "typeName", "PromotePlayer"),
 ut(PromotePlayer, "fields", proto2.util.newFieldList(()=>[{
@@ -4184,7 +4183,7 @@ const DemotePlayer = class extends Message {
 		return proto2.util.equals(l1, $, et)
 	}
 };
-exports.DemotePlayer = DemotePlayer,
+export { DemotePlayer };
 ut(DemotePlayer, "runtime", proto2),
 ut(DemotePlayer, "typeName", "DemotePlayer"),
 ut(DemotePlayer, "fields", proto2.util.newFieldList(()=>[{
@@ -4212,7 +4211,7 @@ const UpdateAccessControl = class extends Message {
 		return proto2.util.equals(UpdateAccessControl, $, et)
 	}
 };
-exports.UpdateAccessControl = UpdateAccessControl,
+export { UpdateAccessControl };
 ut(UpdateAccessControl, "runtime", proto2),
 ut(UpdateAccessControl, "typeName", "UpdateAccessControl"),
 ut(UpdateAccessControl, "fields", proto2.util.newFieldList(()=>[{
@@ -4240,7 +4239,7 @@ const UpdateCheats = class extends Message {
 		return proto2.util.equals(UpdateCheats, $, et)
 	}
 };
-exports.UpdateCheats = UpdateCheats,
+export { UpdateCheats };
 ut(UpdateCheats, "runtime", proto2),
 ut(UpdateCheats, "typeName", "UpdateCheats"),
 ut(UpdateCheats, "fields", proto2.util.newFieldList(()=>[{
@@ -4268,7 +4267,7 @@ const UpdatePvP = class extends Message {
 		return proto2.util.equals(UpdatePvP, $, et)
 	}
 };
-exports.UpdatePvP = UpdatePvP,
+export { UpdatePvP };
 ut(UpdatePvP, "runtime", proto2),
 ut(UpdatePvP, "typeName", "UpdatePvP"),
 ut(UpdatePvP, "fields", proto2.util.newFieldList(()=>[{
@@ -4297,7 +4296,7 @@ const SPacketAnalytics = class extends Message {
 		return proto2.util.equals(SPacketAnalytics, $, et)
 	}
 };
-exports.SPacketAnalytics = SPacketAnalytics,
+export { SPacketAnalytics };
 ut(SPacketAnalytics, "runtime", proto2),
 ut(SPacketAnalytics, "typeName", "SPacketAnalytics"),
 ut(SPacketAnalytics, "fields", proto2.util.newFieldList(()=>[{
@@ -4332,7 +4331,7 @@ const SPacketConfirmTransaction = class extends Message {
 		return proto2.util.equals(SPacketConfirmTransaction, $, et)
 	}
 };
-exports.SPacketConfirmTransaction = SPacketConfirmTransaction,
+export { SPacketConfirmTransaction };
 ut(SPacketConfirmTransaction, "runtime", proto2),
 ut(SPacketConfirmTransaction, "typeName", "SPacketConfirmTransaction"),
 ut(SPacketConfirmTransaction, "fields", proto2.util.newFieldList(()=>[{
@@ -4370,7 +4369,7 @@ const SPacketHeldItemChange = class extends Message {
 		return proto2.util.equals(SPacketHeldItemChange, $, et)
 	}
 };
-exports.SPacketHeldItemChange = SPacketHeldItemChange,
+export { SPacketHeldItemChange };
 ut(SPacketHeldItemChange, "runtime", proto2),
 ut(SPacketHeldItemChange, "typeName", "SPacketHeldItemChange"),
 ut(SPacketHeldItemChange, "fields", proto2.util.newFieldList(()=>[{
@@ -4408,7 +4407,7 @@ const SPacketPlayerInput = class extends Message {
 		return proto2.util.equals(SPacketPlayerInput, $, et)
 	}
 };
-exports.SPacketPlayerInput = SPacketPlayerInput,
+export { SPacketPlayerInput };
 ut(SPacketPlayerInput, "runtime", proto2),
 ut(SPacketPlayerInput, "typeName", "SPacketPlayerInput"),
 ut(SPacketPlayerInput, "fields", proto2.util.newFieldList( () => [{
@@ -4486,7 +4485,7 @@ const SPacketPing = class extends Message {
 		return proto2.util.equals(SPacketPing, $, et)
 	}
 };
-exports.SPacketPing = SPacketPing,
+export { SPacketPing };
 ut(SPacketPing, "runtime", proto2),
 ut(SPacketPing, "typeName", "SPacketPing"),
 ut(SPacketPing, "fields", proto2.util.newFieldList(()=>[{
@@ -4515,7 +4514,7 @@ const SPacketUpdateSign = class extends Message {
 		return proto2.util.equals(SPacketUpdateSign, $, et)
 	}
 };
-exports.SPacketUpdateSign = SPacketUpdateSign,
+export { SPacketUpdateSign };
 ut(SPacketUpdateSign, "runtime", proto2),
 ut(SPacketUpdateSign, "typeName", "SPacketUpdateSign"),
 ut(SPacketUpdateSign, "fields", proto2.util.newFieldList(()=>[{
@@ -4553,7 +4552,7 @@ const CPacketEntityEffect = class extends Message {
 		return proto2.util.equals(CPacketEntityEffect, $, et)
 	}
 };
-exports.CPacketEntityEffect = CPacketEntityEffect,
+export { CPacketEntityEffect };
 ut(CPacketEntityEffect, "runtime", proto2),
 ut(CPacketEntityEffect, "typeName", "CPacketEntityEffect"),
 ut(CPacketEntityEffect, "fields", proto2.util.newFieldList(()=>[{
@@ -4602,7 +4601,7 @@ const CPacketEntityProperties = class extends Message {
 		return proto2.util.equals(CPacketEntityProperties, $, et)
 	}
 };
-exports.CPacketEntityProperties = CPacketEntityProperties,
+export { CPacketEntityProperties };
 ut(CPacketEntityProperties, "runtime", proto2),
 ut(CPacketEntityProperties, "typeName", "CPacketEntityProperties"),
 ut(CPacketEntityProperties, "fields", proto2.util.newFieldList(()=>[{
@@ -4638,7 +4637,7 @@ const PBSnapshot = class extends Message {
 		return proto2.util.equals(PBSnapshot, $, et)
 	}
 };
-exports.PBSnapshot = PBSnapshot,
+export { PBSnapshot };
 ut(PBSnapshot, "runtime", proto2),
 ut(PBSnapshot, "typeName", "PBSnapshot"),
 ut(PBSnapshot, "fields", proto2.util.newFieldList(()=>[{
@@ -4679,7 +4678,7 @@ const PBModifier = class extends Message {
 		return proto2.util.equals(PBModifier, $, et)
 	}
 };
-exports.PBModifier = PBModifier,
+export { PBModifier };
 ut(PBModifier, "runtime", proto2),
 ut(PBModifier, "typeName", "PBModifier"),
 ut(PBModifier, "fields", proto2.util.newFieldList(()=>[{
@@ -4718,7 +4717,7 @@ const CPacketQueueNext = class extends Message {
 		return proto2.util.equals(CPacketQueueNext, $, et)
 	}
 };
-exports.CPacketQueueNext = CPacketQueueNext,
+export { CPacketQueueNext };
 ut(CPacketQueueNext, "runtime", proto2),
 ut(CPacketQueueNext, "typeName", "CPacketQueueNext"),
 ut(CPacketQueueNext, "fields", proto2.util.newFieldList(()=>[{
@@ -4752,7 +4751,7 @@ const CPacketRemoveEntityEffect = class extends Message {
 		return proto2.util.equals(CPacketRemoveEntityEffect, $, et)
 	}
 };
-exports.CPacketRemoveEntityEffect = CPacketRemoveEntityEffect,
+export { CPacketRemoveEntityEffect };
 ut(CPacketRemoveEntityEffect, "runtime", proto2),
 ut(CPacketRemoveEntityEffect, "typeName", "CPacketRemoveEntityEffect"),
 ut(CPacketRemoveEntityEffect, "fields", proto2.util.newFieldList(()=>[{
@@ -4787,7 +4786,7 @@ const CPacketSetExperience = class extends Message {
 		return proto2.util.equals(CPacketSetExperience, $, et)
 	}
 };
-exports.CPacketSetExperience = CPacketSetExperience,
+export { CPacketSetExperience };
 ut(CPacketSetExperience, "runtime", proto2),
 ut(CPacketSetExperience, "typeName", "CPacketSetExperience"),
 ut(CPacketSetExperience, "fields", proto2.util.newFieldList(()=>[{
@@ -4826,7 +4825,7 @@ const CPacketShopProperty = class extends Message {
 		return proto2.util.equals(CPacketShopProperty, $, et)
 	}
 };
-exports.CPacketShopProperty = CPacketShopProperty,
+export { CPacketShopProperty };
 ut(CPacketShopProperty, "runtime", proto2),
 ut(CPacketShopProperty, "typeName", "CPacketShopProperty"),
 ut(CPacketShopProperty, "fields", proto2.util.newFieldList(()=>[{
@@ -4861,7 +4860,7 @@ const CPacketShopProperties = class extends Message {
 		return proto2.util.equals(CPacketShopProperties, $, et)
 	}
 };
-exports.CPacketShopProperties = CPacketShopProperties,
+export { CPacketShopProperties };
 ut(CPacketShopProperties, "runtime", proto2),
 ut(CPacketShopProperties, "typeName", "CPacketShopProperties"),
 ut(CPacketShopProperties, "fields", proto2.util.newFieldList(()=>[{
@@ -4891,7 +4890,7 @@ const CPacketUseBed = class extends Message {
 		return proto2.util.equals(CPacketUseBed, $, et)
 	}
 };
-exports.CPacketUseBed = CPacketUseBed,
+export { CPacketUseBed };
 ut(CPacketUseBed, "runtime", proto2),
 ut(CPacketUseBed, "typeName", "CPacketUseBed"),
 ut(CPacketUseBed, "fields", proto2.util.newFieldList(()=>[{
@@ -4925,7 +4924,7 @@ const CPacketTimeUpdate = class extends Message {
 		return proto2.util.equals(CPacketTimeUpdate, $, et)
 	}
 };
-exports.CPacketTimeUpdate = CPacketTimeUpdate,
+export { CPacketTimeUpdate };
 ut(CPacketTimeUpdate, "runtime", proto2),
 ut(CPacketTimeUpdate, "typeName", "CPacketTimeUpdate"),
 ut(CPacketTimeUpdate, "fields", proto2.util.newFieldList(()=>[{
@@ -4958,7 +4957,7 @@ const ClientBoundCombined = class extends Message {
 		return proto2.util.equals(ClientBoundCombined, $, et)
 	}
 };
-exports.ClientBoundCombined = ClientBoundCombined,
+export { ClientBoundCombined };
 ut(ClientBoundCombined, "runtime", proto2),
 ut(ClientBoundCombined, "typeName", "ClientBoundCombined"),
 ut(ClientBoundCombined, "fields", proto2.util.newFieldList(()=>[{
@@ -4989,7 +4988,7 @@ const ClientBoundCombined_CPacket = class extends Message {
 		return proto2.util.equals(ClientBoundCombined_CPacket, $, et)
 	}
 };
-exports.ClientBoundCombined_CPacket = ClientBoundCombined_CPacket,
+export { ClientBoundCombined_CPacket };
 ut(ClientBoundCombined_CPacket, "runtime", proto2),
 ut(ClientBoundCombined_CPacket, "typeName", "ClientBoundCombined.CPacket"),
 ut(ClientBoundCombined_CPacket, "fields", proto2.util.newFieldList(()=>[{
@@ -5361,7 +5360,7 @@ const SPacketEnchantItem = class extends Message {
 		return proto2.util.equals(SPacketEnchantItem, $, et)
 	}
 };
-exports.SPacketEnchantItem = SPacketEnchantItem,
+export { SPacketEnchantItem };
 ut(SPacketEnchantItem, "runtime", proto2),
 ut(SPacketEnchantItem, "typeName", "SPacketEnchantItem"),
 ut(SPacketEnchantItem, "fields", proto2.util.newFieldList(()=>[{
@@ -5393,7 +5392,7 @@ const SPacketQueueNext = class extends Message {
 		return proto2.util.equals(SPacketQueueNext, _, $)
 	}
 };
-exports.SPacketQueueNext = SPacketQueueNext,
+export { SPacketQueueNext };
 ut(SPacketQueueNext, "runtime", proto2),
 ut(SPacketQueueNext, "typeName", "SPacketQueueNext"),
 ut(SPacketQueueNext, "fields", proto2.util.newFieldList(()=>[]));
@@ -5419,7 +5418,7 @@ const SPacketUpdateCommandBlock = class extends Message {
 		return proto2.util.equals(SPacketUpdateCommandBlock, $, et)
 	}
 };
-exports.SPacketUpdateCommandBlock = SPacketUpdateCommandBlock,
+export { SPacketUpdateCommandBlock };
 ut(SPacketUpdateCommandBlock, "runtime", proto2),
 ut(SPacketUpdateCommandBlock, "typeName", "SPacketUpdateCommandBlock"),
 ut(SPacketUpdateCommandBlock, "fields", proto2.util.newFieldList(()=>[{
@@ -5554,7 +5553,7 @@ for (const [j,_] of Object.entries(SPACKET_MAP))
 	ID_TO_NAME[currentId] = j,
 	currentId++;
 
-exports.BitArray = class {
+export class BitArray {
 	constructor(_, $, et) {
 		ut(this, "capacity");
 		ut(this, "bitsPerValue");
@@ -5656,7 +5655,7 @@ class ClientDecoder extends Decoder {
 				nt = nt.slice(1);
 				if (rt) {
 					const it = tt >> 2, at = tt & 2, st = ID_TO_PACKET[it];
-					at && (nt = brotli.decompress(nt));
+					at && (nt = decompress(nt));
 					const ot = st.fromBinary(nt);
 					st.typeName === "ClientBoundCombined" ? ot.packets.forEach(ct=>{
 						this.emit("decoded", {
@@ -5690,7 +5689,7 @@ const parser = {
 	Decoder: ClientDecoder
 };
 
-exports.ClientSocket = class {
+export class ClientSocket {
 	static setUrl(_, $) {
 		this.socket = io(_, {
 			transports: ["websocket"],
@@ -5709,7 +5708,7 @@ exports.ClientSocket = class {
 	}
 	static connect() {
 		this.socket.on("connect", ()=>{
-			exports.ClientSocket.id = this.socket.id
+			ClientSocket.id = this.socket.id
 		}),
 		this.socket.connect()
 	}
@@ -5741,4 +5740,5 @@ exports.ClientSocket = class {
 		var $;
 		($ = this.socket) == null || $.emit(_.constructor.typeName, _)
 	}
-};
+}
+export default exports;
