@@ -2,6 +2,7 @@ import { ClientSocket, SPacketLoginStart } from './miniblox/main.js';
 import handlers, { entity } from './miniblox/handlers/init.js';
 import { createServer } from 'minecraft-protocol';
 import { readFileSync } from 'node:fs';
+import GAMEMODES from './miniblox/types/gamemodes.js';
 const server = createServer({
 	'online-mode': false,
 	motd: '\u00a76' + ' '.repeat(14) + 'Miniblox Translation Layer \u00a7c[1.8]\n\u00a7a' + ' '.repeat(21) + 'Made by 7GrandDad',
@@ -10,8 +11,7 @@ const server = createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
-const VERSION = '3.41.10';
-import GAMEMODES from './miniblox/types/gamemodes.js';
+const VERSION = '3.41.20';
 let connected, skipKick = Date.now();
 
 function cleanup(teleport) {
