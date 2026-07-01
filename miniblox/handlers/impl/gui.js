@@ -96,6 +96,16 @@ const self = class GuiHandler extends Handler {
 			}));
 		});
 		client.on('transaction', packet => {
+			if (packet.windowId == 0 && entity.local.transactions[packet.action] != undefined) {
+				const id = entity.local.transactions[packet.action];
+				if (id > entity.local.lastServerAckId || id < entity.local.lastServerAckId - 256) {
+					entity.local.lastServerAckId = id;
+				}
+
+				delete entity.local.transactions[packet.action];
+				return;
+			}
+
 			ClientSocket.sendPacket(new SPacketConfirmTransaction({
 				windowId: packet.windowId,
 				actionNumber: packet.action,

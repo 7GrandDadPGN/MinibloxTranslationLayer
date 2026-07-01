@@ -496,6 +496,17 @@ const self = class EntityHandler extends Handler {
 			});
 		});
 		ClientSocket.on('CPacketPlayerReconciliation', packet => {
+			if (packet.ackId != null) {
+				this.local.transactionNumber = (this.local.transactionNumber - 1) % 32767;
+				this.local.transactions[this.local.transactionNumber] = packet.ackId;
+
+				client.write('transaction', {
+					windowId: 0,
+					action: this.local.transactionNumber,
+					accepted: false
+				});
+			}
+
 			if (packet.reset) {
 				this.local.inputSequenceNumber = 0;
 				this.local.pos = {x: packet.x, y: packet.y, z: packet.z};
@@ -637,6 +648,8 @@ const self = class EntityHandler extends Handler {
 					sneak: data.readUInt8(41) > 0,
 					sprint: this.local.state[1] ?? false,
 					pos: this.desyncFlag ? desyncMath(this.local.pos, this.local.serverPos, 0.5) : this.local.pos,
+					ackId: this.local.lastServerAckId > 0 ? this.local.lastServerAckId : undefined,
+					onGround: data.readUInt8(42) > 0,
 					usingItem: false
 				}));
 			}
@@ -693,6 +706,9 @@ const self = class EntityHandler extends Handler {
 			id: -1,
 			mcId: 99999,
 			inputSequenceNumber: 0,
+			lastServerAckId: 0,
+			transactions: {},
+			transactionNumber: 0,
 			yaw: 0,
 			pitch: 0,
 			pos: {x: 0, y: 0, z: 0},
