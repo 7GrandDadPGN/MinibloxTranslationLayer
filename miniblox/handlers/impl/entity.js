@@ -225,7 +225,7 @@ const self = class EntityHandler extends Handler {
 				this.entities[packet.id] = {
 					id: packet.id,
 					type: -1,
-					special: packet.name && packet.name.includes(' '),
+					special: packet.name && packet.name.includes(' ') || packet.socketId.includes('bot'),
 					pos: {x: packet.pos.x * 32, y: packet.pos.y * 32, z: packet.pos.z * 32},
 					yaw: yaw,
 					pitch: pitch,
@@ -601,37 +601,45 @@ const self = class EntityHandler extends Handler {
 			}));
 			this.abilities(true);
 		});
-		client.on('steer_vehicle', ({ sideways, forward, jump } = {}) => {
-			if (!this.desyncFlag) {
-				this.local.inputSequenceNumber++;
-			} else {
-				client.write('world_particles', {
-					particleId: 13,
-					longDistance: true,
-					x: this.local.serverPos.x - 0.25,
-					y: this.local.serverPos.y - 0.25,
-					z: this.local.serverPos.z - 0.25,
-					offsetX: 0.25,
-					offsetY: 0.25,
-					offsetZ: 0.25,
-					particleData: 1,
-					particles: 4
-				});
-			}
+		client.on('custom_payload', ({ channel, data } = {}) => {
+			if (channel == 'miniblox:movepacket') {
+				if (!this.desyncFlag) {
+					this.local.inputSequenceNumber++;
+				} else {
+					client.write('world_particles', {
+						particleId: 13,
+						longDistance: true,
+						x: this.local.serverPos.x - 0.25,
+						y: this.local.serverPos.y - 0.25,
+						z: this.local.serverPos.z - 0.25,
+						offsetX: 0.25,
+						offsetY: 0.25,
+						offsetZ: 0.25,
+						particleData: 1,
+						particles: 4
+					});
+				}
 
-			ClientSocket.sendPacket(new SPacketPlayerInput({
-				sequenceNumber: this.local.inputSequenceNumber,
-				left: sideways > 0,
-				right: sideways < 0,
-				up: forward > 0,
-				down: forward < 0,
-				yaw: this.local.yaw,
-				pitch: this.local.pitch,
-				jump: (jump & 1) > 0,
-				sneak: (jump & 2) > 0,
-				sprint: this.local.state[1] ?? false,
-				pos: this.desyncFlag ? desyncMath(this.local.pos, this.local.serverPos, 1.98) : this.local.pos
-			}));
+				this.local.pos = {x: data.readDoubleBE(0), y: data.readDoubleBE(8), z: data.readDoubleBE(16)};
+				this.local.yaw = ((data.readFloatBE(24) * -1) - 180) * DEG2RAD;
+				this.local.pitch = (data.readFloatBE(28) * -1) * DEG2RAD;
+				const forward = data.readFloatBE(32);
+				const sideways = data.readFloatBE(36);
+				ClientSocket.sendPacket(new SPacketPlayerInput({
+					sequenceNumber: this.local.inputSequenceNumber,
+					left: sideways > 0,
+					right: sideways < 0,
+					up: forward > 0,
+					down: forward < 0,
+					yaw: this.local.yaw,
+					pitch: this.local.pitch,
+					jump: data.readUInt8(40) > 0,
+					sneak: data.readUInt8(41) > 0,
+					sprint: this.local.state[1] ?? false,
+					pos: this.desyncFlag ? desyncMath(this.local.pos, this.local.serverPos, 0.5) : this.local.pos,
+					usingItem: false
+				}));
+			}
 		});
 		client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
 		client.on('arm_animation', () => {

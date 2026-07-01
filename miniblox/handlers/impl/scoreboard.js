@@ -20,7 +20,7 @@ const self = class TabListHandler extends Handler {
 			client.write('scoreboard_objective', {
 				name: 'scoreboard',
 				action: 0,
-				displayText: translateText(packet.title).slice(0, 40),
+				displayText: translateText(packet.title).slice(0, 16),
 				type: 'INTEGER'
 			});
 			client.write('scoreboard_display_objective', {

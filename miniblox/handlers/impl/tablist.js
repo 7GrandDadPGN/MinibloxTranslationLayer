@@ -14,8 +14,8 @@ const self = class TabListHandler extends Handler {
 				const name = nameSplit[nameSplit.length - 1].slice(0, 16);
 				const uuid = entry.id == entities.local.id ? client.uuid : entry.uuid;
 				const skin = entities.skins[entry.id] != undefined ? (SKINS[entities.skins[entry.id]] ?? SKINS.granddad) : SKINS.granddad;
-				const prefix = (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(' ')) + ' ' : '').slice(0, 14) + translateText(`\\${(entry.color != 'white' ? entry.color : undefined) ?? (entry.id == entities.local.id ? 'white' : 'reset')}\\`);
-				const suffix = (entry.level && entry.level > 0) ? translateText(`\\${entry.level ? LEVEL_TO_COLOUR[entry.level] : 'white'}\\ (${entry.level})`) : '';
+				const prefix = (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(' ')) + ' ' : '').slice(0, 14) + translateText(`\\${(entry.color != 'white' ? entry.color : undefined) ?? (entry.id == entities.local.id ? 'white' : 'reset')}\\`).slice(0, 16);
+				const suffix = (entry.level && entry.level > 0) ? translateText(`\\${entry.level ? LEVEL_TO_COLOUR[entry.level] : 'white'}\\ (${entry.level})`).slice(0, 16) : '';
 				const gamemode = entities.gamemodes[entry.id] ?? 0;
 				let oldTab = this.tabs[entry.id];
 				this.entries[entry.id] = uuid;
@@ -52,7 +52,7 @@ const self = class TabListHandler extends Handler {
 					client.write('scoreboard_team', {
 						team: uuid.slice(0, 16),
 						mode: 0,
-						name: uuid.slice(0, 32),
+						name: uuid.slice(0, 16),
 						prefix: prefix,
 						suffix: suffix,
 						friendlyFire: true,

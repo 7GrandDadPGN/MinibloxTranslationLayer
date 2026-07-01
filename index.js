@@ -10,7 +10,7 @@ const server = mc.createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
-const VERSION = '3.41.33';
+const VERSION = '3.46.0';
 const GAMEMODES = require('./miniblox/types/gamemodes.js');
 let connected, skipKick = Date.now();
 
@@ -102,7 +102,9 @@ async function connect(client, requeue, gamemode, code) {
 			session: session,
 			hydration: '0',
 			metricsId: uuid(),
-			clientVersion: VERSION
+			clientVersion: VERSION,
+			language: 'en',
+			prefetch: undefined
 		}));
 	});
 	ClientSocket.once('CPacketJoinGame', packet => {
