@@ -10,8 +10,8 @@ const server = mc.createServer({
 	keepAlive: false,
 	version: '1.8.9'
 });
-const VERSION = '3.46.0';
 const GAMEMODES = require('./miniblox/types/gamemodes.js');
+const { VERSION } = require('./miniblox/types/constants.js');
 let connected, skipKick = Date.now();
 
 function cleanup(teleport) {
@@ -40,7 +40,7 @@ async function queue(gamemode, server) {
 				'sec-fetch-site': 'cross-site',
 				'Referer': 'https://miniblox.io/',
 				'Referrer-Policy': 'strict-origin-when-cross-origin',
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0'
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36'
 			},
 			body: JSON.stringify({
 				clientVersion: VERSION,

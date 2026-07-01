@@ -3,6 +3,7 @@ const brotli = require("brotli");
 const { Decoder, protocol } = require("socket.io-msgpack-parser");
 const { encode, decode } = require("@msgpack/msgpack");
 const { Message, proto2, proto3 } = require("./types/proto.js");
+const { VERSION } = require("./types/constants.js");
 
 var yT = Object.defineProperty;
 var xT = (j,_,$)=>_ in j ? yT(j, _, {
@@ -508,36 +509,36 @@ class CPacketEntityEquipment extends Message {
 };
 exports.CPacketEntityEquipment = CPacketEntityEquipment;
 const ItemSlots = function(e) {
-    return e[e.UNDEFINED_SLOT = 0] = `UNDEFINED_SLOT`,
-    e[e.MAIN_HAND = 1] = `MAIN_HAND`,
-    e[e.OFF_HAND = 2] = `OFF_HAND`,
-    e[e.HELMET = 3] = `HELMET`,
-    e[e.CHESTPLATE = 4] = `CHESTPLATE`,
-    e[e.LEGGINGS = 5] = `LEGGINGS`,
-    e[e.BOOTS = 6] = `BOOTS`,
-    e
+	return e[e.UNDEFINED_SLOT = 0] = `UNDEFINED_SLOT`,
+	e[e.MAIN_HAND = 1] = `MAIN_HAND`,
+	e[e.OFF_HAND = 2] = `OFF_HAND`,
+	e[e.HELMET = 3] = `HELMET`,
+	e[e.CHESTPLATE = 4] = `CHESTPLATE`,
+	e[e.LEGGINGS = 5] = `LEGGINGS`,
+	e[e.BOOTS = 6] = `BOOTS`,
+	e
 }({});
 proto2.util.setEnumType(ItemSlots, `Equipment.Slot`, [{
-    no: 0,
-    name: `UNDEFINED_SLOT`
+	no: 0,
+	name: `UNDEFINED_SLOT`
 }, {
-    no: 1,
-    name: `MAIN_HAND`
+	no: 1,
+	name: `MAIN_HAND`
 }, {
-    no: 2,
-    name: `OFF_HAND`
+	no: 2,
+	name: `OFF_HAND`
 }, {
-    no: 3,
-    name: `HELMET`
+	no: 3,
+	name: `HELMET`
 }, {
-    no: 4,
-    name: `CHESTPLATE`
+	no: 4,
+	name: `CHESTPLATE`
 }, {
-    no: 5,
-    name: `LEGGINGS`
+	no: 5,
+	name: `LEGGINGS`
 }, {
-    no: 6,
-    name: `BOOTS`
+	no: 6,
+	name: `BOOTS`
 }]);
 class Equipment extends Message {
 	constructor(Equipment) {
@@ -1136,36 +1137,36 @@ class SPacketClick extends Message {
 exports.SPacketClick = SPacketClick;
 
 const EnumFace = function(e) {
-    return e[e.UNDEFINED_FACE = 0] = `UNDEFINED_FACE`,
-    e[e.DOWN = 1] = `DOWN`,
-    e[e.UP = 2] = `UP`,
-    e[e.NORTH = 3] = `NORTH`,
-    e[e.SOUTH = 4] = `SOUTH`,
-    e[e.WEST = 5] = `WEST`,
-    e[e.EAST = 6] = `EAST`,
-    e
+	return e[e.UNDEFINED_FACE = 0] = `UNDEFINED_FACE`,
+	e[e.DOWN = 1] = `DOWN`,
+	e[e.UP = 2] = `UP`,
+	e[e.NORTH = 3] = `NORTH`,
+	e[e.SOUTH = 4] = `SOUTH`,
+	e[e.WEST = 5] = `WEST`,
+	e[e.EAST = 6] = `EAST`,
+	e
 }({});
 proto2.util.setEnumType(EnumFace, `PBEnumFacing`, [{
-    no: 0,
-    name: `UNDEFINED_FACE`
+	no: 0,
+	name: `UNDEFINED_FACE`
 }, {
-    no: 1,
-    name: `DOWN`
+	no: 1,
+	name: `DOWN`
 }, {
-    no: 2,
-    name: `UP`
+	no: 2,
+	name: `UP`
 }, {
-    no: 3,
-    name: `NORTH`
+	no: 3,
+	name: `NORTH`
 }, {
-    no: 4,
-    name: `SOUTH`
+	no: 4,
+	name: `SOUTH`
 }, {
-    no: 5,
-    name: `WEST`
+	no: 5,
+	name: `WEST`
 }, {
-    no: 6,
-    name: `EAST`
+	no: 6,
+	name: `EAST`
 }]);
 
 class SPacketPlaceBlock extends Message {
@@ -1306,32 +1307,32 @@ class SPacketClickWindow extends Message {
 exports.SPacketClickWindow = SPacketClickWindow;
 
 const BreakActionTypes = function(e) {
-    return e[e.START_DESTROY_BLOCK = 0] = `START_DESTROY_BLOCK`,
-    e[e.ABORT_DESTROY_BLOCK = 1] = `ABORT_DESTROY_BLOCK`,
-    e[e.STOP_DESTROY_BLOCK = 2] = `STOP_DESTROY_BLOCK`,
-    e[e.DROP_ALL_ITEMS = 3] = `DROP_ALL_ITEMS`,
-    e[e.DROP_ITEM = 4] = `DROP_ITEM`,
-    e[e.RELEASE_USE_ITEM = 5] = `RELEASE_USE_ITEM`,
-    e
+	return e[e.START_DESTROY_BLOCK = 0] = `START_DESTROY_BLOCK`,
+	e[e.ABORT_DESTROY_BLOCK = 1] = `ABORT_DESTROY_BLOCK`,
+	e[e.STOP_DESTROY_BLOCK = 2] = `STOP_DESTROY_BLOCK`,
+	e[e.DROP_ALL_ITEMS = 3] = `DROP_ALL_ITEMS`,
+	e[e.DROP_ITEM = 4] = `DROP_ITEM`,
+	e[e.RELEASE_USE_ITEM = 5] = `RELEASE_USE_ITEM`,
+	e
 }({});
 proto2.util.setEnumType(BreakActionTypes, `PBAction`, [{
-    no: 0,
-    name: `START_DESTROY_BLOCK`
+	no: 0,
+	name: `START_DESTROY_BLOCK`
 }, {
-    no: 1,
-    name: `ABORT_DESTROY_BLOCK`
+	no: 1,
+	name: `ABORT_DESTROY_BLOCK`
 }, {
-    no: 2,
-    name: `STOP_DESTROY_BLOCK`
+	no: 2,
+	name: `STOP_DESTROY_BLOCK`
 }, {
-    no: 3,
-    name: `DROP_ALL_ITEMS`
+	no: 3,
+	name: `DROP_ALL_ITEMS`
 }, {
-    no: 4,
-    name: `DROP_ITEM`
+	no: 4,
+	name: `DROP_ITEM`
 }, {
-    no: 5,
-    name: `RELEASE_USE_ITEM`
+	no: 5,
+	name: `RELEASE_USE_ITEM`
 }]);
 
 class SPacketPlayerAction extends Message {
@@ -1377,20 +1378,20 @@ class SPacketPlayerAction extends Message {
 };
 exports.SPacketPlayerAction = SPacketPlayerAction;
 const UseTypes = function(e) {
-    return e[e.INTERACT = 0] = `INTERACT`,
-    e[e.ATTACK = 1] = `ATTACK`,
-    e[e.INTERACT_AT = 2] = `INTERACT_AT`,
-    e
+	return e[e.INTERACT = 0] = `INTERACT`,
+	e[e.ATTACK = 1] = `ATTACK`,
+	e[e.INTERACT_AT = 2] = `INTERACT_AT`,
+	e
 }({});
 proto2.util.setEnumType(UseTypes, `SPacketUseEntity.Action`, [{
-    no: 0,
-    name: `INTERACT`
+	no: 0,
+	name: `INTERACT`
 }, {
-    no: 1,
-    name: `ATTACK`
+	no: 1,
+	name: `ATTACK`
 }, {
-    no: 2,
-    name: `INTERACT_AT`
+	no: 2,
+	name: `INTERACT_AT`
 }]);
 class SPacketUseEntity extends Message {
 	constructor(SPacketUseEntity) {
@@ -2700,20 +2701,20 @@ class CPacketLeaderboard extends Message {
 exports.CPacketLeaderboard = CPacketLeaderboard;
 
 const StorageActionTypes = function(e) {
-    return e[e.DEFAULT = 0] = `DEFAULT`,
-    e[e.REMOVE = 1] = `REMOVE`,
-    e[e.SET = 2] = `SET`,
-    e
+	return e[e.DEFAULT = 0] = `DEFAULT`,
+	e[e.REMOVE = 1] = `REMOVE`,
+	e[e.SET = 2] = `SET`,
+	e
 }({});
 proto2.util.setEnumType(StorageActionTypes, `CPacketLocalStorage.Action`, [{
-    no: 0,
-    name: `DEFAULT`
+	no: 0,
+	name: `DEFAULT`
 }, {
-    no: 1,
-    name: `REMOVE`
+	no: 1,
+	name: `REMOVE`
 }, {
-    no: 2,
-    name: `SET`
+	no: 2,
+	name: `SET`
 }]);
 
 class CPacketLocalStorage extends Message {
@@ -6972,7 +6973,7 @@ class SPacketTabComplete$1 extends Message {
 exports.SPacketTabComplete$1 = SPacketTabComplete$1;
 
 const CPACKET_MAP = {
-		CPacketAnimation,
+	CPacketAnimation,
 	CPacketBlockAction,
 	CPacketBlockUpdate,
 	CPacketChangeServers,
@@ -7186,6 +7187,88 @@ exports.BitArray = class {
 	}
 }
 
+const PacketData = {
+	permVersion: 0,
+	nameToId: NAME_TO_ID,
+	idToPacket: ID_TO_PACKET,
+	idToName: ID_TO_NAME
+};
+
+function tB(e) {
+	let t = 1779033703 ^ e.length;
+	for (let n = 0; n < e.length; n++)
+		t = Math.imul(t ^ e.charCodeAt(n), 3432918353),
+		t = t << 13 | t >>> 19;
+	return () => (t = Math.imul(t ^ t >>> 16, 2246822507),
+	t = Math.imul(t ^ t >>> 13, 3266489909),
+	t ^= t >>> 16,
+	t >>> 0)
+};
+
+function nB(e) {
+	return () => {
+		e |= 0,
+		e = e + 1831565813 | 0;
+		let t = Math.imul(e ^ e >>> 15, 1 | e);
+		return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t,
+		((t ^ t >>> 14) >>> 0) / 4294967296
+	}
+};
+
+function rB(e, t, n, r) {
+	for (let i = n - 1; i > t; i--) {
+		let n = t + Math.floor(r() * (i - t + 1))
+		  , a = e[i];
+		e[i] = e[n],
+		e[n] = a
+	}
+};
+
+function obfuscatePacketRoutine(e, t, n=101, r=64) {
+	let i = Array.from({
+		length: n
+	}, (e, t) => t);
+	if (t !== 0) {
+		let a = nB(tB(`mb-perm|v${t}|lo|${e}`)())
+		  , o = nB(tB(`mb-perm|v${t}|hi|${e}`)());
+		rB(i, 0, Math.min(r, n), a),
+		n > r && rB(i, r, n, o)
+	}
+	let a = Array(n);
+	for (let e = 0; e < n; e++)
+		a[i[e]] = e;
+	return {
+		perm: i,
+		invPerm: a,
+		version: t
+	}
+};
+
+function setPacketData(e, t) {
+	if (!e || !t || t === 0)
+		return FV;
+	let {perm: n} = obfuscatePacketRoutine(e, t)
+	  , r = {}
+	  , i = {}
+	  , a = {};
+	for (let packet of Object.keys(NAME_TO_ID)) {
+		let t = NAME_TO_ID[packet]
+		  , o = t < 101 ? n[t] : t;
+		r[packet] = o,
+		i[o] = ID_TO_PACKET[t],
+		a[o] = packet
+	}
+
+	Object.assign(PacketData, {
+		permVersion: t,
+		nameToId: r,
+		idToPacket: i,
+		idToName: a
+	});
+
+	return PacketData;
+}
+
 class ClientEncoder {
 	constructor() {
 		ut(this, "encode", _=>(_.t = _.type,
@@ -7194,7 +7277,7 @@ class ClientEncoder {
 		delete _.nsp,
 		delete _.data,
 		_.t === 2 && _.d[1] && _.d[1].toJson && (_.d[1] = _.d[1].toJson(),
-		_.d[0] = NAME_TO_ID[_.d[0]]),
+		_.d[0] = PacketData.nameToId[_.d[0]]),
 		[encode(_)]))
 	}
 }
@@ -7209,7 +7292,7 @@ class ClientDecoder extends Decoder {
 				let nt = new Uint8Array($,1,$.byteLength - 1);
 				nt = nt.slice(1);
 				if (rt) {
-					const it = tt >> 2, at = tt & 2, st = ID_TO_PACKET[it];
+					const it = tt >> 2, at = tt & 2, st = PacketData.idToPacket[it];
 					at && (nt = brotli.decompress(nt));
 					const ot = st.fromBinary(nt);
 					st.typeName === "ClientBoundCombined" ? ot.packets.forEach(ct=>{
@@ -7244,13 +7327,28 @@ const parser = {
 	Decoder: ClientDecoder
 };
 
+function generateAuthSeed() {
+	let arr = new Uint8Array(16);
+	crypto.getRandomValues(arr);
+
+	return Array.from(arr, entry => entry.toString(16).padStart(2, '0')).join('');
+}
+
 exports.ClientSocket = class {
 	static setUrl(_, $) {
+		const seed = generateAuthSeed();
+		const version = 1;
+		setPacketData(seed, version);
 		this.socket = io(_, {
 			transports: ["websocket"],
 			extraHeaders: {
 				'Origin': 'https://miniblox.io',
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0'
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36'
+			},
+			auth: {
+				permSeed: seed,
+				permVersion: version,
+				clientVersion: VERSION
 			},
 			autoConnect: !1,
 			forceNew: !0,
