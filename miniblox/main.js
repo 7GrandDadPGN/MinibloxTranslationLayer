@@ -782,13 +782,13 @@ class SPacketEntityAction extends Message {
 			opt: !0
 		}, {
 			no: 5,
-			name: `awEFjULFka`,
+			name: `moveStrafe`,
 			kind: `scalar`,
 			T: 2,
 			opt: !0
 		}, {
 			no: 6,
-			name: `BTOYbfvDBaQ`,
+			name: `moveForward`,
 			kind: `scalar`,
 			T: 2,
 			opt: !0
@@ -1454,44 +1454,6 @@ class SPacketUseEntity extends Message {
 	}
 };
 exports.SPacketUseEntity = SPacketUseEntity;
-class SPacketMessage extends Message {
-	constructor(SPacketMessage) {
-		super(), proto2.util.initPartial(SPacketMessage, this);
-	}
-	static {
-		this.runtime = proto2;
-	}
-	static {
-		this.typeName = `SPacketMessage`;
-	}
-	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `text`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `channel`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
-	}
-	static fromBinary(t, n) {
-		return new SPacketMessage().fromBinary(t, n);
-	}
-	static fromJson(t, n) {
-		return new SPacketMessage().fromJson(t, n);
-	}
-	static fromJsonString(t, n) {
-		return new SPacketMessage().fromJsonString(t, n);
-	}
-	static equals(t, n) {
-		return proto2.util.equals(SPacketMessage, t, n);
-	}
-};
-exports.SPacketMessage = SPacketMessage;
 class CPacketAnimation extends Message {
 	constructor(CPacketAnimation) {
 		super(), proto2.util.initPartial(CPacketAnimation, this);
@@ -2465,6 +2427,12 @@ class CPacketServerInfo extends Message {
 			kind: `scalar`,
 			T: 9,
 			opt: !0
+		}, {
+			no: 24,
+			name: `frame_dict_hash`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -2819,6 +2787,12 @@ class CPacketMessage extends Message {
 			kind: `scalar`,
 			T: 9,
 			opt: !0
+		}, {
+			no: 10,
+			name: `killFeed`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -3132,6 +3106,12 @@ class PlayerData extends Message {
 			name: `persistent`,
 			kind: `scalar`,
 			T: 8,
+			opt: !0
+		}, {
+			no: 15,
+			name: `name_prefix`,
+			kind: `scalar`,
+			T: 9,
 			opt: !0
 		}]);
 	}
@@ -5041,6 +5021,44 @@ class SPacketHeldItemChange extends Message {
 	}
 };
 exports.SPacketHeldItemChange = SPacketHeldItemChange;
+class SPacketMessage extends Message {
+	constructor(SPacketMessage) {
+		super(), proto2.util.initPartial(SPacketMessage, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `SPacketMessage`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `text`,
+			kind: `scalar`,
+			T: 9
+		}, {
+			no: 2,
+			name: `channel`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new SPacketMessage().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new SPacketMessage().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new SPacketMessage().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(SPacketMessage, t, n);
+	}
+};
+exports.SPacketMessage = SPacketMessage;
 class SPacketPing extends Message {
 	constructor(SPacketPing) {
 		super(), proto2.util.initPartial(SPacketPing, this);
@@ -5971,6 +5989,76 @@ class CPacketBlockBreakAnim extends Message {
 	}
 };
 exports.CPacketBlockBreakAnim = CPacketBlockBreakAnim;
+class CPacketPlayerListPing extends Message {
+	constructor(CPacketPlayerListPing) {
+		super(), this.pings = [], proto2.util.initPartial(CPacketPlayerListPing, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketPlayerListPing`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `pings`,
+			kind: `message`,
+			T: PBPlayerPing,
+			repeated: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketPlayerListPing().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketPlayerListPing().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketPlayerListPing().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketPlayerListPing, t, n);
+	}
+};
+exports.CPacketPlayerListPing = CPacketPlayerListPing;
+class PBPlayerPing extends Message {
+	constructor(PBPlayerPing) {
+		super(), proto2.util.initPartial(PBPlayerPing, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `PBPlayerPing`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `id`,
+			kind: `scalar`,
+			T: 13
+		}, {
+			no: 2,
+			name: `ping`,
+			kind: `scalar`,
+			T: 13
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new PBPlayerPing().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new PBPlayerPing().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new PBPlayerPing().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(PBPlayerPing, t, n);
+	}
+};
+exports.PBPlayerPing = PBPlayerPing;
 class ClientBoundCombined extends Message {
 	constructor(ClientBoundCombined) {
 		super(), this.packets = [], proto2.util.initPartial(ClientBoundCombined, this);
@@ -6406,6 +6494,12 @@ class ClientBoundCombined_CPacket extends Message {
 			name: `CPacketBlockBreakAnim`,
 			kind: `message`,
 			T: CPacketBlockBreakAnim,
+			oneof: `packet`
+		}, {
+			no: 66,
+			name: `CPacketPlayerListPing`,
+			kind: `message`,
+			T: CPacketPlayerListPing,
 			oneof: `packet`
 		}]);
 	}
@@ -7088,7 +7182,8 @@ const CPACKET_MAP = {
 	SPacketUploadSchematic,
 	CPacketGuideData,
 	SPacketGuideAction,
-	CPacketBlockBreakAnim
+	CPacketBlockBreakAnim,
+	CPacketPlayerListPing
 }
   , NAME_TO_ID = {}
   , ID_TO_PACKET = {}
