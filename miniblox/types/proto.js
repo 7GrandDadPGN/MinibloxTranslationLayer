@@ -411,6 +411,34 @@ function makeInt64Support() {
         }
     }
 }
+
+var MAX_FLOAT = 34028234663852886e22
+  , MIN_FLOAT = -34028234663852886e22
+  , MAX_UINT = 4294967295
+  , MAX_INT = 2147483647
+  , MIN_INT = -2147483648;
+
+function assertInt32(e) {
+    if (typeof e != `number`)
+        throw Error(`invalid int 32: ` + typeof e);
+    if (!Number.isInteger(e) || e > MAX_INT || e < MIN_INT)
+        throw Error(`invalid int 32: ` + e)
+}
+
+function assertUInt32(e) {
+    if (typeof e != `number`)
+        throw Error(`invalid uint 32: ` + typeof e);
+    if (!Number.isInteger(e) || e > MAX_UINT || e < 0)
+        throw Error(`invalid uint 32: ` + e)
+}
+
+function assertFloat32(e) {
+    if (typeof e != `number`)
+        throw Error(`invalid float 32: ` + typeof e);
+    if (Number.isFinite(e) && (e > MAX_FLOAT || e < MIN_FLOAT))
+        throw Error(`invalid float 32: ` + e)
+}
+
 const protoInt64 = makeInt64Support();
 var WireType;
 (function(j) {

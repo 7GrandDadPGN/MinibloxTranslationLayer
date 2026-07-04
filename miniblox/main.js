@@ -7276,7 +7276,7 @@ class ClientEncoder {
 		delete _.type,
 		delete _.nsp,
 		delete _.data,
-		_.t === 2 && _.d[1] && _.d[1].toJson && (_.d[1] = _.d[1].toJson(),
+		_.t === 2 && _.d[1] && _.d[1].toBinary && (_.d[1] = _.d[1].toBinary(),
 		_.d[0] = PacketData.nameToId[_.d[0]]),
 		[encode(_)]))
 	}

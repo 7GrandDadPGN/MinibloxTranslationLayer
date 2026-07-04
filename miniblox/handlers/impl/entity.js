@@ -636,6 +636,7 @@ const self = class EntityHandler extends Handler {
 				this.local.pitch = (data.readFloatBE(28) * -1) * DEG2RAD;
 				const forward = data.readFloatBE(32);
 				const sideways = data.readFloatBE(36);
+
 				ClientSocket.sendPacket(new SPacketPlayerInput({
 					sequenceNumber: this.local.inputSequenceNumber,
 					left: sideways > 0,
