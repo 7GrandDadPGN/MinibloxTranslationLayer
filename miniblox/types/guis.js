@@ -1,5 +1,5 @@
 const { SPacketMessage, SPacketCloseWindow } = require('./../main.js');
-const mcData = require('minecraft-data')("1.8.9");
+const mcData = require('minecraft-data')('1.8.9');
 
 // thanks again roblox thot :money:
 function make_item(item) {

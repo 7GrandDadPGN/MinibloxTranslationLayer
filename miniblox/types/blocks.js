@@ -1,4 +1,4 @@
-const mcData = require('minecraft-data')("1.8.9");
+const mcData = require('minecraft-data')('1.8.9');
 let BLOCKS = {}, BLOCK_ID = {};
 
 function createStair(start, id) {

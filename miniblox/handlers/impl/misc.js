@@ -8,6 +8,29 @@ const self = class ChatHandler extends Handler {
 	miniblox(gameType) {
 		ClientSocket.on('CPacketMessage', packet => {
 			if (packet.text) {
+				if (packet.id == 'miniblox:game-summary') {
+					if (packet.text.includes('Victory!')) {
+						client.write('chat', {
+							message: JSON.stringify({
+								text: '',
+								extra: [
+									{
+										text: 'Click here',
+										color: 'aqua',
+										clickEvent: {
+											action: 'run_command',
+											value: '/play ' + gameType
+										}
+									},
+									' to play again!'
+								]
+							}),
+							position: 1
+						});
+					}
+					return;
+				}
+
 				client.write('chat', {
 					message: JSON.stringify({
 						extra: [translateText(packet.text)],
@@ -15,28 +38,9 @@ const self = class ChatHandler extends Handler {
 					}),
 					position: packet.id == undefined ? 1 : 0
 				});
-
-				if (packet.id == undefined && packet.text.includes('Summary')) {
-					client.write('chat', {
-						message: JSON.stringify({
-							text: '',
-							extra: [
-								{
-									text: 'Click here',
-									color: 'aqua',
-									clickEvent: {
-										action: 'run_command',
-										value: '/play ' + gameType
-									}
-								},
-								' to play again!'
-							]
-						}),
-						position: 1
-					});
-				}
 			}
 		});
+
 		ClientSocket.on('CPacketTitle', packet => {
 			client.write('title', {
 				action: 2,
@@ -44,15 +48,18 @@ const self = class ChatHandler extends Handler {
 				stay: Math.floor(packet.duration / 50),
 				fadeOut: 6
 			});
+
 			client.write('title', {
 				action: 0,
 				text: JSON.stringify({text: translateText(packet.title)})
 			});
 		});
+
 		ClientSocket.on('CPacketTabComplete', packet => client.write('tab_complete', {matches: packet.matches}));
 	}
 	minecraft(mcClient) {
 		client = mcClient;
+
 		client.on('chat', packet => {
 			const msg = packet.message.toLocaleLowerCase()
 			if (msg.startsWith('/queue') || msg.startsWith('/play')) {
@@ -113,6 +120,7 @@ const self = class ChatHandler extends Handler {
 			}
 			ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
 		});
+
 		client.on('tab_complete', packet => {
 			if ((packet.text.startsWith('/queue') || packet.text.startsWith('/play')) && packet.text.indexOf(' ') != -1) {
 				const split = packet.text.split(' ')[1].toLocaleLowerCase();
@@ -128,13 +136,14 @@ const self = class ChatHandler extends Handler {
 				});
 				return;
 			}
+
 			ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}));
 		});
 	}
 	cleanup(requeue) {
 		client = requeue ? client : undefined;
 	}
-	obtainHandlers(handlers, connectFunction) {
+	obtainHandlers(handlers, _, connectFunction) {
 		connect = connectFunction;
 		entity = handlers.entity;
 		world = handlers.world;

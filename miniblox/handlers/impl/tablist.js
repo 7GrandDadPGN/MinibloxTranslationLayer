@@ -2,91 +2,68 @@ const Handler = require('./../handler.js');
 const { ClientSocket, SPacketPing, SPacketAnalytics } = require('./../../main.js');
 const { translateText, LEVEL_TO_COLOUR } = require('./../../utils.js');
 const SKINS = require('./../../types/skins.js');
-let client, entities;
+let client, entity, MCHandler;
 
 const self = class TabListHandler extends Handler {
+	processEntry(entry) {
+		entry.id = entry.id.toString();
+		const tabEntry = MCHandler.tablist.players[entry.id];
+		const isLocal = MCHandler.local.index == entry.id;
+		const nameSplit = entry.name.split(' ');
+		if (isLocal) {
+			nameSplit[nameSplit.length - 1] = client.username;
+		}
+		const prefix = (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(' ')) + ' ' : '').slice(0, 14) + translateText(`\\${(entry.color != 'white' ? entry.color : undefined) ?? (isLocal ? 'white' : 'reset')}\\`).slice(0, 16);
+		const suffix = (entry.level && entry.level > 0) ? translateText(`\\${entry.level ? LEVEL_TO_COLOUR[entry.level] : 'white'}\\ (${entry.level})`).slice(0, 16) : '';
+
+		if (tabEntry != undefined) {
+			MCHandler.tablist.updatePing(entry.id, entry.ping);
+			MCHandler.tablist.updatePrefix(entry.id, prefix);
+			MCHandler.tablist.updateSuffix(entry.id, suffix);
+		} else {
+			MCHandler.tablist.add(entry.id, {
+				name: nameSplit.pop().replaceAll('.', '').slice(0, 16),
+				gamemode: entity.gamemodes[entry.id] ?? 0,
+				ping: entry.ping,
+				prefix: prefix,
+				suffix: suffix,
+				skin: entity.skins[entry.id] ? SKINS[entity.skins[entry.id]] : undefined
+			}, isLocal);
+		}
+	}
 	miniblox() {
 		ClientSocket.on('CPacketPlayerList', packet => {
-			let lists = [[], [], [], [], []], exists = {};
+			const exists = [];
 			for (const entry of packet.players) {
-				let nameSplit = entry.name.split(' ');
-				if (entry.id == entities.local.id) nameSplit[nameSplit.length - 1] = client.username;
-				const name = nameSplit[nameSplit.length - 1].slice(0, 16);
-				const uuid = entry.id == entities.local.id ? client.uuid : entry.uuid;
-				const skin = entities.skins[entry.id] != undefined ? (SKINS[entities.skins[entry.id]] ?? SKINS.granddad) : SKINS.granddad;
-				const prefix = (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(' ')) + ' ' : '').slice(0, 14) + translateText(`\\${(entry.color != 'white' ? entry.color : undefined) ?? (entry.id == entities.local.id ? 'white' : 'reset')}\\`).slice(0, 16);
-				const suffix = (entry.level && entry.level > 0) ? translateText(`\\${entry.level ? LEVEL_TO_COLOUR[entry.level] : 'white'}\\ (${entry.level})`).slice(0, 16) : '';
-				const gamemode = entities.gamemodes[entry.id] ?? 0;
-				let oldTab = this.tabs[entry.id];
-				this.entries[entry.id] = uuid;
-				this.tabs[entry.id] = {
-					prefix: prefix,
-					suffix: suffix,
-					ping: entry.ping,
-					gamemode: gamemode
-				};
-				exists[entry.id] = true;
-
-				let addTeam = !oldTab;
-				if (oldTab) {
-					if (gamemode != oldTab.gamemode) lists[1].push({UUID: uuid, gamemode: gamemode});
-					if (entry.ping != oldTab.ping) lists[2].push({UUID: uuid, ping: entry.ping});
-					if (prefix != oldTab.prefix || suffix != oldTab.suffix) {
-						addTeam = true;
-						client.write('scoreboard_team', {
-							team: uuid.slice(0, 16),
-							mode: 1
-						});
-					}
-				} else {
-					lists[0].push({
-						UUID: uuid,
-						name: name,
-						properties: [{name: 'textures', value: skin[0], signature: skin[1]}],
-						gamemode: gamemode,
-						ping: entry.ping
-					});
-				}
-
-				if (addTeam) {
-					client.write('scoreboard_team', {
-						team: uuid.slice(0, 16),
-						mode: 0,
-						name: uuid.slice(0, 16),
-						prefix: prefix,
-						suffix: suffix,
-						friendlyFire: true,
-						nameTagVisibility: 'all',
-						color: 0,
-						players: [name]
-					});
-				}
+				this.processEntry(entry);
+				exists.push(entry.id);
 			}
 
-			for (const entry of Object.keys(this.entries)) {
-				if (!exists[entry]) {
-					lists[4].push({UUID: this.entries[entry]});
-					delete this.entries[entry];
-					delete this.tabs[entry];
-				}
+			for (const id of Object.keys(MCHandler.tablist.players).filter((id) => !exists.includes(id))) {
+				MCHandler.tablist.remove(id);
 			}
 
-			for (let i = 0; i < lists.length; i++) {
-				let list = lists[i];
-				if (list.length <= 0) continue;
-				client.write('player_info', {
-					action: i,
-					data: list
-				});
-				if (i == 0 || i == 4) entities.checkAll();
-			}
+			MCHandler.world.tickEntities();
 
 			client.write('playerlist_header', {
 				header: JSON.stringify({text: translateText('\\cyan\\You are playing on \\lime\\miniblox.io')}),
 				footer: JSON.stringify({text: translateText('\\gold\\Translation layer made by 7GrandDad')})
 			});
 		});
-		ClientSocket.on("CPacketPong", packet => {
+
+		ClientSocket.on('CPacketPlayerListDelta', packet => {
+			for (const entry of packet.upserts) {
+				this.processEntry(entry);
+			}
+
+			for (const id of packet.removedIds) {
+				MCHandler.tablist.remove(id.toString());
+			}
+
+			MCHandler.world.tickEntities();
+		});
+
+		ClientSocket.on('CPacketPong', packet => {
 			this.filteredPing += (Math.max(Date.now() - Number(packet.time), 1) - this.filteredPing) / 3;
 		});
 	}
@@ -104,33 +81,19 @@ const self = class TabListHandler extends Handler {
 			this.pingLoop = setInterval(() => {
 				client.write('keep_alive', {keepAliveId: Math.floor(Math.random() * 10000)});
 			}, 1000);
+
 			this.analyticsLoop = setInterval(() => {
 				ClientSocket.sendPacket(new SPacketAnalytics({
 					fps: 60 - Math.random(),
 					ping: this.filteredPing
 				}));
 			}, 30000);
-			if (client) {
-				let data = [];
-				Object.values(this.entries).forEach((uuid) => {
-					data.push({UUID: uuid});
-					client.write('scoreboard_team', {
-						team: uuid.slice(0, 16),
-						mode: 1
-					});
-				})
-				client.write('player_info', {
-					action: 4,
-					data: data
-				});
-			}
 		}
-		this.entries = {};
-		this.tabs = {};
 		this.filteredPing = 0;
 	}
-	obtainHandlers(handlers) {
-		entities = handlers.entity;
+	obtainHandlers(handlers, mchandler) {
+		entity = handlers.entity;
+		MCHandler = mchandler;
 	}
 };
 

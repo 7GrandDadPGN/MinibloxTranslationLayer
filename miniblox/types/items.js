@@ -1,4 +1,4 @@
-const mcData = require('minecraft-data')("1.8.9");
+const mcData = require('minecraft-data')('1.8.9');
 
 for (let i = 0; i < 14; i++) module.exports[1 + i] = [mcData.itemsByName.stone.id, i];
 module.exports[14] = mcData.itemsByName.grass.id;

@@ -1,7 +1,7 @@
 const { PBItemStack } = require('./main.js');
 const ITEMS = require('./types/items.js');
 const { COLOR_PALETTE, COLOR_REGEX, COLOR_CODES, LEVEL_TO_COLOUR } = require('./types/colors.js');
-const mcData = require('minecraft-data')("1.8.9");
+const mcData = require('minecraft-data')('1.8.9');
 
 function colorDistance(color1, color2) {
 	const rgb1 = hexToRgb(color1);
@@ -69,7 +69,7 @@ function translateItem(item) {
 
 	return item.present ? {
 		blockId: typeof itemData == 'number' ? itemData : itemData[0],
-		itemCount: item.stackSize,
+		itemCount: Math.min(Math.max(item.stackSize, -128), 127),
 		itemDamage: (typeof itemData == 'number' ? item.durability : itemData[1]),
 		nbtData: data
 	} : {blockId: -1}

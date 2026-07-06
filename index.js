@@ -11,7 +11,8 @@ const server = mc.createServer({
 	version: '1.8.9'
 });
 const GAMEMODES = require('./miniblox/types/gamemodes.js');
-const { VERSION } = require('./miniblox/types/constants.js');
+const { VERSION, USER_AGENT } = require('./miniblox/types/constants.js');
+const MCHandler = new (require('./base/index.js'));
 let connected, skipKick = Date.now();
 
 function cleanup(teleport) {
@@ -23,28 +24,18 @@ async function queue(gamemode, server) {
 	if (server) return {ok: true, json: function() { return {serverId: server}; }};
 	let fetched
 	try {
-		fetched = await fetch('https://session.coolmathblox.ca/launch/queue_minigame', {
+		fetched = await fetch('https://miniblox.io/auth-api/launch/queue_minigame', {
 			method: 'POST',
 			headers: {
-				'accept': 'application/json, text/plain, */*',
-				'accept-language': 'en-US,en;q=0.9',
-				'cache-control': 'no-cache',
-				'content-type': 'application/json',
-				'pragma': 'no-cache',
-				'priority': 'u=1, i',
-				'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"',
-				'sec-ch-ua-mobile': '?0',
-				'sec-ch-ua-platform': '"Windows"',
-				'sec-fetch-dest': 'empty',
-				'sec-fetch-mode': 'cors',
-				'sec-fetch-site': 'cross-site',
+				'Accept': 'application/json, text/plain, */*',
+				'Content-Type': 'application/json',
 				'Referer': 'https://miniblox.io/',
-				'Referrer-Policy': 'strict-origin-when-cross-origin',
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36'
+				'User-Agent': USER_AGENT
 			},
 			body: JSON.stringify({
 				clientVersion: VERSION,
-				minigameId: gamemode ?? 'kitpvp'
+				minigameId: gamemode ?? 'kitpvp',
+				minigameConfig: gamemode == 'eggwars' ? {type: 'doubles'} : undefined
 			})
 		});
 	} catch (exception) {
@@ -62,18 +53,7 @@ async function connect(client, requeue, gamemode, code) {
 		skipKick = Date.now() + 20;
 		if (ClientSocket.socket) ClientSocket.disconnect();
 
-		client.write('respawn', {
-			dimension: 1,
-			difficulty: 2,
-			gamemode: 2,
-			levelType: 'FLAT'
-		});
-		client.write('respawn', {
-			dimension: 0,
-			difficulty: 2,
-			gamemode: 2,
-			levelType: 'FLAT'
-		});
+		MCHandler.deleteWorld();
 	}
 	cleanup(true);
 
@@ -107,33 +87,29 @@ async function connect(client, requeue, gamemode, code) {
 			prefetch: undefined
 		}));
 	});
+
 	ClientSocket.once('CPacketJoinGame', packet => {
 		if (!packet.canConnect) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
 
-		if (!requeue) {
-			client.write('login', {
-				entityId: handlers.entity.local.mcId,
-				gameMode: GAMEMODES[packet.gamemode ?? 'survival'],
-				dimension: 0,
-				difficulty: 2,
-				maxPlayers: server.maxPlayers,
-				levelType: 'default',
-				reducedDebugInfo: false
-			});
-		}
+		MCHandler.createWorld(client, !requeue, 2, 0);
+		Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
+	});
+
+	ClientSocket.on('CPacketDisconnect', packet => {
+		client.end(packet.reason);
 	});
 
 	ClientSocket.socket.io.on('reconnect_failed', () => {
 		client.end('Failed to connect to the server.');
 	});
+
 	ClientSocket.on('disconnect', reason => {
 		if (skipKick > Date.now()) return;
 		client.end(reason);
 	});
-	Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
 
 	ClientSocket.connect();
 }
@@ -156,14 +132,14 @@ server.on('playerJoin', async function(client) {
 
 	client.on('end', function() {
 		if (ClientSocket.socket) ClientSocket.disconnect();
+		MCHandler.deleteWorld();
 		cleanup();
 	});
-
 	Object.values(handlers).forEach((handler) => handler.minecraft(client));
 
 	await connect(client);
 	connected = !client.ended;
 });
 
-Object.values(handlers).forEach((handler) => handler.obtainHandlers(handlers, connect));
+Object.values(handlers).forEach((handler) => handler.obtainHandlers(handlers, MCHandler, connect));
 console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');

@@ -3,7 +3,7 @@ const brotli = require("brotli");
 const { Decoder, protocol } = require("socket.io-msgpack-parser");
 const { encode, decode } = require("@msgpack/msgpack");
 const { Message, proto2, proto3 } = require("./types/proto.js");
-const { VERSION } = require("./types/constants.js");
+const { VERSION, USER_AGENT } = require("./types/constants.js");
 
 var yT = Object.defineProperty;
 var xT = (j,_,$)=>_ in j ? yT(j, _, {
@@ -6059,6 +6059,45 @@ class PBPlayerPing extends Message {
 	}
 };
 exports.PBPlayerPing = PBPlayerPing;
+class CPacketPlayerListDelta extends Message {
+	constructor(CPacketPlayerListDelta) {
+		super(), this.upserts = [], this.removedIds = [], proto2.util.initPartial(CPacketPlayerListDelta, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketPlayerListDelta`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `upserts`,
+			kind: `message`,
+			T: PlayerData,
+			repeated: !0
+		}, {
+			no: 2,
+			name: `removedIds`,
+			kind: `scalar`,
+			T: 13,
+			repeated: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketPlayerListDelta().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketPlayerListDelta().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketPlayerListDelta().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketPlayerListDelta, t, n);
+	}
+};
+exports.CPacketPlayerListDelta = CPacketPlayerListDelta;
 class ClientBoundCombined extends Message {
 	constructor(ClientBoundCombined) {
 		super(), this.packets = [], proto2.util.initPartial(ClientBoundCombined, this);
@@ -6500,6 +6539,12 @@ class ClientBoundCombined_CPacket extends Message {
 			name: `CPacketPlayerListPing`,
 			kind: `message`,
 			T: CPacketPlayerListPing,
+			oneof: `packet`
+		}, {
+			no: 67,
+			name: `CPacketPlayerListDelta`,
+			kind: `message`,
+			T: CPacketPlayerListDelta,
 			oneof: `packet`
 		}]);
 	}
@@ -7133,7 +7178,9 @@ const CPACKET_MAP = {
 	CPacketUpdatePlayerHead,
 	CPacketChunkUnchanged,
 	CPacketGuideData,
-	CPacketBlockBreakAnim
+	CPacketBlockBreakAnim,
+	CPacketPlayerListPing,
+	CPacketPlayerListDelta
 }
   , SPACKET_MAP = {
 	SPacketAdminAction,
@@ -7183,7 +7230,8 @@ const CPACKET_MAP = {
 	CPacketGuideData,
 	SPacketGuideAction,
 	CPacketBlockBreakAnim,
-	CPacketPlayerListPing
+	CPacketPlayerListPing,
+	CPacketPlayerListDelta
 }
   , NAME_TO_ID = {}
   , ID_TO_PACKET = {}
@@ -7438,7 +7486,7 @@ exports.ClientSocket = class {
 			transports: ["websocket"],
 			extraHeaders: {
 				'Origin': 'https://miniblox.io',
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36'
+				'User-Agent': USER_AGENT
 			},
 			auth: {
 				permSeed: seed,

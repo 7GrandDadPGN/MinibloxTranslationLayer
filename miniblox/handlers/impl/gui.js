@@ -2,7 +2,7 @@ const Handler = require('./../handler.js');
 const { ClientSocket, SPacketClickWindow, SPacketConfirmTransaction, SPacketCloseWindow } = require('./../../main.js');
 const { GUIS, SLOTS, WINDOW_NAMES, WINDOW_TYPES } = require('./../../types/guis.js');
 const { translateItem, translateItemBack } = require('./../../utils.js');
-let client, entity;
+let client, entity, MCHandler;
 
 const self = class GuiHandler extends Handler {
 	miniblox() {
@@ -15,10 +15,11 @@ const self = class GuiHandler extends Handler {
 					inventoryType: WINDOW_TYPES[packet.guiID],
 					windowTitle: translation ?? JSON.stringify({text: packet.title ?? 'None'}),
 					slotCount: packet.size ?? 0,
-					entityId: entity.local.mcId
+					entityId: MCHandler.local.minecraftId
 				});
 			}
 		});
+
 		ClientSocket.on('CPacketOpenShop', packet => {
 			const gui = GUIS[packet.type];
 			if (gui) {
@@ -28,7 +29,7 @@ const self = class GuiHandler extends Handler {
 					inventoryType: 'minecraft:container',
 					windowTitle: JSON.stringify({text: gui.name}),
 					slotCount: itemCount,
-					entityId: entity.local.mcId
+					entityId: MCHandler.local.minecraftId
 				});
 				this.currentlyOpen = packet.type;
 
@@ -43,9 +44,10 @@ const self = class GuiHandler extends Handler {
 				});
 			}
 		});
+
 		ClientSocket.on('CPacketWindowItems', packet => {
-			if (this.ignorePacket) {
-				this.ignorePacket = false;
+			if (this.ignorePacket > Date.now() && packet.windowId == 0) {
+				this.ignorePacket = 0;
 				return;
 			}
 
@@ -58,16 +60,21 @@ const self = class GuiHandler extends Handler {
 				items: items
 			});
 		});
+
 		ClientSocket.on('CPacketWindowProperty', packet => client.write('craft_progress_bar', {
 			windowId: packet.windowId,
 			property: packet.varIndex,
 			value: packet.varValue
 		}));
-		ClientSocket.on('CPacketSetSlot', packet => client.write('set_slot', {
-			windowId: packet.windowId,
-			slot: packet.windowId == 0 && SLOTS[packet.slot] != undefined ? SLOTS[packet.slot] : packet.slot,
-			item: translateItem(packet.slotData)
-		}));
+
+		ClientSocket.on('CPacketSetSlot', packet => {
+			client.write('set_slot', {
+				windowId: packet.windowId,
+				slot: packet.windowId == 0 && SLOTS[packet.slot] != undefined ? SLOTS[packet.slot] : packet.slot,
+				item: translateItem(packet.slotData)
+			});
+		});
+
 		ClientSocket.on('CPacketCloseWindow', packet => client.write('close_window', {windowId: packet.windowId}));
 		ClientSocket.on('CPacketConfirmTransaction', packet => client.write('transaction', {
 			windowId: packet.windowId,
@@ -86,6 +93,7 @@ const self = class GuiHandler extends Handler {
 				if (gui) gui.command(packet.item, ClientSocket, client, gui);
 				return;
 			}
+
 			ClientSocket.sendPacket(new SPacketClickWindow({
 				windowId: packet.windowId,
 				slotId: slot,
@@ -96,13 +104,13 @@ const self = class GuiHandler extends Handler {
 			}));
 		});
 		client.on('transaction', packet => {
-			if (packet.windowId == 0 && entity.local.transactions[packet.action] != undefined) {
-				const id = entity.local.transactions[packet.action];
-				if (id > entity.local.lastServerAckId || id < entity.local.lastServerAckId - 256) {
-					entity.local.lastServerAckId = id;
+			if (packet.windowId == 0 && entity.transactions[packet.action] != undefined) {
+				const id = entity.transactions[packet.action];
+				if (id > entity.lastServerAckId || id < entity.lastServerAckId - 256) {
+					entity.lastServerAckId = id;
 				}
 
-				delete entity.local.transactions[packet.action];
+				delete entity.transactions[packet.action];
 				return;
 			}
 
@@ -117,9 +125,11 @@ const self = class GuiHandler extends Handler {
 	cleanup(requeue) {
 		client = requeue ? client : undefined;
 		this.currentlyOpen = '';
+		this.ignorePacket = 0;
 	}
-	obtainHandlers(handlers) {
+	obtainHandlers(handlers, mchandler) {
 		entity = handlers.entity;
+		MCHandler = mchandler;
 	}
 };
 

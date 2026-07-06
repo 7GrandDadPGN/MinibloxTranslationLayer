@@ -17,16 +17,19 @@ const self = class TabListHandler extends Handler {
 	miniblox() {
 		ClientSocket.on('CPacketScoreboard', packet => {
 			this.clear();
+
 			client.write('scoreboard_objective', {
 				name: 'scoreboard',
 				action: 0,
 				displayText: translateText(packet.title).slice(0, 16),
 				type: 'INTEGER'
 			});
+
 			client.write('scoreboard_display_objective', {
 				position: 1,
 				name: 'scoreboard'
 			});
+
 			if (packet.content.length < 15) {
 				packet.content.push({columns: ['']});
 				packet.content.push({columns: ['\\yellow\\miniblox.io']});
@@ -45,20 +48,24 @@ const self = class TabListHandler extends Handler {
 				index++;
 			}
 		});
+
 		ClientSocket.on('CPacketUpdateScoreboard', packet => {
 			if (!this.score[packet.index]) return;
+
 			const name = translateText(packet.columns.join(' ')).slice(0, 40);
 			client.write('scoreboard_score', {
 				scoreName: 'scoreboard',
 				itemName: this.score[packet.index],
 				action: 1
 			});
+
 			client.write('scoreboard_score', {
 				scoreName: 'scoreboard',
 				itemName: name,
 				action: 0,
 				value: this.score.length - packet.index
 			});
+
 			this.score[packet.index] = name;
 		});
 	}
@@ -67,7 +74,6 @@ const self = class TabListHandler extends Handler {
 	}
 	cleanup(requeue) {
 		client = requeue ? client : undefined;
-		if (client) this.clear();
 		this.score = [];
 	}
 };
