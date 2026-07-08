@@ -390,7 +390,7 @@ const self = class EntityHandler extends Handler {
 				client.write('transaction', {
 					windowId: 0,
 					action: this.transactionNumber,
-					accepted: false
+					accepted: true
 				});
 			}
 
@@ -402,7 +402,7 @@ const self = class EntityHandler extends Handler {
 					x: packet.x,
 					y: packet.y,
 					z: packet.z,
-					yaw: 0,
+					yaw: packet.yaw,
 					pitch: 0,
 					flags: 24
 				});
@@ -575,7 +575,10 @@ const self = class EntityHandler extends Handler {
 				ClientSocket.sendPacket(new SPacketUseEntity({
 					id: entity.index,
 					action: packet.mouse,
-					hitVec: new PBVector3(clampToBox(MCHandler.local.pos, entity.pos))
+					hitVec: new PBVector3(clampToBox(MCHandler.local.pos, entity.pos)),
+					yaw: ((MCHandler.local.yaw * -1) - 180) * DEG2RAD,
+					pitch: (MCHandler.local.pitch * -1) * DEG2RAD,
+					sequence: packet.mouse === 1 ? this.inputSequenceNumber : undefined
 				}));
 			}
 		});
