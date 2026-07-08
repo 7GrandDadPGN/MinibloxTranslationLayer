@@ -390,7 +390,7 @@ const self = class EntityHandler extends Handler {
 				client.write('transaction', {
 					windowId: 0,
 					action: this.transactionNumber,
-					accepted: true
+					accepted: false
 				});
 			}
 
