@@ -11,14 +11,14 @@ const server = mc.createServer({
 	version: '1.8.9'
 });
 const GAMEMODES = require('./miniblox/types/gamemodes.js');
-const { VERSION, USER_AGENT } = require('./miniblox/types/constants.js');
+const { GAME_CONSTANTS, USER_AGENT } = require('./miniblox/types/constants.js');
 const MCHandler = new (require('./base/index.js'));
 let connected, skipKick = Date.now();
 
 function cleanup(teleport) {
 	connected = teleport ?? false;
 	Object.values(handlers).forEach((handler) => handler.cleanup(teleport));
-}
+};
 
 async function queue(gamemode, server) {
 	if (server) return {ok: true, json: function() { return {serverId: server}; }};
@@ -33,7 +33,7 @@ async function queue(gamemode, server) {
 				'User-Agent': USER_AGENT
 			},
 			body: JSON.stringify({
-				clientVersion: VERSION,
+				clientVersion: GAME_CONSTANTS.VERSION,
 				minigameId: gamemode ?? 'kitpvp',
 				minigameConfig: gamemode == 'eggwars' ? {type: 'doubles'} : undefined
 			})
@@ -42,11 +42,11 @@ async function queue(gamemode, server) {
 		fetched = {text: function() { return exception; }};
 	}
 	return fetched;
-}
+};
 
 function uuid() {
 	return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, j => (j ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> j / 4).toString(16));
-}
+};
 
 async function connect(client, requeue, gamemode, code) {
 	if (requeue) {
@@ -82,7 +82,7 @@ async function connect(client, requeue, gamemode, code) {
 			session: session,
 			hydration: '0',
 			metricsId: uuid(),
-			clientVersion: VERSION,
+			clientVersion: GAME_CONSTANTS.VERSION,
 			language: 'en',
 			prefetch: undefined
 		}));
@@ -112,7 +112,26 @@ async function connect(client, requeue, gamemode, code) {
 	});
 
 	ClientSocket.connect();
-}
+};
+
+async function updateVersion() {
+	let req = await fetch('https://miniblox.io/auth-api/version/latest_client', {
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json, text/plain, */*',
+			'Content-Type': 'application/json',
+			'Referer': 'https://miniblox.io/',
+			'User-Agent': USER_AGENT
+		}
+	});
+
+	if (req.ok) {
+		const data = await req.json();
+		if (data.version) {
+			GAME_CONSTANTS.VERSION = data.version;
+		}
+	}
+};
 
 server.on('playerJoin', async function(client) {
 	if (connected) {
@@ -141,5 +160,8 @@ server.on('playerJoin', async function(client) {
 	connected = !client.ended;
 });
 
+updateVersion();
+setInterval(updateVersion, 60000);
+
 Object.values(handlers).forEach((handler) => handler.obtainHandlers(handlers, MCHandler, connect));
-console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + VERSION + '\x1b[0m');
+console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + GAME_CONSTANTS.VERSION + '\x1b[0m');

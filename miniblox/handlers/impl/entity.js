@@ -53,6 +53,29 @@ const self = class EntityHandler extends Handler {
 			}));
 		}
 	}
+	sendInput() {
+		if (this.input == undefined) return;
+
+		this.inputSequenceNumber++;
+		ClientSocket.sendPacket(new SPacketPlayerInput({
+			sequenceNumber: this.inputSequenceNumber,
+			left: this.input.sideways > 0,
+			right: this.input.sideways < 0,
+			up: this.input.forward > 0,
+			down: this.input.forward < 0,
+			yaw: ((MCHandler.local.yaw * -1) - 180) * DEG2RAD,
+			pitch: (MCHandler.local.pitch * -1) * DEG2RAD,
+			jump: this.input.jump,
+			sneak: this.input.sneak,
+			sprint: this.input.isSprinting ?? false,
+			pos: MCHandler.local.pos,
+			ackId: this.lastServerAckId > 0 ? this.lastServerAckId : undefined,
+			onGround: this.input.onGround,
+			usingItem: false
+		}));
+
+		this.input = undefined;
+	}
 	miniblox() {
 		// UNIVERSAL
 		ClientSocket.on('CPacketSpawnEntity', packet => {
@@ -457,13 +480,18 @@ const self = class EntityHandler extends Handler {
 
 		client.on('flying', ({ onGround } = {}) => {
 			if (MCHandler.world == undefined) return;
+			MCHandler.local.onGround = onGround;
+
+			this.sendInput();
 			this.updatePunching();
 			ClientSocket.sendPacket(new SPacketPlayerPosLook({onGround: onGround}));
 		});
 
 		client.on('position', ({ x, y, z, onGround } = {}) => {
 			if (MCHandler.world == undefined) return;
+			this.sendInput();
 			MCHandler.local.pos = {x: x, y: y, z: z};
+			MCHandler.local.onGround = onGround;
 			MCHandler.world.update(MCHandler.local.pos);
 
 			this.updatePunching();
@@ -477,7 +505,9 @@ const self = class EntityHandler extends Handler {
 			if (MCHandler.world == undefined) return;
 			MCHandler.local.yaw = yaw;
 			MCHandler.local.pitch = pitch;
+			MCHandler.local.onGround = onGround;
 
+			this.sendInput();
 			this.updatePunching();
 			ClientSocket.sendPacket(new SPacketPlayerPosLook({
 				yaw: ((MCHandler.local.yaw * -1) - 180) * DEG2RAD,
@@ -488,9 +518,12 @@ const self = class EntityHandler extends Handler {
 
 		client.on('position_look', ({ x, y, z, onGround, yaw, pitch } = {}) => {
 			if (MCHandler.world == undefined) return;
-			MCHandler.local.pos = {x: x, y: y, z: z};
 			MCHandler.local.yaw = yaw;
 			MCHandler.local.pitch = pitch;
+			this.sendInput();
+
+			MCHandler.local.pos = {x: x, y: y, z: z};
+			MCHandler.local.onGround = onGround;
 			MCHandler.world.update(MCHandler.local.pos);
 
 			this.updatePunching();
@@ -506,30 +539,34 @@ const self = class EntityHandler extends Handler {
 			if (channel == 'miniblox:movepacket') {
 				if (MCHandler.world == undefined) return;
 
-				this.inputSequenceNumber++;
 				MCHandler.local.pos = {x: data.readDoubleBE(0), y: data.readDoubleBE(8), z: data.readDoubleBE(16)};
 				MCHandler.local.yaw = data.readFloatBE(24);
 				MCHandler.local.pitch = data.readFloatBE(28);
-				const forward = data.readFloatBE(32);
-				const sideways = data.readFloatBE(36);
 
-				ClientSocket.sendPacket(new SPacketPlayerInput({
-					sequenceNumber: this.inputSequenceNumber,
-					left: sideways > 0,
-					right: sideways < 0,
-					up: forward > 0,
-					down: forward < 0,
-					yaw: ((MCHandler.local.yaw * -1) - 180) * DEG2RAD,
-					pitch: (MCHandler.local.pitch * -1) * DEG2RAD,
+				this.input = {
+					forward: data.readFloatBE(32),
+					sideways: data.readFloatBE(36),
 					jump: data.readUInt8(40) > 0,
 					sneak: data.readUInt8(41) > 0,
-					sprint: this.isSprinting ?? false,
-					pos: MCHandler.local.pos,
-					ackId: this.lastServerAckId > 0 ? this.lastServerAckId : undefined,
 					onGround: data.readUInt8(42) > 0,
-					usingItem: false
-				}));
+					isSprinting: this.isSprinting
+				};
+
+				this.sendInput();
 			}
+		});
+
+		client.on('steer_vehicle', ({ sideways, forward, jump } = {}) => {
+			if (MCHandler.world == undefined) return;
+
+			this.input = {
+				forward: forward,
+				sideways: sideways,
+				jump: (jump & 1) > 0,
+				sneak: (jump & 2) > 0,
+				onGround: MCHandler.local.onGround ?? false,
+				isSprinting: this.isSprinting
+			};
 		});
 
 		client.on('held_item_slot', packet => ClientSocket.sendPacket(new SPacketHeldItemChange({slot: packet.slotId ?? 0})));
@@ -575,7 +612,10 @@ const self = class EntityHandler extends Handler {
 				ClientSocket.sendPacket(new SPacketUseEntity({
 					id: entity.index,
 					action: packet.mouse,
-					hitVec: new PBVector3(clampToBox(MCHandler.local.pos, entity.pos))
+					hitVec: new PBVector3(clampToBox(MCHandler.local.pos, entity.pos)),
+					yaw: packet.mouse == 1 ? ((MCHandler.local.yaw * -1) - 180) * DEG2RAD : undefined,
+					pitch: packet.mouse == 1 ? (MCHandler.local.pitch * -1) * DEG2RAD : undefined,
+					sequence: packet.mouse == 1 ? this.inputSequenceNumber : undefined
 				}));
 			}
 		});
@@ -593,6 +633,7 @@ const self = class EntityHandler extends Handler {
 			this.punchLoop = undefined;
 		}
 
+		this.input = undefined;
 		this.skins = {};
 		this.gamemodes = {};
 		this.inputSequenceNumber = 0;

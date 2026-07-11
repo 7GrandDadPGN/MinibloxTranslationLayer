@@ -3,7 +3,7 @@ const brotli = require("brotli");
 const { Decoder, protocol } = require("socket.io-msgpack-parser");
 const { encode, decode } = require("@msgpack/msgpack");
 const { Message, proto2, proto3 } = require("./types/proto.js");
-const { VERSION, USER_AGENT } = require("./types/constants.js");
+const { GAME_CONSTANTS, USER_AGENT } = require("./types/constants.js");
 
 var yT = Object.defineProperty;
 var xT = (j,_,$)=>_ in j ? yT(j, _, {
@@ -7491,7 +7491,7 @@ exports.ClientSocket = class {
 			auth: {
 				permSeed: seed,
 				permVersion: version,
-				clientVersion: VERSION
+				clientVersion: GAME_CONSTANTS.VERSION
 			},
 			autoConnect: !1,
 			forceNew: !0,

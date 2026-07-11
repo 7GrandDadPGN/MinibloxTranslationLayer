@@ -118,9 +118,9 @@ const self = class WorldHandler extends Handler {
 				ClientSocket.sendPacket(new SPacketPlaceBlock({
 					positionIn: new PBBlockPos(packet.location),
 					side: packet.direction,
-					hitX: packet.cursorX,
-					hitY: packet.cursorY,
-					hitZ: packet.cursorZ
+					hitX: packet.cursorX / 16,
+					hitY: packet.cursorY / 16,
+					hitZ: packet.cursorZ / 16
 				}));
 			}
 
