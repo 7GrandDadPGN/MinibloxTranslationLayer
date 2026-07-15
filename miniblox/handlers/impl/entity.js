@@ -67,7 +67,7 @@ const self = class EntityHandler extends Handler {
 			pitch: (MCHandler.local.pitch * -1) * DEG2RAD,
 			jump: this.input.jump,
 			sneak: this.input.sneak,
-			sprint: this.input.isSprinting ?? false,
+			sprint: this.input.isSprinting ?? (this.isSprinting ?? false),
 			pos: MCHandler.local.pos,
 			ackId: this.lastServerAckId > 0 ? this.lastServerAckId : undefined,
 			onGround: this.input.onGround,
@@ -77,6 +77,8 @@ const self = class EntityHandler extends Handler {
 		this.input = undefined;
 	}
 	miniblox() {
+		this.inputSequenceNumber = 0;
+
 		// UNIVERSAL
 		ClientSocket.on('CPacketSpawnEntity', packet => {
 			if (ENTITIES[packet.type] == undefined) return;
@@ -466,6 +468,10 @@ const self = class EntityHandler extends Handler {
 		ClientSocket.on('CPacketUpdateStatus', packet => {
 			if (packet.mode) {
 				this.updateGamemode(packet.id, packet.mode);
+
+				if (packet.id == MCHandler.local.index) {
+					this.inputSequenceNumber = 0;
+				}
 			}
 		});
 
@@ -549,7 +555,7 @@ const self = class EntityHandler extends Handler {
 					jump: data.readUInt8(40) > 0,
 					sneak: data.readUInt8(41) > 0,
 					onGround: data.readUInt8(42) > 0,
-					isSprinting: this.isSprinting
+					isSprinting: data.readUInt8(43) > 0
 				};
 
 				this.sendInput();
@@ -564,8 +570,7 @@ const self = class EntityHandler extends Handler {
 				sideways: sideways,
 				jump: (jump & 1) > 0,
 				sneak: (jump & 2) > 0,
-				onGround: MCHandler.local.onGround ?? false,
-				isSprinting: this.isSprinting
+				onGround: MCHandler.local.onGround ?? false
 			};
 		});
 
