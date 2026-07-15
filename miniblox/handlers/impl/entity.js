@@ -180,6 +180,18 @@ const self = class EntityHandler extends Handler {
 			}
 		});
 
+		ClientSocket.on('CPacketCollectItem', packet => {
+			const entity = MCHandler.world.getEntity(packet.collectorId, false, true);
+			const pickupEntity = MCHandler.world.getEntity(packet.collectedId);
+
+			if (entity && pickupEntity && entity.isLoaded && pickupEntity.isLoaded) {
+				client.write('collect', {
+					collectorEntityId: entity.minecraftId,
+					collectedEntityId: pickupEntity.minecraftId
+				});
+			}
+		});
+
 		ClientSocket.on('CPacketEntityAction', packet => {
 			const entity = MCHandler.world.getEntity(packet.id, false, true);
 			if (entity) {
