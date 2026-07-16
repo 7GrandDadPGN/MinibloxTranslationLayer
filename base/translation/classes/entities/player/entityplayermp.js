@@ -14,7 +14,11 @@ module.exports = class EntityPlayerMP extends EntityPlayer {
 		return super.canSpawn() && (this.world.tablist.players[this.index] != undefined || this.bot != undefined);
 	}
 	createSpawnPacket() {
-		if (this.bot != undefined && this.world.tablist.players[this.index.toString()] == undefined) {
+		if (this.bot != undefined) {
+			if (this.world.tablist.players[this.index.toString()] != undefined) {
+				this.world.tablist.remove(this.index.toString());
+			}
+
 			this.world.tablist.add(this.index.toString(), {name: this.bot.name ?? 'BOT'}, false);
 		}
 

@@ -53,6 +53,30 @@ const self = class EntityHandler extends Handler {
 			}));
 		}
 	}
+	updateLocalAttributes(packet, entity) {
+		const modifiers = [];
+		if (packet.amplifier != undefined) {
+			modifiers.push({
+				uuid: '91aeaa56-376b-4498-935b-2f7f68070635',
+				amount: 0.20000000298023224 * (packet.amplifier + 1),
+				operation: 2
+			});
+		}
+
+		if (this.isSprinting) {
+			modifiers.push({
+				uuid: '662a6b8d-da3e-4c1c-8813-96ea6097278d',
+				amount: 0.30000001192092896,
+				operation: 2
+			});
+		}
+
+		entity.updateAttributes([{
+			key: 'generic.movementSpeed',
+			value: 0.10000000149011612,
+			modifiers: modifiers
+		}]);
+	}
 	sendInput() {
 		if (this.input == undefined) return;
 
@@ -285,6 +309,7 @@ const self = class EntityHandler extends Handler {
 
 		ClientSocket.on('CPacketEntityProperties', packet => {
 			const entity = MCHandler.world.getEntity(packet.id);
+
 			if (entity && entity.attributeMap != undefined) {
 				entity.updateAttributes(packet.data.map((prop) => {
 					return {
@@ -292,7 +317,7 @@ const self = class EntityHandler extends Handler {
 						value: prop.value,
 						modifiers: prop.modifiers.map((modifier) => {
 							return {
-								UUID: crypto.randomUUID(),
+								uuid: crypto.randomUUID(),
 								amount: modifier.amount,
 								operation: modifier.operation
 							};
@@ -311,6 +336,10 @@ const self = class EntityHandler extends Handler {
 					duration: Date.now() + (packet.duration * 50),
 					hideParticles: packet.hideParticles
 				});
+
+				if (packet.id == MCHandler.local.index && packet.effectId == 1) {
+					this.updateLocalAttributes(packet, entity);
+				}
 			}
 		});
 
@@ -318,6 +347,10 @@ const self = class EntityHandler extends Handler {
 			const entity = MCHandler.world.getEntity(packet.id, false, true);
 			if (entity && entity.activePotionsMap != undefined) {
 				entity.removePotionEffect(packet.effectId);
+
+				if (packet.id == MCHandler.local.index && packet.effectId == 1) {
+					this.updateLocalAttributes(packet, entity);
+				}
 			}
 		});
 
@@ -594,7 +627,7 @@ const self = class EntityHandler extends Handler {
 		});
 
 		client.on('entity_action', packet => {
-			if (MCHandler.world == undefined) return;
+			if (MCHandler.world == undefined || MCHandler.local.index == undefined) return;
 			switch (packet.actionId) {
 				case 0:
 				case 1:

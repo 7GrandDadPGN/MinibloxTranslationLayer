@@ -52,7 +52,8 @@ const self = class WorldHandler extends Handler {
 		MCHandler.world.requestCallback = function(chunk) {
 			ClientSocket.sendPacket(new SPacketRequestChunk({
 				x: chunk[0],
-				z: chunk[1]
+				z: chunk[1],
+				cachedHash: undefined
 			}));
 		};
 
