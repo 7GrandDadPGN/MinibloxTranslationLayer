@@ -13,6 +13,7 @@ public void moveEvent(PacketEvent event) {
         packetbuffer.writeBoolean(mc.thePlayer.movementInput.jump);
         packetbuffer.writeBoolean(mc.thePlayer.movementInput.sneak);
         packetbuffer.writeBoolean(((C03PacketPlayer) event.packet).isOnGround());
+        packetbuffer.writeBoolean(mc.thePlayer.isSprinting());
         mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload("miniblox:movepacket", packetbuffer));
     }
 }

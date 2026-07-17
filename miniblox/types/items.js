@@ -64,6 +64,7 @@ module.exports[292] = mcData.itemsByName.brown_mushroom_block.id;
 module.exports[293] = mcData.itemsByName.red_mushroom_block.id;
 module.exports[297] = mcData.itemsByName.glass_pane.id;
 module.exports[298] = mcData.itemsByName.melon.id;
+module.exports[310] = mcData.itemsByName.enchanting_table.id;
 module.exports[312] = mcData.itemsByName.end_stone.id;
 module.exports[314] = mcData.itemsByName.dragon_egg.id;
 module.exports[315] = mcData.itemsByName.sandstone_stairs.id;
