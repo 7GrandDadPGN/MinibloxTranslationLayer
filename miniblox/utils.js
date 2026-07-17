@@ -104,8 +104,8 @@ function translateItemBack(item) {
 }
 
 function translateText(text) {
-	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, color);
-	return text.replaceAll(COLOR_REGEX, (match) => {return findClosestColor(match.replaceAll("\\",''))});
+	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, `\u00a7${color}`);
+	return text.replaceAll(COLOR_REGEX, (match) => `\u00a7${findClosestColor(match.replaceAll("\\",''))}`);
 }
 
 module.exports = { translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR };
