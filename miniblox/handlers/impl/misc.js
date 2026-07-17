@@ -8,7 +8,7 @@ const self = class ChatHandler extends Handler {
 	miniblox(gameType) {
 		ClientSocket.on('CPacketMessage', packet => {
 			if (packet.text) {
-				if (packet.id == 'miniblox:game-summary') {
+				if (packet.id === 'miniblox:game-summary') {
 					if (packet.text.includes('Victory!')) {
 						client.write('chat', {
 							message: JSON.stringify({
@@ -19,7 +19,7 @@ const self = class ChatHandler extends Handler {
 										color: 'aqua',
 										clickEvent: {
 											action: 'run_command',
-											value: '/play ' + gameType
+											value: `/play ${gameType}`
 										}
 									},
 									' to play again!'
@@ -36,7 +36,7 @@ const self = class ChatHandler extends Handler {
 						extra: [translateText(packet.text)],
 						text: ''
 					}),
-					position: packet.id == undefined ? 1 : 0
+					position: packet.id === undefined ? 1 : 0
 				});
 			}
 		});
@@ -51,11 +51,11 @@ const self = class ChatHandler extends Handler {
 
 			client.write('title', {
 				action: 0,
-				text: JSON.stringify({text: translateText(packet.title)})
+				text: JSON.stringify({ text: translateText(packet.title) })
 			});
 		});
 
-		ClientSocket.on('CPacketTabComplete', packet => client.write('tab_complete', {matches: packet.matches}));
+		ClientSocket.on('CPacketTabComplete', packet => client.write('tab_complete', { matches: packet.matches }));
 	}
 	minecraft(mcClient) {
 		client = mcClient;
@@ -70,7 +70,7 @@ const self = class ChatHandler extends Handler {
 					if (err) {
 						client.write('chat', {
 							message: JSON.stringify({
-								extra: [translateText('\\red\\Failed to save file!' + err.message)],
+								extra: [translateText(`\\red\\Failed to save file!${err.message}`)],
 								text: ''
 							}),
 							position: 1
@@ -118,11 +118,11 @@ const self = class ChatHandler extends Handler {
 				entity.desyncFlag = !entity.desyncFlag;
 				return;
 			}
-			ClientSocket.sendPacket(new SPacketMessage({text: packet.message}));
+			ClientSocket.sendPacket(new SPacketMessage({ text: packet.message }));
 		});
 
 		client.on('tab_complete', packet => {
-			if ((packet.text.startsWith('/queue') || packet.text.startsWith('/play')) && packet.text.indexOf(' ') != -1) {
+			if ((packet.text.startsWith('/queue') || packet.text.startsWith('/play')) && packet.text.indexOf(' ') !== -1) {
 				const split = packet.text.split(' ')[1].toLocaleLowerCase();
 				client.write('tab_complete', {
 					matches: [
@@ -132,12 +132,12 @@ const self = class ChatHandler extends Handler {
 						'parkour', 'oitq',
 						'kitpvp', 'blitzbuild', 'murder',
 						'pvp'
-					].filter((str) => str.substring(0, split.length) == split)
+					].filter((str) => str.substring(0, split.length) === split)
 				});
 				return;
 			}
 
-			ClientSocket.sendPacket(new SPacketTabComplete$1({message: packet.text}));
+			ClientSocket.sendPacket(new SPacketTabComplete$1({ message: packet.text }));
 		});
 	}
 	cleanup(requeue) {
