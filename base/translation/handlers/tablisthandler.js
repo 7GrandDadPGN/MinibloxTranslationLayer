@@ -10,7 +10,7 @@ module.exports = class TablistHandler {
 		entry.uuid ??= crypto.randomUUID(); // bots don't have UUIDs
 		const name = isLocal ? this.client.username : entry.name.slice(0, 16);
 		// TODO: I'm not sure if *not* using the local client's UUID will break anything? but we have testers, they're our production users.
-		const uuid = /*isLocal ? */this.client.uuid/* : entry.uuid*/;
+		const uuid = entry.uuid;
 		this.uuids[index] = uuid;
 		this.players[index] = {
 			prefix: entry.prefix ?? '',
