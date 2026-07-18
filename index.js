@@ -95,7 +95,7 @@ async function connect(client, requeue, gamemode, code) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
-		sendPacket(client, 'layer:player', writePlayer(packet.name, packet.uuid))
+		sendPacket(client, 'layer:player', writePlayer(packet.name, packet.uuid));
 
 		MCHandler.createWorld(client, !requeue, 2, 0);
 		Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
