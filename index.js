@@ -21,12 +21,12 @@ function cleanup(teleport) {
 
 /**
  * 
- * @param {string} gm
+ * @param {string} gamemode
  * @param {string | undefined} server 
  * @param {object | undefined} config 
  * @returns 
  */
-async function queue(gm, config, server) {
+async function queue(gamemode, config, server) {
 	if (server) return {ok: true, json: () => ({serverId: server})};
 	let fetched
 	try {
@@ -40,8 +40,8 @@ async function queue(gm, config, server) {
 			},
 			body: JSON.stringify({
 				clientVersion: GAME_CONSTANTS.VERSION,
-				minigameId: gm ?? 'kitpvp',
-				minigameConfig: config ?? (gm == 'eggwars' ? { type: 'doubles' } : undefined)
+				minigameId: gamemode ?? 'kitpvp',
+				minigameConfig: config ?? (gamemode == 'eggwars' ? { type: 'doubles' } : undefined)
 			})
 		});
 	} catch (exception) {
