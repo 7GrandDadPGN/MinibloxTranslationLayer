@@ -70,6 +70,6 @@ function writeString(buffer, offset = 0, string) {
 }
 
 module.exports = {
-    readVarInt, writeVarInt,
-    readString, writeString
+	readVarInt, writeVarInt,
+	readString, writeString
 };
