@@ -1,4 +1,5 @@
 const { ClientSocket, SPacketLoginStart } = require('./miniblox/main.js');
+const { writeHello, writePlayer } = require('./base/packets');
 const handlers = require('./miniblox/handlers/init.js');
 const mc = require('minecraft-protocol');
 const fs = require('node:fs');
@@ -12,6 +13,7 @@ const server = mc.createServer({
 });
 const GAMEMODES = require('./miniblox/types/gamemodes.js');
 const { GAME_CONSTANTS, USER_AGENT } = require('./miniblox/types/constants.js');
+const { sendPacket } = require('./base/packets/utils.js');
 const MCHandler = new (require('./base/index.js'));
 let connected, skipKick = Date.now();
 
@@ -93,6 +95,7 @@ async function connect(client, requeue, gamemode, code) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
+		sendPacket(client, 'layer:player', writePlayer(packet.name, packet.uuid))
 
 		MCHandler.createWorld(client, !requeue, 2, 0);
 		Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
@@ -156,6 +159,7 @@ server.on('playerJoin', async function(client) {
 	});
 	Object.values(handlers).forEach((handler) => handler.minecraft(client));
 
+	sendPacket(client, 'layer:hello', writeHello('miniblox'));
 	await connect(client);
 	connected = !client.ended;
 });
