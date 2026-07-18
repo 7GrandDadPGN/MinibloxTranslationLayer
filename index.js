@@ -108,6 +108,9 @@ async function connect(client, requeue = false, gamemode, config, code) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
+		if (packet.name !== undefined) {
+			handlers.entity.name = packet.name;
+		}
 
 		MCHandler.createWorld(client, !requeue, 2, 0);
 		Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
