@@ -184,7 +184,7 @@ class Interop extends Handler {
 					break;
 				}
 				case 'layer:name_c2s': {
-					const n = entity.local.name;
+					const n = entity.name;
 					const data = Buffer.alloc(n.length * 2 + 1);
 					writeString(data, 0, n);
 					mcClient.write('custom_payload', {
