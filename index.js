@@ -21,12 +21,12 @@ function cleanup(teleport) {
 
 /**
  * 
- * @param {string} gm
+ * @param {string} gamemode
  * @param {string | undefined} server 
  * @param {object | undefined} config 
  * @returns 
  */
-async function queue(gm, config, server) {
+async function queue(gamemode, config, server) {
 	if (server) return {ok: true, json: () => ({serverId: server})};
 	let fetched
 	try {
@@ -40,8 +40,8 @@ async function queue(gm, config, server) {
 			},
 			body: JSON.stringify({
 				clientVersion: GAME_CONSTANTS.VERSION,
-				minigameId: gm ?? 'kitpvp',
-				minigameConfig: config ?? (gm === "eggwars" ? { type: "doubles" } : undefined)
+				minigameId: gamemode ?? 'kitpvp',
+				minigameConfig: config ?? (gamemode == 'eggwars' ? { type: 'doubles' } : undefined)
 			})
 		});
 	} catch (exception) {
@@ -108,9 +108,7 @@ async function connect(client, requeue = false, gamemode, config, code) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
-		if (packet.name !== undefined) {
-			handlers.entity.name = packet.name;
-		}
+		handlers.entity.name = packet.name;
 
 		MCHandler.createWorld(client, !requeue, 2, 0);
 		Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
@@ -157,12 +155,12 @@ server.on('playerJoin', async (client) => {
 		return;
 	}
 
-	if (client.username === undefined || client.uuid === undefined) {
+	if (client.username == undefined || client.uuid == undefined) {
 		client.end('Missing Username / UUID, please ensure you are using a valid cracked Minecraft account!');
 		return;
 	}
 
-	if (client.protocolVersion !== 47) {
+	if (client.protocolVersion != 47) {
 		console.log(`\x1b[33m[*] Incorrect client version, Please use Minecraft 1.8.9!\x1b[0m`);
 		return;
 	}

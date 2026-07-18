@@ -33,7 +33,7 @@ function convertToByte(num) {
 
 const self = class EntityHandler extends Handler {
 	/** @type {string} */
-	name = "";
+	name = '';
 	updateGamemode(id, gamemode) {
 		this.gamemodes[id.toString()] = GAMEMODES[gamemode ?? 'survival'];
 		MCHandler.tablist.updateGamemode(id.toString(), GAMEMODES[gamemode ?? 'survival']);
@@ -148,7 +148,7 @@ const self = class EntityHandler extends Handler {
 			if (packet.socketId == ClientSocket.id) {
 				MCHandler.local.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
 				MCHandler.local.index = packet.id;
-				if (this.name === "") this.local.name = packet.name;
+				if (this.name == '') this.local.name = packet.name;
 				MCHandler.local.spawn();
 
 				client.write('position', {
