@@ -177,7 +177,7 @@ class Interop extends Handler {
 			switch (channel) {
 				case 'layer:send_packet': {
 					const _ = parseSendPacketBuf(packet.data);
-					if (_ === undefined) return;
+					if (_ == undefined) return;
 					const { id, data } = _;
 					const pkt = S_PACKET_N2C.get(id);
 					ClientSocket.sendPacket(pkt.fromJson(data));

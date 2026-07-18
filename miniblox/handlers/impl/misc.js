@@ -95,7 +95,7 @@ const self = class ChatHandler extends Handler {
 		});
 		ClientSocket.on('CPacketMessage', packet => {
 			if (packet.text) {
-				if (packet.id === 'miniblox:game-summary') {
+				if (packet.id == 'miniblox:game-summary') {
 					if (packet.text.includes('Victory!')) {
 						client.write('chat', {
 							message: JSON.stringify({
@@ -123,7 +123,7 @@ const self = class ChatHandler extends Handler {
 						extra: [translateText(packet.text)],
 						text: ''
 					}),
-					position: packet.id === undefined ? 1 : 0
+					position: packet.id == undefined ? 1 : 0
 				});
 			}
 		});
@@ -172,7 +172,7 @@ const self = class ChatHandler extends Handler {
 						'parkour', 'oitq',
 						'kitpvp', 'blitzbuild', 'murder',
 						'pvp'
-					].filter((str) => str.substring(0, split.length) === split)
+					].filter((str) => str.substring(0, split.length) == split)
 				});
 				return;
 			}

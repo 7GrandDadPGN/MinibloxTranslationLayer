@@ -41,7 +41,7 @@ async function queue(gm, config, server) {
 			body: JSON.stringify({
 				clientVersion: GAME_CONSTANTS.VERSION,
 				minigameId: gm ?? 'kitpvp',
-				minigameConfig: config ?? (gm === "eggwars" ? { type: "doubles" } : undefined)
+				minigameConfig: config ?? (gm == 'eggwars' ? { type: 'doubles' } : undefined)
 			})
 		});
 	} catch (exception) {
@@ -157,12 +157,12 @@ server.on('playerJoin', async (client) => {
 		return;
 	}
 
-	if (client.username === undefined || client.uuid === undefined) {
+	if (client.username == undefined || client.uuid == undefined) {
 		client.end('Missing Username / UUID, please ensure you are using a valid cracked Minecraft account!');
 		return;
 	}
 
-	if (client.protocolVersion !== 47) {
+	if (client.protocolVersion != 47) {
 		console.log(`\x1b[33m[*] Incorrect client version, Please use Minecraft 1.8.9!\x1b[0m`);
 		return;
 	}
