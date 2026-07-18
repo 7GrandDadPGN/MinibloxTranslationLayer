@@ -106,7 +106,7 @@ const self = class ChatHandler extends Handler {
 										color: 'aqua',
 										clickEvent: {
 											action: 'run_command',
-											value: "/next"
+											value: '/next'
 										}
 									},
 									' to play again!'

@@ -33,7 +33,7 @@ function convertToByte(num) {
 
 const self = class EntityHandler extends Handler {
 	/** @type {string} */
-	name = "";
+	name = '';
 	updateGamemode(id, gamemode) {
 		this.gamemodes[id.toString()] = GAMEMODES[gamemode ?? 'survival'];
 		MCHandler.tablist.updateGamemode(id.toString(), GAMEMODES[gamemode ?? 'survival']);
