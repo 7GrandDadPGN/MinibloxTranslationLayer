@@ -16,7 +16,7 @@ A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.
 
 ### /play, /queue, and /q
 
-Syntax: `/q [gamemode]` (`[gamemode]` can be autocompleted using the <kbd>TAB</kbd>)
+Syntax: `/q [gamemode]` (`[gamemode]` can be autocompleted using the <kbd>TAB</kbd> key)
 
 Joins a server matching the gamemode criteria.
 `skywars` is the default gamemode
