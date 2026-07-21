@@ -27,7 +27,7 @@ const self = class TabListHandler extends Handler {
 				ping: entry.ping,
 				prefix: prefix,
 				suffix: suffix,
-				uuid: isLocal ? this.client.uuid : entry.uuid,
+				uuid: isLocal ? client.uuid : entry.uuid,
 				skin: entity.skins[entry.id] ? SKINS[entity.skins[entry.id]] : undefined
 			}, isLocal);
 		}
