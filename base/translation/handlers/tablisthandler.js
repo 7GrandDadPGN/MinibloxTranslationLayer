@@ -7,8 +7,9 @@ module.exports = class TablistHandler {
 		this.client = client;
 	}
 	add(index, entry, isLocal) {
+		entry.uuid ??= crypto.randomUUID(); // bots don't have UUIDs
 		const name = isLocal ? this.client.username : entry.name.slice(0, 16);
-		const uuid = isLocal ? this.client.uuid : crypto.randomUUID();
+		const uuid = entry.uuid;
 		this.uuids[index] = uuid;
 		this.players[index] = {
 			prefix: entry.prefix ?? '',

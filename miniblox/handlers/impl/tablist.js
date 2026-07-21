@@ -27,6 +27,7 @@ const self = class TabListHandler extends Handler {
 				ping: entry.ping,
 				prefix: prefix,
 				suffix: suffix,
+				uuid: isLocal ? client.uuid : entry.uuid,
 				skin: entity.skins[entry.id] ? SKINS[entity.skins[entry.id]] : undefined
 			}, isLocal);
 		}
@@ -46,8 +47,8 @@ const self = class TabListHandler extends Handler {
 			MCHandler.world.tickEntities();
 
 			client.write('playerlist_header', {
-				header: JSON.stringify({text: translateText('\\cyan\\You are playing on \\lime\\miniblox.io')}),
-				footer: JSON.stringify({text: translateText('\\gold\\Translation layer made by 7GrandDad')})
+				header: JSON.stringify({ text: translateText('\\cyan\\You are playing on \\lime\\miniblox.io') }),
+				footer: JSON.stringify({ text: translateText('\\gold\\Translation layer made by 7GrandDad') })
 			});
 		});
 
@@ -70,7 +71,7 @@ const self = class TabListHandler extends Handler {
 	minecraft(mcClient) {
 		client = mcClient;
 		client.on('keep_alive', packet => {
-			if (packet.keepAliveId > 0) ClientSocket.sendPacket(new SPacketPing({time: BigInt(Date.now())}));
+			if (packet.keepAliveId > 0) ClientSocket.sendPacket(new SPacketPing({ time: BigInt(Date.now()) }));
 		});
 	}
 	cleanup(requeue) {
@@ -79,7 +80,7 @@ const self = class TabListHandler extends Handler {
 		if (this.analyticsLoop) clearInterval(this.analyticsLoop);
 		if (requeue) {
 			this.pingLoop = setInterval(() => {
-				client.write('keep_alive', {keepAliveId: Math.floor(Math.random() * 10000)});
+				client.write('keep_alive', { keepAliveId: Math.floor(Math.random() * 10000) });
 			}, 1000);
 
 			this.analyticsLoop = setInterval(() => {
