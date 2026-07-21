@@ -1,6 +1,6 @@
-
 /node_modules
-login.token
-miniblox/1.8blockstates.txt
-recaptcha.token
-miniblox/minibloxblockstates.txt
+/login.token
+/miniblox/1.8blockstates.txt
+/recaptcha.token
+/miniblox/minibloxblockstates.txt
+/bun.lock

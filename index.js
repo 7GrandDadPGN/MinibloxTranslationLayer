@@ -5,24 +5,30 @@ const mc = require('minecraft-protocol');
 const fs = require('node:fs');
 const server = mc.createServer({
 	'online-mode': false,
-	motd: '\u00a76' + ' '.repeat(14) + 'Miniblox Translation Layer \u00a7c[1.8]\n\u00a7a' + ' '.repeat(21) + 'Made by 7GrandDad',
+	motd: `\u00a76${' '.repeat(14)}Miniblox Translation Layer \u00a7c[1.8]\n\u00a7a${' '.repeat(21)}Made by 7GrandDad`,
 	favicon: 'data:image/png;base64,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',
 	maxPlayers: 1,
 	keepAlive: false,
 	version: '1.8.9'
 });
-const GAMEMODES = require('./miniblox/types/gamemodes.js');
 const { GAME_CONSTANTS, USER_AGENT } = require('./miniblox/types/constants.js');
 const MCHandler = new (require('./base/index.js'));
 let connected, skipKick = Date.now();
 
 function cleanup(teleport) {
 	connected = teleport ?? false;
-	Object.values(handlers).forEach((handler) => handler.cleanup(teleport));
+	Object.values(handlers).forEach((handler) => { handler.cleanup(teleport) });
 };
 
-async function queue(gamemode, server) {
-	if (server) return {ok: true, json: function() { return {serverId: server}; }};
+/**
+ * 
+ * @param {string} gamemode
+ * @param {string | undefined} server 
+ * @param {object | undefined} config 
+ * @returns 
+ */
+async function queue(gamemode, config, server) {
+	if (server) return {ok: true, json: () => ({serverId: server})};
 	let fetched
 	try {
 		fetched = await fetch('https://miniblox.io/auth-api/launch/queue_minigame', {
@@ -36,11 +42,11 @@ async function queue(gamemode, server) {
 			body: JSON.stringify({
 				clientVersion: GAME_CONSTANTS.VERSION,
 				minigameId: gamemode ?? 'kitpvp',
-				minigameConfig: gamemode == 'eggwars' ? {type: 'doubles'} : undefined
+				minigameConfig: config ?? (gamemode == 'eggwars' ? { type: 'doubles' } : undefined)
 			})
 		});
 	} catch (exception) {
-		fetched = {text: function() { return exception; }};
+		fetched = {text: () => exception};
 	}
 	return fetched;
 };
@@ -49,7 +55,16 @@ function uuid() {
 	return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, j => (j ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> j / 4).toString(16));
 };
 
-async function connect(client, requeue, gamemode, code) {
+/**
+ * 
+ * @param {import('minecraft-protocol').ServerClient} client
+ * @param {boolean} [requeue=false]
+ * @param {string | undefined} gamemode 
+ * @param {object | undefined} config 
+ * @param {string | undefined} code 
+ * @returns 
+ */
+async function connect(client, requeue = false, gamemode, config, code) {
 	if (requeue) {
 		skipKick = Date.now() + 20;
 		if (ClientSocket.socket) ClientSocket.disconnect();
@@ -58,7 +73,7 @@ async function connect(client, requeue, gamemode, code) {
 	}
 	cleanup(true);
 
-	let fetched = await queue(gamemode, code);
+	let fetched = await queue(gamemode, config, code);
 	if (!fetched.ok) {
 		const text = await fetched.text();
 		client.end(text ?? (fetched.statusText ?? 'Disconnected'));
@@ -74,7 +89,7 @@ async function connect(client, requeue, gamemode, code) {
 	let session = '';
 	try {
 		session = await fs.readFileSync('login.token', {encoding: 'utf8'});
-	} catch (exception) {}
+	} catch (_) {}
 
 	// MINIBLOX CONNECTION
 	ClientSocket.once('connect', () => {
@@ -94,6 +109,7 @@ async function connect(client, requeue, gamemode, code) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
+		handlers.entity.name = packet.name;
 
 		client.write('custom_payload', {
 			channel: 'layer:player',
@@ -139,7 +155,7 @@ async function updateVersion() {
 	}
 };
 
-server.on('playerJoin', async function(client) {
+server.on('playerJoin', async (client) => {
 	if (connected) {
 		client.end('A player is already logged in!');
 		return;
@@ -155,12 +171,12 @@ server.on('playerJoin', async function(client) {
 		return;
 	}
 
-	client.on('end', function() {
+	client.on('end', () => {
 		if (ClientSocket.socket) ClientSocket.disconnect();
 		MCHandler.deleteWorld();
 		cleanup();
 	});
-	Object.values(handlers).forEach((handler) => handler.minecraft(client));
+	Object.values(handlers).forEach((handler) => {handler.minecraft(client)});
 
 	await connect(client);
 	connected = !client.ended;
@@ -170,4 +186,6 @@ updateVersion();
 setInterval(updateVersion, 60000);
 
 Object.values(handlers).forEach((handler) => handler.obtainHandlers(handlers, MCHandler, connect));
-console.log('\x1b[33mMiniblox Translation Layer Started!\nDeveloped & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)\nVersion: ' + GAME_CONSTANTS.VERSION + '\x1b[0m');
+console.log(`\x1b[33mMiniblox Translation Layer Started!
+Developed & maintained by 7GrandDad (https://youtube.com/c/7GrandDadVape)
+Version: ${GAME_CONSTANTS.VERSION}\x1b[0m`);

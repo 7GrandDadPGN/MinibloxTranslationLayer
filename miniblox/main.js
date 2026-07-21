@@ -6,18 +6,18 @@ const { Message, proto2, proto3 } = require("./types/proto.js");
 const { GAME_CONSTANTS, USER_AGENT } = require("./types/constants.js");
 
 var yT = Object.defineProperty;
-var xT = (j,_,$)=>_ in j ? yT(j, _, {
+var xT = (j, _, $) => _ in j ? yT(j, _, {
 	enumerable: !0,
 	configurable: !0,
 	writable: !0,
 	value: $
 }) : j[_] = $;
-var ST = (j,_)=>()=>(_ || j((_ = {
+var ST = (j, _) => () => (_ || j((_ = {
 	exports: {}
 }).exports, _),
-_.exports);
-var ut = (j,_,$)=>(xT(j, typeof _ != "symbol" ? _ + "" : _, $),
-$);
+	_.exports);
+var ut = (j, _, $) => (xT(j, typeof _ != "symbol" ? _ + "" : _, $),
+	$);
 
 class SPacketLoginStart extends Message {
 	constructor(SPacketLoginStart) {
@@ -508,15 +508,15 @@ class CPacketEntityEquipment extends Message {
 	}
 };
 exports.CPacketEntityEquipment = CPacketEntityEquipment;
-const ItemSlots = function(e) {
+const ItemSlots = function (e) {
 	return e[e.UNDEFINED_SLOT = 0] = `UNDEFINED_SLOT`,
-	e[e.MAIN_HAND = 1] = `MAIN_HAND`,
-	e[e.OFF_HAND = 2] = `OFF_HAND`,
-	e[e.HELMET = 3] = `HELMET`,
-	e[e.CHESTPLATE = 4] = `CHESTPLATE`,
-	e[e.LEGGINGS = 5] = `LEGGINGS`,
-	e[e.BOOTS = 6] = `BOOTS`,
-	e
+		e[e.MAIN_HAND = 1] = `MAIN_HAND`,
+		e[e.OFF_HAND = 2] = `OFF_HAND`,
+		e[e.HELMET = 3] = `HELMET`,
+		e[e.CHESTPLATE = 4] = `CHESTPLATE`,
+		e[e.LEGGINGS = 5] = `LEGGINGS`,
+		e[e.BOOTS = 6] = `BOOTS`,
+		e
 }({});
 proto2.util.setEnumType(ItemSlots, `Equipment.Slot`, [{
 	no: 0,
@@ -1148,15 +1148,15 @@ class SPacketClick extends Message {
 };
 exports.SPacketClick = SPacketClick;
 
-const EnumFace = function(e) {
+const EnumFace = function (e) {
 	return e[e.UNDEFINED_FACE = 0] = `UNDEFINED_FACE`,
-	e[e.DOWN = 1] = `DOWN`,
-	e[e.UP = 2] = `UP`,
-	e[e.NORTH = 3] = `NORTH`,
-	e[e.SOUTH = 4] = `SOUTH`,
-	e[e.WEST = 5] = `WEST`,
-	e[e.EAST = 6] = `EAST`,
-	e
+		e[e.DOWN = 1] = `DOWN`,
+		e[e.UP = 2] = `UP`,
+		e[e.NORTH = 3] = `NORTH`,
+		e[e.SOUTH = 4] = `SOUTH`,
+		e[e.WEST = 5] = `WEST`,
+		e[e.EAST = 6] = `EAST`,
+		e
 }({});
 proto2.util.setEnumType(EnumFace, `PBEnumFacing`, [{
 	no: 0,
@@ -1330,14 +1330,14 @@ class SPacketClickWindow extends Message {
 };
 exports.SPacketClickWindow = SPacketClickWindow;
 
-const BreakActionTypes = function(e) {
+const BreakActionTypes = function (e) {
 	return e[e.START_DESTROY_BLOCK = 0] = `START_DESTROY_BLOCK`,
-	e[e.ABORT_DESTROY_BLOCK = 1] = `ABORT_DESTROY_BLOCK`,
-	e[e.STOP_DESTROY_BLOCK = 2] = `STOP_DESTROY_BLOCK`,
-	e[e.DROP_ALL_ITEMS = 3] = `DROP_ALL_ITEMS`,
-	e[e.DROP_ITEM = 4] = `DROP_ITEM`,
-	e[e.RELEASE_USE_ITEM = 5] = `RELEASE_USE_ITEM`,
-	e
+		e[e.ABORT_DESTROY_BLOCK = 1] = `ABORT_DESTROY_BLOCK`,
+		e[e.STOP_DESTROY_BLOCK = 2] = `STOP_DESTROY_BLOCK`,
+		e[e.DROP_ALL_ITEMS = 3] = `DROP_ALL_ITEMS`,
+		e[e.DROP_ITEM = 4] = `DROP_ITEM`,
+		e[e.RELEASE_USE_ITEM = 5] = `RELEASE_USE_ITEM`,
+		e
 }({});
 proto2.util.setEnumType(BreakActionTypes, `PBAction`, [{
 	no: 0,
@@ -1401,11 +1401,11 @@ class SPacketPlayerAction extends Message {
 	}
 };
 exports.SPacketPlayerAction = SPacketPlayerAction;
-const UseTypes = function(e) {
+const UseTypes = function (e) {
 	return e[e.INTERACT = 0] = `INTERACT`,
-	e[e.ATTACK = 1] = `ATTACK`,
-	e[e.INTERACT_AT = 2] = `INTERACT_AT`,
-	e
+		e[e.ATTACK = 1] = `ATTACK`,
+		e[e.INTERACT_AT = 2] = `INTERACT_AT`,
+		e
 }({});
 proto2.util.setEnumType(UseTypes, `SPacketUseEntity.Action`, [{
 	no: 0,
@@ -2755,11 +2755,11 @@ class CPacketLeaderboard extends Message {
 };
 exports.CPacketLeaderboard = CPacketLeaderboard;
 
-const StorageActionTypes = function(e) {
+const StorageActionTypes = function (e) {
 	return e[e.DEFAULT = 0] = `DEFAULT`,
-	e[e.REMOVE = 1] = `REMOVE`,
-	e[e.SET = 2] = `SET`,
-	e
+		e[e.REMOVE = 1] = `REMOVE`,
+		e[e.SET = 2] = `SET`,
+		e
 }({});
 proto2.util.setEnumType(StorageActionTypes, `CPacketLocalStorage.Action`, [{
 	no: 0,
@@ -8179,79 +8179,80 @@ const CPACKET_MAP = {
 	CPacketEmote,
 	CPacketApplyRecoil
 }
-  , SPACKET_MAP = {
-	SPacketAdminAction,
-	SPacketAnalytics,
-	SPacketClickWindow,
-	SPacketCloseWindow,
-	SPacketConfirmTransaction,
-	SPacketEnchantItem,
-	SPacketEntityAction,
-	SPacketHeldItemChange,
-	SPacketLoginStart,
-	SPacketMessage,
-	SPacketOpenShop,
-	SPacketPing,
-	SPacketPlayerAbilities,
-	SPacketPlayerAction,
-	SPacketPlayerPosLook,
-	SPacketRespawn,
-	SPacketTabComplete,
-	SPacketUpdateSign,
-	SPacketUseEntity,
-	SPacketUpdateCommandBlock,
-	SPacketQueueNext,
-	SPacketPlayerInput,
-	SPacketBreakBlock,
-	SPacketClick,
-	SPacketCraftItem,
-	SPacketPlaceBlock,
-	SPacketRequestChunk,
-	SPacketUpdateInventory,
-	SPacketUseItem,
-	SPacketScriptAction,
-	SPacketPlotsAction,
-	SPacketRenameItem,
-	SPacketUploadSchematic,
-	SPacketGuideAction,
-	SPacketSelectTrade,
-	SPacketEditBook
-}, EXTRA_MAP = {
-	CPacketScriptData,
-	CPacketScriptLog,
-	SPacketScriptAction,
-	CPacketPlotsData,
-	SPacketPlotsAction,
-	CPacketUpdatePlayerHead,
-	CPacketChunkUnchanged,
-	SPacketRenameItem,
-	SPacketUploadSchematic,
-	CPacketGuideData,
-	SPacketGuideAction,
-	CPacketBlockBreakAnim,
-	CPacketPlayerListPing,
-	CPacketPlayerListDelta,
-	CPacketSpectate,
-	CPacketTradeList,
-	SPacketSelectTrade,
-	CPacketDownloadSchematic,
-	CPacketCollectItem,
-	CPacketModContent,
-	CPacketDamageIndicator,
-	SPacketEditBook,
-	CPacketEmote,
-	CPacketApplyRecoil
-}
-  , NAME_TO_ID = {}
-  , ID_TO_PACKET = {}
-  , ID_TO_NAME = {};
+	, SPACKET_MAP = {
+		SPacketAdminAction,
+		SPacketAnalytics,
+		SPacketClickWindow,
+		SPacketCloseWindow,
+		SPacketConfirmTransaction,
+		SPacketEnchantItem,
+		SPacketEntityAction,
+		SPacketHeldItemChange,
+		SPacketLoginStart,
+		SPacketMessage,
+		SPacketOpenShop,
+		SPacketPing,
+		SPacketPlayerAbilities,
+		SPacketPlayerAction,
+		SPacketPlayerPosLook,
+		SPacketRespawn,
+		SPacketTabComplete,
+		SPacketUpdateSign,
+		SPacketUseEntity,
+		SPacketUpdateCommandBlock,
+		SPacketQueueNext,
+		SPacketPlayerInput,
+		SPacketBreakBlock,
+		SPacketClick,
+		SPacketCraftItem,
+		SPacketPlaceBlock,
+		SPacketRequestChunk,
+		SPacketUpdateInventory,
+		SPacketUseItem,
+		SPacketScriptAction,
+		SPacketPlotsAction,
+		SPacketRenameItem,
+		SPacketUploadSchematic,
+		SPacketGuideAction,
+		SPacketSelectTrade,
+		SPacketEditBook
+	}, EXTRA_MAP = {
+		CPacketScriptData,
+		CPacketScriptLog,
+		SPacketScriptAction,
+		CPacketPlotsData,
+		SPacketPlotsAction,
+		CPacketUpdatePlayerHead,
+		CPacketChunkUnchanged,
+		SPacketRenameItem,
+		SPacketUploadSchematic,
+		CPacketGuideData,
+		SPacketGuideAction,
+		CPacketBlockBreakAnim,
+		CPacketPlayerListPing,
+		CPacketPlayerListDelta,
+		CPacketSpectate,
+		CPacketTradeList,
+		SPacketSelectTrade,
+		CPacketDownloadSchematic,
+		CPacketCollectItem,
+		CPacketModContent,
+		CPacketDamageIndicator,
+		SPacketEditBook,
+		CPacketEmote,
+		CPacketApplyRecoil
+	}
+	, NAME_TO_ID = {}
+	, ID_TO_PACKET = {}
+	, ID_TO_NAME = {};
 let currentId = 0;
+exports.SPACKET_MAP = SPACKET_MAP;
 
 function addPacket(name, packet) {
 	NAME_TO_ID[name] = currentId,
-	ID_TO_PACKET[currentId] = packet,
-	ID_TO_NAME[currentId] = name,
-	currentId++;
+		ID_TO_PACKET[currentId] = packet,
+		ID_TO_NAME[currentId] = name,
+		currentId++;
 }
 
 for (let [e, t] of Object.entries(CPACKET_MAP))
@@ -8273,12 +8274,12 @@ exports.BitArray = class {
 		if ($ > 32)
 			throw new Error(`${$} bits per value exceeds 32`);
 		this.capacity = _,
-		this.bitsPerValue = $,
-		this.valuesPerLong = Math.floor(64 / $),
-		this.valueMask = (1 << $) - 1;
+			this.bitsPerValue = $,
+			this.valuesPerLong = Math.floor(64 / $),
+			this.valueMask = (1 << $) - 1;
 		const tt = new ArrayBuffer(Math.ceil(_ / this.valuesPerLong) * 8);
 		if (this.data = new Uint32Array(tt),
-		et) {
+			et) {
 			if (et.byteLength !== tt.byteLength)
 				throw new Error("initial data length does not match buffer length");
 			new Uint8Array(tt).set(et)
@@ -8288,7 +8289,7 @@ exports.BitArray = class {
 		return this.bitsPerValue
 	}
 	getDataArray() {
-		return new Uint8Array(this.data.buffer,this.data.byteOffset,this.data.byteLength)
+		return new Uint8Array(this.data.buffer, this.data.byteOffset, this.data.byteLength)
 	}
 	writeUint32(_, $) {
 		this.data[_] = $ >>> 0
@@ -8325,7 +8326,7 @@ exports.BitArray = class {
 		rt > 32 && (this.data[et * 2 + 1] = this.data[et * 2 + 1] & ~((1 << rt - 32) - 1) | $ >>> 32 - tt)
 	}
 	resizeTo(_) {
-		const $ = new BitArray(this.capacity,_);
+		const $ = new BitArray(this.capacity, _);
 		for (let et = 0; et < this.capacity; ++et) {
 			const tt = this.get(et);
 			if (neededBits(tt) > _)
@@ -8350,41 +8351,41 @@ function tB(e) {
 	let t = 1779033703 ^ e.length;
 	for (let n = 0; n < e.length; n++)
 		t = Math.imul(t ^ e.charCodeAt(n), 3432918353),
-		t = t << 13 | t >>> 19;
+			t = t << 13 | t >>> 19;
 	return () => (t = Math.imul(t ^ t >>> 16, 2246822507),
-	t = Math.imul(t ^ t >>> 13, 3266489909),
-	t ^= t >>> 16,
-	t >>> 0)
+		t = Math.imul(t ^ t >>> 13, 3266489909),
+		t ^= t >>> 16,
+		t >>> 0)
 };
 
 function nB(e) {
 	return () => {
 		e |= 0,
-		e = e + 1831565813 | 0;
+			e = e + 1831565813 | 0;
 		let t = Math.imul(e ^ e >>> 15, 1 | e);
 		return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t,
-		((t ^ t >>> 14) >>> 0) / 4294967296
+			((t ^ t >>> 14) >>> 0) / 4294967296
 	}
 };
 
 function rB(e, t, n, r) {
 	for (let i = n - 1; i > t; i--) {
 		let n = t + Math.floor(r() * (i - t + 1))
-		  , a = e[i];
+			, a = e[i];
 		e[i] = e[n],
-		e[n] = a
+			e[n] = a
 	}
 };
 
-function obfuscatePacketRoutine(e, t, n=101, r=64) {
+function obfuscatePacketRoutine(e, t, n = 101, r = 64) {
 	let i = Array.from({
 		length: n
 	}, (e, t) => t);
 	if (t !== 0) {
 		let a = nB(tB(`mb-perm|v${t}|lo|${e}`)())
-		  , o = nB(tB(`mb-perm|v${t}|hi|${e}`)());
+			, o = nB(tB(`mb-perm|v${t}|hi|${e}`)());
 		rB(i, 0, Math.min(r, n), a),
-		n > r && rB(i, r, n, o)
+			n > r && rB(i, r, n, o)
 	}
 	let a = Array(n);
 	for (let e = 0; e < n; e++)
@@ -8399,16 +8400,16 @@ function obfuscatePacketRoutine(e, t, n=101, r=64) {
 function setPacketData(e, t) {
 	if (!e || !t || t === 0)
 		return FV;
-	let {perm: n} = obfuscatePacketRoutine(e, t)
-	  , r = {}
-	  , i = {}
-	  , a = {};
+	let { perm: n } = obfuscatePacketRoutine(e, t)
+		, r = {}
+		, i = {}
+		, a = {};
 	for (let packet of Object.keys(NAME_TO_ID)) {
 		let t = NAME_TO_ID[packet]
-		  , o = t < 101 ? n[t] : t;
+			, o = t < 101 ? n[t] : t;
 		r[packet] = o,
-		i[o] = ID_TO_PACKET[t],
-		a[o] = packet
+			i[o] = ID_TO_PACKET[t],
+			a[o] = packet
 	}
 
 	Object.assign(PacketData, {
@@ -8423,31 +8424,31 @@ function setPacketData(e, t) {
 
 class ClientEncoder {
 	constructor() {
-		ut(this, "encode", _=>(_.t = _.type,
-		_.d = _.data,
-		delete _.type,
-		delete _.nsp,
-		delete _.data,
-		_.t === 2 && _.d[1] && _.d[1].toBinary && (_.d[1] = _.d[1].toBinary(),
-		_.d[0] = PacketData.nameToId[_.d[0]]),
-		[encode(_)]))
+		ut(this, "encode", _ => (_.t = _.type,
+			_.d = _.data,
+			delete _.type,
+			delete _.nsp,
+			delete _.data,
+			_.t === 2 && _.d[1] && _.d[1].toBinary && (_.d[1] = _.d[1].toBinary(),
+				_.d[0] = PacketData.nameToId[_.d[0]]),
+			[encode(_)]))
 	}
 }
 
 class ClientDecoder extends Decoder {
 	constructor() {
 		super(...arguments);
-		ut(this, "add", async $=>{
+		ut(this, "add", async $ => {
 			try {
 				const tt = new Uint8Array($)[0]
-				  , rt = tt & 1;
-				let nt = new Uint8Array($,1,$.byteLength - 1);
+					, rt = tt & 1;
+				let nt = new Uint8Array($, 1, $.byteLength - 1);
 				nt = nt.slice(1);
 				if (rt) {
 					const it = tt >> 2, at = tt & 2, st = PacketData.idToPacket[it];
 					at && (nt = brotli.decompress(nt));
 					const ot = st.fromBinary(nt);
-					st.typeName === "ClientBoundCombined" ? ot.packets.forEach(ct=>{
+					st.typeName === "ClientBoundCombined" ? ot.packets.forEach(ct => {
 						this.emit("decoded", {
 							type: 2,
 							nsp: "/",
@@ -8515,11 +8516,11 @@ exports.ClientSocket = class {
 		this.socket.on("connect", () => {
 			exports.ClientSocket.id = this.socket.id
 		}),
-		this.socket.connect()
+			this.socket.connect()
 	}
 	static disconnect(_) {
 		if (this.disconnectMessage = _,
-		!this.socket) {
+			!this.socket) {
 			console.error("CSocket.disconnect: socket is null");
 			return
 		}
@@ -8530,7 +8531,7 @@ exports.ClientSocket = class {
 	}
 	static on(_, $) {
 		let et = !0;
-		const tt = (...rt)=>{
+		const tt = (...rt) => {
 			try {
 				$.apply(null, rt)
 			} catch (nt) {
