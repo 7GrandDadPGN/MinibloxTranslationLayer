@@ -5,9 +5,9 @@ const fs = require('node:fs');
 let client, entity, connect, world;
 
 /**
- * Matches a server ID (e.g. https://miniblox.io/?join=JOINCODEHERE)
+ * Matches a server ID (e.g. https://miniblox.io/join/JOINCODEHERE)
  */
-const JOIN_CODE = /(?:https?:\/\/^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}\/?join=)?([A-Z]+)/;
+const JOIN_CODE = /(?:https?:\/\/^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}\/join\/)?([A-Z]+)/;
 
 /**
  * Matches a server ID
