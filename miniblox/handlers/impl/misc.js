@@ -5,23 +5,56 @@ const fs = require('node:fs');
 let client, entity, connect, world;
 
 /**
+ * Matches a server ID (e.g. https://miniblox.io/join/JOINCODEHERE)
+ */
+const JOIN_CODE = /(?:https?:\/\/^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}\/join\/)?([A-Z]+)/;
+
+/**
+ * Matches a server ID
+ */
+const SERVER_ID = /(large|small|medium|planet)-[A-z|0-9]+-[A-z|0-9]+/;
+
+/**
+ * Resolves a join code to a server ID,
+ * it will return {@link code} if {@link code} is already a server ID.
+ * @param {string} code the invite code or a server ID.
+ * @return {Promise<string | null>} a server ID if the server resolved the invite code, otherwise `null`
+ */
+async function resolveServerID(code) {
+	if (SERVER_ID.test(code))
+		return code; // no need for modifying, this is already a server ID.
+	const joinCode = JOIN_CODE.exec(code);
+	if (joinCode === null) throw new IllegalArgumentException(`Invalid invite code: ${code}`);
+	const serverId = await fetch("https://session.coolmathblox.ca/launch/invite_code", {
+		method: "POST",
+		body: JSON.stringify({
+			code: joinCode[2]
+		}),
+		headers: {
+			"Content-Type": "application/json"
+		}
+	}).then(r => r.json()).then(r => r.serverId);
+	return serverId;
+}
+
+/**
  * Handles a custom chat command
  * @param {string} name the name of the command
  * @param {string[]} args arguments passed to the command
  * @returns {boolean} if it was handled/shouldn't be sent to Miniblox.
  */
-function handleCommand(name, args) {
+async function handleCommand(name, args) {
 	// not adding /desync here because it's patched
 	switch (name) {
 		case 'next':
 			// this triggers the server to send a CPacketQueueNext,
 			// see the `miniblox` function in ChatHandler below for how that's handled.
 			ClientSocket.sendPacket(new SPacketQueueNext);
-			return true;
+			break;
 		case 'reloadchunks':
 			world.chunks = [];
 			world.queued = [];
-			return true;
+			break;
 		case 'queue':
 		case 'play': {
 			// un-scruffily stuff happens if we don't wrap in {}
@@ -39,7 +72,7 @@ function handleCommand(name, args) {
 				});
 			}
 			connect(client, true, args[0], config);
-			return true;
+			break;
 		}
 		case 'resync':
 			if (entity.teleport) {
@@ -60,7 +93,25 @@ function handleCommand(name, args) {
 					position: 1
 				});
 			}
-			return true;
+			break;
+		case 'join': {
+			const code = args.join(" ");
+			const resolved = await resolveServerID(code).then(c => c ?? code).catch(e => {
+				console.error("Error resolving server ID / invite code, trying to connect without resolving. Error:", e);
+				client.write('chat', {
+					message: JSON.stringify({
+						extra: [translateText(
+							"\\red\\Failed to resolve Server ID / Invite Code\\reset\\, trying without resolving! See console logs for error"
+						)],
+						text: ''
+					}),
+					position: 1
+				});
+				return code;
+			});
+			connect(client, true, undefined, undefined, resolved);
+			break;
+		}
 		case 'login': {
 			fs.writeFile('./login.token', packet.message.split(' ')[1] ?? '', (err) => {
 				if (err) {
@@ -82,10 +133,12 @@ function handleCommand(name, args) {
 					position: 1
 				});
 			});
-			return true;
+			break;
 		}
+		default:
+			return false;
 	}
-	return false;
+	return true;
 }
 
 const self = class ChatHandler extends Handler {

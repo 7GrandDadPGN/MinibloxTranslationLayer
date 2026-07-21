@@ -78,7 +78,7 @@ class Interop extends Handler {
 		}
 
 		mcClient.write('custom_payload', {
-			channel: 'miniblox:receive_packet',
+			channel: 'miniblox:receive_pkt',
 			data
 		});
 	}
