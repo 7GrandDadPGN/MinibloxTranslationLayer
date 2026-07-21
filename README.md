@@ -28,7 +28,7 @@ Syntax: `/login <token>`
 Writes `token` to `login.token` so the translation layer can use it once you rejoin.
 Rejoin for the changes to take effect.
 
-## /join
+### /join
 
 Syntax: `/join <server ID or invite code>`
 
