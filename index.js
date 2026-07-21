@@ -1,5 +1,5 @@
 const { ClientSocket, SPacketLoginStart } = require('./miniblox/main.js');
-const { writeHello, writePlayer } = require('./base/packets');
+const { writePlayer } = require('./base/packets');
 const handlers = require('./miniblox/handlers/init.js');
 const mc = require('minecraft-protocol');
 const fs = require('node:fs');
@@ -161,10 +161,6 @@ server.on('playerJoin', async function(client) {
 	});
 	Object.values(handlers).forEach((handler) => handler.minecraft(client));
 
-	client.write('custom_payload', {
-		channel: 'layer:hello',
-		data: writeHello()
-	});
 	await connect(client);
 	connected = !client.ended;
 });
