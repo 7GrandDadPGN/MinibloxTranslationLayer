@@ -94,6 +94,7 @@ async function connect(client, requeue, gamemode, code) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
+
 		client.write('custom_payload', {
 			channel: 'layer:player',
 			data: writePlayer(packet.name, packet.uuid)
