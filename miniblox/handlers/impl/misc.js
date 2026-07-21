@@ -109,7 +109,7 @@ async function handleCommand(name, args) {
 				});
 				return code;
 			});
-			connect(client, true, undefined, resolved);
+			connect(client, true, undefined, undefined, resolved);
 			break;
 		}
 		case 'login': {
