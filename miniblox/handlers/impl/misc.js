@@ -162,7 +162,7 @@ const self = class ChatHandler extends Handler {
 		});
 
 		client.on('tab_complete', packet => {
-			if ((packet.text.startsWith('/queue') || packet.text.startsWith('/play')) && packet.text.indexOf(' ') !== -1) {
+			if ((packet.text.startsWith('/queue') || packet.text.startsWith('/play')) && packet.text.indexOf(' ') != -1) {
 				const split = packet.text.split(' ')[1].toLocaleLowerCase();
 				client.write('tab_complete', {
 					matches: [
