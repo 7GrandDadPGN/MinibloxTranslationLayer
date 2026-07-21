@@ -28,13 +28,15 @@ Syntax: `/login <token>`
 Writes `token` to `login.token` so the translation layer can use it once you rejoin.
 Rejoin for the changes to take effect.
 
-### /join
+## /join
 
-Syntax: `/join <server ID>`
+Syntax: `/join <server ID or invite code>`
 
 Joins a specific server.
 A server ID looks like this:
 `{server size, e.g. small, large, medium, or planet}-{ID 1}-{ID 2}`.
+An invite code looks like this: `https://miniblox.io/join/INVITECODE` or just `INVITECODE`.
+Crazy Gays invite links are not supported because no one wants it (just copy the invite code which is everything after `?join=` instead lol)
 
 ### /resync
 
