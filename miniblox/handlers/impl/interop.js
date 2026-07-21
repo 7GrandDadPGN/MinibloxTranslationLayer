@@ -4,7 +4,6 @@
  */
 const { ClientSocket, SPACKET_MAP } = require('../../main.js');
 const Handler = require('../handler.js');
-const { writeString } = require('../../../base/packets/buf_utils.js');
 const readSendPacket = require('../../packets/c2s/sendPacket.js');
 const writeReceivePacket = require('../../packets/s2c/receivePacket.js');
 
@@ -61,15 +60,6 @@ const C_BLACKLIST = [
 	'CPacketRespawn'
 ];
 
-/**
- * @type {EntityHandler}
- */
-let entity;
-const warnings = {
-	name: false,
-	sendPacket: false
-};
-
 class Interop extends Handler {
 	/**
 	 * 
@@ -91,7 +81,6 @@ class Interop extends Handler {
 			channel: 'miniblox:receive_packet',
 			data
 		});
-		// not re-sending ts for baby boomer clients that got ts before it was even upstream'd
 	}
 	miniblox() {
 		if (!SEND_RECV_PACKET_PAYLOAD) return;
@@ -105,13 +94,6 @@ class Interop extends Handler {
 			const channel = packet.channel;
 
 			switch (channel) {
-				// biome-ignore lint/suspicious/noFallthroughSwitchClause: intentional
-				case 'layer:send_packet':
-					if (!warnings.sendPacket) {
-						console.warn(`\x1b[33m[!]\x1b[0m layer:send_packet is deprecated, use miniblox:send_packet instead!
-Note that layer:receive_packet is gone without backwards compatibility.`);
-						warnings.sendPacket = true;
-					}
 				case 'miniblox:send_packet': {
 					const _ = readSendPacket(packet.data);
 					if (_ == undefined) return;
@@ -120,25 +102,8 @@ Note that layer:receive_packet is gone without backwards compatibility.`);
 					ClientSocket.sendPacket(pkt.fromJson(data));
 					break;
 				}
-				case 'layer:name_c2s': {
-					if (!warnings.name) {
-						console.warn('\x1b[33m[!]\x1b[0m layer:name_c2s is deprecated, use the info from layer:player instead.');
-						warnings.name = true;
-					}
-					const n = entity.name;
-					const data = Buffer.alloc(n.length * 2 + 1);
-					writeString(data, 0, n);
-					mcClient.write('custom_payload', {
-						channel: 'layer:name_s2c',
-						data
-					});
-					break;
-				}
 			}
 		});
-	}
-	obtainHandlers(handler) {
-		entity = handler.entity;
 	}
 }
 
