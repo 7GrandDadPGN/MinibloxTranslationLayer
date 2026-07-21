@@ -163,7 +163,7 @@ server.on('playerJoin', async function(client) {
 
 	client.write('custom_payload', {
 		channel: 'layer:hello',
-		data: writeHello('miniblox')
+		data: writeHello()
 	});
 	await connect(client);
 	connected = !client.ended;

@@ -4,15 +4,17 @@
  * @module
  */
 
-const { writeString } = require("../buf_utils");
-
 /**
  * Sends a hello packet.
- * @param {string} layerID the layer ID, this should be the "service" (game) being translated (i.e. Miniblox).
  * @returns {Buffer} the data to send in the `layer:hello` channel
  */
-module.exports = function writeHello(layerID) {
-	const data = Buffer.alloc(layerID.length + 1);
-	writeString(data, 0, layerID);
+module.exports = function writeHello() {
+	const data = Buffer.alloc(0);
+	/*
+		> its made to be extensible so you can SKIDDING! the stuff into other layers
+		< unless a future comes where I decide to combine it all, NO
+		< and that's for me to deal with later
+		well ig ok then
+	*/
 	return data;
-}
+};
