@@ -4,3 +4,5 @@
 /recaptcha.token
 /miniblox/minibloxblockstates.txt
 /bun.lock
+# xylex doesn't want ts so ig
+/.editorconfig
