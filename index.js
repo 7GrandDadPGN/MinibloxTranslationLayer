@@ -1,4 +1,5 @@
 const { ClientSocket, SPacketLoginStart } = require('./miniblox/main.js');
+const { writePlayer } = require('./base/packets');
 const handlers = require('./miniblox/handlers/init.js');
 const mc = require('minecraft-protocol');
 const fs = require('node:fs');
@@ -93,6 +94,11 @@ async function connect(client, requeue, gamemode, code) {
 			client.end(packet.errorMessage ?? 'Disconnected');
 			return;
 		}
+
+		client.write('custom_payload', {
+			channel: 'layer:player',
+			data: writePlayer(packet.name, packet.uuid)
+		});
 
 		MCHandler.createWorld(client, !requeue, 2, 0);
 		Object.values(handlers).forEach((handler) => handler.miniblox(gameType));
