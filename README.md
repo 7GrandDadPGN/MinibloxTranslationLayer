@@ -13,4 +13,53 @@ A middle man to translate Miniblox packets into Minecraft 1.8.9 packets.
 5. Connect to localhost on a supported Minecraft 1.8.x client.
 
 ## Commands
-/play <kitpvp, skywars, eggwars, etc.> (aliases include /queue)
+
+### /play, /queue, and /q
+
+Syntax: `/q [gamemode]` (`[gamemode]` can be autocompleted using the <kbd>TAB</kbd>)
+
+Joins a server matching the gamemode criteria.
+`skywars` is the default gamemode
+
+### /login
+
+Syntax: `/login <token>`
+
+Writes `token` to `login.token` so the translation layer can use it once you rejoin.
+Rejoin for the changes to take effect.
+
+### /join
+
+Syntax: `/join <server ID>`
+
+Joins a specific server.
+A server ID looks like this:
+`{server size, e.g. small, large, medium, or planet}-{ID 1}-{ID 2}`.
+
+### /resync
+
+Syntax: `/resync`
+
+Setbacks you to the last place you were teleported to.
+
+### /reloadchunks
+
+Syntax: `/reloadchunks`
+
+Reloads... the... chunks. (like <kbd>F3</kbd> + <kbd>A</kbd>)
+
+### /next
+
+Syntax: `/next`
+
+Sends you to the next game using `CPacketQueueNext`, note that sometimes the server just doesn't allow this command.
+
+## Custom payload channels
+
+<!-- here's a useful utility to update ts: https://www.tablesgenerator.com/markdown_tables -->
+
+| Channel Name            | Direction | Description                                              | Contents                                        |
+|-------------------------|-----------|----------------------------------------------------------|-------------------------------------------------|
+| miniblox:send_packet    | C->S      | Send a Miniblox packet                                   | packet name (string), data (JSON, string)       |
+| miniblox:receive_packet | S->C      | A packet was sent by the server that wasn't blacklisted  | packet name (string), data (JSON, msg.toJSON()) |
+| layer:player            | S->C      | Sent on connect, replaces the deprecated layer:name_c2s. | None                                            |
