@@ -65,7 +65,10 @@ const C_BLACKLIST = [
  * @type {EntityHandler}
  */
 let entity;
-let warned = false;
+const warnings = {
+	name: false,
+	sendPacket: false
+};
 
 class Interop extends Handler {
 	/**
@@ -78,14 +81,17 @@ class Interop extends Handler {
 			return;
 
 		const data = writeReceivePacket(pkt, msg);
-		if (data === undefined) { // the packet was so long that it exceeded the limit (32767)
+		// the packet was so long that it exceeded the limit (32767). I remember this limit occurring when it tried to send me some terrain
+		// terrain is blacklisted now though so it won't happen and even hopefully without this limit
+		if (data === undefined) {
 			return;
 		}
 
 		mcClient.write('custom_payload', {
-			channel: 'layer:receive_packet',
+			channel: 'miniblox:receive_packet',
 			data
 		});
+		// not re-sending ts for baby boomer clients that got ts before it was even upstream'd
 	}
 	miniblox() {
 		if (!SEND_RECV_PACKET_PAYLOAD) return;
@@ -99,6 +105,13 @@ class Interop extends Handler {
 			const channel = packet.channel;
 
 			switch (channel) {
+				// biome-ignore lint/suspicious/noFallthroughSwitchClause: intentional
+				case 'layer:send_packet':
+					if (!warnings.sendPacket) {
+						console.warn(`\x1b[33m[!]\x1b[0m layer:send_packet is deprecated, use miniblox:send_packet instead!
+Note that layer:receive_packet is gone without backwards compatibility.`);
+						warnings.sendPacket = true;
+					}
 				case 'miniblox:send_packet': {
 					const _ = readSendPacket(packet.data);
 					if (_ == undefined) return;
@@ -108,9 +121,9 @@ class Interop extends Handler {
 					break;
 				}
 				case 'layer:name_c2s': {
-					if (!warned) {
+					if (!warnings.name) {
 						console.warn('\x1b[33m[!]\x1b[0m layer:name_c2s is deprecated, use the info from layer:player instead.');
-						warned = true;
+						warnings.name = true;
 					}
 					const n = entity.name;
 					const data = Buffer.alloc(n.length * 2 + 1);

@@ -56,9 +56,9 @@ Sends you to the next game using `CPacketQueueNext`, note that sometimes the ser
 
 ## Custom payload channels
 
-| Channel Name (append "layer:" for full name) | Direction | Description                                             | Contents                                        |
-|----------------------------------------------|-----------|---------------------------------------------------------|-------------------------------------------------|
-| send_packet                                  | C->S      | Send a Miniblox packet                                  | packet name (string), data (JSON, string)       |
-| receive_packet                               | S->C      | A packet was sent by the server that wasn't blacklisted | packet name (string), data (JSON, msg.toJSON()) |
-| name_c2s                                     | C->S      | Requests your Miniblox name                             | None                                            |
-| name_s2c                                     | S->C      | Self-explanatory, see contents                          | Your Miniblox name (string)                     |
+| Channel Name            | Direction | Description                                              | Contents                                        |
+|-------------------------|-----------|----------------------------------------------------------|-------------------------------------------------|
+| miniblox:send_packet    | C->S      | Send a Miniblox packet                                   | packet name (string), data (JSON, string)       |
+| miniblox:receive_packet | S->C      | A packet was sent by the server that wasn't blacklisted  | packet name (string), data (JSON, msg.toJSON()) |
+| layer:player            | S->C      | Sent on connect, replaces the deprecated layer:name_c2s. | None                                            |
+| layer:name_c2s          | C->S      | **Deprecated, use layer:player instead.**                | None                                            |
