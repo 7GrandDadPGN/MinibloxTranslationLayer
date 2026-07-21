@@ -4,68 +4,9 @@
  */
 const { ClientSocket, SPACKET_MAP } = require('../../main.js');
 const Handler = require('../handler.js');
-
-/** @param {Buffer} buffer */
-function readVarInt(buffer, offset = 0) {
-	let value = 0;
-	let length = 0;
-	/**
-	 * @type {number | undefined}
-	 */
-	let currentByte;
-
-	while (true) {
-		currentByte = buffer.at(offset + length);
-		value |= (currentByte & 0x7F) << (length * 7);
-		length += 1;
-		if (length > 5) {
-			throw new Error('VarInt exceeds allowed bounds.');
-		}
-		if ((currentByte & 0x80) !== 0x80) break;
-	}
-	return { value, end: offset + length + 1 };
-}
-
-/**
- * @param {Buffer} buffer 
- * @param {number} value
- * @param {number} offset
- * @returns {number} The new offset after writing the VarInt
- */
-function writeVarInt(buffer, offset, value) {
-	while ((value & 0xFFFFFF80) !== 0) {
-		buffer.writeUInt8((value & 0x7F) | 0x80, offset++);
-		value >>>= 7;
-	}
-	buffer.writeUInt8(value, offset++);
-	return offset;
-}
-
-/** @param {Buffer} buffer */
-function readString(buffer, offset = 0) {
-	const { value: len, end: e } = readVarInt(buffer, offset);
-	const l = len - 1;
-	return { value: buffer.toString('utf8', e - 1, e + l), end: e + l };
-}
-
-/**
- * @param {Buffer} buffer 
- * @param {number} offset 
- * @param {string} string 
- * @returns 
- */
-function writeString(buffer, offset = 0, string) {
-	// Convert string to UTF-8 encoded bytes
-	const b = Buffer.from(string, 'utf8');
-
-	if (b.length > 32767) {
-		throw new Error(`String too big (was ${b.length} bytes encoded, max 32767)`);
-	}
-
-	offset = writeVarInt(buffer, offset, b.length);
-	b.copy(buffer, offset);
-	return offset + b.length;
-}
+const { writeString } = require('../../../base/packets/buf_utils.js');
+const readSendPacket = require('../../packets/c2s/sendPacket.js');
+const writeReceivePacket = require('../../packets/s2c/receivePacket.js');
 
 /** @type {import('minecraft-protocol').ServerClient} */
 let mcClient;
@@ -120,22 +61,11 @@ const C_BLACKLIST = [
 	'CPacketRespawn'
 ];
 
-/** @param {Buffer} buffer */
-function parseSendPacketBuf(buffer) {
-	try {
-		const { value: id, end: e } = readString(buffer);
-		const { value: json } = readString(buffer, e);
-		const data = JSON.parse(json);
-		return { id, data };
-	} catch (err) {
-		console.error('Error parsing packet buffer:', err);
-	}
-}
-
 /**
  * @type {EntityHandler}
  */
 let entity;
+let warned = false;
 
 class Interop extends Handler {
 	/**
@@ -147,17 +77,11 @@ class Interop extends Handler {
 		if (C_BLACKLIST.includes(pkt))
 			return;
 
-		const j = JSON.stringify(msg.toJSON());
-		const len = pkt.length + j.length;
-
-		if (len > 32767) {
-			console.info(`Not including packet ${pkt} since it is too long`);
+		const data = writeReceivePacket(pkt, msg);
+		if (data === undefined) { // the packet was so long that it exceeded the limit (32767)
 			return;
 		}
 
-		const data = Buffer.alloc(len);
-		const off = writeString(data, 0, pkt);
-		writeString(data, off, j);
 		mcClient.write('custom_payload', {
 			channel: 'layer:receive_packet',
 			data
@@ -175,8 +99,8 @@ class Interop extends Handler {
 			const channel = packet.channel;
 
 			switch (channel) {
-				case 'layer:send_packet': {
-					const _ = parseSendPacketBuf(packet.data);
+				case 'miniblox:send_packet': {
+					const _ = readSendPacket(packet.data);
 					if (_ == undefined) return;
 					const { id, data } = _;
 					const pkt = S_PACKET_N2C.get(id);
@@ -184,6 +108,10 @@ class Interop extends Handler {
 					break;
 				}
 				case 'layer:name_c2s': {
+					if (!warned) {
+						console.warn('\x1b[33m[!]\x1b[0m layer:name_c2s is deprecated, use the info from layer:player instead.');
+						warned = true;
+					}
 					const n = entity.name;
 					const data = Buffer.alloc(n.length * 2 + 1);
 					writeString(data, 0, n);
