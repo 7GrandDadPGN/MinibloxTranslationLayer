@@ -62,4 +62,4 @@ Sends you to the next game using `CPacketQueueNext`, note that sometimes the ser
 |----------------------|-----------|----------------------------------------------------------|-------------------------------------------------|
 | miniblox:send_packet | C->S      | Send a Miniblox packet                                   | packet name (string), data (JSON, string)       |
 | miniblox:receive_pkt | S->C      | A packet was sent by the server that wasn't blacklisted  | packet name (string), data (JSON, msg.toJSON()) |
-| layer:player         | S->C      | Sent on connect, replaces the deprecated layer:name_c2s. | None                                            |
+| layer:player         | S->C      | Sent on connect, replaces the deprecated layer:name_c2s. | player name (string), player UUID (string)      |
