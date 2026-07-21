@@ -148,7 +148,6 @@ const self = class EntityHandler extends Handler {
 			if (packet.socketId == ClientSocket.id) {
 				MCHandler.local.pos = {x: packet.pos.x, y: packet.pos.y, z: packet.pos.z};
 				MCHandler.local.index = packet.id;
-				if (this.name == '') this.local.name = packet.name;
 				MCHandler.local.spawn();
 
 				client.write('position', {
