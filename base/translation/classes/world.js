@@ -10,6 +10,7 @@ module.exports = class World {
 	chunks = {}
 	entities = {}
 	nextEntityId = 2
+	expireTime = 1000
 	constructor(dimensionId, difficulty) {
 		this.dimensionId = dimensionId;
 		this.difficulty = difficulty;
@@ -83,7 +84,7 @@ module.exports = class World {
 
 		for (; requests.length > 0 && this.chunkQueue.getSize() < 8; ) {
 			const chunk = requests.pop();
-			this.chunkQueue.queue(chunk[0], chunk[1], this.expireTime ?? 1000);
+			this.chunkQueue.queue(chunk[0], chunk[1], this.expireTime);
 
 			if (this.requestCallback != undefined) {
 				this.requestCallback(chunk);
