@@ -61,7 +61,7 @@ async function handleCommand(name, args) {
 			// (if you use the same variable name in a different case block then it doesn't purr)
 			let config;
 			try {
-				if (args[1]) JSON.parse(args[1]);
+				if (args[1]) config = JSON.parse(args[1]);
 			} catch (err) {
 				client.write('chat', {
 					message: JSON.stringify({
@@ -71,6 +71,7 @@ async function handleCommand(name, args) {
 					position: 1
 				});
 			}
+
 			connect(client, true, args[0], config);
 			break;
 		}
@@ -144,7 +145,7 @@ async function handleCommand(name, args) {
 const self = class ChatHandler extends Handler {
 	miniblox(_) {
 		ClientSocket.on('CPacketQueueNext', packet => {
-			connect(client, true, packet.minigameId, packet.minigameConfig);
+			connect(client, true, packet.minigameId, JSON.parse(packet.minigameConfig));
 		});
 		ClientSocket.on('CPacketMessage', packet => {
 			if (packet.text) {

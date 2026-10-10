@@ -21,11 +21,11 @@ function cleanup(teleport) {
 };
 
 /**
- * 
+ *
  * @param {string} gamemode
- * @param {string | undefined} server 
- * @param {object | undefined} config 
- * @returns 
+ * @param {string | undefined} server
+ * @param {object | undefined} config
+ * @returns
  */
 async function queue(gamemode, config, server) {
 	if (server) return {ok: true, json: () => ({serverId: server})};
@@ -42,7 +42,7 @@ async function queue(gamemode, config, server) {
 			body: JSON.stringify({
 				clientVersion: GAME_CONSTANTS.VERSION,
 				minigameId: gamemode ?? 'kitpvp',
-				minigameConfig: config ?? (gamemode == 'eggwars' ? { type: 'doubles' } : undefined)
+				minigameConfig: config ?? (gamemode == 'eggwars' ? { type: 'quads' } : undefined)
 			})
 		});
 	} catch (exception) {
@@ -56,13 +56,13 @@ function uuid() {
 };
 
 /**
- * 
+ *
  * @param {import('minecraft-protocol').ServerClient} client
  * @param {boolean} [requeue=false]
- * @param {string | undefined} gamemode 
- * @param {object | undefined} config 
- * @param {string | undefined} code 
- * @returns 
+ * @param {string | undefined} gamemode
+ * @param {object | undefined} config
+ * @param {string | undefined} code
+ * @returns
  */
 async function connect(client, requeue = false, gamemode, config, code) {
 	if (requeue) {

@@ -114,14 +114,19 @@ const self = class WorldHandler extends Handler {
 
 		client.on('block_place', packet => {
 			if (packet.direction == -1) {
-				ClientSocket.sendPacket(new SPacketUseItem);
+				ClientSocket.sendPacket(new SPacketUseItem({
+					initialPress: true,
+					button: 'right',
+					hand: 0
+				}));
 			} else {
 				ClientSocket.sendPacket(new SPacketPlaceBlock({
 					positionIn: new PBBlockPos(packet.location),
 					side: packet.direction,
 					hitX: packet.cursorX / 16,
 					hitY: packet.cursorY / 16,
-					hitZ: packet.cursorZ / 16
+					hitZ: packet.cursorZ / 16,
+					hand: 0
 				}));
 			}
 
@@ -148,7 +153,8 @@ const self = class WorldHandler extends Handler {
 			ClientSocket.sendPacket(new SPacketPlayerAction({
 				position: location,
 				facing: packet.face,
-				action: packet.status
+				action: packet.status,
+				slot: entity.equipSlot
 			}));
 		});
 	}

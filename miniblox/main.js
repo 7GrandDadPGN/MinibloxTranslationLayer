@@ -2,6 +2,7 @@ const io = require("socket.io-client");
 const brotli = require("brotli");
 const { Decoder, protocol } = require("socket.io-msgpack-parser");
 const { encode, decode } = require("@msgpack/msgpack");
+const { Inflate } = require("pako");
 const { Message, proto2, proto3 } = require("./types/proto.js");
 const { GAME_CONSTANTS, USER_AGENT } = require("./types/constants.js");
 
@@ -674,7 +675,7 @@ class CPacketRemoveEntityEffect extends Message {
 exports.CPacketRemoveEntityEffect = CPacketRemoveEntityEffect;
 class SPacketUpdateInventory extends Message {
 	constructor(SPacketUpdateInventory) {
-		super(), this.main = [], this.armor = [], proto2.util.initPartial(SPacketUpdateInventory, this);
+		super(), this.main = [], this.armor = [], this.offHand = [], this.extra = [], proto2.util.initPartial(SPacketUpdateInventory, this);
 	}
 	static {
 		this.runtime = proto2;
@@ -700,6 +701,18 @@ class SPacketUpdateInventory extends Message {
 			name: `idkWhatThisIs`,
 			kind: `message`,
 			T: PBItemStack
+		}, {
+			no: 4,
+			name: `offHand`,
+			kind: `message`,
+			T: PBItemStack,
+			repeated: !0
+		}, {
+			no: 5,
+			name: `extra`,
+			kind: `message`,
+			T: PBItemStack,
+			repeated: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -1217,6 +1230,12 @@ class SPacketPlaceBlock extends Message {
 			name: `hitZ`,
 			kind: `scalar`,
 			T: 2
+		}, {
+			no: 7,
+			name: `hand`,
+			kind: `scalar`,
+			T: 5,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -1255,6 +1274,12 @@ class SPacketUseItem extends Message {
 			name: `button`,
 			kind: `scalar`,
 			T: 9,
+			opt: !0
+		}, {
+			no: 3,
+			name: `hand`,
+			kind: `scalar`,
+			T: 5,
 			opt: !0
 		}]);
 	}
@@ -1385,6 +1410,12 @@ class SPacketPlayerAction extends Message {
 			name: `action`,
 			kind: `enum`,
 			T: proto2.getEnumType(BreakActionTypes)
+		}, {
+			no: 4,
+			name: `slot`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -1461,6 +1492,12 @@ class SPacketUseEntity extends Message {
 			name: `sequence`,
 			kind: `scalar`,
 			T: 13,
+			opt: !0
+		}, {
+			no: 7,
+			name: `hand`,
+			kind: `scalar`,
+			T: 5,
 			opt: !0
 		}]);
 	}
@@ -2514,6 +2551,84 @@ class CPacketServerInfo extends Message {
 			kind: `scalar`,
 			T: 8,
 			opt: !0
+		}, {
+			no: 27,
+			name: `survival_guide`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 28,
+			name: `keep_inventory`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 29,
+			name: `enable_hunger`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 30,
+			name: `do_mob_spawning`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 31,
+			name: `mob_griefing`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 32,
+			name: `tnt_explodes`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 33,
+			name: `show_death_messages`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 34,
+			name: `send_command_feedback`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 35,
+			name: `do_weather_cycle`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 36,
+			name: `random_tick_speed`,
+			kind: `scalar`,
+			T: 5,
+			opt: !0
+		}, {
+			no: 37,
+			name: `enable_player_collision`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 38,
+			name: `anyone_can_open`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 39,
+			name: `combat_logging`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -2973,6 +3088,12 @@ class CPacketOpenWindow extends Message {
 			kind: `scalar`,
 			T: 5,
 			opt: !0
+		}, {
+			no: 5,
+			name: `initial`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -3065,6 +3186,12 @@ class CPacketParticles extends Message {
 			kind: `scalar`,
 			T: 5,
 			repeated: !0
+		}, {
+			no: 12,
+			name: `particleName`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -4395,7 +4522,7 @@ class CPacketEntityAttach extends Message {
 			no: 3,
 			name: `vehicle`,
 			kind: `scalar`,
-			T: 17
+			T: 18
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -4680,7 +4807,7 @@ class PBAvailableMod extends Message {
 exports.PBAvailableMod = PBAvailableMod;
 class PBScriptEntry extends Message {
 	constructor(PBScriptEntry) {
-		super(), proto2.util.initPartial(PBScriptEntry, this);
+		super(), this.versions = [], proto2.util.initPartial(PBScriptEntry, this);
 	}
 	static {
 		this.runtime = proto2;
@@ -4717,6 +4844,24 @@ class PBScriptEntry extends Message {
 			kind: `scalar`,
 			T: 9,
 			opt: !0
+		}, {
+			no: 6,
+			name: `enabled`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 7,
+			name: `disabled_reason`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
+		}, {
+			no: 8,
+			name: `versions`,
+			kind: `message`,
+			T: PBScriptVersion,
+			repeated: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -4733,6 +4878,48 @@ class PBScriptEntry extends Message {
 	}
 };
 exports.PBScriptEntry = PBScriptEntry;
+class PBScriptVersion extends Message {
+	constructor(PBScriptVersion) {
+		super(), proto2.util.initPartial(PBScriptVersion, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `PBScriptVersion`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `id`,
+			kind: `scalar`,
+			T: 4
+		}, {
+			no: 2,
+			name: `by`,
+			kind: `scalar`,
+			T: 9
+		}, {
+			no: 3,
+			name: `size`,
+			kind: `scalar`,
+			T: 13
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new PBScriptVersion().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new PBScriptVersion().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new PBScriptVersion().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(PBScriptVersion, t, n);
+	}
+};
+exports.PBScriptVersion = PBScriptVersion;
 class CPacketScriptLog extends Message {
 	constructor(CPacketScriptLog) {
 		super(), this.entries = [], proto2.util.initPartial(CPacketScriptLog, this);
@@ -5162,7 +5349,7 @@ class CPacketCollectItem extends Message {
 exports.CPacketCollectItem = CPacketCollectItem;
 class CPacketModContent extends Message {
 	constructor(CPacketModContent) {
-		super(), this.items = [], this.sprites = [], this.armor = [], this.controls = [], this.blocks = [], this.projectiles = [], proto2.util.initPartial(CPacketModContent, this);
+		super(), this.items = [], this.sprites = [], this.armor = [], this.controls = [], this.blocks = [], this.projectiles = [], this.entities = [], this.sounds = [], this.particles = [], this.slots = [], proto2.util.initPartial(CPacketModContent, this);
 	}
 	static {
 		this.runtime = proto2;
@@ -5207,6 +5394,30 @@ class CPacketModContent extends Message {
 			kind: `message`,
 			T: PBModProjectileDef,
 			repeated: !0
+		}, {
+			no: 7,
+			name: `entities`,
+			kind: `message`,
+			T: PBModEntityDef,
+			repeated: !0
+		}, {
+			no: 8,
+			name: `sounds`,
+			kind: `message`,
+			T: PBModSound,
+			repeated: !0
+		}, {
+			no: 9,
+			name: `particles`,
+			kind: `message`,
+			T: PBModParticleDef,
+			repeated: !0
+		}, {
+			no: 10,
+			name: `slots`,
+			kind: `message`,
+			T: PBModSlotDef,
+			repeated: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -5223,6 +5434,107 @@ class CPacketModContent extends Message {
 	}
 };
 exports.CPacketModContent = CPacketModContent;
+class PBModSlotDef extends Message {
+	constructor(PBModSlotDef) {
+		super(), proto2.util.initPartial(PBModSlotDef, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `PBModSlotDef`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `index`,
+			kind: `scalar`,
+			T: 13
+		}, {
+			no: 2,
+			name: `def_json`,
+			kind: `scalar`,
+			T: 9
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new PBModSlotDef().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new PBModSlotDef().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new PBModSlotDef().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(PBModSlotDef, t, n);
+	}
+};
+exports.PBModSlotDef = PBModSlotDef;
+class PBModParticleDef extends Message {
+	constructor(PBModParticleDef) {
+		super(), proto2.util.initPartial(PBModParticleDef, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `PBModParticleDef`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `def_json`,
+			kind: `scalar`,
+			T: 9
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new PBModParticleDef().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new PBModParticleDef().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new PBModParticleDef().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(PBModParticleDef, t, n);
+	}
+};
+exports.PBModParticleDef = PBModParticleDef;
+class PBModEntityDef extends Message {
+	constructor(PBModEntityDef) {
+		super(), proto2.util.initPartial(PBModEntityDef, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `PBModEntityDef`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `def_json`,
+			kind: `scalar`,
+			T: 9
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new PBModEntityDef().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new PBModEntityDef().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new PBModEntityDef().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(PBModEntityDef, t, n);
+	}
+};
+exports.PBModEntityDef = PBModEntityDef;
 class PBModProjectileDef extends Message {
 	constructor(PBModProjectileDef) {
 		super(), proto2.util.initPartial(PBModProjectileDef, this);
@@ -5281,6 +5593,12 @@ class PBModBlockDef extends Message {
 			name: `def_json`,
 			kind: `scalar`,
 			T: 9
+		}, {
+			no: 4,
+			name: `item_id`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -5404,6 +5722,12 @@ class PBModSprite extends Message {
 			name: `url`,
 			kind: `scalar`,
 			T: 9
+		}, {
+			no: 3,
+			name: `size`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -5420,6 +5744,43 @@ class PBModSprite extends Message {
 	}
 };
 exports.PBModSprite = PBModSprite;
+class PBModSound extends Message {
+	constructor(PBModSound) {
+		super(), proto2.util.initPartial(PBModSound, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `PBModSound`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `key`,
+			kind: `scalar`,
+			T: 9
+		}, {
+			no: 2,
+			name: `url`,
+			kind: `scalar`,
+			T: 9
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new PBModSound().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new PBModSound().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new PBModSound().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(PBModSound, t, n);
+	}
+};
+exports.PBModSound = PBModSound;
 class PBModArmor extends Message {
 	constructor(PBModArmor) {
 		super(), proto2.util.initPartial(PBModArmor, this);
@@ -5608,6 +5969,284 @@ class CPacketApplyRecoil extends Message {
 	}
 };
 exports.CPacketApplyRecoil = CPacketApplyRecoil;
+class CPacketScreenFlash extends Message {
+	constructor(CPacketScreenFlash) {
+		super(), proto2.util.initPartial(CPacketScreenFlash, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketScreenFlash`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `color`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
+		}, {
+			no: 2,
+			name: `duration_ticks`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
+		}, {
+			no: 3,
+			name: `max_alpha`,
+			kind: `scalar`,
+			T: 2,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketScreenFlash().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketScreenFlash().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketScreenFlash().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketScreenFlash, t, n);
+	}
+};
+exports.CPacketScreenFlash = CPacketScreenFlash;
+class CPacketWeather extends Message {
+	constructor(CPacketWeather) {
+		super(), proto2.util.initPartial(CPacketWeather, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketWeather`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `raining`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 2,
+			name: `thundering`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 3,
+			name: `rain_strength`,
+			kind: `scalar`,
+			T: 2,
+			opt: !0
+		}, {
+			no: 4,
+			name: `thunder_strength`,
+			kind: `scalar`,
+			T: 2,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketWeather().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketWeather().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketWeather().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketWeather, t, n);
+	}
+};
+exports.CPacketWeather = CPacketWeather;
+class CPacketLightningBolt extends Message {
+	constructor(CPacketLightningBolt) {
+		super(), proto2.util.initPartial(CPacketLightningBolt, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketLightningBolt`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `pos`,
+			kind: `message`,
+			T: PBVector3,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketLightningBolt().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketLightningBolt().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketLightningBolt().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketLightningBolt, t, n);
+	}
+};
+exports.CPacketLightningBolt = CPacketLightningBolt;
+class CPacketMachineGui extends Message {
+	constructor(CPacketMachineGui) {
+		super(), proto2.util.initPartial(CPacketMachineGui, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketMachineGui`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `window_id`,
+			kind: `scalar`,
+			T: 13
+		}, {
+			no: 2,
+			name: `progress`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
+		}, {
+			no: 3,
+			name: `fuel`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
+		}, {
+			no: 4,
+			name: `status`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketMachineGui().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketMachineGui().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketMachineGui().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketMachineGui, t, n);
+	}
+};
+exports.CPacketMachineGui = CPacketMachineGui;
+class CPacketReplayState extends Message {
+	constructor(CPacketReplayState) {
+		super(), proto2.util.initPartial(CPacketReplayState, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketReplayState`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `playhead_ms`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
+		}, {
+			no: 2,
+			name: `duration_ms`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
+		}, {
+			no: 3,
+			name: `playing`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 4,
+			name: `speed`,
+			kind: `scalar`,
+			T: 2,
+			opt: !0
+		}, {
+			no: 5,
+			name: `seeking`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketReplayState().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketReplayState().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketReplayState().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketReplayState, t, n);
+	}
+};
+exports.CPacketReplayState = CPacketReplayState;
+class CPacketScriptVersion extends Message {
+	constructor(CPacketScriptVersion) {
+		super(), proto2.util.initPartial(CPacketScriptVersion, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `CPacketScriptVersion`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `name`,
+			kind: `scalar`,
+			T: 9
+		}, {
+			no: 2,
+			name: `version_id`,
+			kind: `scalar`,
+			T: 4
+		}, {
+			no: 3,
+			name: `source`,
+			kind: `scalar`,
+			T: 9
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new CPacketScriptVersion().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new CPacketScriptVersion().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new CPacketScriptVersion().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(CPacketScriptVersion, t, n);
+	}
+};
+exports.CPacketScriptVersion = CPacketScriptVersion;
 class ClientBoundCombined extends Message {
 	constructor(ClientBoundCombined) {
 		super(), this.packets = [], proto2.util.initPartial(ClientBoundCombined, this);
@@ -6104,6 +6743,42 @@ class ClientBoundCombined_CPacket extends Message {
 			kind: `message`,
 			T: CPacketApplyRecoil,
 			oneof: `packet`
+		}, {
+			no: 76,
+			name: `CPacketScreenFlash`,
+			kind: `message`,
+			T: CPacketScreenFlash,
+			oneof: `packet`
+		}, {
+			no: 77,
+			name: `CPacketWeather`,
+			kind: `message`,
+			T: CPacketWeather,
+			oneof: `packet`
+		}, {
+			no: 78,
+			name: `CPacketLightningBolt`,
+			kind: `message`,
+			T: CPacketLightningBolt,
+			oneof: `packet`
+		}, {
+			no: 79,
+			name: `CPacketMachineGui`,
+			kind: `message`,
+			T: CPacketMachineGui,
+			oneof: `packet`
+		}, {
+			no: 80,
+			name: `CPacketReplayState`,
+			kind: `message`,
+			T: CPacketReplayState,
+			oneof: `packet`
+		}, {
+			no: 81,
+			name: `CPacketScriptVersion`,
+			kind: `message`,
+			T: CPacketScriptVersion,
+			oneof: `packet`
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -6387,6 +7062,30 @@ class SPacketAdminAction extends Message {
 			kind: `message`,
 			T: UpdateWorldConfig,
 			oneof: `action`
+		}, {
+			no: 14,
+			name: `restore_backup`,
+			kind: `message`,
+			T: RestoreBackup,
+			oneof: `action`
+		}, {
+			no: 15,
+			name: `set_game_rule`,
+			kind: `message`,
+			T: SetGameRule,
+			oneof: `action`
+		}, {
+			no: 16,
+			name: `set_weather`,
+			kind: `message`,
+			T: SetWeather,
+			oneof: `action`
+		}, {
+			no: 17,
+			name: `set_time`,
+			kind: `message`,
+			T: SetTime,
+			oneof: `action`
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -6553,6 +7252,38 @@ class RestartServer extends Message {
 	}
 };
 exports.RestartServer = RestartServer;
+class RestoreBackup extends Message {
+	constructor(RestoreBackup) {
+		super(), proto2.util.initPartial(RestoreBackup, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `RestoreBackup`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `backup_id`,
+			kind: `scalar`,
+			T: 5
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new RestoreBackup().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new RestoreBackup().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new RestoreBackup().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(RestoreBackup, t, n);
+	}
+};
+exports.RestoreBackup = RestoreBackup;
 class PromotePlayer extends Message {
 	constructor(PromotePlayer) {
 		super(), proto2.util.initPartial(PromotePlayer, this);
@@ -6836,6 +7567,24 @@ class UpdateWorldConfig extends Message {
 			kind: `scalar`,
 			T: 8,
 			opt: !0
+		}, {
+			no: 9,
+			name: `survival_guide`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 10,
+			name: `anyone_can_open`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 11,
+			name: `combat_logging`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -6852,6 +7601,120 @@ class UpdateWorldConfig extends Message {
 	}
 };
 exports.UpdateWorldConfig = UpdateWorldConfig;
+class SetGameRule extends Message {
+	constructor(SetGameRule) {
+		super(), proto2.util.initPartial(SetGameRule, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `SetGameRule`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `rule`,
+			kind: `scalar`,
+			T: 9
+		}, {
+			no: 2,
+			name: `bool_value`,
+			kind: `scalar`,
+			T: 8,
+			opt: !0
+		}, {
+			no: 3,
+			name: `int_value`,
+			kind: `scalar`,
+			T: 5,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new SetGameRule().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new SetGameRule().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new SetGameRule().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(SetGameRule, t, n);
+	}
+};
+exports.SetGameRule = SetGameRule;
+class SetWeather extends Message {
+	constructor(SetWeather) {
+		super(), proto2.util.initPartial(SetWeather, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `SetWeather`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `type`,
+			kind: `scalar`,
+			T: 9
+		}, {
+			no: 2,
+			name: `duration_seconds`,
+			kind: `scalar`,
+			T: 13,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new SetWeather().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new SetWeather().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new SetWeather().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(SetWeather, t, n);
+	}
+};
+exports.SetWeather = SetWeather;
+class SetTime extends Message {
+	constructor(SetTime) {
+		super(), proto2.util.initPartial(SetTime, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `SetTime`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `tick`,
+			kind: `scalar`,
+			T: 13
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new SetTime().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new SetTime().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new SetTime().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(SetTime, t, n);
+	}
+};
+exports.SetTime = SetTime;
 class SPacketAnalytics extends Message {
 	constructor(SPacketAnalytics) {
 		super(), proto2.util.initPartial(SPacketAnalytics, this);
@@ -7458,6 +8321,44 @@ class SPacketEditBook extends Message {
 	}
 };
 exports.SPacketEditBook = SPacketEditBook;
+class SPacketTextPrompt extends Message {
+	constructor(SPacketTextPrompt) {
+		super(), proto2.util.initPartial(SPacketTextPrompt, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `SPacketTextPrompt`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `promptId`,
+			kind: `scalar`,
+			T: 5
+		}, {
+			no: 2,
+			name: `text`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new SPacketTextPrompt().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new SPacketTextPrompt().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new SPacketTextPrompt().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(SPacketTextPrompt, t, n);
+	}
+};
+exports.SPacketTextPrompt = SPacketTextPrompt;
 class SPacketOpenShop extends Message {
 	constructor(SPacketOpenShop) {
 		super(), proto2.util.initPartial(SPacketOpenShop, this);
@@ -7621,6 +8522,12 @@ class SPacketScriptAction extends Message {
 			kind: `message`,
 			T: ScriptReload,
 			oneof: `action`
+		}, {
+			no: 10,
+			name: `get_version`,
+			kind: `message`,
+			T: ScriptGetVersion,
+			oneof: `action`
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -7637,6 +8544,43 @@ class SPacketScriptAction extends Message {
 	}
 };
 exports.SPacketScriptAction = SPacketScriptAction;
+class ScriptGetVersion extends Message {
+	constructor(ScriptGetVersion) {
+		super(), proto2.util.initPartial(ScriptGetVersion, this);
+	}
+	static {
+		this.runtime = proto2;
+	}
+	static {
+		this.typeName = `ScriptGetVersion`;
+	}
+	static {
+		this.fields = proto2.util.newFieldList(() => [{
+			no: 1,
+			name: `name`,
+			kind: `scalar`,
+			T: 9
+		}, {
+			no: 2,
+			name: `version_id`,
+			kind: `scalar`,
+			T: 4
+		}]);
+	}
+	static fromBinary(t, n) {
+		return new ScriptGetVersion().fromBinary(t, n);
+	}
+	static fromJson(t, n) {
+		return new ScriptGetVersion().fromJson(t, n);
+	}
+	static fromJsonString(t, n) {
+		return new ScriptGetVersion().fromJsonString(t, n);
+	}
+	static equals(t, n) {
+		return proto2.util.equals(ScriptGetVersion, t, n);
+	}
+};
+exports.ScriptGetVersion = ScriptGetVersion;
 class ScriptForkMod extends Message {
 	constructor(ScriptForkMod) {
 		super(), proto2.util.initPartial(ScriptForkMod, this);
@@ -7808,6 +8752,12 @@ class ScriptSetEnabled extends Message {
 			name: `enabled`,
 			kind: `scalar`,
 			T: 8
+		}, {
+			no: 2,
+			name: `name`,
+			kind: `scalar`,
+			T: 9,
+			opt: !0
 		}]);
 	}
 	static fromBinary(t, n) {
@@ -8177,7 +9127,13 @@ const CPACKET_MAP = {
 	CPacketModContent,
 	CPacketDamageIndicator,
 	CPacketEmote,
-	CPacketApplyRecoil
+	CPacketApplyRecoil,
+	CPacketScreenFlash,
+	CPacketWeather,
+	CPacketLightningBolt,
+	CPacketMachineGui,
+	CPacketReplayState,
+	CPacketScriptVersion
 }
 	, SPACKET_MAP = {
 		SPacketAdminAction,
@@ -8215,7 +9171,8 @@ const CPACKET_MAP = {
 		SPacketUploadSchematic,
 		SPacketGuideAction,
 		SPacketSelectTrade,
-		SPacketEditBook
+		SPacketEditBook,
+		SPacketTextPrompt
 	}, EXTRA_MAP = {
 		CPacketScriptData,
 		CPacketScriptLog,
@@ -8240,7 +9197,14 @@ const CPACKET_MAP = {
 		CPacketDamageIndicator,
 		SPacketEditBook,
 		CPacketEmote,
-		CPacketApplyRecoil
+		CPacketApplyRecoil,
+		CPacketScreenFlash,
+		CPacketWeather,
+		CPacketLightningBolt,
+		SPacketTextPrompt,
+		CPacketMachineGui,
+		CPacketReplayState,
+		CPacketScriptVersion
 	}
 	, NAME_TO_ID = {}
 	, ID_TO_PACKET = {}
@@ -8347,55 +9311,129 @@ const PacketData = {
 	idToName: ID_TO_NAME
 };
 
-function tB(e) {
-	let t = 1779033703 ^ e.length;
-	for (let n = 0; n < e.length; n++)
-		t = Math.imul(t ^ e.charCodeAt(n), 3432918353),
-			t = t << 13 | t >>> 19;
-	return () => (t = Math.imul(t ^ t >>> 16, 2246822507),
-		t = Math.imul(t ^ t >>> 13, 3266489909),
-		t ^= t >>> 16,
-		t >>> 0)
+const FrameDecodeData = {
+	prime: false,
+	prev: null
 };
 
-function nB(e) {
-	return () => {
-		e |= 0,
-			e = e + 1831565813 | 0;
-		let t = Math.imul(e ^ e >>> 15, 1 | e);
-		return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t,
-			((t ^ t >>> 14) >>> 0) / 4294967296
-	}
+function attemptInflate(e, t=frameBuffer) {
+    let n = new Inflate({
+        raw: !0,
+        dictionary: t
+    });
+    if (n.push(e, !0),
+    n.err)
+        throw Error(`inflateRaw+dict failed: ${n.msg || n.err}`);
+    return n.result
+}
+
+function Zze(e) {
+    let t = 1779033703 ^ e.length;
+    for (let n = 0; n < e.length; n++)
+        t = Math.imul(t ^ e.charCodeAt(n), 3432918353),
+        t = t << 13 | t >>> 19;
+    return () => (t = Math.imul(t ^ t >>> 16, 2246822507),
+    t = Math.imul(t ^ t >>> 13, 3266489909),
+    t ^= t >>> 16,
+    t >>> 0)
 };
 
-function rB(e, t, n, r) {
-	for (let i = n - 1; i > t; i--) {
-		let n = t + Math.floor(r() * (i - t + 1))
-			, a = e[i];
-		e[i] = e[n],
-			e[n] = a
-	}
+function Qze(e) {
+    return () => {
+        e |= 0,
+        e = e + 1831565813 | 0;
+        let t = Math.imul(e ^ e >>> 15, 1 | e);
+        return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t,
+        ((t ^ t >>> 14) >>> 0) / 4294967296
+    }
+};
+
+function $ze(e, t, n, r) {
+    for (let i = n - 1; i > t; i--) {
+        let n = t + Math.floor(r() * (i - t + 1))
+          , a = e[i];
+        e[i] = e[n],
+        e[n] = a
+    }
+};
+
+function eBe(e) {
+    let t = 1779033703
+      , n = 3144134277
+      , r = 1013904242
+      , i = 2773480762;
+    for (let a = 0; a < e.length; a++) {
+        let o = e.charCodeAt(a);
+        t = n ^ Math.imul(t ^ o, 597399067),
+        n = r ^ Math.imul(n ^ o, 2869860233),
+        r = i ^ Math.imul(r ^ o, 951274213),
+        i = t ^ Math.imul(i ^ o, 2716044179)
+    }
+    return t = Math.imul(r ^ t >>> 18, 597399067),
+    n = Math.imul(i ^ n >>> 22, 2869860233),
+    r = Math.imul(t ^ r >>> 17, 951274213),
+    i = Math.imul(n ^ i >>> 19, 2716044179),
+    [(t ^ n ^ r ^ i) >>> 0, (n ^ t) >>> 0, (r ^ t) >>> 0, (i ^ t) >>> 0]
+};
+
+function tBe(e, t, n, r) {
+    return () => {
+        e |= 0,
+        t |= 0,
+        n |= 0,
+        r |= 0;
+        let i = (e + t | 0) + r | 0;
+        return r = r + 1 | 0,
+        e = t ^ t >>> 9,
+        t = n + (n << 3) | 0,
+        n = n << 21 | n >>> 11,
+        n = n + i | 0,
+        (i >>> 0) / 4294967296
+    }
+};
+
+function nBe(e, t, n, r) {
+    let i = []
+      , a = new Map;
+    for (let e = t; e < n; e++)
+        i.push(e),
+        a.set(e, r());
+    i.sort( (e, t) => {
+        let n = a.get(e)
+          , r = a.get(t);
+        return n === r ? e - t : n - r
+    }
+    );
+    for (let n = 0; n < i.length; n++)
+        e[t + n] = i[n]
 };
 
 function obfuscatePacketRoutine(e, t, n = 101, r = 64) {
 	let i = Array.from({
 		length: n
-	}, (e, t) => t);
-	if (t !== 0) {
-		let a = nB(tB(`mb-perm|v${t}|lo|${e}`)())
-			, o = nB(tB(`mb-perm|v${t}|hi|${e}`)());
-		rB(i, 0, Math.min(r, n), a),
-			n > r && rB(i, r, n, o)
-	}
-	let a = Array(n);
+	}, (e, t) => t)
+	  , a = Math.min(r, n);
+	if (t !== 0)
+		if (t === 1) {
+			let t = Qze(Zze(`mb-perm|v1|lo|${e}`)())
+			  , o = Qze(Zze(`mb-perm|v1|hi|${e}`)());
+			$ze(i, 0, a, t),
+			n > r && $ze(i, r, n, o)
+		} else {
+			let[o,s,c,l] = eBe(`mb-perm|v${t}|lo|${e}`)
+			  , [u,d,f,p] = eBe(`mb-perm|v${t}|hi|${e}`);
+			nBe(i, 0, a, tBe(o, s, c, l)),
+			n > r && nBe(i, r, n, tBe(u, d, f, p))
+		}
+	let o = Array(n);
 	for (let e = 0; e < n; e++)
-		a[i[e]] = e;
+		o[i[e]] = e;
 	return {
 		perm: i,
-		invPerm: a,
+		invPerm: o,
 		version: t
 	}
-};
+}
 
 function setPacketData(e, t) {
 	if (!e || !t || t === 0)
@@ -8422,6 +9460,14 @@ function setPacketData(e, t) {
 	return PacketData;
 }
 
+function createCombinedArray(e) {
+    let t = e.byteLength > 16384 ? e.subarray(e.byteLength - 16384) : e
+      , n = new Uint8Array(frameBuffer.byteLength + t.byteLength);
+    return n.set(frameBuffer, 0),
+    n.set(t, frameBuffer.byteLength),
+    n
+};
+
 class ClientEncoder {
 	constructor() {
 		ut(this, "encode", _ => (_.t = _.type,
@@ -8440,29 +9486,74 @@ class ClientDecoder extends Decoder {
 		super(...arguments);
 		ut(this, "add", async $ => {
 			try {
-				const tt = new Uint8Array($)[0]
-					, rt = tt & 1;
+				const packetData = new Uint8Array($)[0], gamePacket = packetData & 1;
+				let isCombined = false;
+
 				let nt = new Uint8Array($, 1, $.byteLength - 1);
 				nt = nt.slice(1);
-				if (rt) {
-					const it = tt >> 2, at = tt & 2, st = PacketData.idToPacket[it];
-					at && (nt = brotli.decompress(nt));
-					const ot = st.fromBinary(nt);
-					st.typeName === "ClientBoundCombined" ? ot.packets.forEach(ct => {
+				if (gamePacket) {
+					const it = packetData >> 2, compressFlag = packetData & 2, packet = PacketData.idToPacket[it];
+
+					if (compressFlag) {
+						if (isCombined = packet.typeName === "ClientBoundCombined" && frameBuffer.byteLength > 0, isCombined && FrameDecodeData.prime) {
+							let e = nt[0]
+							, t = nt.subarray(1);
+							if (e === 1) {
+								if (FrameDecodeData.prev == null)
+									throw Error(`primed combined frame arrived with no prev-frame state`);
+								nt = attemptInflate(t, createCombinedArray(FrameDecodeData.prev));
+							} else {
+								nt = attemptInflate(t);
+							}
+						} else if (isCombined && FrameDecodeData.prime) {
+							nt = attemptInflate(nt);
+							return;
+						} else {
+							nt = brotli.decompress(nt);
+						}
+					}
+
+					if (FrameDecodeData.prime && packet.typeName == "ClientBoundCombined") {
+						FrameDecodeData.prev = nt;
+					}
+
+					const packetBinary = packet.fromBinary(nt);
+					if (packet.typeName === "ClientBoundCombined") {
+						packetBinary.packets.forEach(ct => {
+							if (ct.packet.case == "CPacketServerInfo") {
+								if (FrameDecodeData.prime != true) {
+									FrameDecodeData.prime = true;
+									FrameDecodeData.prev = null;
+								}
+							}
+
+							this.emit("decoded", {
+								type: 2,
+								nsp: "/",
+								data: [ct.packet.case, ct.packet.value]
+							})
+						});
+					} else {
+						if (packet.typeName == "CPacketJoinGame") {
+							FrameDecodeData.prime = true;
+							FrameDecodeData.prev = null;
+						} else if (packet.typeName == "CPacketServerInfo") {
+							if (FrameDecodeData.prime != true) {
+								FrameDecodeData.prime = true;
+								FrameDecodeData.prev = null;
+							}
+						}
+
 						this.emit("decoded", {
 							type: 2,
 							nsp: "/",
-							data: [ct.packet.case, ct.packet.value]
-						})
-					}) : this.emit("decoded", {
-						type: 2,
-						nsp: "/",
-						data: [st.typeName, ot]
-					})
+							data: [packet.typeName, packetBinary]
+						});
+					}
 				} else {
-					const it = tt >> 5 & 7;
+					const eventType = packetData >> 5 & 7;
 					this.emit("decoded", {
-						type: it,
+						type: eventType,
 						nsp: "/",
 						data: decode(nt)
 					})
@@ -8487,11 +9578,36 @@ function generateAuthSeed() {
 	return Array.from(arr, entry => entry.toString(16).padStart(2, '0')).join('');
 }
 
+const frameB64 = `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IlVuYnJlYWthYmxlIjp0cnVlfSgAChBqDgiDAhIJCAYQAyVSuP4/ChxyGgjrDBIJCN4MEIAeGIwSJQAAbEItAAAgwTABChSCAREIkA0SBggAEAAYACASKA0wAAoVggESCOELEgYIDxAAGBIgxwEoFzABCg1qCwicDRIGCAAQAhgQChCCAQ0IxQ0SBggIEAAYBjABCheSARQIyA0SDw21qJq/FTSFBz8dhggxPwoL+gIICIMCFVK4/j8KC/oCCAibCS0AAIpDCgdSBQicDRgBCheSARQIlRgSDw0lY2o9FRps6j0dxHKkvAoMggEJCO4OIAYoNTABChSCAREIuhMSBggAEAAYACB1KA4wAAoVggESCOgJEgYICBAAGBMg9gsoADABChCCAQ0IswcSBggAEA0YADAACgv6AggIswctAACVQwoHUgUImwkgAAoHUgUIuhEgAQoKGggIABA6GBQgagojwgIgCglkaWcuc3RvbmUSCQjYAxCoARjYBh0AAIA/JQAAgD8KF4IBFAiL/scxEgYINRAAGA0giAEoCDAACg+CAQwIkt7XMSCrASgYMAAKCVIHCIv+xzEgAQoXggEUCJrG1zESBggCEAAYGCCeXygAMAEKEIIBDQibCRIGCAQQABgIMAEKDWoLCJsJEgYIABACGBAKDYIBCgjoCSCODigJMAEKEIIBDQjPAxIGCAEQABgHMAEKFIIBEQjbDBIGCAAQABgAIAooCzAAChWCARII6AISBggZEAAYByDgDChFMAEKEIIBDQjrDBIGCAIQABgKMAEKC/oCCAizBy0AAEFDCgdSBQibCRgBCgv6AggI6wwtAAAIQwokwgIhCgpyYW5kb20ucG9wEgkIgwQQ1gcYkAMdzcxMPiVOHTZACgmyBAYI3Q0Q9gkKBUIDCN0NChCCAQ0InA0SBggKEAAYGDABChSCAREItg0SBggAEAAYACAPKDowAAoVggESCMUNEgYICRAEGCog2gMoIzAACgdSBQibCSAACgvKAwgIrKwBEKysAQoUggERCD4SBggAEAAYCCD5ASgHMAEKDGoKCD4SBggAEAIYEAoGUgQIPhgBCguCAQgIRSBMKBUwAAoVggESCPgNEgYIABAAGAsgqgEoAjABCiHKAh4I4tHVCRASGgsI378OEMAjGN+XCiVnvqVALQAAAAAKa2ppCOLR1QkSBggAEAIYABIHCAEQAhjYBBIGCAIQBCoAEgYIAxACGAASBggEEAIYABIJCAYQAyUAAKBBEgYIBxACGAASBggIEAIYABIGCAkQAhgAEgYIDxACGAASBggNEAIYABIGCAwQAhgACiF6Hwg9JQAAgD8KCVIHCMf3wzEgAQoJUgcIi/7HMRAAChiCARUIi/7HMRIHCK4BEAAYeiC5ASgtMAAKD4IBDAiS3tcxIPoBKAkwAQoSggEPCNiJ2DESBggQEAAYGTABCgvKAwgImNcFEJjXBQoPggEMCB4SBggIEAAYNDAACgxqCgg+EgYIABACGAAKBlIECD4YAAoOggELCIv+xzEgXihBMAAKFYIBEgjKEBIGCAAQABgVIPwBKAEwAQoMggEJCLMHIAwoCTABCg1qCwizBxIGCAAQAhgQChCCAQ0I6AkSBggJEAAYFzABChCCAQ0InRESBggKEAAYAzABCgdSBQizBxgBCgdSBQibCSABCipiKAjFDRIjCAESHwgBEKoFGAEiFHsiVW5icmVha2FibGUiOnRydWV9KAAKFYIBEgj2CRIGCAYQABgLII4aKAcwAQoVggESCOgJEgYIGRAAGAEg7iQoMzABChWCARII7A4SBggAEAAYACDhASgZMAAKDIIBCQjuDiAGKAMwAQoQag4I7g4SCQgGEAMlj8JxQQoVggESCJwNEgYIABAAGAog5gMoKDABCg2CAQoIxQ0gxCAoETABCg1qCwjFDRIGCAAQAhggCgdSBQjFDRgACgv6AggI7g4Vj8JxQQoLygMICPDEARDwxAEKB/oDBAgLEFoKB/oDBAgLEFoKB/oDBAgLEFoKB/oDBAgLEFoKB/oDBAgLEFoKB/oDBAgLEFoKEYIBDgi+43oSBggOEAAYADABCgvKAwgIvJUDELyVAwoXggEUCIu55DESBggGEAAYESCUASgRMAAKJMICIQoKc3RlcC5ncmFzcxIJCN4CEKABGI4HHT0K1z0lAACAPwolwgIiCgtyYW5kb20uZml6ehIJCJwDEJgBGJYGHTMzMz8lE5vRPwoTUhEIx/fDMaAB////////////AQoRggEOCJODeRIGCA0QGhgJMAAKCFIGCM/8dCAACghSBgi8lH4gAQoIUgYI2pR+IAAKEYIBDgiHpnUSBggJEAAYEDABCg2CAQoIgIl6IAEobzABChGCAQ4IvuN6EgYICBAAGBYwAQo4ygI1CN0lEAEaCAjfLxDgJxggJQAAAAAtAAAAADIPDXAjE70VzcxMPh2a9J+7OgkIARC0BRgBKAAKP2o9CN0lEgYIABACGAASBwgBEAIY2AQSBggCEAQqABIGCAMQAhgAEgYIBBACGAASDwgKEAU6CQgBELQFGAEoAAoXkgEUCN0lEg8NcCMTvRXNzEw+HZr0n7sKCLIEBQjdJRA4ChKqAg8IABAEGgkIARC0BRgmKAAKI8ICIAoKcmFuZG9tLnBvcBIICPULEPgJGAIdzcxMPiXyiQFAa2FibGUiOnRydWV9KAASIwgFEh8IARDsBRgBIhR7IlVuYnJlYWthYmxlIjp0cnVlfSgAEiMIBhIfCAEQ7QUYASIUeyJVbmJyZWFrYWJsZSI6dHJ1ZX0oAAoFQgMI0Q0KEIIBDQibCRIGCAEQABgSMAEKEIIBDQizBxIGCAEQFRgFMAAKFYIBEgjPAxIGCA4QABgDIJclKAMwAQoQggENCOgJEgYIBBAAGAcwAQoQggENCPYJEgYIDRAAGAMwAQoHUgUIgwIgAAoHUgUIswcgAAokwgIhCgtzdGVwLmdyYXZlbBIICA8QwAcYigMdmpkZPiUAAIA/CiPCAiAKCnN0ZXAuZ3Jhc3MSCAgLEMAHGMgCHT0K1z0lAACAPwoQggENCM8DEgYIAxAAGAowAQoNggEKCPYJIPodKCwwAQoHQgUI+cjXMQoZkgEWCPjI1zESDw31MEM9FS6QID4dRMaovQoSggEPCPjI1zESBggEEAoYBTAAChhqFgj4yNcxEg8IChAFOgkIARDZBhgCKAAKGZIBFgj4yNcxEg8N9TBDPRUukCA+HUTGqL0KHHIaCJsJEgkIsAkQgB8Y3QUlAABQwi0AAKDAMAEKEIIBDQj1EBIGCAsQABgAMAEKEIIBDQj2CRIGCBkQABgEMAEKEIIBDQicDRIGCAkQABgFMAEKFIIBEQiVExIGCAAQABgAIEMoGzAACglSBwjH98MxIAEKEIIBDQizBxIGCAAQABgZMAEKFYIBEgibCRIGCBUQMxgeIKYBKGkwAAoQggENCPUQEgYIBhAAGAowAQoVggESCM4SEgYIABAAGAAg6AEoCzAAChSCAREI7RISBggAEAAYACBfKBkwAAoQggENCJwNEgYICRAAGAUwAQoUggERCJ4TEgYIARABGAYgLSgdMAAKCbIEBgihExDFDQoNggEKCMUNIIIcKCAwAQoQggENCOgJEgYIGhAAGAwwAQpk2gJhCO4OEg9TcGVlZHlXb2xmLmxHZGYaCWFkdmVudHVyZSoPDUgStkEVsMaAQh2pPl7BNarxkr895/upPkINCgNib2ISBG5vbmUyAEoAUhRsWTVkVERGSFhGOHVRMS0tQUFBbgp0anII7g4SBggAEAIYABIHCAEQAhjYBBIGCA==`
+  , frameKey = `d90f920f3a399b27`;
+function decodeFrameBuffer(e) {
+	try {
+		if (typeof atob == `function`) {
+			let t = atob(e)
+			  , n = new Uint8Array(t.length);
+			for (let e = 0; e < t.length; e++)
+				n[e] = t.charCodeAt(e);
+			return n
+		}
+		let t = globalThis.Buffer;
+		if (t)
+			return new Uint8Array(t.from(e, `base64`))
+	} catch {}
+	return new Uint8Array
+}
+
+const frameBuffer = decodeFrameBuffer(frameB64);
+
 exports.ClientSocket = class {
 	static setUrl(_, $) {
 		const seed = generateAuthSeed();
 		const version = 1;
 		setPacketData(seed, version);
+		Object.assign(FrameDecodeData, {
+			prime: false,
+			prev: null
+		});
+
 		this.socket = io(_, {
 			transports: ["websocket"],
 			extraHeaders: {
@@ -8501,7 +9617,9 @@ exports.ClientSocket = class {
 			auth: {
 				permSeed: seed,
 				permVersion: version,
-				clientVersion: GAME_CONSTANTS.VERSION
+				clientVersion: GAME_CONSTANTS.VERSION,
+				frameDictHash: frameBuffer.byteLength > 0 ? frameKey : void 0,
+				framePrime: frameBuffer.byteLength > 0 ? !0 : void 0
 			},
 			autoConnect: !1,
 			forceNew: !0,
@@ -8509,6 +9627,7 @@ exports.ClientSocket = class {
 			closeOnBeforeunload: !1,
 			parser,
 			reconnectionDelay: 2e3,
+			randomizationFactor: 0,
 			path: $ || "/socket.io"
 		})
 	}

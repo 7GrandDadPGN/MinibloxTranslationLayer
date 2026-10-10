@@ -86,7 +86,8 @@ const self = class TabListHandler extends Handler {
 			this.analyticsLoop = setInterval(() => {
 				ClientSocket.sendPacket(new SPacketAnalytics({
 					fps: 60 - Math.random(),
-					ping: this.filteredPing
+					ping: this.filteredPing,
+					renderDistance: 5
 				}));
 			}, 30000);
 		}
