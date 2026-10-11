@@ -153,8 +153,7 @@ const self = class WorldHandler extends Handler {
 			ClientSocket.sendPacket(new SPacketPlayerAction({
 				position: location,
 				facing: packet.face,
-				action: packet.status,
-				slot: entity.equipSlot
+				action: packet.status
 			}));
 		});
 	}

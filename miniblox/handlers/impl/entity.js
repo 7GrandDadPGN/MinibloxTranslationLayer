@@ -671,8 +671,7 @@ const self = class EntityHandler extends Handler {
 					hitVec: new PBVector3(clampToBox(MCHandler.local.pos, entity.pos)),
 					yaw: packet.mouse == 1 ? ((MCHandler.local.yaw * -1) - 180) * DEG2RAD : undefined,
 					pitch: packet.mouse == 1 ? (MCHandler.local.pitch * -1) * DEG2RAD : undefined,
-					sequence: packet.mouse == 1 ? this.inputSequenceNumber : undefined,
-					hand: 0
+					sequence: packet.mouse == 1 ? this.inputSequenceNumber : undefined
 				}));
 			}
 		});

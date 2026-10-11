@@ -42,21 +42,36 @@ function translateItem(item) {
 		if (parsed.ench) {
 			let enchants = [];
 			for (const ench of parsed.ench) {
-				enchants.push({lvl: {type: "short", value: ench.lvl}, id: {type: "short", value: ench.id}});
+				enchants.push({lvl: {type: 'short', value: ench.lvl}, id: {type: 'short', value: ench.id}});
 			}
+
 			data = {
-				name: "",
-				type: "compound",
+				name: '',
+				type: 'compound',
 				value: {
 					ench: {
-						type: "list",
+						type: 'list',
 						value: {
-							type: "compound",
+							type: 'compound',
 							value: enchants
 						}
 					}
 				}
 			};
+		}
+
+		if (parsed.Unbreakable) {
+			if (data == undefined) {
+				data = {
+					name: '',
+					type: 'compound',
+					value: {
+						Unbreakable: { type: 'byte', value: 1 }
+					}
+				};
+			} else {
+				data.value.Unbreakable = { type: 'byte', value: 1 };
+			}
 		}
 	}
 
@@ -105,7 +120,7 @@ function translateItemBack(item) {
 
 function translateText(text) {
 	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, `\u00a7${color}`);
-	return text.replaceAll(COLOR_REGEX, (match) => `\u00a7${findClosestColor(match.replaceAll("\\",''))}`);
+	return text.replaceAll(COLOR_REGEX, (match) => `\u00a7${findClosestColor(match.replaceAll('\\',''))}`);
 }
 
 module.exports = { translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR };
