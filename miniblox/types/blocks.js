@@ -2,20 +2,24 @@ const mcData = require('minecraft-data')('1.8.9');
 let BLOCKS = {}, BLOCK_ID = {};
 
 function createStair(start, id) {
-	for (let i = 0; i < 80; i++) BLOCKS[start + i] = id;
-	BLOCKS[start + 1] = [id, 6];
-	BLOCKS[start + 11] = [id, 2];
-	BLOCKS[start + 21] = [id, 5];
-	BLOCKS[start + 31] = [id, 1];
-	BLOCKS[start + 41] = [id, 7];
-	BLOCKS[start + 51] = [id, 3];
-	BLOCKS[start + 61] = [id, 4];
-	BLOCKS[start + 71] = id;
+	for (let i = 0; i < 10; i++) {
+		BLOCKS[start + i] = [id, 6];
+		BLOCKS[start + 10 + i] = [id, 2];
+		BLOCKS[start + 20 + i] = [id, 5];
+		BLOCKS[start + 30 + i] = [id, 1];
+		BLOCKS[start + 40 + i] = [id, 7];
+		BLOCKS[start + 50 + i] = [id, 3];
+		BLOCKS[start + 60 + i] = [id, 4];
+		BLOCKS[start + 70 + i] = id;
+	}
 }
 
 function createSlab(start, id, enddata) {
-	for (let i = 0; i < 6; i++) BLOCKS[start + i] = id;
+	BLOCKS[start] = [id, 8];
 	BLOCKS[start + 1] = [id, 8];
+	BLOCKS[start + 2] = id;
+	BLOCKS[start + 3] = id;
+	BLOCKS[start + 4] = enddata;
 	BLOCKS[start + 5] = enddata;
 }
 
@@ -24,10 +28,12 @@ function createButton(offset, id) {
 		BLOCKS[offset + i] = [id, 13];
 		BLOCKS[offset + 1 + i] = [id, 5];
 	}
+
 	for (let i = 0; i < 8; i += 2) {
 		BLOCKS[offset + 16 + i] = [id, 8];
 		BLOCKS[offset + 17 + i] = id;
 	}
+
 	BLOCKS[offset + 8] = [id, 11];
 	BLOCKS[offset + 9] = [id, 3];
 	BLOCKS[offset + 10] = [id, 10];
@@ -127,7 +133,7 @@ for (let i = 0; i < 24; i++) BLOCKS[1337 + i] = [mcData.blocksByName.golden_rail
 for (let i = 0; i < 24; i++) BLOCKS[1361 + i] = [mcData.blocksByName.detector_rail.id, i % 12];
 for (let i = 0; i < 12; i++) BLOCKS[1385 + i] = [mcData.blocksByName.sticky_piston.id, i];
 BLOCKS[1397] = mcData.blocksByName.web.id;
-for (let i = 0; i < 2; i++) BLOCKS[1398 + i] = [mcData.blocksByName.tallgrass.id, 1];
+for (let i = 0; i < 2; i++) BLOCKS[1398 + i] = [mcData.blocksByName.tallgrass.id, 1 + i];
 BLOCKS[1400] = mcData.blocksByName.deadbush.id;
 for (let i = 0; i < 3; i++) BLOCKS[1401 + i] = [mcData.blocksByName.tallgrass.id, 1];
 for (let i = 0; i < 12; i++) BLOCKS[1404 + i] = [mcData.blocksByName.piston.id, i];
@@ -141,7 +147,7 @@ BLOCKS[1482] = mcData.blocksByName.red_mushroom.id;
 BLOCKS[1483] = mcData.blocksByName.gold_block.id;
 BLOCKS[1484] = mcData.blocksByName.iron_block.id;
 BLOCKS[1485] = mcData.blocksByName.brick_block.id;
-for (let i = 0; i < 2; i++) BLOCKS[1486 + i] = [mcData.blocksByName.tnt.id, i];
+for (let i = 0; i < 2; i++) BLOCKS[1486 + i] = [mcData.blocksByName.tnt.id, 1 - i];
 BLOCKS[1488] = mcData.blocksByName.bookshelf.id;
 BLOCKS[1489] = mcData.blocksByName.mossy_cobblestone.id;
 BLOCKS[1490] = mcData.blocksByName.obsidian.id;
@@ -169,25 +175,31 @@ BLOCKS[3434] = [mcData.blocksByName.lit_furnace.id, 2];
 BLOCKS[3435] = [mcData.blocksByName.furnace.id, 2];
 BLOCKS[3436] = [mcData.blocksByName.lit_furnace.id, 5];
 BLOCKS[3437] = [mcData.blocksByName.furnace.id, 5];
-for (let i = 0; i < 192; i++) BLOCKS[3438 + i] = [mcData.blocksByName.standing_sign.id, i % 16];
+for (let i = 0; i < 192; i++) BLOCKS[3438 + i] = [mcData.blocksByName.standing_sign.id, Math.floor(i / 2) % 16];
 createDoor(3630, mcData.blocksByName.wooden_door.id);
 for (let i = 0; i < 8; i++) BLOCKS[3694 + i] = [mcData.blocksByName.ladder.id, 2];
-BLOCKS[3695] = [mcData.blocksByName.ladder.id, 3];
-BLOCKS[3697] = [mcData.blocksByName.ladder.id, 4];
-BLOCKS[3699] = [mcData.blocksByName.ladder.id, 2];
-BLOCKS[3701] = [mcData.blocksByName.ladder.id, 5];
+for (let i = 0; i < 2; i++) {
+	BLOCKS[3695 + i] = [mcData.blocksByName.ladder.id, 3];
+	BLOCKS[3697 + i] = [mcData.blocksByName.ladder.id, 4];
+	BLOCKS[3699 + i] = [mcData.blocksByName.ladder.id, 2];
+	BLOCKS[3701 + i] = [mcData.blocksByName.ladder.id, 5];
+}
 for (let i = 0; i < 20; i++) BLOCKS[3702 + i] = [mcData.blocksByName.rail.id, i % 10];
 createStair(3722, mcData.blocksByName.stone_stairs.id);
 for (let i = 0; i < 48; i += 8) {
+	BLOCKS[3802 + i] = [mcData.blocksByName.wall_sign.id, 3];
 	BLOCKS[3802 + i + 1] = [mcData.blocksByName.wall_sign.id, 3];
+	BLOCKS[3802 + i + 2] = [mcData.blocksByName.wall_sign.id, 4];
 	BLOCKS[3802 + i + 3] = [mcData.blocksByName.wall_sign.id, 4];
+	BLOCKS[3802 + i + 4] = [mcData.blocksByName.wall_sign.id, 2];
 	BLOCKS[3802 + i + 5] = [mcData.blocksByName.wall_sign.id, 2];
+	BLOCKS[3802 + i + 6] = [mcData.blocksByName.wall_sign.id, 5];
 	BLOCKS[3802 + i + 7] = [mcData.blocksByName.wall_sign.id, 5];
 }
 for (let i = 0; i < 24; i++) BLOCKS[3850 + i] = [mcData.blocksByName.lever.id, i % 16];
-for (let i = 0; i < 2; i++) BLOCKS[3874 + i] = [mcData.blocksByName.stone_pressure_plate.id, i];
+for (let i = 0; i < 2; i++) BLOCKS[3874 + i] = [mcData.blocksByName.stone_pressure_plate.id, 1 - i];
 createDoor(3876, mcData.blocksByName.iron_door.id);
-for (let i = 0; i < 12; i++) BLOCKS[3940 + i] = [mcData.blocksByName.wooden_pressure_plate.id, i % 2];
+for (let i = 0; i < 12; i++) BLOCKS[3940 + i] = [mcData.blocksByName.wooden_pressure_plate.id, 1 - (i % 2)];
 for (let i = 0; i < 4; i++) BLOCKS[3952 + i] = mcData.blocksByName.redstone_ore.id;
 for (let i = 0; i < 2; i++) BLOCKS[3956 + i] = [mcData.blocksByName.redstone_torch.id, 5];
 for (let i = 0; i < 8; i++) BLOCKS[3958 + i] = [mcData.blocksByName.redstone_torch.id, 1 + (i % 4)];
@@ -203,10 +215,13 @@ for (let i = 0; i < 2; i++) BLOCKS[4033 + i] = [mcData.blocksByName.jukebox.id, 
 for (let i = 0; i < 32; i++) BLOCKS[4035 + i] = mcData.blocksByName.fence.id;
 BLOCKS[4067] = mcData.blocksByName.pumpkin.id;
 BLOCKS[4068] = mcData.blocksByName.nether_brick.id;
-for (let i = 0; i < 8; i++) BLOCKS[4069 + i] = mcData.blocksByName.soul_sand.id;
+for (let i = 0; i < 2; i++) BLOCKS[4069 + i] = mcData.blocksByName.soul_sand.id;
+for (let i = 0; i < 6; i++) BLOCKS[4071 + i] = mcData.blocksByName.stone.id;
 createTorch(4077, mcData.blocksByName.redstone_torch.id);
 BLOCKS[4081] = mcData.blocksByName.glowstone.id;
-for (let i = 0; i < 3; i++) BLOCKS[4082 + i] = [mcData.blocksByName.portal.id, i];
+BLOCKS[4082] = [mcData.blocksByName.portal.id, 1];
+BLOCKS[4083] = [mcData.blocksByName.portal.id, 1];
+BLOCKS[4084] = [mcData.blocksByName.portal.id, 2];
 for (let i = 0; i < 8; i++) BLOCKS[4085 + i] = [mcData.blocksByName.lit_pumpkin.id, i % 4];
 for (let i = 0; i < 7; i++) BLOCKS[4093 + i] = [mcData.blocksByName.cake.id, i];
 for (let i = 0; i < 64; i++) BLOCKS[4100 + i] = [mcData.blocksByName.powered_repeater.id, i % 16];
