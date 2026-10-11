@@ -17,6 +17,9 @@ const EntitySkeleton = require('../../base/translation/classes/entities/living/e
 const EntityCreeper = require('../../base/translation/classes/entities/living/entitycreeper.js');
 const EntitySlime = require('../../base/translation/classes/entities/living/entityslime.js');
 const EntitySpider = require('../../base/translation/classes/entities/living/entityspider.js');
+const EntityGolem = require('../../base/translation/classes/entities/living/entityirongolem.js');
+const EntitySnowman = require('../../base/translation/classes/entities/living/entitysnowman.js');
+const EntityGhast = require('../../base/translation/classes/entities/living/entityghast.js');
 const mcData = require('minecraft-data')('1.8.9');
 
 module.exports = {
@@ -34,9 +37,13 @@ module.exports = {
 	14: EntityChicken,
 	15: EntitySheep,
 	16: EntityZombie,
-	17: EntitySkeleton,
-	18: EntityCreeper,
-	19: EntitySlime,
-	20: EntitySpider,
-	21: EntityBoat
+	17: EntityZombie,
+	18: EntitySkeleton,
+	19: EntityCreeper,
+	20: EntitySlime,
+	21: EntitySpider,
+	22: EntityBoat,
+	23: EntitySnowman,
+	24: EntityGhast,
+	33: EntityGolem
 };
