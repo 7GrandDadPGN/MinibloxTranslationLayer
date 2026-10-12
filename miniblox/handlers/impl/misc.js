@@ -55,6 +55,7 @@ async function handleCommand(name, args) {
 			world.chunks = [];
 			world.queued = [];
 			break;
+		case 'q':
 		case 'queue':
 		case 'play': {
 			// un-scruffily stuff happens if we don't wrap in {}
