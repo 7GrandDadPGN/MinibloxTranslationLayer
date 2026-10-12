@@ -71,7 +71,10 @@ const self = class TabListHandler extends Handler {
 	minecraft(mcClient) {
 		client = mcClient;
 		client.on('keep_alive', packet => {
-			if (packet.keepAliveId > 0) ClientSocket.sendPacket(new SPacketPing({ time: BigInt(Date.now()) }));
+			if (this.pings[packet.keepAliveId] != undefined) {
+				ClientSocket.sendPacket(new SPacketPing({ time: BigInt(this.pings[packet.keepAliveId]) }));
+				delete this.pings[packet.keepAliveId];
+			}
 		});
 	}
 	cleanup(requeue) {
@@ -80,7 +83,9 @@ const self = class TabListHandler extends Handler {
 		if (this.analyticsLoop) clearInterval(this.analyticsLoop);
 		if (requeue) {
 			this.pingLoop = setInterval(() => {
-				client.write('keep_alive', { keepAliveId: Math.floor(Math.random() * 10000) });
+				this.pingNumber = (this.pingNumber + 1) % 32767;
+				this.pings[this.pingNumber] = Date.now();
+				client.write('keep_alive', { keepAliveId: this.pingNumber });
 			}, 1000);
 
 			this.analyticsLoop = setInterval(() => {
@@ -91,7 +96,10 @@ const self = class TabListHandler extends Handler {
 				}));
 			}, 30000);
 		}
+
 		this.filteredPing = 0;
+		this.pings = {};
+		this.pingNumber = 0;
 	}
 	obtainHandlers(handlers, mchandler) {
 		entity = handlers.entity;

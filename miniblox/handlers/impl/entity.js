@@ -664,7 +664,7 @@ const self = class EntityHandler extends Handler {
 			if (MCHandler.world == undefined) return;
 			const entity = packet.target != undefined && MCHandler.world.getEntity(packet.target, true, true);
 
-			if (entity != undefined) {
+			if (entity != undefined && packet.mouse < 2) {
 				ClientSocket.sendPacket(new SPacketUseEntity({
 					id: entity.index,
 					action: packet.mouse,

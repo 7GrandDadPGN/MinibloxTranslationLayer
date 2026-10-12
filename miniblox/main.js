@@ -9317,95 +9317,95 @@ const FrameDecodeData = {
 };
 
 function attemptInflate(e, t=frameBuffer) {
-    let n = new Inflate({
-        raw: !0,
-        dictionary: t
-    });
-    if (n.push(e, !0),
-    n.err)
-        throw Error(`inflateRaw+dict failed: ${n.msg || n.err}`);
-    return n.result
+	let n = new Inflate({
+		raw: !0,
+		dictionary: t
+	});
+	if (n.push(e, !0),
+	n.err)
+		throw Error(`inflateRaw+dict failed: ${n.msg || n.err}`);
+	return n.result
 }
 
 function Zze(e) {
-    let t = 1779033703 ^ e.length;
-    for (let n = 0; n < e.length; n++)
-        t = Math.imul(t ^ e.charCodeAt(n), 3432918353),
-        t = t << 13 | t >>> 19;
-    return () => (t = Math.imul(t ^ t >>> 16, 2246822507),
-    t = Math.imul(t ^ t >>> 13, 3266489909),
-    t ^= t >>> 16,
-    t >>> 0)
+	let t = 1779033703 ^ e.length;
+	for (let n = 0; n < e.length; n++)
+		t = Math.imul(t ^ e.charCodeAt(n), 3432918353),
+		t = t << 13 | t >>> 19;
+	return () => (t = Math.imul(t ^ t >>> 16, 2246822507),
+	t = Math.imul(t ^ t >>> 13, 3266489909),
+	t ^= t >>> 16,
+	t >>> 0)
 };
 
 function Qze(e) {
-    return () => {
-        e |= 0,
-        e = e + 1831565813 | 0;
-        let t = Math.imul(e ^ e >>> 15, 1 | e);
-        return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t,
-        ((t ^ t >>> 14) >>> 0) / 4294967296
-    }
+	return () => {
+		e |= 0,
+		e = e + 1831565813 | 0;
+		let t = Math.imul(e ^ e >>> 15, 1 | e);
+		return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t,
+		((t ^ t >>> 14) >>> 0) / 4294967296
+	}
 };
 
 function $ze(e, t, n, r) {
-    for (let i = n - 1; i > t; i--) {
-        let n = t + Math.floor(r() * (i - t + 1))
-          , a = e[i];
-        e[i] = e[n],
-        e[n] = a
-    }
+	for (let i = n - 1; i > t; i--) {
+		let n = t + Math.floor(r() * (i - t + 1))
+		  , a = e[i];
+		e[i] = e[n],
+		e[n] = a
+	}
 };
 
 function eBe(e) {
-    let t = 1779033703
-      , n = 3144134277
-      , r = 1013904242
-      , i = 2773480762;
-    for (let a = 0; a < e.length; a++) {
-        let o = e.charCodeAt(a);
-        t = n ^ Math.imul(t ^ o, 597399067),
-        n = r ^ Math.imul(n ^ o, 2869860233),
-        r = i ^ Math.imul(r ^ o, 951274213),
-        i = t ^ Math.imul(i ^ o, 2716044179)
-    }
-    return t = Math.imul(r ^ t >>> 18, 597399067),
-    n = Math.imul(i ^ n >>> 22, 2869860233),
-    r = Math.imul(t ^ r >>> 17, 951274213),
-    i = Math.imul(n ^ i >>> 19, 2716044179),
-    [(t ^ n ^ r ^ i) >>> 0, (n ^ t) >>> 0, (r ^ t) >>> 0, (i ^ t) >>> 0]
+	let t = 1779033703
+	  , n = 3144134277
+	  , r = 1013904242
+	  , i = 2773480762;
+	for (let a = 0; a < e.length; a++) {
+		let o = e.charCodeAt(a);
+		t = n ^ Math.imul(t ^ o, 597399067),
+		n = r ^ Math.imul(n ^ o, 2869860233),
+		r = i ^ Math.imul(r ^ o, 951274213),
+		i = t ^ Math.imul(i ^ o, 2716044179)
+	}
+	return t = Math.imul(r ^ t >>> 18, 597399067),
+	n = Math.imul(i ^ n >>> 22, 2869860233),
+	r = Math.imul(t ^ r >>> 17, 951274213),
+	i = Math.imul(n ^ i >>> 19, 2716044179),
+	[(t ^ n ^ r ^ i) >>> 0, (n ^ t) >>> 0, (r ^ t) >>> 0, (i ^ t) >>> 0]
 };
 
 function tBe(e, t, n, r) {
-    return () => {
-        e |= 0,
-        t |= 0,
-        n |= 0,
-        r |= 0;
-        let i = (e + t | 0) + r | 0;
-        return r = r + 1 | 0,
-        e = t ^ t >>> 9,
-        t = n + (n << 3) | 0,
-        n = n << 21 | n >>> 11,
-        n = n + i | 0,
-        (i >>> 0) / 4294967296
-    }
+	return () => {
+		e |= 0,
+		t |= 0,
+		n |= 0,
+		r |= 0;
+		let i = (e + t | 0) + r | 0;
+		return r = r + 1 | 0,
+		e = t ^ t >>> 9,
+		t = n + (n << 3) | 0,
+		n = n << 21 | n >>> 11,
+		n = n + i | 0,
+		(i >>> 0) / 4294967296
+	}
 };
 
 function nBe(e, t, n, r) {
-    let i = []
-      , a = new Map;
-    for (let e = t; e < n; e++)
-        i.push(e),
-        a.set(e, r());
-    i.sort( (e, t) => {
-        let n = a.get(e)
-          , r = a.get(t);
-        return n === r ? e - t : n - r
-    }
-    );
-    for (let n = 0; n < i.length; n++)
-        e[t + n] = i[n]
+	let i = []
+	  , a = new Map;
+	for (let e = t; e < n; e++)
+		i.push(e),
+		a.set(e, r());
+	i.sort( (e, t) => {
+		let n = a.get(e)
+		  , r = a.get(t);
+		return n === r ? e - t : n - r
+	}
+	);
+	for (let n = 0; n < i.length; n++)
+		e[t + n] = i[n]
 };
 
 function obfuscatePacketRoutine(e, t, n = 101, r = 64) {
@@ -9461,11 +9461,11 @@ function setPacketData(e, t) {
 }
 
 function createCombinedArray(e) {
-    let t = e.byteLength > 16384 ? e.subarray(e.byteLength - 16384) : e
-      , n = new Uint8Array(frameBuffer.byteLength + t.byteLength);
-    return n.set(frameBuffer, 0),
-    n.set(t, frameBuffer.byteLength),
-    n
+	let t = e.byteLength > 16384 ? e.subarray(e.byteLength - 16384) : e
+	  , n = new Uint8Array(frameBuffer.byteLength + t.byteLength);
+	return n.set(frameBuffer, 0),
+	n.set(t, frameBuffer.byteLength),
+	n
 };
 
 class ClientEncoder {
@@ -9629,13 +9629,13 @@ exports.ClientSocket = class {
 			reconnectionDelay: 2e3,
 			randomizationFactor: 0,
 			path: $ || "/socket.io"
-		})
+		});
 	}
 	static connect() {
 		this.socket.on("connect", () => {
 			exports.ClientSocket.id = this.socket.id
 		}),
-			this.socket.connect()
+		this.socket.connect()
 	}
 	static disconnect(_) {
 		if (this.disconnectMessage = _,

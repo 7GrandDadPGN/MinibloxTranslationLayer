@@ -28,13 +28,14 @@ const self = class WorldHandler extends Handler {
 		chunk.load(lightData);
 		for (const cell of packet.cells) {
 			const array = new BitArray(CELL_VOLUME, cell.bitsPerEntry, cell.bitArray);
-			if (!array) continue;
+			if (!array || cell.blockRefCount <= 0) continue;
+
 			for (let x = 0; x < 16; x++) {
 				for (let z = 0; z < 16; z++) {
 					for (let y = 0; y < 16; y++) {
 						const offset = array.get(getBlockIndex(x, y, z));
-						if (offset == 0) continue;
 						const blockdata = BLOCKS[cell.palette[offset]] ?? BLOCKS[9], vec = new Vec3(x, cell.y + y, z);
+
 						if (typeof blockdata == 'number') {
 							chunk.setBlockType(vec, blockdata);
 						} else {
