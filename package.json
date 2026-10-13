@@ -26,5 +26,8 @@
     "socket.io-client": "^4.8.1",
     "socket.io-msgpack-parser": "^3.0.2",
     "ws": "^8.18.0"
+  },
+  "overrides": {
+    "minecraft-data": "3.85.0"
   }
 }
