@@ -6,4 +6,3 @@
 /bun.lock
 # xylex doesn't want ts so ig
 /.editorconfig
-package-lock.json

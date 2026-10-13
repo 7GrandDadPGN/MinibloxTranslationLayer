@@ -95,7 +95,7 @@ const self = class EntityHandler extends Handler {
 			pos: MCHandler.local.pos,
 			ackId: this.lastServerAckId > 0 ? this.lastServerAckId : undefined,
 			onGround: this.input.onGround,
-			usingItem: false
+			usingItem: this.input.isUsingItem ?? false
 		}));
 
 		this.input = undefined;
@@ -603,7 +603,8 @@ const self = class EntityHandler extends Handler {
 					jump: data.readUInt8(40) > 0,
 					sneak: data.readUInt8(41) > 0,
 					onGround: data.readUInt8(42) > 0,
-					isSprinting: data.readUInt8(43) > 0
+					isSprinting: data.readUInt8(43) > 0,
+					isUsingItem: data.length > 44 && data.readUInt8(44) > 0
 				};
 
 				this.sendInput();
