@@ -3,7 +3,7 @@ const brotli = require('brotli');
 const { Decoder, protocol } = require('socket.io-msgpack-parser');
 const { encode, decode } = require('@msgpack/msgpack');
 const { Inflate } = require('pako');
-const { Message, proto2, proto3 } = require('./types/proto.js');
+const { Message, proto2 } = require('./types/proto.js');
 const { GAME_CONSTANTS, USER_AGENT } = require('./types/constants.js');
 
 var yT = Object.defineProperty;
@@ -26,7 +26,7 @@ var ST = (j, _) => () => (
 		),
 	_.exports
 );
-var ut = (j, _, $) => (xT(j, typeof _ != 'symbol' ? _ + '' : _, $), $);
+var assign = (j, _, $) => (xT(j, typeof _ != 'symbol' ? _ + '' : _, $), $);
 
 class SPacketLoginStart extends Message {
 	constructor(SPacketLoginStart) {
@@ -10191,17 +10191,17 @@ function addPacket(name, packet) {
 	((NAME_TO_ID[name] = currentId), (ID_TO_PACKET[currentId] = packet), (ID_TO_NAME[currentId] = name), currentId++);
 }
 
-for (let [e, t] of Object.entries(CPACKET_MAP)) e in EXTRA_MAP || addPacket(e, t);
-for (let [e, t] of Object.entries(SPACKET_MAP)) e in EXTRA_MAP || addPacket(e, t);
-for (let [e, t] of Object.entries(EXTRA_MAP)) addPacket(e, t);
+for (let [name, packet] of Object.entries(CPACKET_MAP)) name in EXTRA_MAP || addPacket(name, packet);
+for (let [name, packet] of Object.entries(SPACKET_MAP)) name in EXTRA_MAP || addPacket(name, packet);
+for (let [name, packet] of Object.entries(EXTRA_MAP)) addPacket(name, packet);
 
 exports.BitArray = class {
 	constructor(_, $, et) {
-		ut(this, 'capacity');
-		ut(this, 'bitsPerValue');
-		ut(this, 'valueMask');
-		ut(this, 'valuesPerLong');
-		ut(this, 'data');
+		assign(this, 'capacity');
+		assign(this, 'bitsPerValue');
+		assign(this, 'valueMask');
+		assign(this, 'valuesPerLong');
+		assign(this, 'data');
 		if ($ <= 0) throw new Error('bits per value must at least 1');
 		if ($ > 32) throw new Error(`${$} bits per value exceeds 32`);
 		((this.capacity = _),
@@ -10280,18 +10280,20 @@ const FrameDecodeData = {
 	prev: null
 };
 
-function attemptInflate(e, t = frameBuffer) {
-	let n = new Inflate({
+function attemptInflate(data, dict = frameBuffer) {
+	let obj = new Inflate({
 		raw: !0,
-		dictionary: t
+		dictionary: dict
 	});
-	if ((n.push(e, !0), n.err)) throw Error(`inflateRaw+dict failed: ${n.msg || n.err}`);
-	return n.result;
+
+	if ((obj.push(data, !0), obj.err)) throw Error(`inflateRaw+dict failed: ${obj.msg || obj.err}`);
+	return obj.result;
 }
 
-function Zze(e) {
-	let t = 1779033703 ^ e.length;
-	for (let n = 0; n < e.length; n++) ((t = Math.imul(t ^ e.charCodeAt(n), 3432918353)), (t = (t << 13) | (t >>> 19)));
+function hashString(input) {
+	let t = 1779033703 ^ input.length;
+	for (let n = 0; n < input.length; n++)
+		((t = Math.imul(t ^ input.charCodeAt(n), 3432918353)), (t = (t << 13) | (t >>> 19)));
 	return () => (
 		(t = Math.imul(t ^ (t >>> 16), 2246822507)),
 		(t = Math.imul(t ^ (t >>> 13), 3266489909)),
@@ -10300,7 +10302,7 @@ function Zze(e) {
 	);
 }
 
-function Qze(e) {
+function transformHash(e) {
 	return () => {
 		((e |= 0), (e = (e + 1831565813) | 0));
 		let t = Math.imul(e ^ (e >>> 15), 1 | e);
@@ -10308,7 +10310,7 @@ function Qze(e) {
 	};
 }
 
-function $ze(e, t, n, r) {
+function sortHash2(e, t, n, r) {
 	for (let i = n - 1; i > t; i--) {
 		let n = t + Math.floor(r() * (i - t + 1)),
 			a = e[i];
@@ -10316,7 +10318,7 @@ function $ze(e, t, n, r) {
 	}
 }
 
-function eBe(e) {
+function hashString2(e) {
 	let t = 1779033703,
 		n = 3144134277,
 		r = 1013904242,
@@ -10337,7 +10339,7 @@ function eBe(e) {
 	);
 }
 
-function tBe(e, t, n, r) {
+function computeFinalHash(e, t, n, r) {
 	return () => {
 		((e |= 0), (t |= 0), (n |= 0), (r |= 0));
 		let i = (((e + t) | 0) + r) | 0;
@@ -10352,7 +10354,7 @@ function tBe(e, t, n, r) {
 	};
 }
 
-function nBe(e, t, n, r) {
+function sortHash(e, t, n, r) {
 	let i = [],
 		a = new Map();
 	for (let e = t; e < n; e++) (i.push(e), a.set(e, r()));
@@ -10364,77 +10366,83 @@ function nBe(e, t, n, r) {
 	for (let n = 0; n < i.length; n++) e[t + n] = i[n];
 }
 
-function obfuscatePacketRoutine(e, t, n = 101, r = 64) {
-	let i = Array.from(
+function obfuscatePacketRoutine(e, version, n = 101, r = 64) {
+	let perm = Array.from(
 			{
 				length: n
 			},
 			(e, t) => t
 		),
 		a = Math.min(r, n);
-	if (t !== 0)
-		if (t === 1) {
-			let t = Qze(Zze(`mb-perm|v1|lo|${e}`)()),
-				o = Qze(Zze(`mb-perm|v1|hi|${e}`)());
-			($ze(i, 0, a, t), n > r && $ze(i, r, n, o));
+
+	if (version !== 0)
+		if (version === 1) {
+			let t = transformHash(hashString(`mb-perm|v1|lo|${e}`)()),
+				o = transformHash(hashString(`mb-perm|v1|hi|${e}`)());
+			(sortHash2(perm, 0, a, t), n > r && sortHash2(perm, r, n, o));
 		} else {
-			let [o, s, c, l] = eBe(`mb-perm|v${t}|lo|${e}`),
-				[u, d, f, p] = eBe(`mb-perm|v${t}|hi|${e}`);
-			(nBe(i, 0, a, tBe(o, s, c, l)), n > r && nBe(i, r, n, tBe(u, d, f, p)));
+			let [o, s, c, l] = hashString2(`mb-perm|v${version}|lo|${e}`),
+				[u, d, f, p] = hashString2(`mb-perm|v${version}|hi|${e}`);
+			(sortHash(perm, 0, a, computeFinalHash(o, s, c, l)),
+				n > r && sortHash(perm, r, n, computeFinalHash(u, d, f, p)));
 		}
-	let o = Array(n);
-	for (let e = 0; e < n; e++) o[i[e]] = e;
+
+	let invPerm = Array(n);
+	for (let e = 0; e < n; e++) invPerm[perm[e]] = e;
 	return {
-		perm: i,
-		invPerm: o,
-		version: t
+		perm: perm,
+		invPerm: invPerm,
+		version: version
 	};
 }
 
-function setPacketData(e, t) {
-	if (!e || !t || t === 0) return FV;
-	let { perm: n } = obfuscatePacketRoutine(e, t),
-		r = {},
-		i = {},
-		a = {};
+function setPacketData(seed, version) {
+	if (!seed || !version || version === 0) return FV;
+	let { perm } = obfuscatePacketRoutine(seed, version),
+		nameToId = {},
+		idToPacket = {},
+		idToName = {};
+
 	for (let packet of Object.keys(NAME_TO_ID)) {
-		let t = NAME_TO_ID[packet],
-			o = t < 101 ? n[t] : t;
-		((r[packet] = o), (i[o] = ID_TO_PACKET[t]), (a[o] = packet));
+		let packetId = NAME_TO_ID[packet],
+			mappedIndex = packetId < 101 ? perm[packetId] : packetId;
+		((nameToId[packet] = mappedIndex),
+			(idToPacket[mappedIndex] = ID_TO_PACKET[packetId]),
+			(idToName[mappedIndex] = packet));
 	}
 
 	Object.assign(PacketData, {
-		permVersion: t,
-		nameToId: r,
-		idToPacket: i,
-		idToName: a
+		permVersion: version,
+		nameToId: nameToId,
+		idToPacket: idToPacket,
+		idToName: idToName
 	});
 
 	return PacketData;
 }
 
-function createCombinedArray(e) {
-	let t = e.byteLength > 16384 ? e.subarray(e.byteLength - 16384) : e,
+function createCombinedArray(data) {
+	let t = data.byteLength > 16384 ? data.subarray(data.byteLength - 16384) : data,
 		n = new Uint8Array(frameBuffer.byteLength + t.byteLength);
 	return (n.set(frameBuffer, 0), n.set(t, frameBuffer.byteLength), n);
 }
 
 class ClientEncoder {
 	constructor() {
-		ut(
+		assign(
 			this,
 			'encode',
-			(_) => (
-				(_.t = _.type),
-				(_.d = _.data),
-				delete _.type,
-				delete _.nsp,
-				delete _.data,
-				_.t === 2 &&
-					_.d[1] &&
-					_.d[1].toBinary &&
-					((_.d[1] = _.d[1].toBinary()), (_.d[0] = PacketData.nameToId[_.d[0]])),
-				[encode(_)]
+			(packet) => (
+				(packet.t = packet.type),
+				(packet.d = packet.data),
+				delete packet.type,
+				delete packet.nsp,
+				delete packet.data,
+				packet.t === 2 &&
+					packet.d[1] &&
+					packet.d[1].toBinary &&
+					((packet.d[1] = packet.d[1].toBinary()), (packet.d[0] = PacketData.nameToId[packet.d[0]])),
+				[encode(packet)]
 			)
 		);
 	}
@@ -10443,49 +10451,49 @@ class ClientEncoder {
 class ClientDecoder extends Decoder {
 	constructor() {
 		super(...arguments);
-		ut(this, 'add', async ($) => {
+		assign(this, 'add', async (dataBytes) => {
 			try {
-				const packetData = new Uint8Array($)[0],
+				const packetData = new Uint8Array(dataBytes)[0],
 					gamePacket = packetData & 1;
 				let isCombined = false;
 
-				let nt = new Uint8Array($, 1, $.byteLength - 1);
-				nt = nt.slice(1);
+				let data = new Uint8Array(dataBytes, 1, dataBytes.byteLength - 1);
+				data = data.slice(1);
 				if (gamePacket) {
-					const it = packetData >> 2,
+					const packetId = packetData >> 2,
 						compressFlag = packetData & 2,
-						packet = PacketData.idToPacket[it];
+						packet = PacketData.idToPacket[packetId];
 
 					if (compressFlag) {
 						if (
 							((isCombined = packet.typeName === 'ClientBoundCombined' && frameBuffer.byteLength > 0),
 							isCombined && FrameDecodeData.prime)
 						) {
-							let e = nt[0],
-								t = nt.subarray(1);
-							if (e === 1) {
+							let combinedFlag = data[0],
+								subData = data.subarray(1);
+							if (combinedFlag === 1) {
 								if (FrameDecodeData.prev == null)
 									throw Error(`primed combined frame arrived with no prev-frame state`);
-								nt = attemptInflate(t, createCombinedArray(FrameDecodeData.prev));
+								data = attemptInflate(subData, createCombinedArray(FrameDecodeData.prev));
 							} else {
-								nt = attemptInflate(t);
+								data = attemptInflate(subData);
 							}
 						} else if (isCombined && FrameDecodeData.prime) {
-							nt = attemptInflate(nt);
+							data = attemptInflate(data);
 							return;
 						} else {
-							nt = brotli.decompress(nt);
+							data = brotli.decompress(data);
 						}
 					}
 
 					if (FrameDecodeData.prime && packet.typeName == 'ClientBoundCombined') {
-						FrameDecodeData.prev = nt;
+						FrameDecodeData.prev = data;
 					}
 
-					const packetBinary = packet.fromBinary(nt);
+					const packetBinary = packet.fromBinary(data);
 					if (packet.typeName === 'ClientBoundCombined') {
-						packetBinary.packets.forEach((ct) => {
-							if (ct.packet.case == 'CPacketServerInfo') {
+						packetBinary.packets.forEach((subPacket) => {
+							if (subPacket.packet.case == 'CPacketServerInfo') {
 								if (FrameDecodeData.prime != true) {
 									FrameDecodeData.prime = true;
 									FrameDecodeData.prev = null;
@@ -10495,7 +10503,7 @@ class ClientDecoder extends Decoder {
 							this.emit('decoded', {
 								type: 2,
 								nsp: '/',
-								data: [ct.packet.case, ct.packet.value]
+								data: [subPacket.packet.case, subPacket.packet.value]
 							});
 						});
 					} else {
@@ -10520,11 +10528,11 @@ class ClientDecoder extends Decoder {
 					this.emit('decoded', {
 						type: eventType,
 						nsp: '/',
-						data: decode(nt)
+						data: decode(data)
 					});
 				}
-			} catch (et) {
-				console.error('ClientDecoder.add', et);
+			} catch (err) {
+				console.error('ClientDecoder.add', err);
 			}
 		});
 	}
@@ -10545,21 +10553,7 @@ function generateAuthSeed() {
 
 const frameB64 = `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IlVuYnJlYWthYmxlIjp0cnVlfSgAChBqDgiDAhIJCAYQAyVSuP4/ChxyGgjrDBIJCN4MEIAeGIwSJQAAbEItAAAgwTABChSCAREIkA0SBggAEAAYACASKA0wAAoVggESCOELEgYIDxAAGBIgxwEoFzABCg1qCwicDRIGCAAQAhgQChCCAQ0IxQ0SBggIEAAYBjABCheSARQIyA0SDw21qJq/FTSFBz8dhggxPwoL+gIICIMCFVK4/j8KC/oCCAibCS0AAIpDCgdSBQicDRgBCheSARQIlRgSDw0lY2o9FRps6j0dxHKkvAoMggEJCO4OIAYoNTABChSCAREIuhMSBggAEAAYACB1KA4wAAoVggESCOgJEgYICBAAGBMg9gsoADABChCCAQ0IswcSBggAEA0YADAACgv6AggIswctAACVQwoHUgUImwkgAAoHUgUIuhEgAQoKGggIABA6GBQgagojwgIgCglkaWcuc3RvbmUSCQjYAxCoARjYBh0AAIA/JQAAgD8KF4IBFAiL/scxEgYINRAAGA0giAEoCDAACg+CAQwIkt7XMSCrASgYMAAKCVIHCIv+xzEgAQoXggEUCJrG1zESBggCEAAYGCCeXygAMAEKEIIBDQibCRIGCAQQABgIMAEKDWoLCJsJEgYIABACGBAKDYIBCgjoCSCODigJMAEKEIIBDQjPAxIGCAEQABgHMAEKFIIBEQjbDBIGCAAQABgAIAooCzAAChWCARII6AISBggZEAAYByDgDChFMAEKEIIBDQjrDBIGCAIQABgKMAEKC/oCCAizBy0AAEFDCgdSBQibCRgBCgv6AggI6wwtAAAIQwokwgIhCgpyYW5kb20ucG9wEgkIgwQQ1gcYkAMdzcxMPiVOHTZACgmyBAYI3Q0Q9gkKBUIDCN0NChCCAQ0InA0SBggKEAAYGDABChSCAREItg0SBggAEAAYACAPKDowAAoVggESCMUNEgYICRAEGCog2gMoIzAACgdSBQibCSAACgvKAwgIrKwBEKysAQoUggERCD4SBggAEAAYCCD5ASgHMAEKDGoKCD4SBggAEAIYEAoGUgQIPhgBCguCAQgIRSBMKBUwAAoVggESCPgNEgYIABAAGAsgqgEoAjABCiHKAh4I4tHVCRASGgsI378OEMAjGN+XCiVnvqVALQAAAAAKa2ppCOLR1QkSBggA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`,
 	frameKey = `d90f920f3a399b27`;
-function decodeFrameBuffer(e) {
-	try {
-		if (typeof atob == `function`) {
-			let t = atob(e),
-				n = new Uint8Array(t.length);
-			for (let e = 0; e < t.length; e++) n[e] = t.charCodeAt(e);
-			return n;
-		}
-		let t = globalThis.Buffer;
-		if (t) return new Uint8Array(t.from(e, `base64`));
-	} catch {}
-	return new Uint8Array();
-}
-
-const frameBuffer = decodeFrameBuffer(frameB64);
+const frameBuffer = new Uint8Array(Buffer.from(frameB64, `base64`));
 
 exports.ClientSocket = class {
 	static setUrl(_, $) {
@@ -10600,29 +10594,30 @@ exports.ClientSocket = class {
 		}),
 			this.socket.connect());
 	}
-	static disconnect(_) {
-		if (((this.disconnectMessage = _), !this.socket)) {
+	static disconnect(kickMessage) {
+		if (((this.disconnectMessage = kickMessage), !this.socket)) {
 			console.error('CSocket.disconnect: socket is null');
 			return;
 		}
 		this.socket.disconnect();
 	}
-	static once(_, $) {
-		this.socket.once(_, $);
+	static once(event, callback) {
+		this.socket.once(event, callback);
 	}
-	static on(_, $) {
-		let et = !0;
-		const tt = (...rt) => {
+	static on(event, callback) {
+		let failed = !0;
+		const iife = (...args) => {
 			try {
-				$.apply(null, rt);
-			} catch (nt) {
-				if (et) throw ((et = !1), nt);
+				callback.apply(null, args);
+			} catch (err) {
+				if (failed) throw ((failed = !1), err);
 			}
 		};
-		this.socket.on(_, tt);
+
+		this.socket.on(event, iife);
 	}
-	static sendPacket(_) {
-		var $;
-		($ = this.socket) == null || $.emit(_.constructor.typeName, _);
+	static sendPacket(packet) {
+		var socket;
+		(socket = this.socket) == null || socket.emit(packet.constructor.typeName, packet);
 	}
 };
