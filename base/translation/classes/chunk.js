@@ -1,5 +1,5 @@
 module.exports = class ProxyChunk {
-	isLoaded = false
+	isLoaded = false;
 	constructor(x, z, data) {
 		this.x = x;
 		this.z = z;

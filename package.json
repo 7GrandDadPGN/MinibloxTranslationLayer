@@ -12,7 +12,7 @@
     "url": "git+https://github.com/7GrandDadPGN/MinibloxTranslationLayer.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier --ignore-path ./.gitignore --write \"./**/*.js\""
   },
   "author": "7GrandDad",
   "license": "AGPL-3.0-or-later",
@@ -29,5 +29,8 @@
   },
   "overrides": {
     "minecraft-data": "3.85.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
   }
 }

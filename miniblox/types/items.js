@@ -20,14 +20,14 @@ module.exports[65] = mcData.itemsByName.iron_block.id;
 module.exports[67] = mcData.itemsByName.gold_block.id;
 for (let i = 0; i < 2; i++) module.exports[68 + i] = mcData.itemsByName.diamond_block.id;
 for (let i = 0; i < 4; i++) {
-    module.exports[101 + i] = [mcData.itemsByName.log.id, i];
-    module.exports[109 + i] = [mcData.itemsByName.log.id, i];
-    module.exports[125 + i] = [mcData.itemsByName.log.id, i];
+	module.exports[101 + i] = [mcData.itemsByName.log.id, i];
+	module.exports[109 + i] = [mcData.itemsByName.log.id, i];
+	module.exports[125 + i] = [mcData.itemsByName.log.id, i];
 }
 for (let i = 0; i < 2; i++) {
-    module.exports[105 + i] = [mcData.itemsByName.log2.id, i];
-    module.exports[113 + i] = [mcData.itemsByName.log2.id, i];
-    module.exports[129 + i] = [mcData.itemsByName.log2.id, i];
+	module.exports[105 + i] = [mcData.itemsByName.log2.id, i];
+	module.exports[113 + i] = [mcData.itemsByName.log2.id, i];
+	module.exports[129 + i] = [mcData.itemsByName.log2.id, i];
 }
 for (let i = 0; i < 2; i++) module.exports[141 + i] = [mcData.itemsByName.sponge.id, i];
 module.exports[143] = mcData.itemsByName.glass.id;

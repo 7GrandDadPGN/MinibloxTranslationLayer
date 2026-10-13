@@ -62,13 +62,12 @@ const C_BLACKLIST = [
 
 class Interop extends Handler {
 	/**
-	 * 
+	 *
 	 * @param {string} pkt name of the packet
 	 * @param {import('../../types/proto').Message} msg packet data
 	 */
 	static handleSocketPacket(pkt, msg) {
-		if (C_BLACKLIST.includes(pkt))
-			return;
+		if (C_BLACKLIST.includes(pkt)) return;
 
 		const data = writeReceivePacket(pkt, msg);
 		// the packet was so long that it exceeded the limit (32767). I remember this limit occurring when it tried to send me some terrain
@@ -84,12 +83,12 @@ class Interop extends Handler {
 	}
 	miniblox() {
 		if (!SEND_RECV_PACKET_PAYLOAD) return;
-		ClientSocket.socket.onAny(Interop.handleSocketPacket)
+		ClientSocket.socket.onAny(Interop.handleSocketPacket);
 	}
 	/** @param {import('minecraft-protocol').ServerClient} client */
 	minecraft(client) {
 		mcClient = client;
-		client.on('custom_payload', packet => {
+		client.on('custom_payload', (packet) => {
 			/** @type {string} */
 			const channel = packet.channel;
 

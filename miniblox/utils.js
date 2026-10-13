@@ -6,11 +6,7 @@ const mcData = require('minecraft-data')('1.8.9');
 function colorDistance(color1, color2) {
 	const rgb1 = hexToRgb(color1);
 	const rgb2 = hexToRgb(color2);
-	return Math.sqrt(
-		Math.pow(rgb1.r - rgb2.r, 2) +
-		Math.pow(rgb1.g - rgb2.g, 2) +
-		Math.pow(rgb1.b - rgb2.b, 2)
-	);
+	return Math.sqrt(Math.pow(rgb1.r - rgb2.r, 2) + Math.pow(rgb1.g - rgb2.g, 2) + Math.pow(rgb1.b - rgb2.b, 2));
 }
 
 function findClosestColor(hex) {
@@ -42,7 +38,10 @@ function translateItem(item) {
 		if (parsed.ench) {
 			let enchants = [];
 			for (const ench of parsed.ench) {
-				enchants.push({lvl: {type: 'short', value: ench.lvl}, id: {type: 'short', value: ench.id}});
+				enchants.push({
+					lvl: { type: 'short', value: ench.lvl },
+					id: { type: 'short', value: ench.id }
+				});
 			}
 
 			data = {
@@ -82,12 +81,14 @@ function translateItem(item) {
 		}
 	}
 
-	return item.present ? {
-		blockId: typeof itemData == 'number' ? itemData : itemData[0],
-		itemCount: Math.min(Math.max(item.stackSize, -128), 127),
-		itemDamage: (typeof itemData == 'number' ? item.durability : itemData[1]),
-		nbtData: data
-	} : {blockId: -1}
+	return item.present
+		? {
+				blockId: typeof itemData == 'number' ? itemData : itemData[0],
+				itemCount: Math.min(Math.max(item.stackSize, -128), 127),
+				itemDamage: typeof itemData == 'number' ? item.durability : itemData[1],
+				nbtData: data
+			}
+		: { blockId: -1 };
 }
 
 function translateItemBack(item) {
@@ -102,25 +103,32 @@ function translateItemBack(item) {
 	}
 
 	if (item.nbtData && item.nbtData.value.ench) {
-		data = {ench: []};
+		data = { ench: [] };
 		for (const ench of item.nbtData.value.ench.value.value) {
-			data.ench.push({id: ench.id.value, lvl: ench.lvl.value});
+			data.ench.push({ id: ench.id.value, lvl: ench.lvl.value });
 		}
 		data = JSON.stringify(data);
 	}
 
-	return itemId != undefined ? new PBItemStack({
-		present: true,
-		id: itemId,
-		stackSize: item.itemCount,
-		durability: Math.floor(item.itemDamage),
-		data: data
-	}) : new PBItemStack({present: false});
+	return itemId != undefined
+		? new PBItemStack({
+				present: true,
+				id: itemId,
+				stackSize: item.itemCount,
+				durability: Math.floor(item.itemDamage),
+				data: data
+			})
+		: new PBItemStack({ present: false });
 }
 
 function translateText(text) {
 	for (const [code, color] of Object.entries(COLOR_CODES)) text = text.replaceAll(code, `\u00a7${color}`);
-	return text.replaceAll(COLOR_REGEX, (match) => `\u00a7${findClosestColor(match.replaceAll('\\',''))}`);
+	return text.replaceAll(COLOR_REGEX, (match) => `\u00a7${findClosestColor(match.replaceAll('\\', ''))}`);
 }
 
-module.exports = { translateItem, translateItemBack, translateText, LEVEL_TO_COLOUR };
+module.exports = {
+	translateItem,
+	translateItemBack,
+	translateText,
+	LEVEL_TO_COLOUR
+};

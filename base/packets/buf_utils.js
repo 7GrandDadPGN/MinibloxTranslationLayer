@@ -12,7 +12,7 @@ function readVarInt(buffer, offset = 0) {
 
 	while (true) {
 		currentByte = buffer.at(offset + length);
-		value |= (currentByte & 0x7F) << (length * 7);
+		value |= (currentByte & 0x7f) << (length * 7);
 		length += 1;
 		if (length > 5) {
 			throw new Error('VarInt exceeds allowed bounds.');
@@ -23,14 +23,14 @@ function readVarInt(buffer, offset = 0) {
 }
 
 /**
- * @param {Buffer} buffer 
+ * @param {Buffer} buffer
  * @param {number} value
  * @param {number} offset
  * @returns {number} The new offset after writing the VarInt
  */
 function writeVarInt(buffer, offset, value) {
-	while ((value & 0xFFFFFF80) !== 0) {
-		buffer.writeUInt8((value & 0x7F) | 0x80, offset++);
+	while ((value & 0xffffff80) !== 0) {
+		buffer.writeUInt8((value & 0x7f) | 0x80, offset++);
 		value >>>= 7;
 	}
 	buffer.writeUInt8(value, offset++);
@@ -45,9 +45,9 @@ function readString(buffer, offset = 0) {
 }
 
 /**
- * @param {Buffer} buffer 
- * @param {number} offset 
- * @param {string} string 
+ * @param {Buffer} buffer
+ * @param {number} offset
+ * @param {string} string
  * @returns {number} new offset to write other stuff at
  * @example ```js
  * const str = "Pet my cat, now!";
@@ -70,6 +70,8 @@ function writeString(buffer, offset = 0, string) {
 }
 
 module.exports = {
-	readVarInt, writeVarInt,
-	readString, writeString
+	readVarInt,
+	writeVarInt,
+	readString,
+	writeString
 };

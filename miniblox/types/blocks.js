@@ -1,5 +1,6 @@
 const mcData = require('minecraft-data')('1.8.9');
-let BLOCKS = {}, BLOCK_ID = {};
+let BLOCKS = {},
+	BLOCK_ID = {};
 
 function createStair(start, id) {
 	for (let i = 0; i < 10; i++) {
@@ -98,20 +99,20 @@ for (let i = 0; i < 2; i++) BLOCKS[71 + i] = mcData.blocksByName.iron_ore.id;
 for (let i = 0; i < 2; i++) BLOCKS[73 + i] = mcData.blocksByName.coal_ore.id;
 BLOCKS[75] = mcData.blocksByName.gold_ore.id;
 for (let i = 0; i < 5; i++) {
-	BLOCKS[76 + (i * 3)] = [mcData.blocksByName.log.id, (i % 4) + 4];
-	BLOCKS[76 + (i * 3) + 1] = [mcData.blocksByName.log.id, (i % 4)];
-	BLOCKS[76 + (i * 3) + 2] = [mcData.blocksByName.log.id, (i % 4) + 8];
-	BLOCKS[112 + (i * 3)] = [mcData.blocksByName.log.id, (i % 4) + 12];
-	BLOCKS[112 + (i * 3) + 1] = [mcData.blocksByName.log.id, (i % 4) + 12];
-	BLOCKS[112 + (i * 3) + 2] = [mcData.blocksByName.log.id, (i % 4) + 12];
+	BLOCKS[76 + i * 3] = [mcData.blocksByName.log.id, (i % 4) + 4];
+	BLOCKS[76 + i * 3 + 1] = [mcData.blocksByName.log.id, i % 4];
+	BLOCKS[76 + i * 3 + 2] = [mcData.blocksByName.log.id, (i % 4) + 8];
+	BLOCKS[112 + i * 3] = [mcData.blocksByName.log.id, (i % 4) + 12];
+	BLOCKS[112 + i * 3 + 1] = [mcData.blocksByName.log.id, (i % 4) + 12];
+	BLOCKS[112 + i * 3 + 2] = [mcData.blocksByName.log.id, (i % 4) + 12];
 }
 for (let i = 0; i < 2; i++) {
-	BLOCKS[88 + (i * 3)] = [mcData.blocksByName.log2.id, (i % 4) + 4];
-	BLOCKS[88 + (i * 3) + 1] = [mcData.blocksByName.log2.id, (i % 4)];
-	BLOCKS[88 + (i * 3) + 2] = [mcData.blocksByName.log2.id, (i % 4) + 8];
-	BLOCKS[124 + (i * 3)] = [mcData.blocksByName.log2.id, (i % 4) + 4];
-	BLOCKS[124 + (i * 3) + 1] = [mcData.blocksByName.log2.id, (i % 4)];
-	BLOCKS[124 + (i * 3) + 2] = [mcData.blocksByName.log2.id, (i % 4) + 8];
+	BLOCKS[88 + i * 3] = [mcData.blocksByName.log2.id, (i % 4) + 4];
+	BLOCKS[88 + i * 3 + 1] = [mcData.blocksByName.log2.id, i % 4];
+	BLOCKS[88 + i * 3 + 2] = [mcData.blocksByName.log2.id, (i % 4) + 8];
+	BLOCKS[124 + i * 3] = [mcData.blocksByName.log2.id, (i % 4) + 4];
+	BLOCKS[124 + i * 3 + 1] = [mcData.blocksByName.log2.id, i % 4];
+	BLOCKS[124 + i * 3 + 2] = [mcData.blocksByName.log2.id, (i % 4) + 8];
 }
 for (let i = 0; i < 112; i++) BLOCKS[148 + i] = [mcData.blocksByName.leaves.id, Math.floor(i / 14) % 4];
 for (let i = 0; i < 2; i++) BLOCKS[260 + i] = [mcData.blocksByName.sponge.id, i];
@@ -322,8 +323,16 @@ BLOCKS[8134] = mcData.blocksByName.packed_ice.id;
 for (let i = 0; i < 12; i++) BLOCKS[8135 + i] = [mcData.blocksByName.double_plant.id, i];
 for (let i = 0; i < 3; i++) BLOCKS[8467 + i] = [mcData.blocksByName.red_sandstone.id, i];
 createStair(8470, mcData.blocksByName.red_sandstone_stairs.id);
-for (let i = 0; i < 36; i += 6) createSlab(8550 + i, mcData.blocksByName.wooden_slab.id, [mcData.blocksByName.double_wooden_slab.id, Math.floor(i / 6) % 6]);
-for (let i = 0; i < 78; i += 6) createSlab(8586 + i, mcData.blocksByName.stone_slab.id, [mcData.blocksByName.double_stone_slab.id, Math.floor(i / 8) % 8]);
+for (let i = 0; i < 36; i += 6)
+	createSlab(8550 + i, mcData.blocksByName.wooden_slab.id, [
+		mcData.blocksByName.double_wooden_slab.id,
+		Math.floor(i / 6) % 6
+	]);
+for (let i = 0; i < 78; i += 6)
+	createSlab(8586 + i, mcData.blocksByName.stone_slab.id, [
+		mcData.blocksByName.double_stone_slab.id,
+		Math.floor(i / 8) % 8
+	]);
 BLOCKS[8664] = mcData.blocksByName.stone.id;
 BLOCKS[8665] = mcData.blocksByName.sandstone.id;
 for (let i = 0; i < 2; i++) BLOCKS[8666 + i] = mcData.blocksByName.red_sandstone.id;

@@ -1,28 +1,36 @@
-const io = require("socket.io-client");
-const brotli = require("brotli");
-const { Decoder, protocol } = require("socket.io-msgpack-parser");
-const { encode, decode } = require("@msgpack/msgpack");
-const { Inflate } = require("pako");
-const { Message, proto2, proto3 } = require("./types/proto.js");
-const { GAME_CONSTANTS, USER_AGENT } = require("./types/constants.js");
+const io = require('socket.io-client');
+const brotli = require('brotli');
+const { Decoder, protocol } = require('socket.io-msgpack-parser');
+const { encode, decode } = require('@msgpack/msgpack');
+const { Inflate } = require('pako');
+const { Message, proto2, proto3 } = require('./types/proto.js');
+const { GAME_CONSTANTS, USER_AGENT } = require('./types/constants.js');
 
 var yT = Object.defineProperty;
-var xT = (j, _, $) => _ in j ? yT(j, _, {
-	enumerable: !0,
-	configurable: !0,
-	writable: !0,
-	value: $
-}) : j[_] = $;
-var ST = (j, _) => () => (_ || j((_ = {
-	exports: {}
-}).exports, _),
-	_.exports);
-var ut = (j, _, $) => (xT(j, typeof _ != "symbol" ? _ + "" : _, $),
-	$);
+var xT = (j, _, $) =>
+	_ in j
+		? yT(j, _, {
+				enumerable: !0,
+				configurable: !0,
+				writable: !0,
+				value: $
+			})
+		: (j[_] = $);
+var ST = (j, _) => () => (
+	_ ||
+		j(
+			(_ = {
+				exports: {}
+			}).exports,
+			_
+		),
+	_.exports
+);
+var ut = (j, _, $) => (xT(j, typeof _ != 'symbol' ? _ + '' : _, $), $);
 
 class SPacketLoginStart extends Message {
 	constructor(SPacketLoginStart) {
-		super(), proto2.util.initPartial(SPacketLoginStart, this);
+		(super(), proto2.util.initPartial(SPacketLoginStart, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -31,47 +39,55 @@ class SPacketLoginStart extends Message {
 		this.typeName = `SPacketLoginStart`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `session`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 2,
-			name: `hydration`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `metrics_id`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 4,
-			name: `requested_uuid`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 5,
-			name: `client_version`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 6,
-			name: `language`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 7,
-			name: `prefetch`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `session`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `hydration`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `metrics_id`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 4,
+				name: `requested_uuid`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `client_version`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 6,
+				name: `language`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `prefetch`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketLoginStart().fromBinary(t, n);
@@ -85,11 +101,11 @@ class SPacketLoginStart extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketLoginStart, t, n);
 	}
-};
+}
 exports.SPacketLoginStart = SPacketLoginStart;
 class PBItemStack extends Message {
 	constructor(PBItemStack) {
-		super(), proto2.util.initPartial(PBItemStack, this);
+		(super(), proto2.util.initPartial(PBItemStack, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -98,36 +114,42 @@ class PBItemStack extends Message {
 		this.typeName = `PBItemStack`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `present`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 2,
-			name: `id`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 3,
-			name: `stackSize`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 5,
-			name: `durability`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 4,
-			name: `data`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `present`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 2,
+				name: `id`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `stackSize`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `durability`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `data`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBItemStack().fromBinary(t, n);
@@ -141,11 +163,11 @@ class PBItemStack extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBItemStack, t, n);
 	}
-};
+}
 exports.PBItemStack = PBItemStack;
 class PBBlockPos extends Message {
 	constructor(PBBlockPos) {
-		super(), proto2.util.initPartial(PBBlockPos, this);
+		(super(), proto2.util.initPartial(PBBlockPos, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -154,22 +176,26 @@ class PBBlockPos extends Message {
 		this.typeName = `PBBlockPos`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 17
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 17
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBBlockPos().fromBinary(t, n);
@@ -183,11 +209,11 @@ class PBBlockPos extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBBlockPos, t, n);
 	}
-};
+}
 exports.PBBlockPos = PBBlockPos;
 class PBVector3 extends Message {
 	constructor(PBVector3) {
-		super(), proto2.util.initPartial(PBVector3, this);
+		(super(), proto2.util.initPartial(PBVector3, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -196,22 +222,26 @@ class PBVector3 extends Message {
 		this.typeName = `PBVector3`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 17
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 17
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBVector3().fromBinary(t, n);
@@ -225,11 +255,11 @@ class PBVector3 extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBVector3, t, n);
 	}
-};
+}
 exports.PBVector3 = PBVector3;
 class PBFloatVector3 extends Message {
 	constructor(PBFloatVector3) {
-		super(), proto2.util.initPartial(PBFloatVector3, this);
+		(super(), proto2.util.initPartial(PBFloatVector3, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -238,22 +268,26 @@ class PBFloatVector3 extends Message {
 		this.typeName = `PBFloatVector3`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 2
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 2
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBFloatVector3().fromBinary(t, n);
@@ -267,11 +301,11 @@ class PBFloatVector3 extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBFloatVector3, t, n);
 	}
-};
+}
 exports.PBFloatVector3 = PBFloatVector3;
 class CPacketEntityVelocity extends Message {
 	constructor(CPacketEntityVelocity) {
-		super(), proto2.util.initPartial(CPacketEntityVelocity, this);
+		(super(), proto2.util.initPartial(CPacketEntityVelocity, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -280,17 +314,20 @@ class CPacketEntityVelocity extends Message {
 		this.typeName = `CPacketEntityVelocity`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `motion`,
-			kind: `message`,
-			T: PBFloatVector3
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `motion`,
+				kind: `message`,
+				T: PBFloatVector3
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityVelocity().fromBinary(t, n);
@@ -304,11 +341,19 @@ class CPacketEntityVelocity extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityVelocity, t, n);
 	}
-};
+}
 exports.CPacketEntityVelocity = CPacketEntityVelocity;
 class CPacketChunkData extends Message {
 	constructor(CPacketChunkData) {
-		super(), this.x = 0, this.z = 0, this.cells = [], this.tileEntities = [], this.dimension = 0, this.biomes = [], this.hash = ``, proto2.util.initPartial(CPacketChunkData, this);
+		(super(),
+			(this.x = 0),
+			(this.z = 0),
+			(this.cells = []),
+			(this.tileEntities = []),
+			(this.dimension = 0),
+			(this.biomes = []),
+			(this.hash = ``),
+			proto2.util.initPartial(CPacketChunkData, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -317,45 +362,53 @@ class CPacketChunkData extends Message {
 		this.typeName = `CPacketChunkData`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 2,
-			name: `z`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 3,
-			name: `cells`,
-			kind: `message`,
-			T: PBCell,
-			repeated: !0
-		}, {
-			no: 4,
-			name: `tileEntities`,
-			kind: `message`,
-			T: PBTileEntity,
-			repeated: !0
-		}, {
-			no: 5,
-			name: `dimension`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 6,
-			name: `biomes`,
-			kind: `scalar`,
-			T: 13,
-			repeated: !0
-		}, {
-			no: 7,
-			name: `hash`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 2,
+				name: `z`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 3,
+				name: `cells`,
+				kind: `message`,
+				T: PBCell,
+				repeated: !0
+			},
+			{
+				no: 4,
+				name: `tileEntities`,
+				kind: `message`,
+				T: PBTileEntity,
+				repeated: !0
+			},
+			{
+				no: 5,
+				name: `dimension`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 6,
+				name: `biomes`,
+				kind: `scalar`,
+				T: 13,
+				repeated: !0
+			},
+			{
+				no: 7,
+				name: `hash`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketChunkData().fromBinary(t, n);
@@ -369,11 +422,17 @@ class CPacketChunkData extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketChunkData, t, n);
 	}
-};
+}
 exports.CPacketChunkData = CPacketChunkData;
 class PBCell extends Message {
 	constructor(PBCell) {
-		super(), this.y = 0, this.bitsPerEntry = 0, this.palette = [], this.bitArray = new Uint8Array(), this.blockRefCount = 0, proto2.util.initPartial(PBCell, this);
+		(super(),
+			(this.y = 0),
+			(this.bitsPerEntry = 0),
+			(this.palette = []),
+			(this.bitArray = new Uint8Array()),
+			(this.blockRefCount = 0),
+			proto2.util.initPartial(PBCell, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -382,33 +441,39 @@ class PBCell extends Message {
 		this.typeName = `PBCell`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 7,
-			name: `y`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `bitsPerEntry`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `palette`,
-			kind: `scalar`,
-			T: 13,
-			repeated: !0
-		}, {
-			no: 6,
-			name: `bitArray`,
-			kind: `scalar`,
-			T: 12
-		}, {
-			no: 5,
-			name: `blockRefCount`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 7,
+				name: `y`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `bitsPerEntry`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `palette`,
+				kind: `scalar`,
+				T: 13,
+				repeated: !0
+			},
+			{
+				no: 6,
+				name: `bitArray`,
+				kind: `scalar`,
+				T: 12
+			},
+			{
+				no: 5,
+				name: `blockRefCount`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBCell().fromBinary(t, n);
@@ -422,11 +487,16 @@ class PBCell extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBCell, t, n);
 	}
-};
+}
 exports.PBCell = PBCell;
 class PBTileEntity extends Message {
 	constructor(PBTileEntity) {
-		super(), this.x = 0, this.y = 0, this.z = 0, this.nbt = new Uint8Array(), proto2.util.initPartial(PBTileEntity, this);
+		(super(),
+			(this.x = 0),
+			(this.y = 0),
+			(this.z = 0),
+			(this.nbt = new Uint8Array()),
+			proto2.util.initPartial(PBTileEntity, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -435,27 +505,32 @@ class PBTileEntity extends Message {
 		this.typeName = `PBTileEntity`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 5,
-			name: `nbt`,
-			kind: `scalar`,
-			T: 12
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 5,
+				name: `nbt`,
+				kind: `scalar`,
+				T: 12
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBTileEntity().fromBinary(t, n);
@@ -469,11 +544,11 @@ class PBTileEntity extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBTileEntity, t, n);
 	}
-};
+}
 exports.PBTileEntity = PBTileEntity;
 class CPacketEntityEquipment extends Message {
 	constructor(CPacketEntityEquipment) {
-		super(), this.equipment = [], proto2.util.initPartial(CPacketEntityEquipment, this);
+		(super(), (this.equipment = []), proto2.util.initPartial(CPacketEntityEquipment, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -482,18 +557,21 @@ class CPacketEntityEquipment extends Message {
 		this.typeName = `CPacketEntityEquipment`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `equipment`,
-			kind: `message`,
-			T: Equipment,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `equipment`,
+				kind: `message`,
+				T: Equipment,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityEquipment().fromBinary(t, n);
@@ -507,43 +585,53 @@ class CPacketEntityEquipment extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityEquipment, t, n);
 	}
-};
+}
 exports.CPacketEntityEquipment = CPacketEntityEquipment;
-const ItemSlots = function (e) {
-	return e[e.UNDEFINED_SLOT = 0] = `UNDEFINED_SLOT`,
-		e[e.MAIN_HAND = 1] = `MAIN_HAND`,
-		e[e.OFF_HAND = 2] = `OFF_HAND`,
-		e[e.HELMET = 3] = `HELMET`,
-		e[e.CHESTPLATE = 4] = `CHESTPLATE`,
-		e[e.LEGGINGS = 5] = `LEGGINGS`,
-		e[e.BOOTS = 6] = `BOOTS`,
+const ItemSlots = (function (e) {
+	return (
+		(e[(e.UNDEFINED_SLOT = 0)] = `UNDEFINED_SLOT`),
+		(e[(e.MAIN_HAND = 1)] = `MAIN_HAND`),
+		(e[(e.OFF_HAND = 2)] = `OFF_HAND`),
+		(e[(e.HELMET = 3)] = `HELMET`),
+		(e[(e.CHESTPLATE = 4)] = `CHESTPLATE`),
+		(e[(e.LEGGINGS = 5)] = `LEGGINGS`),
+		(e[(e.BOOTS = 6)] = `BOOTS`),
 		e
-}({});
-proto2.util.setEnumType(ItemSlots, `Equipment.Slot`, [{
-	no: 0,
-	name: `UNDEFINED_SLOT`
-}, {
-	no: 1,
-	name: `MAIN_HAND`
-}, {
-	no: 2,
-	name: `OFF_HAND`
-}, {
-	no: 3,
-	name: `HELMET`
-}, {
-	no: 4,
-	name: `CHESTPLATE`
-}, {
-	no: 5,
-	name: `LEGGINGS`
-}, {
-	no: 6,
-	name: `BOOTS`
-}]);
+	);
+})({});
+proto2.util.setEnumType(ItemSlots, `Equipment.Slot`, [
+	{
+		no: 0,
+		name: `UNDEFINED_SLOT`
+	},
+	{
+		no: 1,
+		name: `MAIN_HAND`
+	},
+	{
+		no: 2,
+		name: `OFF_HAND`
+	},
+	{
+		no: 3,
+		name: `HELMET`
+	},
+	{
+		no: 4,
+		name: `CHESTPLATE`
+	},
+	{
+		no: 5,
+		name: `LEGGINGS`
+	},
+	{
+		no: 6,
+		name: `BOOTS`
+	}
+]);
 class Equipment extends Message {
 	constructor(Equipment) {
-		super(), proto2.util.initPartial(Equipment, this);
+		(super(), proto2.util.initPartial(Equipment, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -552,17 +640,20 @@ class Equipment extends Message {
 		this.typeName = `Equipment`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `slot`,
-			kind: `enum`,
-			T: proto2.getEnumType(ItemSlots)
-		}, {
-			no: 2,
-			name: `item`,
-			kind: `message`,
-			T: PBItemStack
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `slot`,
+				kind: `enum`,
+				T: proto2.getEnumType(ItemSlots)
+			},
+			{
+				no: 2,
+				name: `item`,
+				kind: `message`,
+				T: PBItemStack
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new Equipment().fromBinary(t, n);
@@ -576,11 +667,11 @@ class Equipment extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(Equipment, t, n);
 	}
-};
+}
 exports.Equipment = Equipment;
 class CPacketEntityEffect extends Message {
 	constructor(CPacketEntityEffect) {
-		super(), proto2.util.initPartial(CPacketEntityEffect, this);
+		(super(), proto2.util.initPartial(CPacketEntityEffect, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -589,38 +680,45 @@ class CPacketEntityEffect extends Message {
 		this.typeName = `CPacketEntityEffect`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `effectId`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `amplifier`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 4,
-			name: `duration`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 5,
-			name: `hideParticles`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 6,
-			name: `color`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `effectId`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `amplifier`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 4,
+				name: `duration`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 5,
+				name: `hideParticles`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 6,
+				name: `color`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityEffect().fromBinary(t, n);
@@ -634,11 +732,11 @@ class CPacketEntityEffect extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityEffect, t, n);
 	}
-};
+}
 exports.CPacketEntityEffect = CPacketEntityEffect;
 class CPacketRemoveEntityEffect extends Message {
 	constructor(CPacketRemoveEntityEffect) {
-		super(), proto2.util.initPartial(CPacketRemoveEntityEffect, this);
+		(super(), proto2.util.initPartial(CPacketRemoveEntityEffect, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -647,17 +745,20 @@ class CPacketRemoveEntityEffect extends Message {
 		this.typeName = `CPacketRemoveEntityEffect`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `effectId`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `effectId`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketRemoveEntityEffect().fromBinary(t, n);
@@ -671,11 +772,16 @@ class CPacketRemoveEntityEffect extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketRemoveEntityEffect, t, n);
 	}
-};
+}
 exports.CPacketRemoveEntityEffect = CPacketRemoveEntityEffect;
 class SPacketUpdateInventory extends Message {
 	constructor(SPacketUpdateInventory) {
-		super(), this.main = [], this.armor = [], this.offHand = [], this.extra = [], proto2.util.initPartial(SPacketUpdateInventory, this);
+		(super(),
+			(this.main = []),
+			(this.armor = []),
+			(this.offHand = []),
+			(this.extra = []),
+			proto2.util.initPartial(SPacketUpdateInventory, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -684,36 +790,42 @@ class SPacketUpdateInventory extends Message {
 		this.typeName = `SPacketUpdateInventory`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `main`,
-			kind: `message`,
-			T: PBItemStack,
-			repeated: !0
-		}, {
-			no: 2,
-			name: `armor`,
-			kind: `message`,
-			T: PBItemStack,
-			repeated: !0
-		}, {
-			no: 3,
-			name: `idkWhatThisIs`,
-			kind: `message`,
-			T: PBItemStack
-		}, {
-			no: 4,
-			name: `offHand`,
-			kind: `message`,
-			T: PBItemStack,
-			repeated: !0
-		}, {
-			no: 5,
-			name: `extra`,
-			kind: `message`,
-			T: PBItemStack,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `main`,
+				kind: `message`,
+				T: PBItemStack,
+				repeated: !0
+			},
+			{
+				no: 2,
+				name: `armor`,
+				kind: `message`,
+				T: PBItemStack,
+				repeated: !0
+			},
+			{
+				no: 3,
+				name: `idkWhatThisIs`,
+				kind: `message`,
+				T: PBItemStack
+			},
+			{
+				no: 4,
+				name: `offHand`,
+				kind: `message`,
+				T: PBItemStack,
+				repeated: !0
+			},
+			{
+				no: 5,
+				name: `extra`,
+				kind: `message`,
+				T: PBItemStack,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketUpdateInventory().fromBinary(t, n);
@@ -727,11 +839,11 @@ class SPacketUpdateInventory extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketUpdateInventory, t, n);
 	}
-};
+}
 exports.SPacketUpdateInventory = SPacketUpdateInventory;
 class CPacketUpdatePlayerHead extends Message {
 	constructor(CPacketUpdatePlayerHead) {
-		super(), proto2.util.initPartial(CPacketUpdatePlayerHead, this);
+		(super(), proto2.util.initPartial(CPacketUpdatePlayerHead, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -740,17 +852,20 @@ class CPacketUpdatePlayerHead extends Message {
 		this.typeName = `CPacketUpdatePlayerHead`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `owner`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `owner`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdatePlayerHead().fromBinary(t, n);
@@ -764,11 +879,11 @@ class CPacketUpdatePlayerHead extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdatePlayerHead, t, n);
 	}
-};
+}
 exports.CPacketUpdatePlayerHead = CPacketUpdatePlayerHead;
 class CPacketUpdateSign extends Message {
 	constructor(CPacketUpdateSign) {
-		super(), this.lines = [], proto2.util.initPartial(CPacketUpdateSign, this);
+		(super(), (this.lines = []), proto2.util.initPartial(CPacketUpdateSign, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -777,18 +892,21 @@ class CPacketUpdateSign extends Message {
 		this.typeName = `CPacketUpdateSign`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `lines`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `lines`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdateSign().fromBinary(t, n);
@@ -802,11 +920,11 @@ class CPacketUpdateSign extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdateSign, t, n);
 	}
-};
+}
 exports.CPacketUpdateSign = CPacketUpdateSign;
 class PBTradeOffer extends Message {
 	constructor(PBTradeOffer) {
-		super(), proto2.util.initPartial(PBTradeOffer, this);
+		(super(), proto2.util.initPartial(PBTradeOffer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -815,33 +933,39 @@ class PBTradeOffer extends Message {
 		this.typeName = `PBTradeOffer`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `buy1`,
-			kind: `message`,
-			T: PBItemStack
-		}, {
-			no: 2,
-			name: `buy2`,
-			kind: `message`,
-			T: PBItemStack,
-			opt: !0
-		}, {
-			no: 3,
-			name: `sell`,
-			kind: `message`,
-			T: PBItemStack
-		}, {
-			no: 4,
-			name: `uses`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 5,
-			name: `maxUses`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `buy1`,
+				kind: `message`,
+				T: PBItemStack
+			},
+			{
+				no: 2,
+				name: `buy2`,
+				kind: `message`,
+				T: PBItemStack,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `sell`,
+				kind: `message`,
+				T: PBItemStack
+			},
+			{
+				no: 4,
+				name: `uses`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 5,
+				name: `maxUses`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBTradeOffer().fromBinary(t, n);
@@ -855,11 +979,11 @@ class PBTradeOffer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBTradeOffer, t, n);
 	}
-};
+}
 exports.PBTradeOffer = PBTradeOffer;
 class CPacketTradeList extends Message {
 	constructor(CPacketTradeList) {
-		super(), this.trades = [], proto2.util.initPartial(CPacketTradeList, this);
+		(super(), (this.trades = []), proto2.util.initPartial(CPacketTradeList, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -868,18 +992,21 @@ class CPacketTradeList extends Message {
 		this.typeName = `CPacketTradeList`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `trades`,
-			kind: `message`,
-			T: PBTradeOffer,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `trades`,
+				kind: `message`,
+				T: PBTradeOffer,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketTradeList().fromBinary(t, n);
@@ -893,11 +1020,11 @@ class CPacketTradeList extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketTradeList, t, n);
 	}
-};
+}
 exports.CPacketTradeList = CPacketTradeList;
 class CPacketUpdateCommandBlock extends Message {
 	constructor(CPacketUpdateCommandBlock) {
-		super(), this.commands = [], proto2.util.initPartial(CPacketUpdateCommandBlock, this);
+		(super(), (this.commands = []), proto2.util.initPartial(CPacketUpdateCommandBlock, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -906,30 +1033,35 @@ class CPacketUpdateCommandBlock extends Message {
 		this.typeName = `CPacketUpdateCommandBlock`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `command`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `commands`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}, {
-			no: 4,
-			name: `repeat`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `command`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `commands`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			},
+			{
+				no: 4,
+				name: `repeat`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdateCommandBlock().fromBinary(t, n);
@@ -943,11 +1075,11 @@ class CPacketUpdateCommandBlock extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdateCommandBlock, t, n);
 	}
-};
+}
 exports.CPacketUpdateCommandBlock = CPacketUpdateCommandBlock;
 class SPacketEntityAction extends Message {
 	constructor(SPacketEntityAction) {
-		super(), this.abilityChannels = [], proto2.util.initPartial(SPacketEntityAction, this);
+		(super(), (this.abilityChannels = []), proto2.util.initPartial(SPacketEntityAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -956,60 +1088,70 @@ class SPacketEntityAction extends Message {
 		this.typeName = `SPacketEntityAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `sneak`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 3,
-			name: `sprinting`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 4,
-			name: `punching`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 5,
-			name: `moveStrafe`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 6,
-			name: `moveForward`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 20,
-			name: `fire`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 21,
-			name: `stopSleeping`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 24,
-			name: `ability_channels`,
-			kind: `message`,
-			T: PBAbilityChannel,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `sneak`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `sprinting`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `punching`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `moveStrafe`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `moveForward`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 20,
+				name: `fire`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 21,
+				name: `stopSleeping`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 24,
+				name: `ability_channels`,
+				kind: `message`,
+				T: PBAbilityChannel,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketEntityAction().fromBinary(t, n);
@@ -1023,11 +1165,11 @@ class SPacketEntityAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketEntityAction, t, n);
 	}
-};
+}
 exports.SPacketEntityAction = SPacketEntityAction;
 class PBAbilityChannel extends Message {
 	constructor(PBAbilityChannel) {
-		super(), proto2.util.initPartial(PBAbilityChannel, this);
+		(super(), proto2.util.initPartial(PBAbilityChannel, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1036,17 +1178,20 @@ class PBAbilityChannel extends Message {
 		this.typeName = `PBAbilityChannel`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `key`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `value`,
-			kind: `scalar`,
-			T: 8
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `key`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `value`,
+				kind: `scalar`,
+				T: 8
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBAbilityChannel().fromBinary(t, n);
@@ -1060,11 +1205,11 @@ class PBAbilityChannel extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBAbilityChannel, t, n);
 	}
-};
+}
 exports.PBAbilityChannel = PBAbilityChannel;
 class SPacketQueueNext extends Message {
 	constructor(SPacketQueueNext) {
-		super(), proto2.util.initPartial(SPacketQueueNext, this);
+		(super(), proto2.util.initPartial(SPacketQueueNext, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1087,11 +1232,11 @@ class SPacketQueueNext extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketQueueNext, t, n);
 	}
-};
+}
 exports.SPacketQueueNext = SPacketQueueNext;
 class SPacketBreakBlock extends Message {
 	constructor(SPacketBreakBlock) {
-		super(), proto2.util.initPartial(SPacketBreakBlock, this);
+		(super(), proto2.util.initPartial(SPacketBreakBlock, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1100,18 +1245,21 @@ class SPacketBreakBlock extends Message {
 		this.typeName = `SPacketBreakBlock`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `location`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `start`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `location`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `start`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketBreakBlock().fromBinary(t, n);
@@ -1125,11 +1273,11 @@ class SPacketBreakBlock extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketBreakBlock, t, n);
 	}
-};
+}
 exports.SPacketBreakBlock = SPacketBreakBlock;
 class SPacketClick extends Message {
 	constructor(SPacketClick) {
-		super(), proto2.util.initPartial(SPacketClick, this);
+		(super(), proto2.util.initPartial(SPacketClick, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1138,13 +1286,15 @@ class SPacketClick extends Message {
 		this.typeName = `SPacketClick`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `location`,
-			kind: `message`,
-			T: PBBlockPos,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `location`,
+				kind: `message`,
+				T: PBBlockPos,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketClick().fromBinary(t, n);
@@ -1158,45 +1308,55 @@ class SPacketClick extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketClick, t, n);
 	}
-};
+}
 exports.SPacketClick = SPacketClick;
 
-const EnumFace = function (e) {
-	return e[e.UNDEFINED_FACE = 0] = `UNDEFINED_FACE`,
-		e[e.DOWN = 1] = `DOWN`,
-		e[e.UP = 2] = `UP`,
-		e[e.NORTH = 3] = `NORTH`,
-		e[e.SOUTH = 4] = `SOUTH`,
-		e[e.WEST = 5] = `WEST`,
-		e[e.EAST = 6] = `EAST`,
+const EnumFace = (function (e) {
+	return (
+		(e[(e.UNDEFINED_FACE = 0)] = `UNDEFINED_FACE`),
+		(e[(e.DOWN = 1)] = `DOWN`),
+		(e[(e.UP = 2)] = `UP`),
+		(e[(e.NORTH = 3)] = `NORTH`),
+		(e[(e.SOUTH = 4)] = `SOUTH`),
+		(e[(e.WEST = 5)] = `WEST`),
+		(e[(e.EAST = 6)] = `EAST`),
 		e
-}({});
-proto2.util.setEnumType(EnumFace, `PBEnumFacing`, [{
-	no: 0,
-	name: `UNDEFINED_FACE`
-}, {
-	no: 1,
-	name: `DOWN`
-}, {
-	no: 2,
-	name: `UP`
-}, {
-	no: 3,
-	name: `NORTH`
-}, {
-	no: 4,
-	name: `SOUTH`
-}, {
-	no: 5,
-	name: `WEST`
-}, {
-	no: 6,
-	name: `EAST`
-}]);
+	);
+})({});
+proto2.util.setEnumType(EnumFace, `PBEnumFacing`, [
+	{
+		no: 0,
+		name: `UNDEFINED_FACE`
+	},
+	{
+		no: 1,
+		name: `DOWN`
+	},
+	{
+		no: 2,
+		name: `UP`
+	},
+	{
+		no: 3,
+		name: `NORTH`
+	},
+	{
+		no: 4,
+		name: `SOUTH`
+	},
+	{
+		no: 5,
+		name: `WEST`
+	},
+	{
+		no: 6,
+		name: `EAST`
+	}
+]);
 
 class SPacketPlaceBlock extends Message {
 	constructor(SPacketPlaceBlock) {
-		super(), proto2.util.initPartial(SPacketPlaceBlock, this);
+		(super(), proto2.util.initPartial(SPacketPlaceBlock, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1205,38 +1365,45 @@ class SPacketPlaceBlock extends Message {
 		this.typeName = `SPacketPlaceBlock`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `positionIn`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `side`,
-			kind: `enum`,
-			T: proto2.getEnumType(EnumFace)
-		}, {
-			no: 4,
-			name: `hitX`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 5,
-			name: `hitY`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 6,
-			name: `hitZ`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 7,
-			name: `hand`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `positionIn`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `side`,
+				kind: `enum`,
+				T: proto2.getEnumType(EnumFace)
+			},
+			{
+				no: 4,
+				name: `hitX`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 5,
+				name: `hitY`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 6,
+				name: `hitZ`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 7,
+				name: `hand`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketPlaceBlock().fromBinary(t, n);
@@ -1250,11 +1417,11 @@ class SPacketPlaceBlock extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketPlaceBlock, t, n);
 	}
-};
+}
 exports.SPacketPlaceBlock = SPacketPlaceBlock;
 class SPacketUseItem extends Message {
 	constructor(SPacketUseItem) {
-		super(), proto2.util.initPartial(SPacketUseItem, this);
+		(super(), proto2.util.initPartial(SPacketUseItem, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1263,25 +1430,29 @@ class SPacketUseItem extends Message {
 		this.typeName = `SPacketUseItem`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `initial_press`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 2,
-			name: `button`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `hand`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `initial_press`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `button`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `hand`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketUseItem().fromBinary(t, n);
@@ -1295,11 +1466,11 @@ class SPacketUseItem extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketUseItem, t, n);
 	}
-};
+}
 exports.SPacketUseItem = SPacketUseItem;
 class SPacketClickWindow extends Message {
 	constructor(SPacketClickWindow) {
-		super(), proto2.util.initPartial(SPacketClickWindow, this);
+		(super(), proto2.util.initPartial(SPacketClickWindow, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1308,37 +1479,44 @@ class SPacketClickWindow extends Message {
 		this.typeName = `SPacketClickWindow`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `slotId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 4,
-			name: `button`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 5,
-			name: `mode`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 6,
-			name: `itemStack`,
-			kind: `message`,
-			T: PBItemStack
-		}, {
-			no: 7,
-			name: `transactionId`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `slotId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 4,
+				name: `button`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 5,
+				name: `mode`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 6,
+				name: `itemStack`,
+				kind: `message`,
+				T: PBItemStack
+			},
+			{
+				no: 7,
+				name: `transactionId`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketClickWindow().fromBinary(t, n);
@@ -1352,41 +1530,50 @@ class SPacketClickWindow extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketClickWindow, t, n);
 	}
-};
+}
 exports.SPacketClickWindow = SPacketClickWindow;
 
-const BreakActionTypes = function (e) {
-	return e[e.START_DESTROY_BLOCK = 0] = `START_DESTROY_BLOCK`,
-		e[e.ABORT_DESTROY_BLOCK = 1] = `ABORT_DESTROY_BLOCK`,
-		e[e.STOP_DESTROY_BLOCK = 2] = `STOP_DESTROY_BLOCK`,
-		e[e.DROP_ALL_ITEMS = 3] = `DROP_ALL_ITEMS`,
-		e[e.DROP_ITEM = 4] = `DROP_ITEM`,
-		e[e.RELEASE_USE_ITEM = 5] = `RELEASE_USE_ITEM`,
+const BreakActionTypes = (function (e) {
+	return (
+		(e[(e.START_DESTROY_BLOCK = 0)] = `START_DESTROY_BLOCK`),
+		(e[(e.ABORT_DESTROY_BLOCK = 1)] = `ABORT_DESTROY_BLOCK`),
+		(e[(e.STOP_DESTROY_BLOCK = 2)] = `STOP_DESTROY_BLOCK`),
+		(e[(e.DROP_ALL_ITEMS = 3)] = `DROP_ALL_ITEMS`),
+		(e[(e.DROP_ITEM = 4)] = `DROP_ITEM`),
+		(e[(e.RELEASE_USE_ITEM = 5)] = `RELEASE_USE_ITEM`),
 		e
-}({});
-proto2.util.setEnumType(BreakActionTypes, `PBAction`, [{
-	no: 0,
-	name: `START_DESTROY_BLOCK`
-}, {
-	no: 1,
-	name: `ABORT_DESTROY_BLOCK`
-}, {
-	no: 2,
-	name: `STOP_DESTROY_BLOCK`
-}, {
-	no: 3,
-	name: `DROP_ALL_ITEMS`
-}, {
-	no: 4,
-	name: `DROP_ITEM`
-}, {
-	no: 5,
-	name: `RELEASE_USE_ITEM`
-}]);
+	);
+})({});
+proto2.util.setEnumType(BreakActionTypes, `PBAction`, [
+	{
+		no: 0,
+		name: `START_DESTROY_BLOCK`
+	},
+	{
+		no: 1,
+		name: `ABORT_DESTROY_BLOCK`
+	},
+	{
+		no: 2,
+		name: `STOP_DESTROY_BLOCK`
+	},
+	{
+		no: 3,
+		name: `DROP_ALL_ITEMS`
+	},
+	{
+		no: 4,
+		name: `DROP_ITEM`
+	},
+	{
+		no: 5,
+		name: `RELEASE_USE_ITEM`
+	}
+]);
 
 class SPacketPlayerAction extends Message {
 	constructor(SPacketPlayerAction) {
-		super(), proto2.util.initPartial(SPacketPlayerAction, this);
+		(super(), proto2.util.initPartial(SPacketPlayerAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1395,28 +1582,33 @@ class SPacketPlayerAction extends Message {
 		this.typeName = `SPacketPlayerAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `position`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `facing`,
-			kind: `enum`,
-			T: proto2.getEnumType(EnumFace)
-		}, {
-			no: 3,
-			name: `action`,
-			kind: `enum`,
-			T: proto2.getEnumType(BreakActionTypes)
-		}, {
-			no: 4,
-			name: `slot`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `position`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `facing`,
+				kind: `enum`,
+				T: proto2.getEnumType(EnumFace)
+			},
+			{
+				no: 3,
+				name: `action`,
+				kind: `enum`,
+				T: proto2.getEnumType(BreakActionTypes)
+			},
+			{
+				no: 4,
+				name: `slot`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketPlayerAction().fromBinary(t, n);
@@ -1430,27 +1622,33 @@ class SPacketPlayerAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketPlayerAction, t, n);
 	}
-};
+}
 exports.SPacketPlayerAction = SPacketPlayerAction;
-const UseTypes = function (e) {
-	return e[e.INTERACT = 0] = `INTERACT`,
-		e[e.ATTACK = 1] = `ATTACK`,
-		e[e.INTERACT_AT = 2] = `INTERACT_AT`,
+const UseTypes = (function (e) {
+	return (
+		(e[(e.INTERACT = 0)] = `INTERACT`),
+		(e[(e.ATTACK = 1)] = `ATTACK`),
+		(e[(e.INTERACT_AT = 2)] = `INTERACT_AT`),
 		e
-}({});
-proto2.util.setEnumType(UseTypes, `SPacketUseEntity.Action`, [{
-	no: 0,
-	name: `INTERACT`
-}, {
-	no: 1,
-	name: `ATTACK`
-}, {
-	no: 2,
-	name: `INTERACT_AT`
-}]);
+	);
+})({});
+proto2.util.setEnumType(UseTypes, `SPacketUseEntity.Action`, [
+	{
+		no: 0,
+		name: `INTERACT`
+	},
+	{
+		no: 1,
+		name: `ATTACK`
+	},
+	{
+		no: 2,
+		name: `INTERACT_AT`
+	}
+]);
 class SPacketUseEntity extends Message {
 	constructor(SPacketUseEntity) {
-		super(), proto2.util.initPartial(SPacketUseEntity, this);
+		(super(), proto2.util.initPartial(SPacketUseEntity, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1459,47 +1657,55 @@ class SPacketUseEntity extends Message {
 		this.typeName = `SPacketUseEntity`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `action`,
-			kind: `enum`,
-			T: proto2.getEnumType(UseTypes)
-		}, {
-			no: 3,
-			name: `hitVec`,
-			kind: `message`,
-			T: PBFloatVector3,
-			opt: !0
-		}, {
-			no: 4,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 5,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 6,
-			name: `sequence`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 7,
-			name: `hand`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `action`,
+				kind: `enum`,
+				T: proto2.getEnumType(UseTypes)
+			},
+			{
+				no: 3,
+				name: `hitVec`,
+				kind: `message`,
+				T: PBFloatVector3,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `sequence`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `hand`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketUseEntity().fromBinary(t, n);
@@ -1513,11 +1719,11 @@ class SPacketUseEntity extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketUseEntity, t, n);
 	}
-};
+}
 exports.SPacketUseEntity = SPacketUseEntity;
 class CPacketAnimation extends Message {
 	constructor(CPacketAnimation) {
-		super(), proto2.util.initPartial(CPacketAnimation, this);
+		(super(), proto2.util.initPartial(CPacketAnimation, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1526,17 +1732,20 @@ class CPacketAnimation extends Message {
 		this.typeName = `CPacketAnimation`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `type`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `type`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketAnimation().fromBinary(t, n);
@@ -1550,11 +1759,11 @@ class CPacketAnimation extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketAnimation, t, n);
 	}
-};
+}
 exports.CPacketAnimation = CPacketAnimation;
 class CPacketBlockAction extends Message {
 	constructor(CPacketBlockAction) {
-		super(), proto2.util.initPartial(CPacketBlockAction, this);
+		(super(), proto2.util.initPartial(CPacketBlockAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1563,27 +1772,32 @@ class CPacketBlockAction extends Message {
 		this.typeName = `CPacketBlockAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `blockPos`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `instrument`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 3,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 4,
-			name: `blockId`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `blockPos`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `instrument`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 3,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 4,
+				name: `blockId`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketBlockAction().fromBinary(t, n);
@@ -1597,11 +1811,11 @@ class CPacketBlockAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketBlockAction, t, n);
 	}
-};
+}
 exports.CPacketBlockAction = CPacketBlockAction;
 class CPacketBlockUpdate extends Message {
 	constructor(CPacketBlockUpdate) {
-		super(), proto2.util.initPartial(CPacketBlockUpdate, this);
+		(super(), proto2.util.initPartial(CPacketBlockUpdate, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1610,33 +1824,39 @@ class CPacketBlockUpdate extends Message {
 		this.typeName = `CPacketBlockUpdate`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `x`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 3,
-			name: `y`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 4,
-			name: `z`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 5,
-			name: `prerender`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `x`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 3,
+				name: `y`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 4,
+				name: `z`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 5,
+				name: `prerender`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketBlockUpdate().fromBinary(t, n);
@@ -1650,11 +1870,11 @@ class CPacketBlockUpdate extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketBlockUpdate, t, n);
 	}
-};
+}
 exports.CPacketBlockUpdate = CPacketBlockUpdate;
 class CPacketChangeServers extends Message {
 	constructor(CPacketChangeServers) {
-		super(), proto2.util.initPartial(CPacketChangeServers, this);
+		(super(), proto2.util.initPartial(CPacketChangeServers, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1663,18 +1883,21 @@ class CPacketChangeServers extends Message {
 		this.typeName = `CPacketChangeServers`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `url`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `message`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `url`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `message`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketChangeServers().fromBinary(t, n);
@@ -1688,11 +1911,11 @@ class CPacketChangeServers extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketChangeServers, t, n);
 	}
-};
+}
 exports.CPacketChangeServers = CPacketChangeServers;
 class CPacketCloseWindow extends Message {
 	constructor(CPacketCloseWindow) {
-		super(), proto2.util.initPartial(CPacketCloseWindow, this);
+		(super(), proto2.util.initPartial(CPacketCloseWindow, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1701,12 +1924,14 @@ class CPacketCloseWindow extends Message {
 		this.typeName = `CPacketCloseWindow`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketCloseWindow().fromBinary(t, n);
@@ -1720,11 +1945,11 @@ class CPacketCloseWindow extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketCloseWindow, t, n);
 	}
-};
+}
 exports.CPacketCloseWindow = CPacketCloseWindow;
 class CPacketConfirmTransaction extends Message {
 	constructor(CPacketConfirmTransaction) {
-		super(), proto2.util.initPartial(CPacketConfirmTransaction, this);
+		(super(), proto2.util.initPartial(CPacketConfirmTransaction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1733,22 +1958,26 @@ class CPacketConfirmTransaction extends Message {
 		this.typeName = `CPacketConfirmTransaction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `uid`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 3,
-			name: `accepted`,
-			kind: `scalar`,
-			T: 8
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `uid`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 3,
+				name: `accepted`,
+				kind: `scalar`,
+				T: 8
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketConfirmTransaction().fromBinary(t, n);
@@ -1762,11 +1991,11 @@ class CPacketConfirmTransaction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketConfirmTransaction, t, n);
 	}
-};
+}
 exports.CPacketConfirmTransaction = CPacketConfirmTransaction;
 class CPacketDestroyEntities extends Message {
 	constructor(CPacketDestroyEntities) {
-		super(), this.ids = [], proto2.util.initPartial(CPacketDestroyEntities, this);
+		(super(), (this.ids = []), proto2.util.initPartial(CPacketDestroyEntities, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1775,13 +2004,15 @@ class CPacketDestroyEntities extends Message {
 		this.typeName = `CPacketDestroyEntities`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `ids`,
-			kind: `scalar`,
-			T: 13,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `ids`,
+				kind: `scalar`,
+				T: 13,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketDestroyEntities().fromBinary(t, n);
@@ -1795,11 +2026,11 @@ class CPacketDestroyEntities extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketDestroyEntities, t, n);
 	}
-};
+}
 exports.CPacketDestroyEntities = CPacketDestroyEntities;
 class CPacketDisconnect extends Message {
 	constructor(CPacketDisconnect) {
-		super(), proto2.util.initPartial(CPacketDisconnect, this);
+		(super(), proto2.util.initPartial(CPacketDisconnect, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1808,12 +2039,14 @@ class CPacketDisconnect extends Message {
 		this.typeName = `CPacketDisconnect`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `reason`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `reason`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketDisconnect().fromBinary(t, n);
@@ -1827,11 +2060,11 @@ class CPacketDisconnect extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketDisconnect, t, n);
 	}
-};
+}
 exports.CPacketDisconnect = CPacketDisconnect;
 class CPacketEntityAction extends Message {
 	constructor(CPacketEntityAction) {
-		super(), proto2.util.initPartial(CPacketEntityAction, this);
+		(super(), proto2.util.initPartial(CPacketEntityAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1840,36 +2073,42 @@ class CPacketEntityAction extends Message {
 		this.typeName = `CPacketEntityAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `sneak`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 3,
-			name: `sprinting`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 4,
-			name: `punching`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 20,
-			name: `fire`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `sneak`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `sprinting`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `punching`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 20,
+				name: `fire`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityAction().fromBinary(t, n);
@@ -1883,11 +2122,11 @@ class CPacketEntityAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityAction, t, n);
 	}
-};
+}
 exports.CPacketEntityAction = CPacketEntityAction;
 class CPacketEntityMetadata extends Message {
 	constructor(CPacketEntityMetadata) {
-		super(), this.data = [], proto2.util.initPartial(CPacketEntityMetadata, this);
+		(super(), (this.data = []), proto2.util.initPartial(CPacketEntityMetadata, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1896,18 +2135,21 @@ class CPacketEntityMetadata extends Message {
 		this.typeName = `CPacketEntityMetadata`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `data`,
-			kind: `message`,
-			T: PBWatchableObject,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `data`,
+				kind: `message`,
+				T: PBWatchableObject,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityMetadata().fromBinary(t, n);
@@ -1921,11 +2163,11 @@ class CPacketEntityMetadata extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityMetadata, t, n);
 	}
-};
+}
 exports.CPacketEntityMetadata = CPacketEntityMetadata;
 class PBWatchableObject extends Message {
 	constructor(PBWatchableObject) {
-		super(), proto2.util.initPartial(PBWatchableObject, this);
+		(super(), proto2.util.initPartial(PBWatchableObject, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1934,53 +2176,62 @@ class PBWatchableObject extends Message {
 		this.typeName = `PBWatchableObject`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `dataValueId`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `objectType`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `intValue`,
-			kind: `scalar`,
-			T: 17,
-			opt: !0
-		}, {
-			no: 4,
-			name: `floatValue`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 5,
-			name: `stringValue`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 6,
-			name: `vector`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}, {
-			no: 7,
-			name: `itemStack`,
-			kind: `message`,
-			T: PBItemStack,
-			opt: !0
-		}, {
-			no: 8,
-			name: `blockPos`,
-			kind: `message`,
-			T: PBBlockPos,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `dataValueId`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `objectType`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `intValue`,
+				kind: `scalar`,
+				T: 17,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `floatValue`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `stringValue`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `vector`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `itemStack`,
+				kind: `message`,
+				T: PBItemStack,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `blockPos`,
+				kind: `message`,
+				T: PBBlockPos,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBWatchableObject().fromBinary(t, n);
@@ -1994,11 +2245,11 @@ class PBWatchableObject extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBWatchableObject, t, n);
 	}
-};
+}
 exports.PBWatchableObject = PBWatchableObject;
 class CPacketEntityPositionAndRotation extends Message {
 	constructor(CPacketEntityPositionAndRotation) {
-		super(), proto2.util.initPartial(CPacketEntityPositionAndRotation, this);
+		(super(), proto2.util.initPartial(CPacketEntityPositionAndRotation, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2007,42 +2258,49 @@ class CPacketEntityPositionAndRotation extends Message {
 		this.typeName = `CPacketEntityPositionAndRotation`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `pos`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}, {
-			no: 3,
-			name: `vel`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}, {
-			no: 4,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 5,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 6,
-			name: `onGround`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `pos`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `vel`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `onGround`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityPositionAndRotation().fromBinary(t, n);
@@ -2056,11 +2314,11 @@ class CPacketEntityPositionAndRotation extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityPositionAndRotation, t, n);
 	}
-};
+}
 exports.CPacketEntityPositionAndRotation = CPacketEntityPositionAndRotation;
 class CPacketEntityProperties extends Message {
 	constructor(CPacketEntityProperties) {
-		super(), this.data = [], proto2.util.initPartial(CPacketEntityProperties, this);
+		(super(), (this.data = []), proto2.util.initPartial(CPacketEntityProperties, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2069,18 +2327,21 @@ class CPacketEntityProperties extends Message {
 		this.typeName = `CPacketEntityProperties`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `data`,
-			kind: `message`,
-			T: PBSnapshot,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `data`,
+				kind: `message`,
+				T: PBSnapshot,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityProperties().fromBinary(t, n);
@@ -2094,11 +2355,11 @@ class CPacketEntityProperties extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityProperties, t, n);
 	}
-};
+}
 exports.CPacketEntityProperties = CPacketEntityProperties;
 class PBSnapshot extends Message {
 	constructor(PBSnapshot) {
-		super(), this.modifiers = [], proto2.util.initPartial(PBSnapshot, this);
+		(super(), (this.modifiers = []), proto2.util.initPartial(PBSnapshot, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2107,23 +2368,27 @@ class PBSnapshot extends Message {
 		this.typeName = `PBSnapshot`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `value`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `modifiers`,
-			kind: `message`,
-			T: PBModifier,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `value`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `modifiers`,
+				kind: `message`,
+				T: PBModifier,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBSnapshot().fromBinary(t, n);
@@ -2137,11 +2402,11 @@ class PBSnapshot extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBSnapshot, t, n);
 	}
-};
+}
 exports.PBSnapshot = PBSnapshot;
 class PBModifier extends Message {
 	constructor(PBModifier) {
-		super(), proto2.util.initPartial(PBModifier, this);
+		(super(), proto2.util.initPartial(PBModifier, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2150,22 +2415,26 @@ class PBModifier extends Message {
 		this.typeName = `PBModifier`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `amount`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `operation`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `amount`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `operation`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModifier().fromBinary(t, n);
@@ -2179,11 +2448,11 @@ class PBModifier extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModifier, t, n);
 	}
-};
+}
 exports.PBModifier = PBModifier;
 class CPacketEntityRelativePositionAndRotation extends Message {
 	constructor(CPacketEntityRelativePositionAndRotation) {
-		super(), proto2.util.initPartial(CPacketEntityRelativePositionAndRotation, this);
+		(super(), proto2.util.initPartial(CPacketEntityRelativePositionAndRotation, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2192,42 +2461,49 @@ class CPacketEntityRelativePositionAndRotation extends Message {
 		this.typeName = `CPacketEntityRelativePositionAndRotation`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `pos`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}, {
-			no: 3,
-			name: `vel`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}, {
-			no: 4,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 17,
-			opt: !0
-		}, {
-			no: 5,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 17,
-			opt: !0
-		}, {
-			no: 6,
-			name: `onGround`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `pos`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `vel`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 17,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 17,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `onGround`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityRelativePositionAndRotation().fromBinary(t, n);
@@ -2241,11 +2517,11 @@ class CPacketEntityRelativePositionAndRotation extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityRelativePositionAndRotation, t, n);
 	}
-};
+}
 exports.CPacketEntityRelativePositionAndRotation = CPacketEntityRelativePositionAndRotation;
 class CPacketEntityStatus extends Message {
 	constructor(CPacketEntityStatus) {
-		super(), proto2.util.initPartial(CPacketEntityStatus, this);
+		(super(), proto2.util.initPartial(CPacketEntityStatus, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2254,17 +2530,20 @@ class CPacketEntityStatus extends Message {
 		this.typeName = `CPacketEntityStatus`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `entityId`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `entityStatus`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `entityId`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `entityStatus`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityStatus().fromBinary(t, n);
@@ -2278,11 +2557,11 @@ class CPacketEntityStatus extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityStatus, t, n);
 	}
-};
+}
 exports.CPacketEntityStatus = CPacketEntityStatus;
 class CPacketExplosion extends Message {
 	constructor(CPacketExplosion) {
-		super(), this.blocks = [], proto2.util.initPartial(CPacketExplosion, this);
+		(super(), (this.blocks = []), proto2.util.initPartial(CPacketExplosion, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2291,28 +2570,33 @@ class CPacketExplosion extends Message {
 		this.typeName = `CPacketExplosion`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBFloatVector3
-		}, {
-			no: 2,
-			name: `strength`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `blocks`,
-			kind: `message`,
-			T: PBBlockPos,
-			repeated: !0
-		}, {
-			no: 4,
-			name: `playerPos`,
-			kind: `message`,
-			T: PBFloatVector3
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBFloatVector3
+			},
+			{
+				no: 2,
+				name: `strength`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `blocks`,
+				kind: `message`,
+				T: PBBlockPos,
+				repeated: !0
+			},
+			{
+				no: 4,
+				name: `playerPos`,
+				kind: `message`,
+				T: PBFloatVector3
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketExplosion().fromBinary(t, n);
@@ -2326,11 +2610,11 @@ class CPacketExplosion extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketExplosion, t, n);
 	}
-};
+}
 exports.CPacketExplosion = CPacketExplosion;
 class PBCosmetics extends Message {
 	constructor(PBCosmetics) {
-		super(), proto2.util.initPartial(PBCosmetics, this);
+		(super(), proto2.util.initPartial(PBCosmetics, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2339,43 +2623,50 @@ class PBCosmetics extends Message {
 		this.typeName = `PBCosmetics`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `skin`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 2,
-			name: `cape`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `aura`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 4,
-			name: `trail`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 5,
-			name: `color`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 6,
-			name: `hat`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `skin`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `cape`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `aura`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `trail`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `color`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `hat`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBCosmetics().fromBinary(t, n);
@@ -2389,11 +2680,14 @@ class PBCosmetics extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBCosmetics, t, n);
 	}
-};
+}
 exports.PBCosmetics = PBCosmetics;
 class CPacketServerInfo extends Message {
 	constructor(CPacketServerInfo) {
-		super(), this.playerPermissionEntries = [], this.recentPlayers = [], proto2.util.initPartial(CPacketServerInfo, this);
+		(super(),
+			(this.playerPermissionEntries = []),
+			(this.recentPlayers = []),
+			proto2.util.initPartial(CPacketServerInfo, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2402,234 +2696,274 @@ class CPacketServerInfo extends Message {
 		this.typeName = `CPacketServerInfo`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `server_id`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `server_name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `server_version`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 4,
-			name: `server_category`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 5,
-			name: `access_control`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 11,
-			name: `world_type`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 13,
-			name: `do_daylight_cycle`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 6,
-			name: `invite_code`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 7,
-			name: `cheats`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 8,
-			name: `pvp_enabled`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 9,
-			name: `start_time`,
-			kind: `scalar`,
-			T: 4
-		}, {
-			no: 10,
-			name: `player_permission_entries`,
-			kind: `message`,
-			T: PlayerPermissionEntry,
-			repeated: !0
-		}, {
-			no: 12,
-			name: `metadata`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 14,
-			name: `command_blocks_enabled`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 15,
-			name: `scripting_enabled`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 16,
-			name: `recent_players`,
-			kind: `message`,
-			T: PlayerPermissionEntry,
-			repeated: !0
-		}, {
-			no: 17,
-			name: `difficulty`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 18,
-			name: `enable_redstone`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 19,
-			name: `save_player_data`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 20,
-			name: `always_stay_on`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 21,
-			name: `world_start_time`,
-			kind: `scalar`,
-			T: 4,
-			opt: !0
-		}, {
-			no: 22,
-			name: `allow_guest_chat`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 23,
-			name: `script_permission`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 24,
-			name: `frame_dict_hash`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 25,
-			name: `frame_prime_enabled`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 26,
-			name: `fall_damage`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 27,
-			name: `survival_guide`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 28,
-			name: `keep_inventory`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 29,
-			name: `enable_hunger`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 30,
-			name: `do_mob_spawning`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 31,
-			name: `mob_griefing`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 32,
-			name: `tnt_explodes`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 33,
-			name: `show_death_messages`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 34,
-			name: `send_command_feedback`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 35,
-			name: `do_weather_cycle`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 36,
-			name: `random_tick_speed`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 37,
-			name: `enable_player_collision`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 38,
-			name: `anyone_can_open`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 39,
-			name: `combat_logging`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `server_id`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `server_name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `server_version`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 4,
+				name: `server_category`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 5,
+				name: `access_control`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 11,
+				name: `world_type`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 13,
+				name: `do_daylight_cycle`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `invite_code`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `cheats`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `pvp_enabled`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 9,
+				name: `start_time`,
+				kind: `scalar`,
+				T: 4
+			},
+			{
+				no: 10,
+				name: `player_permission_entries`,
+				kind: `message`,
+				T: PlayerPermissionEntry,
+				repeated: !0
+			},
+			{
+				no: 12,
+				name: `metadata`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 14,
+				name: `command_blocks_enabled`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 15,
+				name: `scripting_enabled`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 16,
+				name: `recent_players`,
+				kind: `message`,
+				T: PlayerPermissionEntry,
+				repeated: !0
+			},
+			{
+				no: 17,
+				name: `difficulty`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 18,
+				name: `enable_redstone`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 19,
+				name: `save_player_data`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 20,
+				name: `always_stay_on`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 21,
+				name: `world_start_time`,
+				kind: `scalar`,
+				T: 4,
+				opt: !0
+			},
+			{
+				no: 22,
+				name: `allow_guest_chat`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 23,
+				name: `script_permission`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 24,
+				name: `frame_dict_hash`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 25,
+				name: `frame_prime_enabled`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 26,
+				name: `fall_damage`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 27,
+				name: `survival_guide`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 28,
+				name: `keep_inventory`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 29,
+				name: `enable_hunger`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 30,
+				name: `do_mob_spawning`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 31,
+				name: `mob_griefing`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 32,
+				name: `tnt_explodes`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 33,
+				name: `show_death_messages`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 34,
+				name: `send_command_feedback`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 35,
+				name: `do_weather_cycle`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 36,
+				name: `random_tick_speed`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 37,
+				name: `enable_player_collision`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 38,
+				name: `anyone_can_open`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 39,
+				name: `combat_logging`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketServerInfo().fromBinary(t, n);
@@ -2643,11 +2977,11 @@ class CPacketServerInfo extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketServerInfo, t, n);
 	}
-};
+}
 exports.CPacketServerInfo = CPacketServerInfo;
 class PlayerPermissionEntry extends Message {
 	constructor(PlayerPermissionEntry) {
-		super(), proto2.util.initPartial(PlayerPermissionEntry, this);
+		(super(), proto2.util.initPartial(PlayerPermissionEntry, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2656,46 +2990,54 @@ class PlayerPermissionEntry extends Message {
 		this.typeName = `PlayerPermissionEntry`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `username`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `permission_level`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 4,
-			name: `color`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 5,
-			name: `rank`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 6,
-			name: `level`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 7,
-			name: `verified`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `username`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `permission_level`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 4,
+				name: `color`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `rank`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `level`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `verified`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PlayerPermissionEntry().fromBinary(t, n);
@@ -2709,11 +3051,11 @@ class PlayerPermissionEntry extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PlayerPermissionEntry, t, n);
 	}
-};
+}
 exports.PlayerPermissionEntry = PlayerPermissionEntry;
 class CPacketJoinGame extends Message {
 	constructor(CPacketJoinGame) {
-		super(), proto2.util.initPartial(CPacketJoinGame, this);
+		(super(), proto2.util.initPartial(CPacketJoinGame, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2722,84 +3064,98 @@ class CPacketJoinGame extends Message {
 		this.typeName = `CPacketJoinGame`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `can_connect`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 2,
-			name: `error_message`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `tick`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 6,
-			name: `gamemode`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 7,
-			name: `name`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 10,
-			name: `enable_player_collision`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 11,
-			name: `cosmetics`,
-			kind: `message`,
-			T: PBCosmetics,
-			opt: !0
-		}, {
-			no: 12,
-			name: `rank`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 13,
-			name: `server_info`,
-			kind: `message`,
-			T: CPacketServerInfo,
-			opt: !0
-		}, {
-			no: 14,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 15,
-			name: `dimension`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 16,
-			name: `server_full`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 17,
-			name: `spawn_point`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `can_connect`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 2,
+				name: `error_message`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `tick`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `gamemode`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `name`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 10,
+				name: `enable_player_collision`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 11,
+				name: `cosmetics`,
+				kind: `message`,
+				T: PBCosmetics,
+				opt: !0
+			},
+			{
+				no: 12,
+				name: `rank`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 13,
+				name: `server_info`,
+				kind: `message`,
+				T: CPacketServerInfo,
+				opt: !0
+			},
+			{
+				no: 14,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 15,
+				name: `dimension`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 16,
+				name: `server_full`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 17,
+				name: `spawn_point`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketJoinGame().fromBinary(t, n);
@@ -2813,11 +3169,11 @@ class CPacketJoinGame extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketJoinGame, t, n);
 	}
-};
+}
 exports.CPacketJoinGame = CPacketJoinGame;
 class CPacketLeaderboard extends Message {
 	constructor(CPacketLeaderboard) {
-		super(), this.content = [], proto2.util.initPartial(CPacketLeaderboard, this);
+		(super(), (this.content = []), proto2.util.initPartial(CPacketLeaderboard, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2826,34 +3182,40 @@ class CPacketLeaderboard extends Message {
 		this.typeName = `CPacketLeaderboard`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `pos`,
-			kind: `message`,
-			T: PBVector3
-		}, {
-			no: 3,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 4,
-			name: `title`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 5,
-			name: `content`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `pos`,
+				kind: `message`,
+				T: PBVector3
+			},
+			{
+				no: 3,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `title`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 5,
+				name: `content`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketLeaderboard().fromBinary(t, n);
@@ -2867,29 +3229,30 @@ class CPacketLeaderboard extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketLeaderboard, t, n);
 	}
-};
+}
 exports.CPacketLeaderboard = CPacketLeaderboard;
 
-const StorageActionTypes = function (e) {
-	return e[e.DEFAULT = 0] = `DEFAULT`,
-		e[e.REMOVE = 1] = `REMOVE`,
-		e[e.SET = 2] = `SET`,
-		e
-}({});
-proto2.util.setEnumType(StorageActionTypes, `CPacketLocalStorage.Action`, [{
-	no: 0,
-	name: `DEFAULT`
-}, {
-	no: 1,
-	name: `REMOVE`
-}, {
-	no: 2,
-	name: `SET`
-}]);
+const StorageActionTypes = (function (e) {
+	return ((e[(e.DEFAULT = 0)] = `DEFAULT`), (e[(e.REMOVE = 1)] = `REMOVE`), (e[(e.SET = 2)] = `SET`), e);
+})({});
+proto2.util.setEnumType(StorageActionTypes, `CPacketLocalStorage.Action`, [
+	{
+		no: 0,
+		name: `DEFAULT`
+	},
+	{
+		no: 1,
+		name: `REMOVE`
+	},
+	{
+		no: 2,
+		name: `SET`
+	}
+]);
 
 class CPacketLocalStorage extends Message {
 	constructor(CPacketLocalStorage) {
-		super(), proto2.util.initPartial(CPacketLocalStorage, this);
+		(super(), proto2.util.initPartial(CPacketLocalStorage, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2898,23 +3261,27 @@ class CPacketLocalStorage extends Message {
 		this.typeName = `CPacketLocalStorage`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `action`,
-			kind: `enum`,
-			T: proto2.getEnumType(StorageActionTypes)
-		}, {
-			no: 2,
-			name: `key`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `value`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `action`,
+				kind: `enum`,
+				T: proto2.getEnumType(StorageActionTypes)
+			},
+			{
+				no: 2,
+				name: `key`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `value`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketLocalStorage().fromBinary(t, n);
@@ -2928,11 +3295,11 @@ class CPacketLocalStorage extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketLocalStorage, t, n);
 	}
-};
+}
 exports.CPacketLocalStorage = CPacketLocalStorage;
 class CPacketMessage extends Message {
 	constructor(CPacketMessage) {
-		super(), proto2.util.initPartial(CPacketMessage, this);
+		(super(), proto2.util.initPartial(CPacketMessage, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -2941,73 +3308,85 @@ class CPacketMessage extends Message {
 		this.typeName = `CPacketMessage`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `text`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `id`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 4,
-			name: `color`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 5,
-			name: `discard`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 6,
-			name: `toast`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 7,
-			name: `timer`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 8,
-			name: `from`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 9,
-			name: `position`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 10,
-			name: `killFeed`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 11,
-			name: `headSkin`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 12,
-			name: `headLevel`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `text`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `id`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `color`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `discard`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `toast`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `timer`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `from`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 9,
+				name: `position`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 10,
+				name: `killFeed`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 11,
+				name: `headSkin`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 12,
+				name: `headLevel`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketMessage().fromBinary(t, n);
@@ -3021,11 +3400,11 @@ class CPacketMessage extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketMessage, t, n);
 	}
-};
+}
 exports.CPacketMessage = CPacketMessage;
 class CPacketOpenShop extends Message {
 	constructor(CPacketOpenShop) {
-		super(), proto2.util.initPartial(CPacketOpenShop, this);
+		(super(), proto2.util.initPartial(CPacketOpenShop, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3034,12 +3413,14 @@ class CPacketOpenShop extends Message {
 		this.typeName = `CPacketOpenShop`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `type`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `type`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketOpenShop().fromBinary(t, n);
@@ -3053,11 +3434,11 @@ class CPacketOpenShop extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketOpenShop, t, n);
 	}
-};
+}
 exports.CPacketOpenShop = CPacketOpenShop;
 class CPacketOpenWindow extends Message {
 	constructor(CPacketOpenWindow) {
-		super(), proto2.util.initPartial(CPacketOpenWindow, this);
+		(super(), proto2.util.initPartial(CPacketOpenWindow, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3066,35 +3447,41 @@ class CPacketOpenWindow extends Message {
 		this.typeName = `CPacketOpenWindow`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `guiID`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `title`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 4,
-			name: `size`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 5,
-			name: `initial`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `guiID`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `title`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `size`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `initial`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketOpenWindow().fromBinary(t, n);
@@ -3108,11 +3495,11 @@ class CPacketOpenWindow extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketOpenWindow, t, n);
 	}
-};
+}
 exports.CPacketOpenWindow = CPacketOpenWindow;
 class CPacketParticles extends Message {
 	constructor(CPacketParticles) {
-		super(), this.particleArguments = [], proto2.util.initPartial(CPacketParticles, this);
+		(super(), (this.particleArguments = []), proto2.util.initPartial(CPacketParticles, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3121,78 +3508,91 @@ class CPacketParticles extends Message {
 		this.typeName = `CPacketParticles`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `particleId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `longDistance`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 3,
-			name: `x`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 4,
-			name: `y`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 5,
-			name: `z`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 6,
-			name: `xOffset`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 7,
-			name: `yOffset`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 8,
-			name: `zOffset`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 9,
-			name: `speed`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 10,
-			name: `count`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 11,
-			name: `particleArguments`,
-			kind: `scalar`,
-			T: 5,
-			repeated: !0
-		}, {
-			no: 12,
-			name: `particleName`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `particleId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `longDistance`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `x`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `y`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `z`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `xOffset`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `yOffset`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `zOffset`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 9,
+				name: `speed`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 10,
+				name: `count`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 11,
+				name: `particleArguments`,
+				kind: `scalar`,
+				T: 5,
+				repeated: !0
+			},
+			{
+				no: 12,
+				name: `particleName`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketParticles().fromBinary(t, n);
@@ -3206,11 +3606,11 @@ class CPacketParticles extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketParticles, t, n);
 	}
-};
+}
 exports.CPacketParticles = CPacketParticles;
 class CPacketPlayerList extends Message {
 	constructor(CPacketPlayerList) {
-		super(), this.players = [], proto2.util.initPartial(CPacketPlayerList, this);
+		(super(), (this.players = []), proto2.util.initPartial(CPacketPlayerList, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3219,13 +3619,15 @@ class CPacketPlayerList extends Message {
 		this.typeName = `CPacketPlayerList`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `players`,
-			kind: `message`,
-			T: PlayerData,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `players`,
+				kind: `message`,
+				T: PlayerData,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPlayerList().fromBinary(t, n);
@@ -3239,11 +3641,11 @@ class CPacketPlayerList extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPlayerList, t, n);
 	}
-};
+}
 exports.CPacketPlayerList = CPacketPlayerList;
 class PlayerData extends Message {
 	constructor(PlayerData) {
-		super(), proto2.util.initPartial(PlayerData, this);
+		(super(), proto2.util.initPartial(PlayerData, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3252,100 +3654,117 @@ class PlayerData extends Message {
 		this.typeName = `PlayerData`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 9,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 10,
-			name: `permission_level`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `ping`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 4,
-			name: `name`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 5,
-			name: `color`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `skin`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 6,
-			name: `rank`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 7,
-			name: `level`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 8,
-			name: `verified`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 11,
-			name: `vanished`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 12,
-			name: `fake`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 13,
-			name: `discord_boosting`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 14,
-			name: `persistent`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 15,
-			name: `name_prefix`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 16,
-			name: `mode`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 9,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 10,
+				name: `permission_level`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `ping`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `name`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `color`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `skin`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `rank`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `level`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `verified`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 11,
+				name: `vanished`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 12,
+				name: `fake`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 13,
+				name: `discord_boosting`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 14,
+				name: `persistent`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 15,
+				name: `name_prefix`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 16,
+				name: `mode`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PlayerData().fromBinary(t, n);
@@ -3359,11 +3778,11 @@ class PlayerData extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PlayerData, t, n);
 	}
-};
+}
 exports.PlayerData = PlayerData;
 class CPacketPlayerPosLook extends Message {
 	constructor(CPacketPlayerPosLook) {
-		super(), proto2.util.initPartial(CPacketPlayerPosLook, this);
+		(super(), proto2.util.initPartial(CPacketPlayerPosLook, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3372,32 +3791,38 @@ class CPacketPlayerPosLook extends Message {
 		this.typeName = `CPacketPlayerPosLook`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 4,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 5,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 4,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 5,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPlayerPosLook().fromBinary(t, n);
@@ -3411,11 +3836,11 @@ class CPacketPlayerPosLook extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPlayerPosLook, t, n);
 	}
-};
+}
 exports.CPacketPlayerPosLook = CPacketPlayerPosLook;
 class CPacketPlayerPosition extends Message {
 	constructor(CPacketPlayerPosition) {
-		super(), proto2.util.initPartial(CPacketPlayerPosition, this);
+		(super(), proto2.util.initPartial(CPacketPlayerPosition, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3424,22 +3849,26 @@ class CPacketPlayerPosition extends Message {
 		this.typeName = `CPacketPlayerPosition`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 2
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 2
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPlayerPosition().fromBinary(t, n);
@@ -3453,11 +3882,11 @@ class CPacketPlayerPosition extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPlayerPosition, t, n);
 	}
-};
+}
 exports.CPacketPlayerPosition = CPacketPlayerPosition;
 class CPacketPong extends Message {
 	constructor(CPacketPong) {
-		super(), proto2.util.initPartial(CPacketPong, this);
+		(super(), proto2.util.initPartial(CPacketPong, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3466,22 +3895,26 @@ class CPacketPong extends Message {
 		this.typeName = `CPacketPong`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `time`,
-			kind: `scalar`,
-			T: 4
-		}, {
-			no: 2,
-			name: `mspt`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 4,
-			name: `tick`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `time`,
+				kind: `scalar`,
+				T: 4
+			},
+			{
+				no: 2,
+				name: `mspt`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 4,
+				name: `tick`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPong().fromBinary(t, n);
@@ -3495,11 +3928,11 @@ class CPacketPong extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPong, t, n);
 	}
-};
+}
 exports.CPacketPong = CPacketPong;
 class CPacketQueueNext extends Message {
 	constructor(CPacketQueueNext) {
-		super(), proto2.util.initPartial(CPacketQueueNext, this);
+		(super(), proto2.util.initPartial(CPacketQueueNext, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3508,17 +3941,20 @@ class CPacketQueueNext extends Message {
 		this.typeName = `CPacketQueueNext`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `minigameId`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `minigameConfig`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `minigameId`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `minigameConfig`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketQueueNext().fromBinary(t, n);
@@ -3532,11 +3968,11 @@ class CPacketQueueNext extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketQueueNext, t, n);
 	}
-};
+}
 exports.CPacketQueueNext = CPacketQueueNext;
 class CPacketRespawn extends Message {
 	constructor(CPacketRespawn) {
-		super(), proto2.util.initPartial(CPacketRespawn, this);
+		(super(), proto2.util.initPartial(CPacketRespawn, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3545,25 +3981,29 @@ class CPacketRespawn extends Message {
 		this.typeName = `CPacketRespawn`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `notDeath`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 2,
-			name: `client`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 3,
-			name: `dimension`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `notDeath`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `client`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `dimension`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketRespawn().fromBinary(t, n);
@@ -3577,11 +4017,11 @@ class CPacketRespawn extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketRespawn, t, n);
 	}
-};
+}
 exports.CPacketRespawn = CPacketRespawn;
 class CPacketScoreboard extends Message {
 	constructor(CPacketScoreboard) {
-		super(), this.content = [], proto2.util.initPartial(CPacketScoreboard, this);
+		(super(), (this.content = []), proto2.util.initPartial(CPacketScoreboard, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3590,18 +4030,21 @@ class CPacketScoreboard extends Message {
 		this.typeName = `CPacketScoreboard`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `title`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `content`,
-			kind: `message`,
-			T: ScoreboardContent,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `title`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `content`,
+				kind: `message`,
+				T: ScoreboardContent,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketScoreboard().fromBinary(t, n);
@@ -3615,11 +4058,11 @@ class CPacketScoreboard extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketScoreboard, t, n);
 	}
-};
+}
 exports.CPacketScoreboard = CPacketScoreboard;
 class ScoreboardContent extends Message {
 	constructor(ScoreboardContent) {
-		super(), this.columns = [], proto2.util.initPartial(ScoreboardContent, this);
+		(super(), (this.columns = []), proto2.util.initPartial(ScoreboardContent, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3628,13 +4071,15 @@ class ScoreboardContent extends Message {
 		this.typeName = `ScoreboardContent`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `columns`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `columns`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ScoreboardContent().fromBinary(t, n);
@@ -3648,11 +4093,11 @@ class ScoreboardContent extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScoreboardContent, t, n);
 	}
-};
+}
 exports.ScoreboardContent = ScoreboardContent;
 class CPacketSetExperience extends Message {
 	constructor(CPacketSetExperience) {
-		super(), proto2.util.initPartial(CPacketSetExperience, this);
+		(super(), proto2.util.initPartial(CPacketSetExperience, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3661,22 +4106,26 @@ class CPacketSetExperience extends Message {
 		this.typeName = `CPacketSetExperience`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `experience`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 2,
-			name: `experienceTotal`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 3,
-			name: `level`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `experience`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 2,
+				name: `experienceTotal`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 3,
+				name: `level`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSetExperience().fromBinary(t, n);
@@ -3690,11 +4139,11 @@ class CPacketSetExperience extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSetExperience, t, n);
 	}
-};
+}
 exports.CPacketSetExperience = CPacketSetExperience;
 class CPacketSetSlot extends Message {
 	constructor(CPacketSetSlot) {
-		super(), proto2.util.initPartial(CPacketSetSlot, this);
+		(super(), proto2.util.initPartial(CPacketSetSlot, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3703,22 +4152,26 @@ class CPacketSetSlot extends Message {
 		this.typeName = `CPacketSetSlot`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `window_id`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `slot`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 3,
-			name: `slot_data`,
-			kind: `message`,
-			T: PBItemStack
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `window_id`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `slot`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 3,
+				name: `slot_data`,
+				kind: `message`,
+				T: PBItemStack
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSetSlot().fromBinary(t, n);
@@ -3732,11 +4185,11 @@ class CPacketSetSlot extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSetSlot, t, n);
 	}
-};
+}
 exports.CPacketSetSlot = CPacketSetSlot;
 class CPacketShopProperty extends Message {
 	constructor(CPacketShopProperty) {
-		super(), proto2.util.initPartial(CPacketShopProperty, this);
+		(super(), proto2.util.initPartial(CPacketShopProperty, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3745,19 +4198,22 @@ class CPacketShopProperty extends Message {
 		this.typeName = `CPacketShopProperty`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `name`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 2,
-			name: `value`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `name`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `value`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketShopProperty().fromBinary(t, n);
@@ -3771,11 +4227,11 @@ class CPacketShopProperty extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketShopProperty, t, n);
 	}
-};
+}
 exports.CPacketShopProperty = CPacketShopProperty;
 class CPacketShopProperties extends Message {
 	constructor(CPacketShopProperties) {
-		super(), this.properties = [], proto2.util.initPartial(CPacketShopProperties, this);
+		(super(), (this.properties = []), proto2.util.initPartial(CPacketShopProperties, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3784,13 +4240,15 @@ class CPacketShopProperties extends Message {
 		this.typeName = `CPacketShopProperties`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `properties`,
-			kind: `message`,
-			T: CPacketShopProperty,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `properties`,
+				kind: `message`,
+				T: CPacketShopProperty,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketShopProperties().fromBinary(t, n);
@@ -3804,11 +4262,11 @@ class CPacketShopProperties extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketShopProperties, t, n);
 	}
-};
+}
 exports.CPacketShopProperties = CPacketShopProperties;
 class CPacketSignEditorOpen extends Message {
 	constructor(CPacketSignEditorOpen) {
-		super(), proto2.util.initPartial(CPacketSignEditorOpen, this);
+		(super(), proto2.util.initPartial(CPacketSignEditorOpen, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3817,12 +4275,14 @@ class CPacketSignEditorOpen extends Message {
 		this.typeName = `CPacketSignEditorOpen`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `signPosition`,
-			kind: `message`,
-			T: PBBlockPos
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `signPosition`,
+				kind: `message`,
+				T: PBBlockPos
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSignEditorOpen().fromBinary(t, n);
@@ -3836,11 +4296,11 @@ class CPacketSignEditorOpen extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSignEditorOpen, t, n);
 	}
-};
+}
 exports.CPacketSignEditorOpen = CPacketSignEditorOpen;
 class CPacketSoundEffect extends Message {
 	constructor(CPacketSoundEffect) {
-		super(), proto2.util.initPartial(CPacketSoundEffect, this);
+		(super(), proto2.util.initPartial(CPacketSoundEffect, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3849,30 +4309,35 @@ class CPacketSoundEffect extends Message {
 		this.typeName = `CPacketSoundEffect`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `sound`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `location`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}, {
-			no: 3,
-			name: `volume`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 4,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `sound`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `location`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `volume`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSoundEffect().fromBinary(t, n);
@@ -3886,11 +4351,11 @@ class CPacketSoundEffect extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSoundEffect, t, n);
 	}
-};
+}
 exports.CPacketSoundEffect = CPacketSoundEffect;
 class CPacketSpawnEntity extends Message {
 	constructor(CPacketSpawnEntity) {
-		super(), proto2.util.initPartial(CPacketSpawnEntity, this);
+		(super(), proto2.util.initPartial(CPacketSpawnEntity, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3899,71 +4364,83 @@ class CPacketSpawnEntity extends Message {
 		this.typeName = `CPacketSpawnEntity`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `type`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `pos`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}, {
-			no: 4,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 5,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 6,
-			name: `motion`,
-			kind: `message`,
-			T: PBFloatVector3,
-			opt: !0
-		}, {
-			no: 7,
-			name: `item`,
-			kind: `message`,
-			T: PBItemStack,
-			opt: !0
-		}, {
-			no: 8,
-			name: `shooterId`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 9,
-			name: `state`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 10,
-			name: `texture`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 11,
-			name: `facing`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `type`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `pos`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `motion`,
+				kind: `message`,
+				T: PBFloatVector3,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `item`,
+				kind: `message`,
+				T: PBItemStack,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `shooterId`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 9,
+				name: `state`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 10,
+				name: `texture`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 11,
+				name: `facing`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSpawnEntity().fromBinary(t, n);
@@ -3977,11 +4454,11 @@ class CPacketSpawnEntity extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSpawnEntity, t, n);
 	}
-};
+}
 exports.CPacketSpawnEntity = CPacketSpawnEntity;
 class CPacketSpawnExperienceOrb extends Message {
 	constructor(CPacketSpawnExperienceOrb) {
-		super(), proto2.util.initPartial(CPacketSpawnExperienceOrb, this);
+		(super(), proto2.util.initPartial(CPacketSpawnExperienceOrb, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -3990,32 +4467,38 @@ class CPacketSpawnExperienceOrb extends Message {
 		this.typeName = `CPacketSpawnExperienceOrb`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `x`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 3,
-			name: `y`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 4,
-			name: `z`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 5,
-			name: `xpValue`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `x`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 3,
+				name: `y`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 4,
+				name: `z`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 5,
+				name: `xpValue`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSpawnExperienceOrb().fromBinary(t, n);
@@ -4029,11 +4512,11 @@ class CPacketSpawnExperienceOrb extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSpawnExperienceOrb, t, n);
 	}
-};
+}
 exports.CPacketSpawnExperienceOrb = CPacketSpawnExperienceOrb;
 class CPacketSpawnPlayer extends Message {
 	constructor(CPacketSpawnPlayer) {
-		super(), proto2.util.initPartial(CPacketSpawnPlayer, this);
+		(super(), proto2.util.initPartial(CPacketSpawnPlayer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4042,65 +4525,77 @@ class CPacketSpawnPlayer extends Message {
 		this.typeName = `CPacketSpawnPlayer`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `gamemode`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 4,
-			name: `operator`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 5,
-			name: `pos`,
-			kind: `message`,
-			T: PBFloatVector3
-		}, {
-			no: 6,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 7,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 8,
-			name: `cosmetics`,
-			kind: `message`,
-			T: PBCosmetics
-		}, {
-			no: 9,
-			name: `rank`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 10,
-			name: `socketId`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 11,
-			name: `discord_boosting`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `gamemode`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 4,
+				name: `operator`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `pos`,
+				kind: `message`,
+				T: PBFloatVector3
+			},
+			{
+				no: 6,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 7,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 8,
+				name: `cosmetics`,
+				kind: `message`,
+				T: PBCosmetics
+			},
+			{
+				no: 9,
+				name: `rank`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 10,
+				name: `socketId`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 11,
+				name: `discord_boosting`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSpawnPlayer().fromBinary(t, n);
@@ -4114,11 +4609,11 @@ class CPacketSpawnPlayer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSpawnPlayer, t, n);
 	}
-};
+}
 exports.CPacketSpawnPlayer = CPacketSpawnPlayer;
 class CPacketTabComplete extends Message {
 	constructor(CPacketTabComplete) {
-		super(), this.matches = [], proto2.util.initPartial(CPacketTabComplete, this);
+		(super(), (this.matches = []), proto2.util.initPartial(CPacketTabComplete, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4127,13 +4622,15 @@ class CPacketTabComplete extends Message {
 		this.typeName = `CPacketTabComplete`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `matches`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `matches`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketTabComplete().fromBinary(t, n);
@@ -4147,11 +4644,11 @@ class CPacketTabComplete extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketTabComplete, t, n);
 	}
-};
+}
 exports.CPacketTabComplete = CPacketTabComplete;
 class CPacketTitle extends Message {
 	constructor(CPacketTitle) {
-		super(), proto2.util.initPartial(CPacketTitle, this);
+		(super(), proto2.util.initPartial(CPacketTitle, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4160,17 +4657,20 @@ class CPacketTitle extends Message {
 		this.typeName = `CPacketTitle`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `title`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `duration`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `title`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `duration`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketTitle().fromBinary(t, n);
@@ -4184,11 +4684,11 @@ class CPacketTitle extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketTitle, t, n);
 	}
-};
+}
 exports.CPacketTitle = CPacketTitle;
 class CPacketUpdateHealth extends Message {
 	constructor(CPacketUpdateHealth) {
-		super(), proto2.util.initPartial(CPacketUpdateHealth, this);
+		(super(), proto2.util.initPartial(CPacketUpdateHealth, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4197,36 +4697,42 @@ class CPacketUpdateHealth extends Message {
 		this.typeName = `CPacketUpdateHealth`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `hp`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 3,
-			name: `food`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}, {
-			no: 4,
-			name: `foodSaturation`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 5,
-			name: `oxygen`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `hp`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `food`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `foodSaturation`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `oxygen`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdateHealth().fromBinary(t, n);
@@ -4240,11 +4746,11 @@ class CPacketUpdateHealth extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdateHealth, t, n);
 	}
-};
+}
 exports.CPacketUpdateHealth = CPacketUpdateHealth;
 class CPacketUpdateLeaderboard extends Message {
 	constructor(CPacketUpdateLeaderboard) {
-		super(), this.content = [], proto2.util.initPartial(CPacketUpdateLeaderboard, this);
+		(super(), (this.content = []), proto2.util.initPartial(CPacketUpdateLeaderboard, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4253,18 +4759,21 @@ class CPacketUpdateLeaderboard extends Message {
 		this.typeName = `CPacketUpdateLeaderboard`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 5,
-			name: `content`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 5,
+				name: `content`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdateLeaderboard().fromBinary(t, n);
@@ -4278,11 +4787,11 @@ class CPacketUpdateLeaderboard extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdateLeaderboard, t, n);
 	}
-};
+}
 exports.CPacketUpdateLeaderboard = CPacketUpdateLeaderboard;
 class CPacketUpdateScoreboard extends Message {
 	constructor(CPacketUpdateScoreboard) {
-		super(), this.columns = [], proto2.util.initPartial(CPacketUpdateScoreboard, this);
+		(super(), (this.columns = []), proto2.util.initPartial(CPacketUpdateScoreboard, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4291,18 +4800,21 @@ class CPacketUpdateScoreboard extends Message {
 		this.typeName = `CPacketUpdateScoreboard`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `index`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `columns`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `index`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `columns`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdateScoreboard().fromBinary(t, n);
@@ -4316,11 +4828,11 @@ class CPacketUpdateScoreboard extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdateScoreboard, t, n);
 	}
-};
+}
 exports.CPacketUpdateScoreboard = CPacketUpdateScoreboard;
 class CPacketUpdateStatus extends Message {
 	constructor(CPacketUpdateStatus) {
-		super(), proto2.util.initPartial(CPacketUpdateStatus, this);
+		(super(), proto2.util.initPartial(CPacketUpdateStatus, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4329,42 +4841,49 @@ class CPacketUpdateStatus extends Message {
 		this.typeName = `CPacketUpdateStatus`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `mode`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 4,
-			name: `rank`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 5,
-			name: `color`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 6,
-			name: `hidePlayers`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 7,
-			name: `onTeam`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `mode`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `rank`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `color`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `hidePlayers`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `onTeam`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdateStatus().fromBinary(t, n);
@@ -4378,11 +4897,11 @@ class CPacketUpdateStatus extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdateStatus, t, n);
 	}
-};
+}
 exports.CPacketUpdateStatus = CPacketUpdateStatus;
 class CPacketUseBed extends Message {
 	constructor(CPacketUseBed) {
-		super(), proto2.util.initPartial(CPacketUseBed, this);
+		(super(), proto2.util.initPartial(CPacketUseBed, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4391,17 +4910,20 @@ class CPacketUseBed extends Message {
 		this.typeName = `CPacketUseBed`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `bedPos`,
-			kind: `message`,
-			T: PBBlockPos
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `bedPos`,
+				kind: `message`,
+				T: PBBlockPos
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUseBed().fromBinary(t, n);
@@ -4415,11 +4937,11 @@ class CPacketUseBed extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUseBed, t, n);
 	}
-};
+}
 exports.CPacketUseBed = CPacketUseBed;
 class CPacketWindowItems extends Message {
 	constructor(CPacketWindowItems) {
-		super(), this.items = [], proto2.util.initPartial(CPacketWindowItems, this);
+		(super(), (this.items = []), proto2.util.initPartial(CPacketWindowItems, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4428,18 +4950,21 @@ class CPacketWindowItems extends Message {
 		this.typeName = `CPacketWindowItems`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `window_id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `items`,
-			kind: `message`,
-			T: PBItemStack,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `window_id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `items`,
+				kind: `message`,
+				T: PBItemStack,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketWindowItems().fromBinary(t, n);
@@ -4453,11 +4978,11 @@ class CPacketWindowItems extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketWindowItems, t, n);
 	}
-};
+}
 exports.CPacketWindowItems = CPacketWindowItems;
 class CPacketWindowProperty extends Message {
 	constructor(CPacketWindowProperty) {
-		super(), proto2.util.initPartial(CPacketWindowProperty, this);
+		(super(), proto2.util.initPartial(CPacketWindowProperty, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4466,22 +4991,26 @@ class CPacketWindowProperty extends Message {
 		this.typeName = `CPacketWindowProperty`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `varIndex`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `varValue`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `varIndex`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `varValue`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketWindowProperty().fromBinary(t, n);
@@ -4495,11 +5024,11 @@ class CPacketWindowProperty extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketWindowProperty, t, n);
 	}
-};
+}
 exports.CPacketWindowProperty = CPacketWindowProperty;
 class CPacketEntityAttach extends Message {
 	constructor(CPacketEntityAttach) {
-		super(), proto2.util.initPartial(CPacketEntityAttach, this);
+		(super(), proto2.util.initPartial(CPacketEntityAttach, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4508,22 +5037,26 @@ class CPacketEntityAttach extends Message {
 		this.typeName = `CPacketEntityAttach`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `leash`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `entity`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `vehicle`,
-			kind: `scalar`,
-			T: 18
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `leash`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `entity`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `vehicle`,
+				kind: `scalar`,
+				T: 18
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEntityAttach().fromBinary(t, n);
@@ -4537,11 +5070,11 @@ class CPacketEntityAttach extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEntityAttach, t, n);
 	}
-};
+}
 exports.CPacketEntityAttach = CPacketEntityAttach;
 class CPacketServerMetadata extends Message {
 	constructor(CPacketServerMetadata) {
-		super(), proto2.util.initPartial(CPacketServerMetadata, this);
+		(super(), proto2.util.initPartial(CPacketServerMetadata, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4550,12 +5083,14 @@ class CPacketServerMetadata extends Message {
 		this.typeName = `CPacketServerMetadata`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 12,
-			name: `metadata`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 12,
+				name: `metadata`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketServerMetadata().fromBinary(t, n);
@@ -4569,11 +5104,11 @@ class CPacketServerMetadata extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketServerMetadata, t, n);
 	}
-};
+}
 exports.CPacketServerMetadata = CPacketServerMetadata;
 class CPacketTimeUpdate extends Message {
 	constructor(CPacketTimeUpdate) {
-		super(), proto2.util.initPartial(CPacketTimeUpdate, this);
+		(super(), proto2.util.initPartial(CPacketTimeUpdate, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4582,17 +5117,20 @@ class CPacketTimeUpdate extends Message {
 		this.typeName = `CPacketTimeUpdate`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `totalTime`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `worldTime`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `totalTime`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `worldTime`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketTimeUpdate().fromBinary(t, n);
@@ -4606,11 +5144,11 @@ class CPacketTimeUpdate extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketTimeUpdate, t, n);
 	}
-};
+}
 exports.CPacketTimeUpdate = CPacketTimeUpdate;
 class CPacketPlayerReconciliation extends Message {
 	constructor(CPacketPlayerReconciliation) {
-		super(), proto2.util.initPartial(CPacketPlayerReconciliation, this);
+		(super(), proto2.util.initPartial(CPacketPlayerReconciliation, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4619,55 +5157,65 @@ class CPacketPlayerReconciliation extends Message {
 		this.typeName = `CPacketPlayerReconciliation`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 4,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 5,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 6,
-			name: `lastProcessedInput`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 7,
-			name: `reset`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 8,
-			name: `ackId`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 9,
-			name: `onGround`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 4,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 5,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 6,
+				name: `lastProcessedInput`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 7,
+				name: `reset`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `ackId`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 9,
+				name: `onGround`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPlayerReconciliation().fromBinary(t, n);
@@ -4681,11 +5229,11 @@ class CPacketPlayerReconciliation extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPlayerReconciliation, t, n);
 	}
-};
+}
 exports.CPacketPlayerReconciliation = CPacketPlayerReconciliation;
 class CPacketScriptData extends Message {
 	constructor(CPacketScriptData) {
-		super(), this.scripts = [], this.availableMods = [], proto2.util.initPartial(CPacketScriptData, this);
+		(super(), (this.scripts = []), (this.availableMods = []), proto2.util.initPartial(CPacketScriptData, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4694,48 +5242,56 @@ class CPacketScriptData extends Message {
 		this.typeName = `CPacketScriptData`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `enabled`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 2,
-			name: `disabled_reason`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `scripts`,
-			kind: `message`,
-			T: PBScriptEntry,
-			repeated: !0
-		}, {
-			no: 4,
-			name: `read_only`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 5,
-			name: `max_total_source_bytes`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 6,
-			name: `max_scripts`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 7,
-			name: `available_mods`,
-			kind: `message`,
-			T: PBAvailableMod,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `enabled`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 2,
+				name: `disabled_reason`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `scripts`,
+				kind: `message`,
+				T: PBScriptEntry,
+				repeated: !0
+			},
+			{
+				no: 4,
+				name: `read_only`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `max_total_source_bytes`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `max_scripts`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `available_mods`,
+				kind: `message`,
+				T: PBAvailableMod,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketScriptData().fromBinary(t, n);
@@ -4749,11 +5305,11 @@ class CPacketScriptData extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketScriptData, t, n);
 	}
-};
+}
 exports.CPacketScriptData = CPacketScriptData;
 class PBAvailableMod extends Message {
 	constructor(PBAvailableMod) {
-		super(), proto2.util.initPartial(PBAvailableMod, this);
+		(super(), proto2.util.initPartial(PBAvailableMod, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4762,34 +5318,40 @@ class PBAvailableMod extends Message {
 		this.typeName = `PBAvailableMod`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `description`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 4,
-			name: `item_count`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 5,
-			name: `installed`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `description`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 4,
+				name: `item_count`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `installed`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBAvailableMod().fromBinary(t, n);
@@ -4803,11 +5365,11 @@ class PBAvailableMod extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBAvailableMod, t, n);
 	}
-};
+}
 exports.PBAvailableMod = PBAvailableMod;
 class PBScriptEntry extends Message {
 	constructor(PBScriptEntry) {
-		super(), this.versions = [], proto2.util.initPartial(PBScriptEntry, this);
+		(super(), (this.versions = []), proto2.util.initPartial(PBScriptEntry, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4816,53 +5378,62 @@ class PBScriptEntry extends Message {
 		this.typeName = `PBScriptEntry`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `source`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `updated_at`,
-			kind: `scalar`,
-			T: 4,
-			opt: !0
-		}, {
-			no: 4,
-			name: `updated_by`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 5,
-			name: `load_error`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 6,
-			name: `enabled`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 7,
-			name: `disabled_reason`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 8,
-			name: `versions`,
-			kind: `message`,
-			T: PBScriptVersion,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `source`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `updated_at`,
+				kind: `scalar`,
+				T: 4,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `updated_by`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `load_error`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `enabled`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `disabled_reason`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `versions`,
+				kind: `message`,
+				T: PBScriptVersion,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBScriptEntry().fromBinary(t, n);
@@ -4876,11 +5447,11 @@ class PBScriptEntry extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBScriptEntry, t, n);
 	}
-};
+}
 exports.PBScriptEntry = PBScriptEntry;
 class PBScriptVersion extends Message {
 	constructor(PBScriptVersion) {
-		super(), proto2.util.initPartial(PBScriptVersion, this);
+		(super(), proto2.util.initPartial(PBScriptVersion, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4889,22 +5460,26 @@ class PBScriptVersion extends Message {
 		this.typeName = `PBScriptVersion`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 4
-		}, {
-			no: 2,
-			name: `by`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `size`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 4
+			},
+			{
+				no: 2,
+				name: `by`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `size`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBScriptVersion().fromBinary(t, n);
@@ -4918,11 +5493,11 @@ class PBScriptVersion extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBScriptVersion, t, n);
 	}
-};
+}
 exports.PBScriptVersion = PBScriptVersion;
 class CPacketScriptLog extends Message {
 	constructor(CPacketScriptLog) {
-		super(), this.entries = [], proto2.util.initPartial(CPacketScriptLog, this);
+		(super(), (this.entries = []), proto2.util.initPartial(CPacketScriptLog, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4931,19 +5506,22 @@ class CPacketScriptLog extends Message {
 		this.typeName = `CPacketScriptLog`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `entries`,
-			kind: `message`,
-			T: PBScriptLogEntry,
-			repeated: !0
-		}, {
-			no: 2,
-			name: `clear`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `entries`,
+				kind: `message`,
+				T: PBScriptLogEntry,
+				repeated: !0
+			},
+			{
+				no: 2,
+				name: `clear`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketScriptLog().fromBinary(t, n);
@@ -4957,11 +5535,11 @@ class CPacketScriptLog extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketScriptLog, t, n);
 	}
-};
+}
 exports.CPacketScriptLog = CPacketScriptLog;
 class PBScriptLogEntry extends Message {
 	constructor(PBScriptLogEntry) {
-		super(), proto2.util.initPartial(PBScriptLogEntry, this);
+		(super(), proto2.util.initPartial(PBScriptLogEntry, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -4970,35 +5548,41 @@ class PBScriptLogEntry extends Message {
 		this.typeName = `PBScriptLogEntry`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `level`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `message`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `stack`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 4,
-			name: `tick`,
-			kind: `scalar`,
-			T: 4,
-			opt: !0
-		}, {
-			no: 5,
-			name: `timestamp`,
-			kind: `scalar`,
-			T: 4,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `level`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `message`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `stack`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `tick`,
+				kind: `scalar`,
+				T: 4,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `timestamp`,
+				kind: `scalar`,
+				T: 4,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBScriptLogEntry().fromBinary(t, n);
@@ -5012,11 +5596,11 @@ class PBScriptLogEntry extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBScriptLogEntry, t, n);
 	}
-};
+}
 exports.PBScriptLogEntry = PBScriptLogEntry;
 class CPacketPlotsData extends Message {
 	constructor(CPacketPlotsData) {
-		super(), proto2.util.initPartial(CPacketPlotsData, this);
+		(super(), proto2.util.initPartial(CPacketPlotsData, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5025,12 +5609,14 @@ class CPacketPlotsData extends Message {
 		this.typeName = `CPacketPlotsData`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPlotsData().fromBinary(t, n);
@@ -5044,11 +5630,15 @@ class CPacketPlotsData extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPlotsData, t, n);
 	}
-};
+}
 exports.CPacketPlotsData = CPacketPlotsData;
 class CPacketChunkUnchanged extends Message {
 	constructor(CPacketChunkUnchanged) {
-		super(), this.x = 0, this.z = 0, this.dimension = 0, proto2.util.initPartial(CPacketChunkUnchanged, this);
+		(super(),
+			(this.x = 0),
+			(this.z = 0),
+			(this.dimension = 0),
+			proto2.util.initPartial(CPacketChunkUnchanged, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5057,22 +5647,26 @@ class CPacketChunkUnchanged extends Message {
 		this.typeName = `CPacketChunkUnchanged`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 2,
-			name: `z`,
-			kind: `scalar`,
-			T: 17
-		}, {
-			no: 3,
-			name: `dimension`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 2,
+				name: `z`,
+				kind: `scalar`,
+				T: 17
+			},
+			{
+				no: 3,
+				name: `dimension`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketChunkUnchanged().fromBinary(t, n);
@@ -5086,11 +5680,11 @@ class CPacketChunkUnchanged extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketChunkUnchanged, t, n);
 	}
-};
+}
 exports.CPacketChunkUnchanged = CPacketChunkUnchanged;
 class CPacketGuideData extends Message {
 	constructor(CPacketGuideData) {
-		super(), proto2.util.initPartial(CPacketGuideData, this);
+		(super(), proto2.util.initPartial(CPacketGuideData, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5099,12 +5693,14 @@ class CPacketGuideData extends Message {
 		this.typeName = `CPacketGuideData`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketGuideData().fromBinary(t, n);
@@ -5118,11 +5714,11 @@ class CPacketGuideData extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketGuideData, t, n);
 	}
-};
+}
 exports.CPacketGuideData = CPacketGuideData;
 class CPacketBlockBreakAnim extends Message {
 	constructor(CPacketBlockBreakAnim) {
-		super(), proto2.util.initPartial(CPacketBlockBreakAnim, this);
+		(super(), proto2.util.initPartial(CPacketBlockBreakAnim, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5131,22 +5727,26 @@ class CPacketBlockBreakAnim extends Message {
 		this.typeName = `CPacketBlockBreakAnim`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `location`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `breakerId`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `stage`,
-			kind: `scalar`,
-			T: 17
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `location`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `breakerId`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `stage`,
+				kind: `scalar`,
+				T: 17
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketBlockBreakAnim().fromBinary(t, n);
@@ -5160,11 +5760,11 @@ class CPacketBlockBreakAnim extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketBlockBreakAnim, t, n);
 	}
-};
+}
 exports.CPacketBlockBreakAnim = CPacketBlockBreakAnim;
 class CPacketPlayerListPing extends Message {
 	constructor(CPacketPlayerListPing) {
-		super(), this.pings = [], proto2.util.initPartial(CPacketPlayerListPing, this);
+		(super(), (this.pings = []), proto2.util.initPartial(CPacketPlayerListPing, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5173,13 +5773,15 @@ class CPacketPlayerListPing extends Message {
 		this.typeName = `CPacketPlayerListPing`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pings`,
-			kind: `message`,
-			T: PBPlayerPing,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pings`,
+				kind: `message`,
+				T: PBPlayerPing,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPlayerListPing().fromBinary(t, n);
@@ -5193,11 +5795,11 @@ class CPacketPlayerListPing extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPlayerListPing, t, n);
 	}
-};
+}
 exports.CPacketPlayerListPing = CPacketPlayerListPing;
 class PBPlayerPing extends Message {
 	constructor(PBPlayerPing) {
-		super(), proto2.util.initPartial(PBPlayerPing, this);
+		(super(), proto2.util.initPartial(PBPlayerPing, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5206,17 +5808,20 @@ class PBPlayerPing extends Message {
 		this.typeName = `PBPlayerPing`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `ping`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `ping`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBPlayerPing().fromBinary(t, n);
@@ -5230,11 +5835,11 @@ class PBPlayerPing extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBPlayerPing, t, n);
 	}
-};
+}
 exports.PBPlayerPing = PBPlayerPing;
 class CPacketPlayerListDelta extends Message {
 	constructor(CPacketPlayerListDelta) {
-		super(), this.upserts = [], this.removedIds = [], proto2.util.initPartial(CPacketPlayerListDelta, this);
+		(super(), (this.upserts = []), (this.removedIds = []), proto2.util.initPartial(CPacketPlayerListDelta, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5243,19 +5848,22 @@ class CPacketPlayerListDelta extends Message {
 		this.typeName = `CPacketPlayerListDelta`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `upserts`,
-			kind: `message`,
-			T: PlayerData,
-			repeated: !0
-		}, {
-			no: 2,
-			name: `removedIds`,
-			kind: `scalar`,
-			T: 13,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `upserts`,
+				kind: `message`,
+				T: PlayerData,
+				repeated: !0
+			},
+			{
+				no: 2,
+				name: `removedIds`,
+				kind: `scalar`,
+				T: 13,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketPlayerListDelta().fromBinary(t, n);
@@ -5269,11 +5877,11 @@ class CPacketPlayerListDelta extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketPlayerListDelta, t, n);
 	}
-};
+}
 exports.CPacketPlayerListDelta = CPacketPlayerListDelta;
 class CPacketSpectate extends Message {
 	constructor(CPacketSpectate) {
-		super(), proto2.util.initPartial(CPacketSpectate, this);
+		(super(), proto2.util.initPartial(CPacketSpectate, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5282,19 +5890,22 @@ class CPacketSpectate extends Message {
 		this.typeName = `CPacketSpectate`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 2,
-			name: `heldSlot`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `heldSlot`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketSpectate().fromBinary(t, n);
@@ -5308,11 +5919,11 @@ class CPacketSpectate extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketSpectate, t, n);
 	}
-};
+}
 exports.CPacketSpectate = CPacketSpectate;
 class CPacketCollectItem extends Message {
 	constructor(CPacketCollectItem) {
-		super(), proto2.util.initPartial(CPacketCollectItem, this);
+		(super(), proto2.util.initPartial(CPacketCollectItem, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5321,17 +5932,20 @@ class CPacketCollectItem extends Message {
 		this.typeName = `CPacketCollectItem`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `collectedId`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `collectorId`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `collectedId`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `collectorId`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketCollectItem().fromBinary(t, n);
@@ -5345,11 +5959,22 @@ class CPacketCollectItem extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketCollectItem, t, n);
 	}
-};
+}
 exports.CPacketCollectItem = CPacketCollectItem;
 class CPacketModContent extends Message {
 	constructor(CPacketModContent) {
-		super(), this.items = [], this.sprites = [], this.armor = [], this.controls = [], this.blocks = [], this.projectiles = [], this.entities = [], this.sounds = [], this.particles = [], this.slots = [], proto2.util.initPartial(CPacketModContent, this);
+		(super(),
+			(this.items = []),
+			(this.sprites = []),
+			(this.armor = []),
+			(this.controls = []),
+			(this.blocks = []),
+			(this.projectiles = []),
+			(this.entities = []),
+			(this.sounds = []),
+			(this.particles = []),
+			(this.slots = []),
+			proto2.util.initPartial(CPacketModContent, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5358,67 +5983,78 @@ class CPacketModContent extends Message {
 		this.typeName = `CPacketModContent`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `items`,
-			kind: `message`,
-			T: PBModItemDef,
-			repeated: !0
-		}, {
-			no: 2,
-			name: `sprites`,
-			kind: `message`,
-			T: PBModSprite,
-			repeated: !0
-		}, {
-			no: 3,
-			name: `armor`,
-			kind: `message`,
-			T: PBModArmor,
-			repeated: !0
-		}, {
-			no: 4,
-			name: `controls`,
-			kind: `message`,
-			T: PBModControl,
-			repeated: !0
-		}, {
-			no: 5,
-			name: `blocks`,
-			kind: `message`,
-			T: PBModBlockDef,
-			repeated: !0
-		}, {
-			no: 6,
-			name: `projectiles`,
-			kind: `message`,
-			T: PBModProjectileDef,
-			repeated: !0
-		}, {
-			no: 7,
-			name: `entities`,
-			kind: `message`,
-			T: PBModEntityDef,
-			repeated: !0
-		}, {
-			no: 8,
-			name: `sounds`,
-			kind: `message`,
-			T: PBModSound,
-			repeated: !0
-		}, {
-			no: 9,
-			name: `particles`,
-			kind: `message`,
-			T: PBModParticleDef,
-			repeated: !0
-		}, {
-			no: 10,
-			name: `slots`,
-			kind: `message`,
-			T: PBModSlotDef,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `items`,
+				kind: `message`,
+				T: PBModItemDef,
+				repeated: !0
+			},
+			{
+				no: 2,
+				name: `sprites`,
+				kind: `message`,
+				T: PBModSprite,
+				repeated: !0
+			},
+			{
+				no: 3,
+				name: `armor`,
+				kind: `message`,
+				T: PBModArmor,
+				repeated: !0
+			},
+			{
+				no: 4,
+				name: `controls`,
+				kind: `message`,
+				T: PBModControl,
+				repeated: !0
+			},
+			{
+				no: 5,
+				name: `blocks`,
+				kind: `message`,
+				T: PBModBlockDef,
+				repeated: !0
+			},
+			{
+				no: 6,
+				name: `projectiles`,
+				kind: `message`,
+				T: PBModProjectileDef,
+				repeated: !0
+			},
+			{
+				no: 7,
+				name: `entities`,
+				kind: `message`,
+				T: PBModEntityDef,
+				repeated: !0
+			},
+			{
+				no: 8,
+				name: `sounds`,
+				kind: `message`,
+				T: PBModSound,
+				repeated: !0
+			},
+			{
+				no: 9,
+				name: `particles`,
+				kind: `message`,
+				T: PBModParticleDef,
+				repeated: !0
+			},
+			{
+				no: 10,
+				name: `slots`,
+				kind: `message`,
+				T: PBModSlotDef,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketModContent().fromBinary(t, n);
@@ -5432,11 +6068,11 @@ class CPacketModContent extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketModContent, t, n);
 	}
-};
+}
 exports.CPacketModContent = CPacketModContent;
 class PBModSlotDef extends Message {
 	constructor(PBModSlotDef) {
-		super(), proto2.util.initPartial(PBModSlotDef, this);
+		(super(), proto2.util.initPartial(PBModSlotDef, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5445,17 +6081,20 @@ class PBModSlotDef extends Message {
 		this.typeName = `PBModSlotDef`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `index`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `def_json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `index`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `def_json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModSlotDef().fromBinary(t, n);
@@ -5469,11 +6108,11 @@ class PBModSlotDef extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModSlotDef, t, n);
 	}
-};
+}
 exports.PBModSlotDef = PBModSlotDef;
 class PBModParticleDef extends Message {
 	constructor(PBModParticleDef) {
-		super(), proto2.util.initPartial(PBModParticleDef, this);
+		(super(), proto2.util.initPartial(PBModParticleDef, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5482,12 +6121,14 @@ class PBModParticleDef extends Message {
 		this.typeName = `PBModParticleDef`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `def_json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `def_json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModParticleDef().fromBinary(t, n);
@@ -5501,11 +6142,11 @@ class PBModParticleDef extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModParticleDef, t, n);
 	}
-};
+}
 exports.PBModParticleDef = PBModParticleDef;
 class PBModEntityDef extends Message {
 	constructor(PBModEntityDef) {
-		super(), proto2.util.initPartial(PBModEntityDef, this);
+		(super(), proto2.util.initPartial(PBModEntityDef, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5514,12 +6155,14 @@ class PBModEntityDef extends Message {
 		this.typeName = `PBModEntityDef`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `def_json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `def_json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModEntityDef().fromBinary(t, n);
@@ -5533,11 +6176,11 @@ class PBModEntityDef extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModEntityDef, t, n);
 	}
-};
+}
 exports.PBModEntityDef = PBModEntityDef;
 class PBModProjectileDef extends Message {
 	constructor(PBModProjectileDef) {
-		super(), proto2.util.initPartial(PBModProjectileDef, this);
+		(super(), proto2.util.initPartial(PBModProjectileDef, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5546,12 +6189,14 @@ class PBModProjectileDef extends Message {
 		this.typeName = `PBModProjectileDef`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `def_json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `def_json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModProjectileDef().fromBinary(t, n);
@@ -5565,11 +6210,11 @@ class PBModProjectileDef extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModProjectileDef, t, n);
 	}
-};
+}
 exports.PBModProjectileDef = PBModProjectileDef;
 class PBModBlockDef extends Message {
 	constructor(PBModBlockDef) {
-		super(), proto2.util.initPartial(PBModBlockDef, this);
+		(super(), proto2.util.initPartial(PBModBlockDef, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5578,28 +6223,33 @@ class PBModBlockDef extends Message {
 		this.typeName = `PBModBlockDef`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `state_id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 3,
-			name: `def_json`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 4,
-			name: `item_id`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `state_id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 3,
+				name: `def_json`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 4,
+				name: `item_id`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModBlockDef().fromBinary(t, n);
@@ -5613,11 +6263,11 @@ class PBModBlockDef extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModBlockDef, t, n);
 	}
-};
+}
 exports.PBModBlockDef = PBModBlockDef;
 class PBModControl extends Message {
 	constructor(PBModControl) {
-		super(), proto2.util.initPartial(PBModControl, this);
+		(super(), proto2.util.initPartial(PBModControl, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5626,29 +6276,34 @@ class PBModControl extends Message {
 		this.typeName = `PBModControl`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `key`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `channel`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `label`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 4,
-			name: `initial`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `key`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `channel`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `label`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `initial`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModControl().fromBinary(t, n);
@@ -5662,11 +6317,11 @@ class PBModControl extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModControl, t, n);
 	}
-};
+}
 exports.PBModControl = PBModControl;
 class PBModItemDef extends Message {
 	constructor(PBModItemDef) {
-		super(), proto2.util.initPartial(PBModItemDef, this);
+		(super(), proto2.util.initPartial(PBModItemDef, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5675,17 +6330,20 @@ class PBModItemDef extends Message {
 		this.typeName = `PBModItemDef`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `def_json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `def_json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModItemDef().fromBinary(t, n);
@@ -5699,11 +6357,11 @@ class PBModItemDef extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModItemDef, t, n);
 	}
-};
+}
 exports.PBModItemDef = PBModItemDef;
 class PBModSprite extends Message {
 	constructor(PBModSprite) {
-		super(), proto2.util.initPartial(PBModSprite, this);
+		(super(), proto2.util.initPartial(PBModSprite, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5712,23 +6370,27 @@ class PBModSprite extends Message {
 		this.typeName = `PBModSprite`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `key`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `url`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `size`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `key`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `url`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `size`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModSprite().fromBinary(t, n);
@@ -5742,11 +6404,11 @@ class PBModSprite extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModSprite, t, n);
 	}
-};
+}
 exports.PBModSprite = PBModSprite;
 class PBModSound extends Message {
 	constructor(PBModSound) {
-		super(), proto2.util.initPartial(PBModSound, this);
+		(super(), proto2.util.initPartial(PBModSound, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5755,17 +6417,20 @@ class PBModSound extends Message {
 		this.typeName = `PBModSound`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `key`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `url`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `key`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `url`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModSound().fromBinary(t, n);
@@ -5779,11 +6444,11 @@ class PBModSound extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModSound, t, n);
 	}
-};
+}
 exports.PBModSound = PBModSound;
 class PBModArmor extends Message {
 	constructor(PBModArmor) {
-		super(), proto2.util.initPartial(PBModArmor, this);
+		(super(), proto2.util.initPartial(PBModArmor, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5792,23 +6457,27 @@ class PBModArmor extends Message {
 		this.typeName = `PBModArmor`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `key`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `layer1Url`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 3,
-			name: `layer2Url`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `key`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `layer1Url`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 3,
+				name: `layer2Url`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PBModArmor().fromBinary(t, n);
@@ -5822,11 +6491,11 @@ class PBModArmor extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PBModArmor, t, n);
 	}
-};
+}
 exports.PBModArmor = PBModArmor;
 class CPacketDamageIndicator extends Message {
 	constructor(CPacketDamageIndicator) {
-		super(), proto2.util.initPartial(CPacketDamageIndicator, this);
+		(super(), proto2.util.initPartial(CPacketDamageIndicator, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5835,12 +6504,14 @@ class CPacketDamageIndicator extends Message {
 		this.typeName = `CPacketDamageIndicator`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBFloatVector3
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBFloatVector3
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketDamageIndicator().fromBinary(t, n);
@@ -5854,11 +6525,11 @@ class CPacketDamageIndicator extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketDamageIndicator, t, n);
 	}
-};
+}
 exports.CPacketDamageIndicator = CPacketDamageIndicator;
 class CPacketDownloadSchematic extends Message {
 	constructor(CPacketDownloadSchematic) {
-		super(), proto2.util.initPartial(CPacketDownloadSchematic, this);
+		(super(), proto2.util.initPartial(CPacketDownloadSchematic, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5867,17 +6538,20 @@ class CPacketDownloadSchematic extends Message {
 		this.typeName = `CPacketDownloadSchematic`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `data`,
-			kind: `scalar`,
-			T: 12
-		}, {
-			no: 2,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `data`,
+				kind: `scalar`,
+				T: 12
+			},
+			{
+				no: 2,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketDownloadSchematic().fromBinary(t, n);
@@ -5891,11 +6565,11 @@ class CPacketDownloadSchematic extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketDownloadSchematic, t, n);
 	}
-};
+}
 exports.CPacketDownloadSchematic = CPacketDownloadSchematic;
 class CPacketEmote extends Message {
 	constructor(CPacketEmote) {
-		super(), proto2.util.initPartial(CPacketEmote, this);
+		(super(), proto2.util.initPartial(CPacketEmote, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5904,17 +6578,20 @@ class CPacketEmote extends Message {
 		this.typeName = `CPacketEmote`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `emote`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `emote`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketEmote().fromBinary(t, n);
@@ -5928,11 +6605,11 @@ class CPacketEmote extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketEmote, t, n);
 	}
-};
+}
 exports.CPacketEmote = CPacketEmote;
 class CPacketApplyRecoil extends Message {
 	constructor(CPacketApplyRecoil) {
-		super(), proto2.util.initPartial(CPacketApplyRecoil, this);
+		(super(), proto2.util.initPartial(CPacketApplyRecoil, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5941,19 +6618,22 @@ class CPacketApplyRecoil extends Message {
 		this.typeName = `CPacketApplyRecoil`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 2,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketApplyRecoil().fromBinary(t, n);
@@ -5967,11 +6647,11 @@ class CPacketApplyRecoil extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketApplyRecoil, t, n);
 	}
-};
+}
 exports.CPacketApplyRecoil = CPacketApplyRecoil;
 class CPacketScreenFlash extends Message {
 	constructor(CPacketScreenFlash) {
-		super(), proto2.util.initPartial(CPacketScreenFlash, this);
+		(super(), proto2.util.initPartial(CPacketScreenFlash, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5980,25 +6660,29 @@ class CPacketScreenFlash extends Message {
 		this.typeName = `CPacketScreenFlash`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `color`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 2,
-			name: `duration_ticks`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 3,
-			name: `max_alpha`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `color`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `duration_ticks`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `max_alpha`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketScreenFlash().fromBinary(t, n);
@@ -6012,11 +6696,11 @@ class CPacketScreenFlash extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketScreenFlash, t, n);
 	}
-};
+}
 exports.CPacketScreenFlash = CPacketScreenFlash;
 class CPacketWeather extends Message {
 	constructor(CPacketWeather) {
-		super(), proto2.util.initPartial(CPacketWeather, this);
+		(super(), proto2.util.initPartial(CPacketWeather, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6025,31 +6709,36 @@ class CPacketWeather extends Message {
 		this.typeName = `CPacketWeather`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `raining`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 2,
-			name: `thundering`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 3,
-			name: `rain_strength`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 4,
-			name: `thunder_strength`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `raining`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `thundering`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `rain_strength`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `thunder_strength`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketWeather().fromBinary(t, n);
@@ -6063,11 +6752,11 @@ class CPacketWeather extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketWeather, t, n);
 	}
-};
+}
 exports.CPacketWeather = CPacketWeather;
 class CPacketLightningBolt extends Message {
 	constructor(CPacketLightningBolt) {
-		super(), proto2.util.initPartial(CPacketLightningBolt, this);
+		(super(), proto2.util.initPartial(CPacketLightningBolt, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6076,13 +6765,15 @@ class CPacketLightningBolt extends Message {
 		this.typeName = `CPacketLightningBolt`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBVector3,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBVector3,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketLightningBolt().fromBinary(t, n);
@@ -6096,11 +6787,11 @@ class CPacketLightningBolt extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketLightningBolt, t, n);
 	}
-};
+}
 exports.CPacketLightningBolt = CPacketLightningBolt;
 class CPacketMachineGui extends Message {
 	constructor(CPacketMachineGui) {
-		super(), proto2.util.initPartial(CPacketMachineGui, this);
+		(super(), proto2.util.initPartial(CPacketMachineGui, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6109,30 +6800,35 @@ class CPacketMachineGui extends Message {
 		this.typeName = `CPacketMachineGui`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `window_id`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `progress`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 3,
-			name: `fuel`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 4,
-			name: `status`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `window_id`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `progress`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `fuel`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `status`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketMachineGui().fromBinary(t, n);
@@ -6146,11 +6842,11 @@ class CPacketMachineGui extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketMachineGui, t, n);
 	}
-};
+}
 exports.CPacketMachineGui = CPacketMachineGui;
 class CPacketReplayState extends Message {
 	constructor(CPacketReplayState) {
-		super(), proto2.util.initPartial(CPacketReplayState, this);
+		(super(), proto2.util.initPartial(CPacketReplayState, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6159,37 +6855,43 @@ class CPacketReplayState extends Message {
 		this.typeName = `CPacketReplayState`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `playhead_ms`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 2,
-			name: `duration_ms`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 3,
-			name: `playing`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 4,
-			name: `speed`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 5,
-			name: `seeking`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `playhead_ms`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `duration_ms`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `playing`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `speed`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `seeking`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketReplayState().fromBinary(t, n);
@@ -6203,11 +6905,11 @@ class CPacketReplayState extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketReplayState, t, n);
 	}
-};
+}
 exports.CPacketReplayState = CPacketReplayState;
 class CPacketScriptVersion extends Message {
 	constructor(CPacketScriptVersion) {
-		super(), proto2.util.initPartial(CPacketScriptVersion, this);
+		(super(), proto2.util.initPartial(CPacketScriptVersion, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6216,22 +6918,26 @@ class CPacketScriptVersion extends Message {
 		this.typeName = `CPacketScriptVersion`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `version_id`,
-			kind: `scalar`,
-			T: 4
-		}, {
-			no: 3,
-			name: `source`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `version_id`,
+				kind: `scalar`,
+				T: 4
+			},
+			{
+				no: 3,
+				name: `source`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketScriptVersion().fromBinary(t, n);
@@ -6245,11 +6951,11 @@ class CPacketScriptVersion extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketScriptVersion, t, n);
 	}
-};
+}
 exports.CPacketScriptVersion = CPacketScriptVersion;
 class ClientBoundCombined extends Message {
 	constructor(ClientBoundCombined) {
-		super(), this.packets = [], proto2.util.initPartial(ClientBoundCombined, this);
+		(super(), (this.packets = []), proto2.util.initPartial(ClientBoundCombined, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6258,13 +6964,15 @@ class ClientBoundCombined extends Message {
 		this.typeName = `ClientBoundCombined`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `packets`,
-			kind: `message`,
-			T: ClientBoundCombined_CPacket,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `packets`,
+				kind: `message`,
+				T: ClientBoundCombined_CPacket,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ClientBoundCombined().fromBinary(t, n);
@@ -6278,13 +6986,15 @@ class ClientBoundCombined extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ClientBoundCombined, t, n);
 	}
-};
+}
 exports.ClientBoundCombined = ClientBoundCombined;
 class ClientBoundCombined_CPacket extends Message {
 	constructor(ClientBoundCombined_CPacket) {
-		super(), this.packet = {
-			case: void 0
-		}, proto2.util.initPartial(ClientBoundCombined_CPacket, this);
+		(super(),
+			(this.packet = {
+				case: void 0
+			}),
+			proto2.util.initPartial(ClientBoundCombined_CPacket, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6293,493 +7003,575 @@ class ClientBoundCombined_CPacket extends Message {
 		this.typeName = `ClientBoundCombined.CPacket`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `CPacketAnimation`,
-			kind: `message`,
-			T: CPacketAnimation,
-			oneof: `packet`
-		}, {
-			no: 2,
-			name: `CPacketBlockAction`,
-			kind: `message`,
-			T: CPacketBlockAction,
-			oneof: `packet`
-		}, {
-			no: 3,
-			name: `CPacketBlockUpdate`,
-			kind: `message`,
-			T: CPacketBlockUpdate,
-			oneof: `packet`
-		}, {
-			no: 4,
-			name: `CPacketChangeServers`,
-			kind: `message`,
-			T: CPacketChangeServers,
-			oneof: `packet`
-		}, {
-			no: 5,
-			name: `CPacketChunkData`,
-			kind: `message`,
-			T: CPacketChunkData,
-			oneof: `packet`
-		}, {
-			no: 6,
-			name: `CPacketCloseWindow`,
-			kind: `message`,
-			T: CPacketCloseWindow,
-			oneof: `packet`
-		}, {
-			no: 7,
-			name: `CPacketConfirmTransaction`,
-			kind: `message`,
-			T: CPacketConfirmTransaction,
-			oneof: `packet`
-		}, {
-			no: 8,
-			name: `CPacketDestroyEntities`,
-			kind: `message`,
-			T: CPacketDestroyEntities,
-			oneof: `packet`
-		}, {
-			no: 9,
-			name: `CPacketDisconnect`,
-			kind: `message`,
-			T: CPacketDisconnect,
-			oneof: `packet`
-		}, {
-			no: 10,
-			name: `CPacketEntityAction`,
-			kind: `message`,
-			T: CPacketEntityAction,
-			oneof: `packet`
-		}, {
-			no: 11,
-			name: `CPacketEntityEffect`,
-			kind: `message`,
-			T: CPacketEntityEffect,
-			oneof: `packet`
-		}, {
-			no: 12,
-			name: `CPacketEntityEquipment`,
-			kind: `message`,
-			T: CPacketEntityEquipment,
-			oneof: `packet`
-		}, {
-			no: 13,
-			name: `CPacketEntityMetadata`,
-			kind: `message`,
-			T: CPacketEntityMetadata,
-			oneof: `packet`
-		}, {
-			no: 14,
-			name: `CPacketEntityPositionAndRotation`,
-			kind: `message`,
-			T: CPacketEntityPositionAndRotation,
-			oneof: `packet`
-		}, {
-			no: 15,
-			name: `CPacketEntityProperties`,
-			kind: `message`,
-			T: CPacketEntityProperties,
-			oneof: `packet`
-		}, {
-			no: 16,
-			name: `CPacketEntityRelativePositionAndRotation`,
-			kind: `message`,
-			T: CPacketEntityRelativePositionAndRotation,
-			oneof: `packet`
-		}, {
-			no: 17,
-			name: `CPacketEntityStatus`,
-			kind: `message`,
-			T: CPacketEntityStatus,
-			oneof: `packet`
-		}, {
-			no: 18,
-			name: `CPacketEntityVelocity`,
-			kind: `message`,
-			T: CPacketEntityVelocity,
-			oneof: `packet`
-		}, {
-			no: 19,
-			name: `CPacketExplosion`,
-			kind: `message`,
-			T: CPacketExplosion,
-			oneof: `packet`
-		}, {
-			no: 20,
-			name: `CPacketJoinGame`,
-			kind: `message`,
-			T: CPacketJoinGame,
-			oneof: `packet`
-		}, {
-			no: 21,
-			name: `CPacketLeaderboard`,
-			kind: `message`,
-			T: CPacketLeaderboard,
-			oneof: `packet`
-		}, {
-			no: 22,
-			name: `CPacketLocalStorage`,
-			kind: `message`,
-			T: CPacketLocalStorage,
-			oneof: `packet`
-		}, {
-			no: 23,
-			name: `CPacketMessage`,
-			kind: `message`,
-			T: CPacketMessage,
-			oneof: `packet`
-		}, {
-			no: 24,
-			name: `CPacketOpenShop`,
-			kind: `message`,
-			T: CPacketOpenShop,
-			oneof: `packet`
-		}, {
-			no: 25,
-			name: `CPacketOpenWindow`,
-			kind: `message`,
-			T: CPacketOpenWindow,
-			oneof: `packet`
-		}, {
-			no: 26,
-			name: `CPacketParticles`,
-			kind: `message`,
-			T: CPacketParticles,
-			oneof: `packet`
-		}, {
-			no: 27,
-			name: `CPacketPlayerList`,
-			kind: `message`,
-			T: CPacketPlayerList,
-			oneof: `packet`
-		}, {
-			no: 28,
-			name: `CPacketPlayerPosLook`,
-			kind: `message`,
-			T: CPacketPlayerPosLook,
-			oneof: `packet`
-		}, {
-			no: 29,
-			name: `CPacketPlayerPosition`,
-			kind: `message`,
-			T: CPacketPlayerPosition,
-			oneof: `packet`
-		}, {
-			no: 30,
-			name: `CPacketPong`,
-			kind: `message`,
-			T: CPacketPong,
-			oneof: `packet`
-		}, {
-			no: 31,
-			name: `CPacketQueueNext`,
-			kind: `message`,
-			T: CPacketQueueNext,
-			oneof: `packet`
-		}, {
-			no: 32,
-			name: `CPacketRemoveEntityEffect`,
-			kind: `message`,
-			T: CPacketRemoveEntityEffect,
-			oneof: `packet`
-		}, {
-			no: 33,
-			name: `CPacketRespawn`,
-			kind: `message`,
-			T: CPacketRespawn,
-			oneof: `packet`
-		}, {
-			no: 34,
-			name: `CPacketScoreboard`,
-			kind: `message`,
-			T: CPacketScoreboard,
-			oneof: `packet`
-		}, {
-			no: 35,
-			name: `CPacketServerInfo`,
-			kind: `message`,
-			T: CPacketServerInfo,
-			oneof: `packet`
-		}, {
-			no: 36,
-			name: `CPacketSetExperience`,
-			kind: `message`,
-			T: CPacketSetExperience,
-			oneof: `packet`
-		}, {
-			no: 37,
-			name: `CPacketSetSlot`,
-			kind: `message`,
-			T: CPacketSetSlot,
-			oneof: `packet`
-		}, {
-			no: 38,
-			name: `CPacketShopProperties`,
-			kind: `message`,
-			T: CPacketShopProperties,
-			oneof: `packet`
-		}, {
-			no: 39,
-			name: `CPacketSignEditorOpen`,
-			kind: `message`,
-			T: CPacketSignEditorOpen,
-			oneof: `packet`
-		}, {
-			no: 40,
-			name: `CPacketSoundEffect`,
-			kind: `message`,
-			T: CPacketSoundEffect,
-			oneof: `packet`
-		}, {
-			no: 41,
-			name: `CPacketSpawnEntity`,
-			kind: `message`,
-			T: CPacketSpawnEntity,
-			oneof: `packet`
-		}, {
-			no: 42,
-			name: `CPacketSpawnExperienceOrb`,
-			kind: `message`,
-			T: CPacketSpawnExperienceOrb,
-			oneof: `packet`
-		}, {
-			no: 43,
-			name: `CPacketSpawnPlayer`,
-			kind: `message`,
-			T: CPacketSpawnPlayer,
-			oneof: `packet`
-		}, {
-			no: 44,
-			name: `CPacketTabComplete`,
-			kind: `message`,
-			T: CPacketTabComplete,
-			oneof: `packet`
-		}, {
-			no: 45,
-			name: `CPacketTitle`,
-			kind: `message`,
-			T: CPacketTitle,
-			oneof: `packet`
-		}, {
-			no: 46,
-			name: `CPacketUpdateCommandBlock`,
-			kind: `message`,
-			T: CPacketUpdateCommandBlock,
-			oneof: `packet`
-		}, {
-			no: 47,
-			name: `CPacketUpdateHealth`,
-			kind: `message`,
-			T: CPacketUpdateHealth,
-			oneof: `packet`
-		}, {
-			no: 48,
-			name: `CPacketUpdateLeaderboard`,
-			kind: `message`,
-			T: CPacketUpdateLeaderboard,
-			oneof: `packet`
-		}, {
-			no: 49,
-			name: `CPacketUpdateScoreboard`,
-			kind: `message`,
-			T: CPacketUpdateScoreboard,
-			oneof: `packet`
-		}, {
-			no: 50,
-			name: `CPacketUpdateSign`,
-			kind: `message`,
-			T: CPacketUpdateSign,
-			oneof: `packet`
-		}, {
-			no: 51,
-			name: `CPacketUpdateStatus`,
-			kind: `message`,
-			T: CPacketUpdateStatus,
-			oneof: `packet`
-		}, {
-			no: 52,
-			name: `CPacketUseBed`,
-			kind: `message`,
-			T: CPacketUseBed,
-			oneof: `packet`
-		}, {
-			no: 53,
-			name: `CPacketWindowItems`,
-			kind: `message`,
-			T: CPacketWindowItems,
-			oneof: `packet`
-		}, {
-			no: 54,
-			name: `CPacketWindowProperty`,
-			kind: `message`,
-			T: CPacketWindowProperty,
-			oneof: `packet`
-		}, {
-			no: 55,
-			name: `CPacketEntityAttach`,
-			kind: `message`,
-			T: CPacketEntityAttach,
-			oneof: `packet`
-		}, {
-			no: 56,
-			name: `CPacketServerMetadata`,
-			kind: `message`,
-			T: CPacketServerMetadata,
-			oneof: `packet`
-		}, {
-			no: 57,
-			name: `CPacketTimeUpdate`,
-			kind: `message`,
-			T: CPacketTimeUpdate,
-			oneof: `packet`
-		}, {
-			no: 58,
-			name: `CPacketPlayerReconciliation`,
-			kind: `message`,
-			T: CPacketPlayerReconciliation,
-			oneof: `packet`
-		}, {
-			no: 59,
-			name: `CPacketScriptData`,
-			kind: `message`,
-			T: CPacketScriptData,
-			oneof: `packet`
-		}, {
-			no: 60,
-			name: `CPacketScriptLog`,
-			kind: `message`,
-			T: CPacketScriptLog,
-			oneof: `packet`
-		}, {
-			no: 61,
-			name: `CPacketPlotsData`,
-			kind: `message`,
-			T: CPacketPlotsData,
-			oneof: `packet`
-		}, {
-			no: 62,
-			name: `CPacketUpdatePlayerHead`,
-			kind: `message`,
-			T: CPacketUpdatePlayerHead,
-			oneof: `packet`
-		}, {
-			no: 63,
-			name: `CPacketChunkUnchanged`,
-			kind: `message`,
-			T: CPacketChunkUnchanged,
-			oneof: `packet`
-		}, {
-			no: 64,
-			name: `CPacketGuideData`,
-			kind: `message`,
-			T: CPacketGuideData,
-			oneof: `packet`
-		}, {
-			no: 65,
-			name: `CPacketBlockBreakAnim`,
-			kind: `message`,
-			T: CPacketBlockBreakAnim,
-			oneof: `packet`
-		}, {
-			no: 66,
-			name: `CPacketPlayerListPing`,
-			kind: `message`,
-			T: CPacketPlayerListPing,
-			oneof: `packet`
-		}, {
-			no: 67,
-			name: `CPacketPlayerListDelta`,
-			kind: `message`,
-			T: CPacketPlayerListDelta,
-			oneof: `packet`
-		}, {
-			no: 68,
-			name: `CPacketSpectate`,
-			kind: `message`,
-			T: CPacketSpectate,
-			oneof: `packet`
-		}, {
-			no: 69,
-			name: `CPacketTradeList`,
-			kind: `message`,
-			T: CPacketTradeList,
-			oneof: `packet`
-		}, {
-			no: 70,
-			name: `CPacketCollectItem`,
-			kind: `message`,
-			T: CPacketCollectItem,
-			oneof: `packet`
-		}, {
-			no: 71,
-			name: `CPacketModContent`,
-			kind: `message`,
-			T: CPacketModContent,
-			oneof: `packet`
-		}, {
-			no: 72,
-			name: `CPacketDamageIndicator`,
-			kind: `message`,
-			T: CPacketDamageIndicator,
-			oneof: `packet`
-		}, {
-			no: 73,
-			name: `CPacketDownloadSchematic`,
-			kind: `message`,
-			T: CPacketDownloadSchematic,
-			oneof: `packet`
-		}, {
-			no: 74,
-			name: `CPacketEmote`,
-			kind: `message`,
-			T: CPacketEmote,
-			oneof: `packet`
-		}, {
-			no: 75,
-			name: `CPacketApplyRecoil`,
-			kind: `message`,
-			T: CPacketApplyRecoil,
-			oneof: `packet`
-		}, {
-			no: 76,
-			name: `CPacketScreenFlash`,
-			kind: `message`,
-			T: CPacketScreenFlash,
-			oneof: `packet`
-		}, {
-			no: 77,
-			name: `CPacketWeather`,
-			kind: `message`,
-			T: CPacketWeather,
-			oneof: `packet`
-		}, {
-			no: 78,
-			name: `CPacketLightningBolt`,
-			kind: `message`,
-			T: CPacketLightningBolt,
-			oneof: `packet`
-		}, {
-			no: 79,
-			name: `CPacketMachineGui`,
-			kind: `message`,
-			T: CPacketMachineGui,
-			oneof: `packet`
-		}, {
-			no: 80,
-			name: `CPacketReplayState`,
-			kind: `message`,
-			T: CPacketReplayState,
-			oneof: `packet`
-		}, {
-			no: 81,
-			name: `CPacketScriptVersion`,
-			kind: `message`,
-			T: CPacketScriptVersion,
-			oneof: `packet`
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `CPacketAnimation`,
+				kind: `message`,
+				T: CPacketAnimation,
+				oneof: `packet`
+			},
+			{
+				no: 2,
+				name: `CPacketBlockAction`,
+				kind: `message`,
+				T: CPacketBlockAction,
+				oneof: `packet`
+			},
+			{
+				no: 3,
+				name: `CPacketBlockUpdate`,
+				kind: `message`,
+				T: CPacketBlockUpdate,
+				oneof: `packet`
+			},
+			{
+				no: 4,
+				name: `CPacketChangeServers`,
+				kind: `message`,
+				T: CPacketChangeServers,
+				oneof: `packet`
+			},
+			{
+				no: 5,
+				name: `CPacketChunkData`,
+				kind: `message`,
+				T: CPacketChunkData,
+				oneof: `packet`
+			},
+			{
+				no: 6,
+				name: `CPacketCloseWindow`,
+				kind: `message`,
+				T: CPacketCloseWindow,
+				oneof: `packet`
+			},
+			{
+				no: 7,
+				name: `CPacketConfirmTransaction`,
+				kind: `message`,
+				T: CPacketConfirmTransaction,
+				oneof: `packet`
+			},
+			{
+				no: 8,
+				name: `CPacketDestroyEntities`,
+				kind: `message`,
+				T: CPacketDestroyEntities,
+				oneof: `packet`
+			},
+			{
+				no: 9,
+				name: `CPacketDisconnect`,
+				kind: `message`,
+				T: CPacketDisconnect,
+				oneof: `packet`
+			},
+			{
+				no: 10,
+				name: `CPacketEntityAction`,
+				kind: `message`,
+				T: CPacketEntityAction,
+				oneof: `packet`
+			},
+			{
+				no: 11,
+				name: `CPacketEntityEffect`,
+				kind: `message`,
+				T: CPacketEntityEffect,
+				oneof: `packet`
+			},
+			{
+				no: 12,
+				name: `CPacketEntityEquipment`,
+				kind: `message`,
+				T: CPacketEntityEquipment,
+				oneof: `packet`
+			},
+			{
+				no: 13,
+				name: `CPacketEntityMetadata`,
+				kind: `message`,
+				T: CPacketEntityMetadata,
+				oneof: `packet`
+			},
+			{
+				no: 14,
+				name: `CPacketEntityPositionAndRotation`,
+				kind: `message`,
+				T: CPacketEntityPositionAndRotation,
+				oneof: `packet`
+			},
+			{
+				no: 15,
+				name: `CPacketEntityProperties`,
+				kind: `message`,
+				T: CPacketEntityProperties,
+				oneof: `packet`
+			},
+			{
+				no: 16,
+				name: `CPacketEntityRelativePositionAndRotation`,
+				kind: `message`,
+				T: CPacketEntityRelativePositionAndRotation,
+				oneof: `packet`
+			},
+			{
+				no: 17,
+				name: `CPacketEntityStatus`,
+				kind: `message`,
+				T: CPacketEntityStatus,
+				oneof: `packet`
+			},
+			{
+				no: 18,
+				name: `CPacketEntityVelocity`,
+				kind: `message`,
+				T: CPacketEntityVelocity,
+				oneof: `packet`
+			},
+			{
+				no: 19,
+				name: `CPacketExplosion`,
+				kind: `message`,
+				T: CPacketExplosion,
+				oneof: `packet`
+			},
+			{
+				no: 20,
+				name: `CPacketJoinGame`,
+				kind: `message`,
+				T: CPacketJoinGame,
+				oneof: `packet`
+			},
+			{
+				no: 21,
+				name: `CPacketLeaderboard`,
+				kind: `message`,
+				T: CPacketLeaderboard,
+				oneof: `packet`
+			},
+			{
+				no: 22,
+				name: `CPacketLocalStorage`,
+				kind: `message`,
+				T: CPacketLocalStorage,
+				oneof: `packet`
+			},
+			{
+				no: 23,
+				name: `CPacketMessage`,
+				kind: `message`,
+				T: CPacketMessage,
+				oneof: `packet`
+			},
+			{
+				no: 24,
+				name: `CPacketOpenShop`,
+				kind: `message`,
+				T: CPacketOpenShop,
+				oneof: `packet`
+			},
+			{
+				no: 25,
+				name: `CPacketOpenWindow`,
+				kind: `message`,
+				T: CPacketOpenWindow,
+				oneof: `packet`
+			},
+			{
+				no: 26,
+				name: `CPacketParticles`,
+				kind: `message`,
+				T: CPacketParticles,
+				oneof: `packet`
+			},
+			{
+				no: 27,
+				name: `CPacketPlayerList`,
+				kind: `message`,
+				T: CPacketPlayerList,
+				oneof: `packet`
+			},
+			{
+				no: 28,
+				name: `CPacketPlayerPosLook`,
+				kind: `message`,
+				T: CPacketPlayerPosLook,
+				oneof: `packet`
+			},
+			{
+				no: 29,
+				name: `CPacketPlayerPosition`,
+				kind: `message`,
+				T: CPacketPlayerPosition,
+				oneof: `packet`
+			},
+			{
+				no: 30,
+				name: `CPacketPong`,
+				kind: `message`,
+				T: CPacketPong,
+				oneof: `packet`
+			},
+			{
+				no: 31,
+				name: `CPacketQueueNext`,
+				kind: `message`,
+				T: CPacketQueueNext,
+				oneof: `packet`
+			},
+			{
+				no: 32,
+				name: `CPacketRemoveEntityEffect`,
+				kind: `message`,
+				T: CPacketRemoveEntityEffect,
+				oneof: `packet`
+			},
+			{
+				no: 33,
+				name: `CPacketRespawn`,
+				kind: `message`,
+				T: CPacketRespawn,
+				oneof: `packet`
+			},
+			{
+				no: 34,
+				name: `CPacketScoreboard`,
+				kind: `message`,
+				T: CPacketScoreboard,
+				oneof: `packet`
+			},
+			{
+				no: 35,
+				name: `CPacketServerInfo`,
+				kind: `message`,
+				T: CPacketServerInfo,
+				oneof: `packet`
+			},
+			{
+				no: 36,
+				name: `CPacketSetExperience`,
+				kind: `message`,
+				T: CPacketSetExperience,
+				oneof: `packet`
+			},
+			{
+				no: 37,
+				name: `CPacketSetSlot`,
+				kind: `message`,
+				T: CPacketSetSlot,
+				oneof: `packet`
+			},
+			{
+				no: 38,
+				name: `CPacketShopProperties`,
+				kind: `message`,
+				T: CPacketShopProperties,
+				oneof: `packet`
+			},
+			{
+				no: 39,
+				name: `CPacketSignEditorOpen`,
+				kind: `message`,
+				T: CPacketSignEditorOpen,
+				oneof: `packet`
+			},
+			{
+				no: 40,
+				name: `CPacketSoundEffect`,
+				kind: `message`,
+				T: CPacketSoundEffect,
+				oneof: `packet`
+			},
+			{
+				no: 41,
+				name: `CPacketSpawnEntity`,
+				kind: `message`,
+				T: CPacketSpawnEntity,
+				oneof: `packet`
+			},
+			{
+				no: 42,
+				name: `CPacketSpawnExperienceOrb`,
+				kind: `message`,
+				T: CPacketSpawnExperienceOrb,
+				oneof: `packet`
+			},
+			{
+				no: 43,
+				name: `CPacketSpawnPlayer`,
+				kind: `message`,
+				T: CPacketSpawnPlayer,
+				oneof: `packet`
+			},
+			{
+				no: 44,
+				name: `CPacketTabComplete`,
+				kind: `message`,
+				T: CPacketTabComplete,
+				oneof: `packet`
+			},
+			{
+				no: 45,
+				name: `CPacketTitle`,
+				kind: `message`,
+				T: CPacketTitle,
+				oneof: `packet`
+			},
+			{
+				no: 46,
+				name: `CPacketUpdateCommandBlock`,
+				kind: `message`,
+				T: CPacketUpdateCommandBlock,
+				oneof: `packet`
+			},
+			{
+				no: 47,
+				name: `CPacketUpdateHealth`,
+				kind: `message`,
+				T: CPacketUpdateHealth,
+				oneof: `packet`
+			},
+			{
+				no: 48,
+				name: `CPacketUpdateLeaderboard`,
+				kind: `message`,
+				T: CPacketUpdateLeaderboard,
+				oneof: `packet`
+			},
+			{
+				no: 49,
+				name: `CPacketUpdateScoreboard`,
+				kind: `message`,
+				T: CPacketUpdateScoreboard,
+				oneof: `packet`
+			},
+			{
+				no: 50,
+				name: `CPacketUpdateSign`,
+				kind: `message`,
+				T: CPacketUpdateSign,
+				oneof: `packet`
+			},
+			{
+				no: 51,
+				name: `CPacketUpdateStatus`,
+				kind: `message`,
+				T: CPacketUpdateStatus,
+				oneof: `packet`
+			},
+			{
+				no: 52,
+				name: `CPacketUseBed`,
+				kind: `message`,
+				T: CPacketUseBed,
+				oneof: `packet`
+			},
+			{
+				no: 53,
+				name: `CPacketWindowItems`,
+				kind: `message`,
+				T: CPacketWindowItems,
+				oneof: `packet`
+			},
+			{
+				no: 54,
+				name: `CPacketWindowProperty`,
+				kind: `message`,
+				T: CPacketWindowProperty,
+				oneof: `packet`
+			},
+			{
+				no: 55,
+				name: `CPacketEntityAttach`,
+				kind: `message`,
+				T: CPacketEntityAttach,
+				oneof: `packet`
+			},
+			{
+				no: 56,
+				name: `CPacketServerMetadata`,
+				kind: `message`,
+				T: CPacketServerMetadata,
+				oneof: `packet`
+			},
+			{
+				no: 57,
+				name: `CPacketTimeUpdate`,
+				kind: `message`,
+				T: CPacketTimeUpdate,
+				oneof: `packet`
+			},
+			{
+				no: 58,
+				name: `CPacketPlayerReconciliation`,
+				kind: `message`,
+				T: CPacketPlayerReconciliation,
+				oneof: `packet`
+			},
+			{
+				no: 59,
+				name: `CPacketScriptData`,
+				kind: `message`,
+				T: CPacketScriptData,
+				oneof: `packet`
+			},
+			{
+				no: 60,
+				name: `CPacketScriptLog`,
+				kind: `message`,
+				T: CPacketScriptLog,
+				oneof: `packet`
+			},
+			{
+				no: 61,
+				name: `CPacketPlotsData`,
+				kind: `message`,
+				T: CPacketPlotsData,
+				oneof: `packet`
+			},
+			{
+				no: 62,
+				name: `CPacketUpdatePlayerHead`,
+				kind: `message`,
+				T: CPacketUpdatePlayerHead,
+				oneof: `packet`
+			},
+			{
+				no: 63,
+				name: `CPacketChunkUnchanged`,
+				kind: `message`,
+				T: CPacketChunkUnchanged,
+				oneof: `packet`
+			},
+			{
+				no: 64,
+				name: `CPacketGuideData`,
+				kind: `message`,
+				T: CPacketGuideData,
+				oneof: `packet`
+			},
+			{
+				no: 65,
+				name: `CPacketBlockBreakAnim`,
+				kind: `message`,
+				T: CPacketBlockBreakAnim,
+				oneof: `packet`
+			},
+			{
+				no: 66,
+				name: `CPacketPlayerListPing`,
+				kind: `message`,
+				T: CPacketPlayerListPing,
+				oneof: `packet`
+			},
+			{
+				no: 67,
+				name: `CPacketPlayerListDelta`,
+				kind: `message`,
+				T: CPacketPlayerListDelta,
+				oneof: `packet`
+			},
+			{
+				no: 68,
+				name: `CPacketSpectate`,
+				kind: `message`,
+				T: CPacketSpectate,
+				oneof: `packet`
+			},
+			{
+				no: 69,
+				name: `CPacketTradeList`,
+				kind: `message`,
+				T: CPacketTradeList,
+				oneof: `packet`
+			},
+			{
+				no: 70,
+				name: `CPacketCollectItem`,
+				kind: `message`,
+				T: CPacketCollectItem,
+				oneof: `packet`
+			},
+			{
+				no: 71,
+				name: `CPacketModContent`,
+				kind: `message`,
+				T: CPacketModContent,
+				oneof: `packet`
+			},
+			{
+				no: 72,
+				name: `CPacketDamageIndicator`,
+				kind: `message`,
+				T: CPacketDamageIndicator,
+				oneof: `packet`
+			},
+			{
+				no: 73,
+				name: `CPacketDownloadSchematic`,
+				kind: `message`,
+				T: CPacketDownloadSchematic,
+				oneof: `packet`
+			},
+			{
+				no: 74,
+				name: `CPacketEmote`,
+				kind: `message`,
+				T: CPacketEmote,
+				oneof: `packet`
+			},
+			{
+				no: 75,
+				name: `CPacketApplyRecoil`,
+				kind: `message`,
+				T: CPacketApplyRecoil,
+				oneof: `packet`
+			},
+			{
+				no: 76,
+				name: `CPacketScreenFlash`,
+				kind: `message`,
+				T: CPacketScreenFlash,
+				oneof: `packet`
+			},
+			{
+				no: 77,
+				name: `CPacketWeather`,
+				kind: `message`,
+				T: CPacketWeather,
+				oneof: `packet`
+			},
+			{
+				no: 78,
+				name: `CPacketLightningBolt`,
+				kind: `message`,
+				T: CPacketLightningBolt,
+				oneof: `packet`
+			},
+			{
+				no: 79,
+				name: `CPacketMachineGui`,
+				kind: `message`,
+				T: CPacketMachineGui,
+				oneof: `packet`
+			},
+			{
+				no: 80,
+				name: `CPacketReplayState`,
+				kind: `message`,
+				T: CPacketReplayState,
+				oneof: `packet`
+			},
+			{
+				no: 81,
+				name: `CPacketScriptVersion`,
+				kind: `message`,
+				T: CPacketScriptVersion,
+				oneof: `packet`
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ClientBoundCombined_CPacket().fromBinary(t, n);
@@ -6793,11 +7585,11 @@ class ClientBoundCombined_CPacket extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ClientBoundCombined_CPacket, t, n);
 	}
-};
+}
 exports.ClientBoundCombined_CPacket = ClientBoundCombined_CPacket;
 class CPacketUpdate extends Message {
 	constructor(CPacketUpdate) {
-		super(), proto2.util.initPartial(CPacketUpdate, this);
+		(super(), proto2.util.initPartial(CPacketUpdate, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6806,22 +7598,26 @@ class CPacketUpdate extends Message {
 		this.typeName = `CPacketUpdate`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 4,
-			name: `tick`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 5,
-			name: `t`,
-			kind: `scalar`,
-			T: 4
-		}, {
-			no: 6,
-			name: `mspt`,
-			kind: `scalar`,
-			T: 2
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 4,
+				name: `tick`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 5,
+				name: `t`,
+				kind: `scalar`,
+				T: 4
+			},
+			{
+				no: 6,
+				name: `mspt`,
+				kind: `scalar`,
+				T: 2
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new CPacketUpdate().fromBinary(t, n);
@@ -6835,11 +7631,11 @@ class CPacketUpdate extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(CPacketUpdate, t, n);
 	}
-};
+}
 exports.CPacketUpdate = CPacketUpdate;
 class SPacketRespawn extends Message {
 	constructor(SPacketRespawn) {
-		super(), proto2.util.initPartial(SPacketRespawn, this);
+		(super(), proto2.util.initPartial(SPacketRespawn, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6862,11 +7658,11 @@ class SPacketRespawn extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketRespawn, t, n);
 	}
-};
+}
 exports.SPacketRespawn = SPacketRespawn;
 class SPacketTabComplete extends Message {
 	constructor(SPacketTabComplete) {
-		super(), proto2.util.initPartial(SPacketTabComplete, this);
+		(super(), proto2.util.initPartial(SPacketTabComplete, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6875,12 +7671,14 @@ class SPacketTabComplete extends Message {
 		this.typeName = `SPacketTabComplete`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `message`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `message`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketTabComplete().fromBinary(t, n);
@@ -6894,11 +7692,11 @@ class SPacketTabComplete extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketTabComplete, t, n);
 	}
-};
+}
 exports.SPacketTabComplete = SPacketTabComplete;
 class SPacketCraftItem extends Message {
 	constructor(SPacketCraftItem) {
-		super(), proto2.util.initPartial(SPacketCraftItem, this);
+		(super(), proto2.util.initPartial(SPacketCraftItem, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6907,12 +7705,14 @@ class SPacketCraftItem extends Message {
 		this.typeName = `SPacketCraftItem`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `data`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `data`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketCraftItem().fromBinary(t, n);
@@ -6926,11 +7726,11 @@ class SPacketCraftItem extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketCraftItem, t, n);
 	}
-};
+}
 exports.SPacketCraftItem = SPacketCraftItem;
 class SPacketRequestChunk extends Message {
 	constructor(SPacketRequestChunk) {
-		super(), proto2.util.initPartial(SPacketRequestChunk, this);
+		(super(), proto2.util.initPartial(SPacketRequestChunk, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6939,23 +7739,27 @@ class SPacketRequestChunk extends Message {
 		this.typeName = `SPacketRequestChunk`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `z`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 3,
-			name: `cachedHash`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `z`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 3,
+				name: `cachedHash`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketRequestChunk().fromBinary(t, n);
@@ -6969,13 +7773,15 @@ class SPacketRequestChunk extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketRequestChunk, t, n);
 	}
-};
+}
 exports.SPacketRequestChunk = SPacketRequestChunk;
 class SPacketAdminAction extends Message {
 	constructor(SPacketAdminAction) {
-		super(), this.action = {
-			case: void 0
-		}, proto2.util.initPartial(SPacketAdminAction, this);
+		(super(),
+			(this.action = {
+				case: void 0
+			}),
+			proto2.util.initPartial(SPacketAdminAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -6984,109 +7790,127 @@ class SPacketAdminAction extends Message {
 		this.typeName = `SPacketAdminAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `kick_player`,
-			kind: `message`,
-			T: KickPlayer,
-			oneof: `action`
-		}, {
-			no: 2,
-			name: `ban_player`,
-			kind: `message`,
-			T: BanPlayer,
-			oneof: `action`
-		}, {
-			no: 9,
-			name: `unban_player`,
-			kind: `message`,
-			T: UnbanPlayer,
-			oneof: `action`
-		}, {
-			no: 3,
-			name: `stop_server`,
-			kind: `message`,
-			T: StopServer,
-			oneof: `action`
-		}, {
-			no: 4,
-			name: `promote_player`,
-			kind: `message`,
-			T: PromotePlayer,
-			oneof: `action`
-		}, {
-			no: 5,
-			name: `demote_player`,
-			kind: `message`,
-			T: DemotePlayer,
-			oneof: `action`
-		}, {
-			no: 6,
-			name: `update_access_control`,
-			kind: `message`,
-			T: UpdateAccessControl,
-			oneof: `action`
-		}, {
-			no: 7,
-			name: `update_cheats`,
-			kind: `message`,
-			T: UpdateCheats,
-			oneof: `action`
-		}, {
-			no: 8,
-			name: `update_pvp`,
-			kind: `message`,
-			T: UpdatePvP,
-			oneof: `action`
-		}, {
-			no: 10,
-			name: `update_command_block`,
-			kind: `message`,
-			T: UpdateCommandBlock,
-			oneof: `action`
-		}, {
-			no: 11,
-			name: `update_scripting`,
-			kind: `message`,
-			T: UpdateScripting,
-			oneof: `action`
-		}, {
-			no: 12,
-			name: `restart_server`,
-			kind: `message`,
-			T: RestartServer,
-			oneof: `action`
-		}, {
-			no: 13,
-			name: `update_world_config`,
-			kind: `message`,
-			T: UpdateWorldConfig,
-			oneof: `action`
-		}, {
-			no: 14,
-			name: `restore_backup`,
-			kind: `message`,
-			T: RestoreBackup,
-			oneof: `action`
-		}, {
-			no: 15,
-			name: `set_game_rule`,
-			kind: `message`,
-			T: SetGameRule,
-			oneof: `action`
-		}, {
-			no: 16,
-			name: `set_weather`,
-			kind: `message`,
-			T: SetWeather,
-			oneof: `action`
-		}, {
-			no: 17,
-			name: `set_time`,
-			kind: `message`,
-			T: SetTime,
-			oneof: `action`
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `kick_player`,
+				kind: `message`,
+				T: KickPlayer,
+				oneof: `action`
+			},
+			{
+				no: 2,
+				name: `ban_player`,
+				kind: `message`,
+				T: BanPlayer,
+				oneof: `action`
+			},
+			{
+				no: 9,
+				name: `unban_player`,
+				kind: `message`,
+				T: UnbanPlayer,
+				oneof: `action`
+			},
+			{
+				no: 3,
+				name: `stop_server`,
+				kind: `message`,
+				T: StopServer,
+				oneof: `action`
+			},
+			{
+				no: 4,
+				name: `promote_player`,
+				kind: `message`,
+				T: PromotePlayer,
+				oneof: `action`
+			},
+			{
+				no: 5,
+				name: `demote_player`,
+				kind: `message`,
+				T: DemotePlayer,
+				oneof: `action`
+			},
+			{
+				no: 6,
+				name: `update_access_control`,
+				kind: `message`,
+				T: UpdateAccessControl,
+				oneof: `action`
+			},
+			{
+				no: 7,
+				name: `update_cheats`,
+				kind: `message`,
+				T: UpdateCheats,
+				oneof: `action`
+			},
+			{
+				no: 8,
+				name: `update_pvp`,
+				kind: `message`,
+				T: UpdatePvP,
+				oneof: `action`
+			},
+			{
+				no: 10,
+				name: `update_command_block`,
+				kind: `message`,
+				T: UpdateCommandBlock,
+				oneof: `action`
+			},
+			{
+				no: 11,
+				name: `update_scripting`,
+				kind: `message`,
+				T: UpdateScripting,
+				oneof: `action`
+			},
+			{
+				no: 12,
+				name: `restart_server`,
+				kind: `message`,
+				T: RestartServer,
+				oneof: `action`
+			},
+			{
+				no: 13,
+				name: `update_world_config`,
+				kind: `message`,
+				T: UpdateWorldConfig,
+				oneof: `action`
+			},
+			{
+				no: 14,
+				name: `restore_backup`,
+				kind: `message`,
+				T: RestoreBackup,
+				oneof: `action`
+			},
+			{
+				no: 15,
+				name: `set_game_rule`,
+				kind: `message`,
+				T: SetGameRule,
+				oneof: `action`
+			},
+			{
+				no: 16,
+				name: `set_weather`,
+				kind: `message`,
+				T: SetWeather,
+				oneof: `action`
+			},
+			{
+				no: 17,
+				name: `set_time`,
+				kind: `message`,
+				T: SetTime,
+				oneof: `action`
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketAdminAction().fromBinary(t, n);
@@ -7100,11 +7924,11 @@ class SPacketAdminAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketAdminAction, t, n);
 	}
-};
+}
 exports.SPacketAdminAction = SPacketAdminAction;
 class KickPlayer extends Message {
 	constructor(KickPlayer) {
-		super(), proto2.util.initPartial(KickPlayer, this);
+		(super(), proto2.util.initPartial(KickPlayer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7113,12 +7937,14 @@ class KickPlayer extends Message {
 		this.typeName = `KickPlayer`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new KickPlayer().fromBinary(t, n);
@@ -7132,11 +7958,11 @@ class KickPlayer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(KickPlayer, t, n);
 	}
-};
+}
 exports.KickPlayer = KickPlayer;
 class BanPlayer extends Message {
 	constructor(BanPlayer) {
-		super(), proto2.util.initPartial(BanPlayer, this);
+		(super(), proto2.util.initPartial(BanPlayer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7145,12 +7971,14 @@ class BanPlayer extends Message {
 		this.typeName = `BanPlayer`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new BanPlayer().fromBinary(t, n);
@@ -7164,11 +7992,11 @@ class BanPlayer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(BanPlayer, t, n);
 	}
-};
+}
 exports.BanPlayer = BanPlayer;
 class UnbanPlayer extends Message {
 	constructor(UnbanPlayer) {
-		super(), proto2.util.initPartial(UnbanPlayer, this);
+		(super(), proto2.util.initPartial(UnbanPlayer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7177,12 +8005,14 @@ class UnbanPlayer extends Message {
 		this.typeName = `UnbanPlayer`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new UnbanPlayer().fromBinary(t, n);
@@ -7196,11 +8026,11 @@ class UnbanPlayer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(UnbanPlayer, t, n);
 	}
-};
+}
 exports.UnbanPlayer = UnbanPlayer;
 class StopServer extends Message {
 	constructor(StopServer) {
-		super(), proto2.util.initPartial(StopServer, this);
+		(super(), proto2.util.initPartial(StopServer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7223,11 +8053,11 @@ class StopServer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(StopServer, t, n);
 	}
-};
+}
 exports.StopServer = StopServer;
 class RestartServer extends Message {
 	constructor(RestartServer) {
-		super(), proto2.util.initPartial(RestartServer, this);
+		(super(), proto2.util.initPartial(RestartServer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7250,11 +8080,11 @@ class RestartServer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(RestartServer, t, n);
 	}
-};
+}
 exports.RestartServer = RestartServer;
 class RestoreBackup extends Message {
 	constructor(RestoreBackup) {
-		super(), proto2.util.initPartial(RestoreBackup, this);
+		(super(), proto2.util.initPartial(RestoreBackup, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7263,12 +8093,14 @@ class RestoreBackup extends Message {
 		this.typeName = `RestoreBackup`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `backup_id`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `backup_id`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new RestoreBackup().fromBinary(t, n);
@@ -7282,11 +8114,11 @@ class RestoreBackup extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(RestoreBackup, t, n);
 	}
-};
+}
 exports.RestoreBackup = RestoreBackup;
 class PromotePlayer extends Message {
 	constructor(PromotePlayer) {
-		super(), proto2.util.initPartial(PromotePlayer, this);
+		(super(), proto2.util.initPartial(PromotePlayer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7295,12 +8127,14 @@ class PromotePlayer extends Message {
 		this.typeName = `PromotePlayer`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new PromotePlayer().fromBinary(t, n);
@@ -7314,11 +8148,11 @@ class PromotePlayer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(PromotePlayer, t, n);
 	}
-};
+}
 exports.PromotePlayer = PromotePlayer;
 class DemotePlayer extends Message {
 	constructor(DemotePlayer) {
-		super(), proto2.util.initPartial(DemotePlayer, this);
+		(super(), proto2.util.initPartial(DemotePlayer, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7327,12 +8161,14 @@ class DemotePlayer extends Message {
 		this.typeName = `DemotePlayer`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `uuid`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `uuid`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new DemotePlayer().fromBinary(t, n);
@@ -7346,11 +8182,11 @@ class DemotePlayer extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(DemotePlayer, t, n);
 	}
-};
+}
 exports.DemotePlayer = DemotePlayer;
 class UpdateAccessControl extends Message {
 	constructor(UpdateAccessControl) {
-		super(), proto2.util.initPartial(UpdateAccessControl, this);
+		(super(), proto2.util.initPartial(UpdateAccessControl, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7359,12 +8195,14 @@ class UpdateAccessControl extends Message {
 		this.typeName = `UpdateAccessControl`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `accessControl`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `accessControl`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new UpdateAccessControl().fromBinary(t, n);
@@ -7378,11 +8216,11 @@ class UpdateAccessControl extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(UpdateAccessControl, t, n);
 	}
-};
+}
 exports.UpdateAccessControl = UpdateAccessControl;
 class UpdateCheats extends Message {
 	constructor(UpdateCheats) {
-		super(), proto2.util.initPartial(UpdateCheats, this);
+		(super(), proto2.util.initPartial(UpdateCheats, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7391,12 +8229,14 @@ class UpdateCheats extends Message {
 		this.typeName = `UpdateCheats`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `cheats`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `cheats`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new UpdateCheats().fromBinary(t, n);
@@ -7410,11 +8250,11 @@ class UpdateCheats extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(UpdateCheats, t, n);
 	}
-};
+}
 exports.UpdateCheats = UpdateCheats;
 class UpdatePvP extends Message {
 	constructor(UpdatePvP) {
-		super(), proto2.util.initPartial(UpdatePvP, this);
+		(super(), proto2.util.initPartial(UpdatePvP, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7423,12 +8263,14 @@ class UpdatePvP extends Message {
 		this.typeName = `UpdatePvP`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `enabled`,
-			kind: `scalar`,
-			T: 8
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `enabled`,
+				kind: `scalar`,
+				T: 8
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new UpdatePvP().fromBinary(t, n);
@@ -7442,11 +8284,11 @@ class UpdatePvP extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(UpdatePvP, t, n);
 	}
-};
+}
 exports.UpdatePvP = UpdatePvP;
 class UpdateCommandBlock extends Message {
 	constructor(UpdateCommandBlock) {
-		super(), proto2.util.initPartial(UpdateCommandBlock, this);
+		(super(), proto2.util.initPartial(UpdateCommandBlock, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7455,12 +8297,14 @@ class UpdateCommandBlock extends Message {
 		this.typeName = `UpdateCommandBlock`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `enabled`,
-			kind: `scalar`,
-			T: 8
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `enabled`,
+				kind: `scalar`,
+				T: 8
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new UpdateCommandBlock().fromBinary(t, n);
@@ -7474,11 +8318,11 @@ class UpdateCommandBlock extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(UpdateCommandBlock, t, n);
 	}
-};
+}
 exports.UpdateCommandBlock = UpdateCommandBlock;
 class UpdateScripting extends Message {
 	constructor(UpdateScripting) {
-		super(), proto2.util.initPartial(UpdateScripting, this);
+		(super(), proto2.util.initPartial(UpdateScripting, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7487,12 +8331,14 @@ class UpdateScripting extends Message {
 		this.typeName = `UpdateScripting`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `permission`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `permission`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new UpdateScripting().fromBinary(t, n);
@@ -7506,11 +8352,11 @@ class UpdateScripting extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(UpdateScripting, t, n);
 	}
-};
+}
 exports.UpdateScripting = UpdateScripting;
 class UpdateWorldConfig extends Message {
 	constructor(UpdateWorldConfig) {
-		super(), proto2.util.initPartial(UpdateWorldConfig, this);
+		(super(), proto2.util.initPartial(UpdateWorldConfig, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7519,73 +8365,85 @@ class UpdateWorldConfig extends Message {
 		this.typeName = `UpdateWorldConfig`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `difficulty`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 2,
-			name: `enable_redstone`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 3,
-			name: `save_player_data`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 4,
-			name: `do_daylight_cycle`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 5,
-			name: `start_time`,
-			kind: `scalar`,
-			T: 4,
-			opt: !0
-		}, {
-			no: 6,
-			name: `always_stay_on`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 7,
-			name: `allow_guest_chat`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 8,
-			name: `fall_damage`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 9,
-			name: `survival_guide`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 10,
-			name: `anyone_can_open`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 11,
-			name: `combat_logging`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `difficulty`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `enable_redstone`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `save_player_data`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `do_daylight_cycle`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 5,
+				name: `start_time`,
+				kind: `scalar`,
+				T: 4,
+				opt: !0
+			},
+			{
+				no: 6,
+				name: `always_stay_on`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 7,
+				name: `allow_guest_chat`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 8,
+				name: `fall_damage`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 9,
+				name: `survival_guide`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 10,
+				name: `anyone_can_open`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 11,
+				name: `combat_logging`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new UpdateWorldConfig().fromBinary(t, n);
@@ -7599,11 +8457,11 @@ class UpdateWorldConfig extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(UpdateWorldConfig, t, n);
 	}
-};
+}
 exports.UpdateWorldConfig = UpdateWorldConfig;
 class SetGameRule extends Message {
 	constructor(SetGameRule) {
-		super(), proto2.util.initPartial(SetGameRule, this);
+		(super(), proto2.util.initPartial(SetGameRule, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7612,24 +8470,28 @@ class SetGameRule extends Message {
 		this.typeName = `SetGameRule`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `rule`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `bool_value`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 3,
-			name: `int_value`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `rule`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `bool_value`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `int_value`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SetGameRule().fromBinary(t, n);
@@ -7643,11 +8505,11 @@ class SetGameRule extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SetGameRule, t, n);
 	}
-};
+}
 exports.SetGameRule = SetGameRule;
 class SetWeather extends Message {
 	constructor(SetWeather) {
-		super(), proto2.util.initPartial(SetWeather, this);
+		(super(), proto2.util.initPartial(SetWeather, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7656,18 +8518,21 @@ class SetWeather extends Message {
 		this.typeName = `SetWeather`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `type`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `duration_seconds`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `type`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `duration_seconds`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SetWeather().fromBinary(t, n);
@@ -7681,11 +8546,11 @@ class SetWeather extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SetWeather, t, n);
 	}
-};
+}
 exports.SetWeather = SetWeather;
 class SetTime extends Message {
 	constructor(SetTime) {
-		super(), proto2.util.initPartial(SetTime, this);
+		(super(), proto2.util.initPartial(SetTime, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7694,12 +8559,14 @@ class SetTime extends Message {
 		this.typeName = `SetTime`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `tick`,
-			kind: `scalar`,
-			T: 13
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `tick`,
+				kind: `scalar`,
+				T: 13
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SetTime().fromBinary(t, n);
@@ -7713,11 +8580,11 @@ class SetTime extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SetTime, t, n);
 	}
-};
+}
 exports.SetTime = SetTime;
 class SPacketAnalytics extends Message {
 	constructor(SPacketAnalytics) {
-		super(), proto2.util.initPartial(SPacketAnalytics, this);
+		(super(), proto2.util.initPartial(SPacketAnalytics, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7726,23 +8593,27 @@ class SPacketAnalytics extends Message {
 		this.typeName = `SPacketAnalytics`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `fps`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 2,
-			name: `ping`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `renderDistance`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `fps`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 2,
+				name: `ping`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `renderDistance`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketAnalytics().fromBinary(t, n);
@@ -7756,11 +8627,11 @@ class SPacketAnalytics extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketAnalytics, t, n);
 	}
-};
+}
 exports.SPacketAnalytics = SPacketAnalytics;
 class SPacketCloseWindow extends Message {
 	constructor(SPacketCloseWindow) {
-		super(), proto2.util.initPartial(SPacketCloseWindow, this);
+		(super(), proto2.util.initPartial(SPacketCloseWindow, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7769,12 +8640,14 @@ class SPacketCloseWindow extends Message {
 		this.typeName = `SPacketCloseWindow`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketCloseWindow().fromBinary(t, n);
@@ -7788,11 +8661,11 @@ class SPacketCloseWindow extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketCloseWindow, t, n);
 	}
-};
+}
 exports.SPacketCloseWindow = SPacketCloseWindow;
 class SPacketConfirmTransaction extends Message {
 	constructor(SPacketConfirmTransaction) {
-		super(), proto2.util.initPartial(SPacketConfirmTransaction, this);
+		(super(), proto2.util.initPartial(SPacketConfirmTransaction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7801,22 +8674,26 @@ class SPacketConfirmTransaction extends Message {
 		this.typeName = `SPacketConfirmTransaction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `actionNumber`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 3,
-			name: `accepted`,
-			kind: `scalar`,
-			T: 8
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `actionNumber`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 3,
+				name: `accepted`,
+				kind: `scalar`,
+				T: 8
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketConfirmTransaction().fromBinary(t, n);
@@ -7830,11 +8707,11 @@ class SPacketConfirmTransaction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketConfirmTransaction, t, n);
 	}
-};
+}
 exports.SPacketConfirmTransaction = SPacketConfirmTransaction;
 class SPacketHeldItemChange extends Message {
 	constructor(SPacketHeldItemChange) {
-		super(), proto2.util.initPartial(SPacketHeldItemChange, this);
+		(super(), proto2.util.initPartial(SPacketHeldItemChange, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7843,12 +8720,14 @@ class SPacketHeldItemChange extends Message {
 		this.typeName = `SPacketHeldItemChange`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `slot`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `slot`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketHeldItemChange().fromBinary(t, n);
@@ -7862,11 +8741,11 @@ class SPacketHeldItemChange extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketHeldItemChange, t, n);
 	}
-};
+}
 exports.SPacketHeldItemChange = SPacketHeldItemChange;
 class SPacketMessage extends Message {
 	constructor(SPacketMessage) {
-		super(), proto2.util.initPartial(SPacketMessage, this);
+		(super(), proto2.util.initPartial(SPacketMessage, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7875,18 +8754,21 @@ class SPacketMessage extends Message {
 		this.typeName = `SPacketMessage`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `text`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `channel`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `text`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `channel`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketMessage().fromBinary(t, n);
@@ -7900,11 +8782,11 @@ class SPacketMessage extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketMessage, t, n);
 	}
-};
+}
 exports.SPacketMessage = SPacketMessage;
 class SPacketPing extends Message {
 	constructor(SPacketPing) {
-		super(), proto2.util.initPartial(SPacketPing, this);
+		(super(), proto2.util.initPartial(SPacketPing, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7913,12 +8795,14 @@ class SPacketPing extends Message {
 		this.typeName = `SPacketPing`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `time`,
-			kind: `scalar`,
-			T: 4
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `time`,
+				kind: `scalar`,
+				T: 4
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketPing().fromBinary(t, n);
@@ -7932,11 +8816,11 @@ class SPacketPing extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketPing, t, n);
 	}
-};
+}
 exports.SPacketPing = SPacketPing;
 class SPacketPlayerAbilities extends Message {
 	constructor(SPacketPlayerAbilities) {
-		super(), proto2.util.initPartial(SPacketPlayerAbilities, this);
+		(super(), proto2.util.initPartial(SPacketPlayerAbilities, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7945,13 +8829,15 @@ class SPacketPlayerAbilities extends Message {
 		this.typeName = `SPacketPlayerAbilities`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `isFlying`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `isFlying`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketPlayerAbilities().fromBinary(t, n);
@@ -7965,11 +8851,11 @@ class SPacketPlayerAbilities extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketPlayerAbilities, t, n);
 	}
-};
+}
 exports.SPacketPlayerAbilities = SPacketPlayerAbilities;
 class SPacketPlayerInput extends Message {
 	constructor(SPacketPlayerInput) {
-		super(), proto2.util.initPartial(SPacketPlayerInput, this);
+		(super(), proto2.util.initPartial(SPacketPlayerInput, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -7978,80 +8864,95 @@ class SPacketPlayerInput extends Message {
 		this.typeName = `SPacketPlayerInput`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `sequenceNumber`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `left`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 3,
-			name: `right`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 4,
-			name: `up`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 5,
-			name: `down`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 6,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 7,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 8,
-			name: `jump`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 9,
-			name: `sneak`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 10,
-			name: `sprint`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 11,
-			name: `pos`,
-			kind: `message`,
-			T: PBFloatVector3
-		}, {
-			no: 12,
-			name: `ackId`,
-			kind: `scalar`,
-			T: 13,
-			opt: !0
-		}, {
-			no: 13,
-			name: `onGround`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}, {
-			no: 14,
-			name: `usingItem`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `sequenceNumber`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `left`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 3,
+				name: `right`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 4,
+				name: `up`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 5,
+				name: `down`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 6,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 7,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 8,
+				name: `jump`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 9,
+				name: `sneak`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 10,
+				name: `sprint`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 11,
+				name: `pos`,
+				kind: `message`,
+				T: PBFloatVector3
+			},
+			{
+				no: 12,
+				name: `ackId`,
+				kind: `scalar`,
+				T: 13,
+				opt: !0
+			},
+			{
+				no: 13,
+				name: `onGround`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			},
+			{
+				no: 14,
+				name: `usingItem`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketPlayerInput().fromBinary(t, n);
@@ -8065,11 +8966,11 @@ class SPacketPlayerInput extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketPlayerInput, t, n);
 	}
-};
+}
 exports.SPacketPlayerInput = SPacketPlayerInput;
 class SPacketPlayerPosLook extends Message {
 	constructor(SPacketPlayerPosLook) {
-		super(), proto2.util.initPartial(SPacketPlayerPosLook, this);
+		(super(), proto2.util.initPartial(SPacketPlayerPosLook, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8078,36 +8979,42 @@ class SPacketPlayerPosLook extends Message {
 		this.typeName = `SPacketPlayerPosLook`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: Vector3,
-			opt: !0
-		}, {
-			no: 2,
-			name: `yaw`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 3,
-			name: `pitch`,
-			kind: `scalar`,
-			T: 2,
-			opt: !0
-		}, {
-			no: 4,
-			name: `onGround`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 5,
-			name: `gliding`,
-			kind: `scalar`,
-			T: 8,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: Vector3,
+				opt: !0
+			},
+			{
+				no: 2,
+				name: `yaw`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `pitch`,
+				kind: `scalar`,
+				T: 2,
+				opt: !0
+			},
+			{
+				no: 4,
+				name: `onGround`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 5,
+				name: `gliding`,
+				kind: `scalar`,
+				T: 8,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketPlayerPosLook().fromBinary(t, n);
@@ -8121,11 +9028,11 @@ class SPacketPlayerPosLook extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketPlayerPosLook, t, n);
 	}
-};
+}
 exports.SPacketPlayerPosLook = SPacketPlayerPosLook;
 class Vector3 extends Message {
 	constructor(Vector3) {
-		super(), proto2.util.initPartial(Vector3, this);
+		(super(), proto2.util.initPartial(Vector3, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8134,22 +9041,26 @@ class Vector3 extends Message {
 		this.typeName = `Vector3`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `x`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 2,
-			name: `y`,
-			kind: `scalar`,
-			T: 2
-		}, {
-			no: 3,
-			name: `z`,
-			kind: `scalar`,
-			T: 2
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `x`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 2,
+				name: `y`,
+				kind: `scalar`,
+				T: 2
+			},
+			{
+				no: 3,
+				name: `z`,
+				kind: `scalar`,
+				T: 2
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new Vector3().fromBinary(t, n);
@@ -8163,11 +9074,11 @@ class Vector3 extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(Vector3, t, n);
 	}
-};
+}
 exports.Vector3 = Vector3;
 class SPacketUpdateSign extends Message {
 	constructor(SPacketUpdateSign) {
-		super(), this.lines = [], proto2.util.initPartial(SPacketUpdateSign, this);
+		(super(), (this.lines = []), proto2.util.initPartial(SPacketUpdateSign, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8176,18 +9087,21 @@ class SPacketUpdateSign extends Message {
 		this.typeName = `SPacketUpdateSign`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `lines`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `lines`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketUpdateSign().fromBinary(t, n);
@@ -8201,11 +9115,11 @@ class SPacketUpdateSign extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketUpdateSign, t, n);
 	}
-};
+}
 exports.SPacketUpdateSign = SPacketUpdateSign;
 class SPacketEnchantItem extends Message {
 	constructor(SPacketEnchantItem) {
-		super(), proto2.util.initPartial(SPacketEnchantItem, this);
+		(super(), proto2.util.initPartial(SPacketEnchantItem, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8214,17 +9128,20 @@ class SPacketEnchantItem extends Message {
 		this.typeName = `SPacketEnchantItem`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `button`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `button`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketEnchantItem().fromBinary(t, n);
@@ -8238,11 +9155,11 @@ class SPacketEnchantItem extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketEnchantItem, t, n);
 	}
-};
+}
 exports.SPacketEnchantItem = SPacketEnchantItem;
 class SPacketGuideAction extends Message {
 	constructor(SPacketGuideAction) {
-		super(), proto2.util.initPartial(SPacketGuideAction, this);
+		(super(), proto2.util.initPartial(SPacketGuideAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8251,12 +9168,14 @@ class SPacketGuideAction extends Message {
 		this.typeName = `SPacketGuideAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketGuideAction().fromBinary(t, n);
@@ -8270,11 +9189,11 @@ class SPacketGuideAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketGuideAction, t, n);
 	}
-};
+}
 exports.SPacketGuideAction = SPacketGuideAction;
 class SPacketEditBook extends Message {
 	constructor(SPacketEditBook) {
-		super(), this.pages = [], proto2.util.initPartial(SPacketEditBook, this);
+		(super(), (this.pages = []), proto2.util.initPartial(SPacketEditBook, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8283,29 +9202,34 @@ class SPacketEditBook extends Message {
 		this.typeName = `SPacketEditBook`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `slot`,
-			kind: `scalar`,
-			T: 13
-		}, {
-			no: 2,
-			name: `pages`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}, {
-			no: 3,
-			name: `sign`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 4,
-			name: `title`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `slot`,
+				kind: `scalar`,
+				T: 13
+			},
+			{
+				no: 2,
+				name: `pages`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			},
+			{
+				no: 3,
+				name: `sign`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 4,
+				name: `title`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketEditBook().fromBinary(t, n);
@@ -8319,11 +9243,11 @@ class SPacketEditBook extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketEditBook, t, n);
 	}
-};
+}
 exports.SPacketEditBook = SPacketEditBook;
 class SPacketTextPrompt extends Message {
 	constructor(SPacketTextPrompt) {
-		super(), proto2.util.initPartial(SPacketTextPrompt, this);
+		(super(), proto2.util.initPartial(SPacketTextPrompt, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8332,18 +9256,21 @@ class SPacketTextPrompt extends Message {
 		this.typeName = `SPacketTextPrompt`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `promptId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `text`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `promptId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `text`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketTextPrompt().fromBinary(t, n);
@@ -8357,11 +9284,11 @@ class SPacketTextPrompt extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketTextPrompt, t, n);
 	}
-};
+}
 exports.SPacketTextPrompt = SPacketTextPrompt;
 class SPacketOpenShop extends Message {
 	constructor(SPacketOpenShop) {
-		super(), proto2.util.initPartial(SPacketOpenShop, this);
+		(super(), proto2.util.initPartial(SPacketOpenShop, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8384,11 +9311,11 @@ class SPacketOpenShop extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketOpenShop, t, n);
 	}
-};
+}
 exports.SPacketOpenShop = SPacketOpenShop;
 class SPacketPlotsAction extends Message {
 	constructor(SPacketPlotsAction) {
-		super(), proto2.util.initPartial(SPacketPlotsAction, this);
+		(super(), proto2.util.initPartial(SPacketPlotsAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8397,12 +9324,14 @@ class SPacketPlotsAction extends Message {
 		this.typeName = `SPacketPlotsAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `json`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `json`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketPlotsAction().fromBinary(t, n);
@@ -8416,11 +9345,11 @@ class SPacketPlotsAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketPlotsAction, t, n);
 	}
-};
+}
 exports.SPacketPlotsAction = SPacketPlotsAction;
 class SPacketRenameItem extends Message {
 	constructor(SPacketRenameItem) {
-		super(), proto2.util.initPartial(SPacketRenameItem, this);
+		(super(), proto2.util.initPartial(SPacketRenameItem, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8429,17 +9358,20 @@ class SPacketRenameItem extends Message {
 		this.typeName = `SPacketRenameItem`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketRenameItem().fromBinary(t, n);
@@ -8453,13 +9385,15 @@ class SPacketRenameItem extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketRenameItem, t, n);
 	}
-};
+}
 exports.SPacketRenameItem = SPacketRenameItem;
 class SPacketScriptAction extends Message {
 	constructor(SPacketScriptAction) {
-		super(), this.action = {
-			case: void 0
-		}, proto2.util.initPartial(SPacketScriptAction, this);
+		(super(),
+			(this.action = {
+				case: void 0
+			}),
+			proto2.util.initPartial(SPacketScriptAction, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8468,67 +9402,78 @@ class SPacketScriptAction extends Message {
 		this.typeName = `SPacketScriptAction`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `list`,
-			kind: `message`,
-			T: ScriptList,
-			oneof: `action`
-		}, {
-			no: 2,
-			name: `save`,
-			kind: `message`,
-			T: ScriptSave,
-			oneof: `action`
-		}, {
-			no: 3,
-			name: `delete`,
-			kind: `message`,
-			T: ScriptDelete,
-			oneof: `action`
-		}, {
-			no: 4,
-			name: `set_enabled`,
-			kind: `message`,
-			T: ScriptSetEnabled,
-			oneof: `action`
-		}, {
-			no: 5,
-			name: `get_logs`,
-			kind: `message`,
-			T: ScriptGetLogs,
-			oneof: `action`
-		}, {
-			no: 6,
-			name: `rename`,
-			kind: `message`,
-			T: ScriptRename,
-			oneof: `action`
-		}, {
-			no: 7,
-			name: `clear_logs`,
-			kind: `message`,
-			T: ScriptClearLogs,
-			oneof: `action`
-		}, {
-			no: 8,
-			name: `fork_mod`,
-			kind: `message`,
-			T: ScriptForkMod,
-			oneof: `action`
-		}, {
-			no: 9,
-			name: `reload`,
-			kind: `message`,
-			T: ScriptReload,
-			oneof: `action`
-		}, {
-			no: 10,
-			name: `get_version`,
-			kind: `message`,
-			T: ScriptGetVersion,
-			oneof: `action`
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `list`,
+				kind: `message`,
+				T: ScriptList,
+				oneof: `action`
+			},
+			{
+				no: 2,
+				name: `save`,
+				kind: `message`,
+				T: ScriptSave,
+				oneof: `action`
+			},
+			{
+				no: 3,
+				name: `delete`,
+				kind: `message`,
+				T: ScriptDelete,
+				oneof: `action`
+			},
+			{
+				no: 4,
+				name: `set_enabled`,
+				kind: `message`,
+				T: ScriptSetEnabled,
+				oneof: `action`
+			},
+			{
+				no: 5,
+				name: `get_logs`,
+				kind: `message`,
+				T: ScriptGetLogs,
+				oneof: `action`
+			},
+			{
+				no: 6,
+				name: `rename`,
+				kind: `message`,
+				T: ScriptRename,
+				oneof: `action`
+			},
+			{
+				no: 7,
+				name: `clear_logs`,
+				kind: `message`,
+				T: ScriptClearLogs,
+				oneof: `action`
+			},
+			{
+				no: 8,
+				name: `fork_mod`,
+				kind: `message`,
+				T: ScriptForkMod,
+				oneof: `action`
+			},
+			{
+				no: 9,
+				name: `reload`,
+				kind: `message`,
+				T: ScriptReload,
+				oneof: `action`
+			},
+			{
+				no: 10,
+				name: `get_version`,
+				kind: `message`,
+				T: ScriptGetVersion,
+				oneof: `action`
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketScriptAction().fromBinary(t, n);
@@ -8542,11 +9487,11 @@ class SPacketScriptAction extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketScriptAction, t, n);
 	}
-};
+}
 exports.SPacketScriptAction = SPacketScriptAction;
 class ScriptGetVersion extends Message {
 	constructor(ScriptGetVersion) {
-		super(), proto2.util.initPartial(ScriptGetVersion, this);
+		(super(), proto2.util.initPartial(ScriptGetVersion, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8555,17 +9500,20 @@ class ScriptGetVersion extends Message {
 		this.typeName = `ScriptGetVersion`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `version_id`,
-			kind: `scalar`,
-			T: 4
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `version_id`,
+				kind: `scalar`,
+				T: 4
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ScriptGetVersion().fromBinary(t, n);
@@ -8579,11 +9527,11 @@ class ScriptGetVersion extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptGetVersion, t, n);
 	}
-};
+}
 exports.ScriptGetVersion = ScriptGetVersion;
 class ScriptForkMod extends Message {
 	constructor(ScriptForkMod) {
-		super(), proto2.util.initPartial(ScriptForkMod, this);
+		(super(), proto2.util.initPartial(ScriptForkMod, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8592,12 +9540,14 @@ class ScriptForkMod extends Message {
 		this.typeName = `ScriptForkMod`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `id`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `id`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ScriptForkMod().fromBinary(t, n);
@@ -8611,11 +9561,11 @@ class ScriptForkMod extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptForkMod, t, n);
 	}
-};
+}
 exports.ScriptForkMod = ScriptForkMod;
 class ScriptReload extends Message {
 	constructor(ScriptReload) {
-		super(), proto2.util.initPartial(ScriptReload, this);
+		(super(), proto2.util.initPartial(ScriptReload, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8638,11 +9588,11 @@ class ScriptReload extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptReload, t, n);
 	}
-};
+}
 exports.ScriptReload = ScriptReload;
 class ScriptList extends Message {
 	constructor(ScriptList) {
-		super(), proto2.util.initPartial(ScriptList, this);
+		(super(), proto2.util.initPartial(ScriptList, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8665,11 +9615,11 @@ class ScriptList extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptList, t, n);
 	}
-};
+}
 exports.ScriptList = ScriptList;
 class ScriptSave extends Message {
 	constructor(ScriptSave) {
-		super(), proto2.util.initPartial(ScriptSave, this);
+		(super(), proto2.util.initPartial(ScriptSave, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8678,17 +9628,20 @@ class ScriptSave extends Message {
 		this.typeName = `ScriptSave`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `source`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `source`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ScriptSave().fromBinary(t, n);
@@ -8702,11 +9655,11 @@ class ScriptSave extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptSave, t, n);
 	}
-};
+}
 exports.ScriptSave = ScriptSave;
 class ScriptDelete extends Message {
 	constructor(ScriptDelete) {
-		super(), proto2.util.initPartial(ScriptDelete, this);
+		(super(), proto2.util.initPartial(ScriptDelete, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8715,12 +9668,14 @@ class ScriptDelete extends Message {
 		this.typeName = `ScriptDelete`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ScriptDelete().fromBinary(t, n);
@@ -8734,11 +9689,11 @@ class ScriptDelete extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptDelete, t, n);
 	}
-};
+}
 exports.ScriptDelete = ScriptDelete;
 class ScriptSetEnabled extends Message {
 	constructor(ScriptSetEnabled) {
-		super(), proto2.util.initPartial(ScriptSetEnabled, this);
+		(super(), proto2.util.initPartial(ScriptSetEnabled, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8747,18 +9702,21 @@ class ScriptSetEnabled extends Message {
 		this.typeName = `ScriptSetEnabled`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `enabled`,
-			kind: `scalar`,
-			T: 8
-		}, {
-			no: 2,
-			name: `name`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `enabled`,
+				kind: `scalar`,
+				T: 8
+			},
+			{
+				no: 2,
+				name: `name`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ScriptSetEnabled().fromBinary(t, n);
@@ -8772,11 +9730,11 @@ class ScriptSetEnabled extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptSetEnabled, t, n);
 	}
-};
+}
 exports.ScriptSetEnabled = ScriptSetEnabled;
 class ScriptGetLogs extends Message {
 	constructor(ScriptGetLogs) {
-		super(), proto2.util.initPartial(ScriptGetLogs, this);
+		(super(), proto2.util.initPartial(ScriptGetLogs, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8799,11 +9757,11 @@ class ScriptGetLogs extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptGetLogs, t, n);
 	}
-};
+}
 exports.ScriptGetLogs = ScriptGetLogs;
 class ScriptClearLogs extends Message {
 	constructor(ScriptClearLogs) {
-		super(), proto2.util.initPartial(ScriptClearLogs, this);
+		(super(), proto2.util.initPartial(ScriptClearLogs, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8826,11 +9784,11 @@ class ScriptClearLogs extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptClearLogs, t, n);
 	}
-};
+}
 exports.ScriptClearLogs = ScriptClearLogs;
 class ScriptRename extends Message {
 	constructor(ScriptRename) {
-		super(), proto2.util.initPartial(ScriptRename, this);
+		(super(), proto2.util.initPartial(ScriptRename, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8839,17 +9797,20 @@ class ScriptRename extends Message {
 		this.typeName = `ScriptRename`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `name`,
-			kind: `scalar`,
-			T: 9
-		}, {
-			no: 2,
-			name: `new_name`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `name`,
+				kind: `scalar`,
+				T: 9
+			},
+			{
+				no: 2,
+				name: `new_name`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new ScriptRename().fromBinary(t, n);
@@ -8863,11 +9824,11 @@ class ScriptRename extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(ScriptRename, t, n);
 	}
-};
+}
 exports.ScriptRename = ScriptRename;
 class SPacketSelectTrade extends Message {
 	constructor(SPacketSelectTrade) {
-		super(), proto2.util.initPartial(SPacketSelectTrade, this);
+		(super(), proto2.util.initPartial(SPacketSelectTrade, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8876,17 +9837,20 @@ class SPacketSelectTrade extends Message {
 		this.typeName = `SPacketSelectTrade`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `windowId`,
-			kind: `scalar`,
-			T: 5
-		}, {
-			no: 2,
-			name: `index`,
-			kind: `scalar`,
-			T: 5
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `windowId`,
+				kind: `scalar`,
+				T: 5
+			},
+			{
+				no: 2,
+				name: `index`,
+				kind: `scalar`,
+				T: 5
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketSelectTrade().fromBinary(t, n);
@@ -8900,11 +9864,11 @@ class SPacketSelectTrade extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketSelectTrade, t, n);
 	}
-};
+}
 exports.SPacketSelectTrade = SPacketSelectTrade;
 class SPacketUpdateCommandBlock extends Message {
 	constructor(SPacketUpdateCommandBlock) {
-		super(), this.commands = [], proto2.util.initPartial(SPacketUpdateCommandBlock, this);
+		(super(), (this.commands = []), proto2.util.initPartial(SPacketUpdateCommandBlock, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8913,30 +9877,35 @@ class SPacketUpdateCommandBlock extends Message {
 		this.typeName = `SPacketUpdateCommandBlock`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `pos`,
-			kind: `message`,
-			T: PBBlockPos
-		}, {
-			no: 2,
-			name: `command`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}, {
-			no: 3,
-			name: `commands`,
-			kind: `scalar`,
-			T: 9,
-			repeated: !0
-		}, {
-			no: 4,
-			name: `repeat`,
-			kind: `scalar`,
-			T: 5,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `pos`,
+				kind: `message`,
+				T: PBBlockPos
+			},
+			{
+				no: 2,
+				name: `command`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			},
+			{
+				no: 3,
+				name: `commands`,
+				kind: `scalar`,
+				T: 9,
+				repeated: !0
+			},
+			{
+				no: 4,
+				name: `repeat`,
+				kind: `scalar`,
+				T: 5,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketUpdateCommandBlock().fromBinary(t, n);
@@ -8950,11 +9919,11 @@ class SPacketUpdateCommandBlock extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketUpdateCommandBlock, t, n);
 	}
-};
+}
 exports.SPacketUpdateCommandBlock = SPacketUpdateCommandBlock;
 class SPacketUploadSchematic extends Message {
 	constructor(SPacketUploadSchematic) {
-		super(), proto2.util.initPartial(SPacketUploadSchematic, this);
+		(super(), proto2.util.initPartial(SPacketUploadSchematic, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -8963,18 +9932,21 @@ class SPacketUploadSchematic extends Message {
 		this.typeName = `SPacketUploadSchematic`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `data`,
-			kind: `scalar`,
-			T: 12
-		}, {
-			no: 2,
-			name: `name`,
-			kind: `scalar`,
-			T: 9,
-			opt: !0
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `data`,
+				kind: `scalar`,
+				T: 12
+			},
+			{
+				no: 2,
+				name: `name`,
+				kind: `scalar`,
+				T: 9,
+				opt: !0
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketUploadSchematic().fromBinary(t, n);
@@ -8988,11 +9960,11 @@ class SPacketUploadSchematic extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketUploadSchematic, t, n);
 	}
-};
+}
 exports.SPacketUploadSchematic = SPacketUploadSchematic;
 class SPacketRespawn$1 extends Message {
 	constructor(SPacketRespawn$1) {
-		super(), proto2.util.initPartial(SPacketRespawn$1, this);
+		(super(), proto2.util.initPartial(SPacketRespawn$1, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -9015,11 +9987,11 @@ class SPacketRespawn$1 extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketRespawn$1, t, n);
 	}
-};
+}
 exports.SPacketRespawn$1 = SPacketRespawn$1;
 class SPacketTabComplete$1 extends Message {
 	constructor(SPacketTabComplete$1) {
-		super(), proto2.util.initPartial(SPacketTabComplete$1, this);
+		(super(), proto2.util.initPartial(SPacketTabComplete$1, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -9028,12 +10000,14 @@ class SPacketTabComplete$1 extends Message {
 		this.typeName = `SPacketTabComplete`;
 	}
 	static {
-		this.fields = proto2.util.newFieldList(() => [{
-			no: 1,
-			name: `message`,
-			kind: `scalar`,
-			T: 9
-		}]);
+		this.fields = proto2.util.newFieldList(() => [
+			{
+				no: 1,
+				name: `message`,
+				kind: `scalar`,
+				T: 9
+			}
+		]);
 	}
 	static fromBinary(t, n) {
 		return new SPacketTabComplete$1().fromBinary(t, n);
@@ -9047,95 +10021,95 @@ class SPacketTabComplete$1 extends Message {
 	static equals(t, n) {
 		return proto2.util.equals(SPacketTabComplete$1, t, n);
 	}
-};
+}
 exports.SPacketTabComplete$1 = SPacketTabComplete$1;
 
 const CPACKET_MAP = {
-	CPacketAnimation,
-	CPacketBlockAction,
-	CPacketBlockUpdate,
-	CPacketChangeServers,
-	CPacketChunkData,
-	CPacketCloseWindow,
-	CPacketConfirmTransaction,
-	CPacketDestroyEntities,
-	CPacketDisconnect,
-	CPacketEntityAction,
-	CPacketEntityEquipment,
-	CPacketEntityMetadata,
-	CPacketEntityPositionAndRotation,
-	CPacketEntityRelativePositionAndRotation,
-	CPacketEntityStatus,
-	CPacketEntityVelocity,
-	CPacketExplosion,
-	CPacketJoinGame,
-	CPacketLeaderboard,
-	CPacketLocalStorage,
-	CPacketMessage,
-	CPacketOpenWindow,
-	CPacketParticles,
-	CPacketPlayerList,
-	CPacketPlayerPosition,
-	CPacketPlayerPosLook,
-	CPacketPlayerReconciliation,
-	CPacketPong,
-	CPacketRespawn,
-	CPacketScoreboard,
-	CPacketServerInfo,
-	CPacketSetSlot,
-	CPacketSignEditorOpen,
-	CPacketSoundEffect,
-	CPacketSpawnEntity,
-	CPacketSpawnPlayer,
-	CPacketTabComplete,
-	CPacketTitle,
-	CPacketUpdate,
-	CPacketUpdateHealth,
-	CPacketUpdateLeaderboard,
-	CPacketUpdateScoreboard,
-	CPacketUpdateSign,
-	CPacketUpdateStatus,
-	CPacketWindowItems,
-	CPacketWindowProperty,
-	CPacketUseBed,
-	CPacketQueueNext,
-	CPacketSpawnExperienceOrb,
-	CPacketSetExperience,
-	CPacketOpenShop,
-	CPacketShopProperties,
-	CPacketEntityProperties,
-	CPacketEntityEffect,
-	CPacketRemoveEntityEffect,
-	CPacketUpdateCommandBlock,
-	CPacketEntityAttach,
-	CPacketServerMetadata,
-	CPacketTimeUpdate,
-	ClientBoundCombined,
-	CPacketScriptData,
-	CPacketScriptLog,
-	CPacketPlotsData,
-	CPacketUpdatePlayerHead,
-	CPacketChunkUnchanged,
-	CPacketGuideData,
-	CPacketBlockBreakAnim,
-	CPacketPlayerListPing,
-	CPacketPlayerListDelta,
-	CPacketSpectate,
-	CPacketTradeList,
-	CPacketDownloadSchematic,
-	CPacketCollectItem,
-	CPacketModContent,
-	CPacketDamageIndicator,
-	CPacketEmote,
-	CPacketApplyRecoil,
-	CPacketScreenFlash,
-	CPacketWeather,
-	CPacketLightningBolt,
-	CPacketMachineGui,
-	CPacketReplayState,
-	CPacketScriptVersion
-}
-	, SPACKET_MAP = {
+		CPacketAnimation,
+		CPacketBlockAction,
+		CPacketBlockUpdate,
+		CPacketChangeServers,
+		CPacketChunkData,
+		CPacketCloseWindow,
+		CPacketConfirmTransaction,
+		CPacketDestroyEntities,
+		CPacketDisconnect,
+		CPacketEntityAction,
+		CPacketEntityEquipment,
+		CPacketEntityMetadata,
+		CPacketEntityPositionAndRotation,
+		CPacketEntityRelativePositionAndRotation,
+		CPacketEntityStatus,
+		CPacketEntityVelocity,
+		CPacketExplosion,
+		CPacketJoinGame,
+		CPacketLeaderboard,
+		CPacketLocalStorage,
+		CPacketMessage,
+		CPacketOpenWindow,
+		CPacketParticles,
+		CPacketPlayerList,
+		CPacketPlayerPosition,
+		CPacketPlayerPosLook,
+		CPacketPlayerReconciliation,
+		CPacketPong,
+		CPacketRespawn,
+		CPacketScoreboard,
+		CPacketServerInfo,
+		CPacketSetSlot,
+		CPacketSignEditorOpen,
+		CPacketSoundEffect,
+		CPacketSpawnEntity,
+		CPacketSpawnPlayer,
+		CPacketTabComplete,
+		CPacketTitle,
+		CPacketUpdate,
+		CPacketUpdateHealth,
+		CPacketUpdateLeaderboard,
+		CPacketUpdateScoreboard,
+		CPacketUpdateSign,
+		CPacketUpdateStatus,
+		CPacketWindowItems,
+		CPacketWindowProperty,
+		CPacketUseBed,
+		CPacketQueueNext,
+		CPacketSpawnExperienceOrb,
+		CPacketSetExperience,
+		CPacketOpenShop,
+		CPacketShopProperties,
+		CPacketEntityProperties,
+		CPacketEntityEffect,
+		CPacketRemoveEntityEffect,
+		CPacketUpdateCommandBlock,
+		CPacketEntityAttach,
+		CPacketServerMetadata,
+		CPacketTimeUpdate,
+		ClientBoundCombined,
+		CPacketScriptData,
+		CPacketScriptLog,
+		CPacketPlotsData,
+		CPacketUpdatePlayerHead,
+		CPacketChunkUnchanged,
+		CPacketGuideData,
+		CPacketBlockBreakAnim,
+		CPacketPlayerListPing,
+		CPacketPlayerListDelta,
+		CPacketSpectate,
+		CPacketTradeList,
+		CPacketDownloadSchematic,
+		CPacketCollectItem,
+		CPacketModContent,
+		CPacketDamageIndicator,
+		CPacketEmote,
+		CPacketApplyRecoil,
+		CPacketScreenFlash,
+		CPacketWeather,
+		CPacketLightningBolt,
+		CPacketMachineGui,
+		CPacketReplayState,
+		CPacketScriptVersion
+	},
+	SPACKET_MAP = {
 		SPacketAdminAction,
 		SPacketAnalytics,
 		SPacketClickWindow,
@@ -9173,7 +10147,8 @@ const CPACKET_MAP = {
 		SPacketSelectTrade,
 		SPacketEditBook,
 		SPacketTextPrompt
-	}, EXTRA_MAP = {
+	},
+	EXTRA_MAP = {
 		CPacketScriptData,
 		CPacketScriptLog,
 		SPacketScriptAction,
@@ -9205,104 +10180,93 @@ const CPACKET_MAP = {
 		CPacketMachineGui,
 		CPacketReplayState,
 		CPacketScriptVersion
-	}
-	, NAME_TO_ID = {}
-	, ID_TO_PACKET = {}
-	, ID_TO_NAME = {};
+	},
+	NAME_TO_ID = {},
+	ID_TO_PACKET = {},
+	ID_TO_NAME = {};
 let currentId = 0;
 exports.SPACKET_MAP = SPACKET_MAP;
 
 function addPacket(name, packet) {
-	NAME_TO_ID[name] = currentId,
-		ID_TO_PACKET[currentId] = packet,
-		ID_TO_NAME[currentId] = name,
-		currentId++;
+	((NAME_TO_ID[name] = currentId), (ID_TO_PACKET[currentId] = packet), (ID_TO_NAME[currentId] = name), currentId++);
 }
 
-for (let [e, t] of Object.entries(CPACKET_MAP))
-	e in EXTRA_MAP || addPacket(e, t);
-for (let [e, t] of Object.entries(SPACKET_MAP))
-	e in EXTRA_MAP || addPacket(e, t);
-for (let [e, t] of Object.entries(EXTRA_MAP))
-	addPacket(e, t);
+for (let [e, t] of Object.entries(CPACKET_MAP)) e in EXTRA_MAP || addPacket(e, t);
+for (let [e, t] of Object.entries(SPACKET_MAP)) e in EXTRA_MAP || addPacket(e, t);
+for (let [e, t] of Object.entries(EXTRA_MAP)) addPacket(e, t);
 
 exports.BitArray = class {
 	constructor(_, $, et) {
-		ut(this, "capacity");
-		ut(this, "bitsPerValue");
-		ut(this, "valueMask");
-		ut(this, "valuesPerLong");
-		ut(this, "data");
-		if ($ <= 0)
-			throw new Error("bits per value must at least 1");
-		if ($ > 32)
-			throw new Error(`${$} bits per value exceeds 32`);
-		this.capacity = _,
-			this.bitsPerValue = $,
-			this.valuesPerLong = Math.floor(64 / $),
-			this.valueMask = (1 << $) - 1;
+		ut(this, 'capacity');
+		ut(this, 'bitsPerValue');
+		ut(this, 'valueMask');
+		ut(this, 'valuesPerLong');
+		ut(this, 'data');
+		if ($ <= 0) throw new Error('bits per value must at least 1');
+		if ($ > 32) throw new Error(`${$} bits per value exceeds 32`);
+		((this.capacity = _),
+			(this.bitsPerValue = $),
+			(this.valuesPerLong = Math.floor(64 / $)),
+			(this.valueMask = (1 << $) - 1));
 		const tt = new ArrayBuffer(Math.ceil(_ / this.valuesPerLong) * 8);
-		if (this.data = new Uint32Array(tt),
-			et) {
-			if (et.byteLength !== tt.byteLength)
-				throw new Error("initial data length does not match buffer length");
-			new Uint8Array(tt).set(et)
+		if (((this.data = new Uint32Array(tt)), et)) {
+			if (et.byteLength !== tt.byteLength) throw new Error('initial data length does not match buffer length');
+			new Uint8Array(tt).set(et);
 		}
 	}
 	getBitsPerValue() {
-		return this.bitsPerValue
+		return this.bitsPerValue;
 	}
 	getDataArray() {
-		return new Uint8Array(this.data.buffer, this.data.byteOffset, this.data.byteLength)
+		return new Uint8Array(this.data.buffer, this.data.byteOffset, this.data.byteLength);
 	}
 	writeUint32(_, $) {
-		this.data[_] = $ >>> 0
+		this.data[_] = $ >>> 0;
 	}
 	getUint32(_) {
-		return this.data[_]
+		return this.data[_];
 	}
 	get(_) {
-		const $ = Math.floor(_ / this.valuesPerLong)
-			, et = (_ - $ * this.valuesPerLong) * this.bitsPerValue
-			, tt = this.data[$ * 2]
-			, rt = et;
+		const $ = Math.floor(_ / this.valuesPerLong),
+			et = (_ - $ * this.valuesPerLong) * this.bitsPerValue,
+			tt = this.data[$ * 2],
+			rt = et;
 		if (rt >= 32) {
 			const at = rt - 32;
-			return this.data[$ * 2 + 1] >>> at & this.valueMask
+			return (this.data[$ * 2 + 1] >>> at) & this.valueMask;
 		}
 		let nt = tt >>> rt;
 		if (rt + this.bitsPerValue > 32) {
 			const at = this.data[$ * 2 + 1];
-			nt |= at << 32 - rt
+			nt |= at << (32 - rt);
 		}
-		return nt & this.valueMask
+		return nt & this.valueMask;
 	}
 	set(_, $) {
-		const et = Math.floor(_ / this.valuesPerLong)
-			, tt = _ % this.valuesPerLong * this.bitsPerValue;
+		const et = Math.floor(_ / this.valuesPerLong),
+			tt = (_ % this.valuesPerLong) * this.bitsPerValue;
 		if (tt >= 32) {
 			const nt = tt - 32;
-			this.data[et * 2 + 1] = this.data[et * 2 + 1] & ~(this.valueMask << nt) | ($ & this.valueMask) << nt;
-			return
+			this.data[et * 2 + 1] = (this.data[et * 2 + 1] & ~(this.valueMask << nt)) | (($ & this.valueMask) << nt);
+			return;
 		}
-		this.data[et * 2] = this.data[et * 2] & ~(this.valueMask << tt) | ($ & this.valueMask) << tt;
+		this.data[et * 2] = (this.data[et * 2] & ~(this.valueMask << tt)) | (($ & this.valueMask) << tt);
 		const rt = tt + this.bitsPerValue;
-		rt > 32 && (this.data[et * 2 + 1] = this.data[et * 2 + 1] & ~((1 << rt - 32) - 1) | $ >>> 32 - tt)
+		rt > 32 && (this.data[et * 2 + 1] = (this.data[et * 2 + 1] & ~((1 << (rt - 32)) - 1)) | ($ >>> (32 - tt)));
 	}
 	resizeTo(_) {
 		const $ = new BitArray(this.capacity, _);
 		for (let et = 0; et < this.capacity; ++et) {
 			const tt = this.get(et);
-			if (neededBits(tt) > _)
-				throw new Error("existing value in BitArray can't fit in new bits per value");
-			$.set(et, tt)
+			if (neededBits(tt) > _) throw new Error("existing value in BitArray can't fit in new bits per value");
+			$.set(et, tt);
 		}
-		return $
+		return $;
 	}
 	uInt32Length() {
-		return this.data.length
+		return this.data.length;
 	}
-}
+};
 
 const PacketData = {
 	permVersion: 0,
@@ -9316,138 +10280,127 @@ const FrameDecodeData = {
 	prev: null
 };
 
-function attemptInflate(e, t=frameBuffer) {
+function attemptInflate(e, t = frameBuffer) {
 	let n = new Inflate({
 		raw: !0,
 		dictionary: t
 	});
-	if (n.push(e, !0),
-	n.err)
-		throw Error(`inflateRaw+dict failed: ${n.msg || n.err}`);
-	return n.result
+	if ((n.push(e, !0), n.err)) throw Error(`inflateRaw+dict failed: ${n.msg || n.err}`);
+	return n.result;
 }
 
 function Zze(e) {
 	let t = 1779033703 ^ e.length;
-	for (let n = 0; n < e.length; n++)
-		t = Math.imul(t ^ e.charCodeAt(n), 3432918353),
-		t = t << 13 | t >>> 19;
-	return () => (t = Math.imul(t ^ t >>> 16, 2246822507),
-	t = Math.imul(t ^ t >>> 13, 3266489909),
-	t ^= t >>> 16,
-	t >>> 0)
-};
+	for (let n = 0; n < e.length; n++) ((t = Math.imul(t ^ e.charCodeAt(n), 3432918353)), (t = (t << 13) | (t >>> 19)));
+	return () => (
+		(t = Math.imul(t ^ (t >>> 16), 2246822507)),
+		(t = Math.imul(t ^ (t >>> 13), 3266489909)),
+		(t ^= t >>> 16),
+		t >>> 0
+	);
+}
 
 function Qze(e) {
 	return () => {
-		e |= 0,
-		e = e + 1831565813 | 0;
-		let t = Math.imul(e ^ e >>> 15, 1 | e);
-		return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t,
-		((t ^ t >>> 14) >>> 0) / 4294967296
-	}
-};
+		((e |= 0), (e = (e + 1831565813) | 0));
+		let t = Math.imul(e ^ (e >>> 15), 1 | e);
+		return ((t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t), ((t ^ (t >>> 14)) >>> 0) / 4294967296);
+	};
+}
 
 function $ze(e, t, n, r) {
 	for (let i = n - 1; i > t; i--) {
-		let n = t + Math.floor(r() * (i - t + 1))
-		  , a = e[i];
-		e[i] = e[n],
-		e[n] = a
+		let n = t + Math.floor(r() * (i - t + 1)),
+			a = e[i];
+		((e[i] = e[n]), (e[n] = a));
 	}
-};
+}
 
 function eBe(e) {
-	let t = 1779033703
-	  , n = 3144134277
-	  , r = 1013904242
-	  , i = 2773480762;
+	let t = 1779033703,
+		n = 3144134277,
+		r = 1013904242,
+		i = 2773480762;
 	for (let a = 0; a < e.length; a++) {
 		let o = e.charCodeAt(a);
-		t = n ^ Math.imul(t ^ o, 597399067),
-		n = r ^ Math.imul(n ^ o, 2869860233),
-		r = i ^ Math.imul(r ^ o, 951274213),
-		i = t ^ Math.imul(i ^ o, 2716044179)
+		((t = n ^ Math.imul(t ^ o, 597399067)),
+			(n = r ^ Math.imul(n ^ o, 2869860233)),
+			(r = i ^ Math.imul(r ^ o, 951274213)),
+			(i = t ^ Math.imul(i ^ o, 2716044179)));
 	}
-	return t = Math.imul(r ^ t >>> 18, 597399067),
-	n = Math.imul(i ^ n >>> 22, 2869860233),
-	r = Math.imul(t ^ r >>> 17, 951274213),
-	i = Math.imul(n ^ i >>> 19, 2716044179),
-	[(t ^ n ^ r ^ i) >>> 0, (n ^ t) >>> 0, (r ^ t) >>> 0, (i ^ t) >>> 0]
-};
+	return (
+		(t = Math.imul(r ^ (t >>> 18), 597399067)),
+		(n = Math.imul(i ^ (n >>> 22), 2869860233)),
+		(r = Math.imul(t ^ (r >>> 17), 951274213)),
+		(i = Math.imul(n ^ (i >>> 19), 2716044179)),
+		[(t ^ n ^ r ^ i) >>> 0, (n ^ t) >>> 0, (r ^ t) >>> 0, (i ^ t) >>> 0]
+	);
+}
 
 function tBe(e, t, n, r) {
 	return () => {
-		e |= 0,
-		t |= 0,
-		n |= 0,
-		r |= 0;
-		let i = (e + t | 0) + r | 0;
-		return r = r + 1 | 0,
-		e = t ^ t >>> 9,
-		t = n + (n << 3) | 0,
-		n = n << 21 | n >>> 11,
-		n = n + i | 0,
-		(i >>> 0) / 4294967296
-	}
-};
+		((e |= 0), (t |= 0), (n |= 0), (r |= 0));
+		let i = (((e + t) | 0) + r) | 0;
+		return (
+			(r = (r + 1) | 0),
+			(e = t ^ (t >>> 9)),
+			(t = (n + (n << 3)) | 0),
+			(n = (n << 21) | (n >>> 11)),
+			(n = (n + i) | 0),
+			(i >>> 0) / 4294967296
+		);
+	};
+}
 
 function nBe(e, t, n, r) {
-	let i = []
-	  , a = new Map;
-	for (let e = t; e < n; e++)
-		i.push(e),
-		a.set(e, r());
-	i.sort( (e, t) => {
-		let n = a.get(e)
-		  , r = a.get(t);
-		return n === r ? e - t : n - r
-	}
-	);
-	for (let n = 0; n < i.length; n++)
-		e[t + n] = i[n]
-};
+	let i = [],
+		a = new Map();
+	for (let e = t; e < n; e++) (i.push(e), a.set(e, r()));
+	i.sort((e, t) => {
+		let n = a.get(e),
+			r = a.get(t);
+		return n === r ? e - t : n - r;
+	});
+	for (let n = 0; n < i.length; n++) e[t + n] = i[n];
+}
 
 function obfuscatePacketRoutine(e, t, n = 101, r = 64) {
-	let i = Array.from({
-		length: n
-	}, (e, t) => t)
-	  , a = Math.min(r, n);
+	let i = Array.from(
+			{
+				length: n
+			},
+			(e, t) => t
+		),
+		a = Math.min(r, n);
 	if (t !== 0)
 		if (t === 1) {
-			let t = Qze(Zze(`mb-perm|v1|lo|${e}`)())
-			  , o = Qze(Zze(`mb-perm|v1|hi|${e}`)());
-			$ze(i, 0, a, t),
-			n > r && $ze(i, r, n, o)
+			let t = Qze(Zze(`mb-perm|v1|lo|${e}`)()),
+				o = Qze(Zze(`mb-perm|v1|hi|${e}`)());
+			($ze(i, 0, a, t), n > r && $ze(i, r, n, o));
 		} else {
-			let[o,s,c,l] = eBe(`mb-perm|v${t}|lo|${e}`)
-			  , [u,d,f,p] = eBe(`mb-perm|v${t}|hi|${e}`);
-			nBe(i, 0, a, tBe(o, s, c, l)),
-			n > r && nBe(i, r, n, tBe(u, d, f, p))
+			let [o, s, c, l] = eBe(`mb-perm|v${t}|lo|${e}`),
+				[u, d, f, p] = eBe(`mb-perm|v${t}|hi|${e}`);
+			(nBe(i, 0, a, tBe(o, s, c, l)), n > r && nBe(i, r, n, tBe(u, d, f, p)));
 		}
 	let o = Array(n);
-	for (let e = 0; e < n; e++)
-		o[i[e]] = e;
+	for (let e = 0; e < n; e++) o[i[e]] = e;
 	return {
 		perm: i,
 		invPerm: o,
 		version: t
-	}
+	};
 }
 
 function setPacketData(e, t) {
-	if (!e || !t || t === 0)
-		return FV;
-	let { perm: n } = obfuscatePacketRoutine(e, t)
-		, r = {}
-		, i = {}
-		, a = {};
+	if (!e || !t || t === 0) return FV;
+	let { perm: n } = obfuscatePacketRoutine(e, t),
+		r = {},
+		i = {},
+		a = {};
 	for (let packet of Object.keys(NAME_TO_ID)) {
-		let t = NAME_TO_ID[packet]
-			, o = t < 101 ? n[t] : t;
-		r[packet] = o,
-			i[o] = ID_TO_PACKET[t],
-			a[o] = packet
+		let t = NAME_TO_ID[packet],
+			o = t < 101 ? n[t] : t;
+		((r[packet] = o), (i[o] = ID_TO_PACKET[t]), (a[o] = packet));
 	}
 
 	Object.assign(PacketData, {
@@ -9461,43 +10414,55 @@ function setPacketData(e, t) {
 }
 
 function createCombinedArray(e) {
-	let t = e.byteLength > 16384 ? e.subarray(e.byteLength - 16384) : e
-	  , n = new Uint8Array(frameBuffer.byteLength + t.byteLength);
-	return n.set(frameBuffer, 0),
-	n.set(t, frameBuffer.byteLength),
-	n
-};
+	let t = e.byteLength > 16384 ? e.subarray(e.byteLength - 16384) : e,
+		n = new Uint8Array(frameBuffer.byteLength + t.byteLength);
+	return (n.set(frameBuffer, 0), n.set(t, frameBuffer.byteLength), n);
+}
 
 class ClientEncoder {
 	constructor() {
-		ut(this, "encode", _ => (_.t = _.type,
-			_.d = _.data,
-			delete _.type,
-			delete _.nsp,
-			delete _.data,
-			_.t === 2 && _.d[1] && _.d[1].toBinary && (_.d[1] = _.d[1].toBinary(),
-				_.d[0] = PacketData.nameToId[_.d[0]]),
-			[encode(_)]))
+		ut(
+			this,
+			'encode',
+			(_) => (
+				(_.t = _.type),
+				(_.d = _.data),
+				delete _.type,
+				delete _.nsp,
+				delete _.data,
+				_.t === 2 &&
+					_.d[1] &&
+					_.d[1].toBinary &&
+					((_.d[1] = _.d[1].toBinary()), (_.d[0] = PacketData.nameToId[_.d[0]])),
+				[encode(_)]
+			)
+		);
 	}
 }
 
 class ClientDecoder extends Decoder {
 	constructor() {
 		super(...arguments);
-		ut(this, "add", async $ => {
+		ut(this, 'add', async ($) => {
 			try {
-				const packetData = new Uint8Array($)[0], gamePacket = packetData & 1;
+				const packetData = new Uint8Array($)[0],
+					gamePacket = packetData & 1;
 				let isCombined = false;
 
 				let nt = new Uint8Array($, 1, $.byteLength - 1);
 				nt = nt.slice(1);
 				if (gamePacket) {
-					const it = packetData >> 2, compressFlag = packetData & 2, packet = PacketData.idToPacket[it];
+					const it = packetData >> 2,
+						compressFlag = packetData & 2,
+						packet = PacketData.idToPacket[it];
 
 					if (compressFlag) {
-						if (isCombined = packet.typeName === "ClientBoundCombined" && frameBuffer.byteLength > 0, isCombined && FrameDecodeData.prime) {
-							let e = nt[0]
-							, t = nt.subarray(1);
+						if (
+							((isCombined = packet.typeName === 'ClientBoundCombined' && frameBuffer.byteLength > 0),
+							isCombined && FrameDecodeData.prime)
+						) {
+							let e = nt[0],
+								t = nt.subarray(1);
 							if (e === 1) {
 								if (FrameDecodeData.prev == null)
 									throw Error(`primed combined frame arrived with no prev-frame state`);
@@ -9513,55 +10478,55 @@ class ClientDecoder extends Decoder {
 						}
 					}
 
-					if (FrameDecodeData.prime && packet.typeName == "ClientBoundCombined") {
+					if (FrameDecodeData.prime && packet.typeName == 'ClientBoundCombined') {
 						FrameDecodeData.prev = nt;
 					}
 
 					const packetBinary = packet.fromBinary(nt);
-					if (packet.typeName === "ClientBoundCombined") {
-						packetBinary.packets.forEach(ct => {
-							if (ct.packet.case == "CPacketServerInfo") {
+					if (packet.typeName === 'ClientBoundCombined') {
+						packetBinary.packets.forEach((ct) => {
+							if (ct.packet.case == 'CPacketServerInfo') {
 								if (FrameDecodeData.prime != true) {
 									FrameDecodeData.prime = true;
 									FrameDecodeData.prev = null;
 								}
 							}
 
-							this.emit("decoded", {
+							this.emit('decoded', {
 								type: 2,
-								nsp: "/",
+								nsp: '/',
 								data: [ct.packet.case, ct.packet.value]
-							})
+							});
 						});
 					} else {
-						if (packet.typeName == "CPacketJoinGame") {
+						if (packet.typeName == 'CPacketJoinGame') {
 							FrameDecodeData.prime = true;
 							FrameDecodeData.prev = null;
-						} else if (packet.typeName == "CPacketServerInfo") {
+						} else if (packet.typeName == 'CPacketServerInfo') {
 							if (FrameDecodeData.prime != true) {
 								FrameDecodeData.prime = true;
 								FrameDecodeData.prev = null;
 							}
 						}
 
-						this.emit("decoded", {
+						this.emit('decoded', {
 							type: 2,
-							nsp: "/",
+							nsp: '/',
 							data: [packet.typeName, packetBinary]
 						});
 					}
 				} else {
-					const eventType = packetData >> 5 & 7;
-					this.emit("decoded", {
+					const eventType = (packetData >> 5) & 7;
+					this.emit('decoded', {
 						type: eventType,
-						nsp: "/",
+						nsp: '/',
 						data: decode(nt)
-					})
+					});
 				}
 			} catch (et) {
-				console.error("ClientDecoder.add", et)
+				console.error('ClientDecoder.add', et);
 			}
-		})
+		});
 	}
 }
 
@@ -9575,25 +10540,23 @@ function generateAuthSeed() {
 	let arr = new Uint8Array(16);
 	crypto.getRandomValues(arr);
 
-	return Array.from(arr, entry => entry.toString(16).padStart(2, '0')).join('');
+	return Array.from(arr, (entry) => entry.toString(16).padStart(2, '0')).join('');
 }
 
-const frameB64 = `N6Qw7J/+ZWJLEBDI3XQa5RozqpRjZS7HNIHwOTEbPiXutIXejpLX2IGIzzk7QlrAiqs5tssNJxWTY4VtJd+xjcANgqHs4jZQ6BuTIEv2lu0mZMsU0wMACBCGg+HQkIRUOwAEwAIbp5ogEUoDKUeBkDHIGEAMIAQAAAACADA0AgEAAACkiktmNZo4UJQkpBgzCJkhGRgAAAAAAQAAAAQAAAAIAAAAIHUoDjAACg2CAQoI6Akg1AMoGDABCg2CAQoIswcgwAEoITABCgyCAQkIuhEgfCgEMAEKBgoECDoQAAoNGgsIrgsQABiYASCRAQoiwgIfCglkaWcuY2xvdGgSCAgIEMgJGIcJHQAAgD8lAACAPwoTYhEIOhINCAESCQgBEKsBGCcoAAoPggEMCPm11QkgogMoADABChSCAREI1A4SBggAEAAYACBpKH8wAAoHUgUImwkgAAoRggEOCIemdRIGCAUQABgMMAEKEYIBDgi+43oSBggCEAAYCDABCh5yHAiIln4SCgjyEBCaHxiS6QElAAAgwS0AAIjBMAAKEYIBDgiAiXoSBggWEAAYHDABChGCAQ4I7Pt9EgYIABAOGAAwAAoRggEOCJvxfRIGCAkQCRgSMAAKCIoBBQibCRACChCCAQ0I9RASBggFEBgYADAAChWCARII/BASBggAEAAYACCFASgLMAAKFIIBEQiJERIGCAAQABgAIBsoCTAAChCCAQ0I7g4SBggNEAAYGDABChCCAQ0InA0SBggJEAAYGDABChWCARIIxQ0SBggGEA4YBiDuFigBMAAKFIIBEQibCRIGCB0QABgUIGwoBTABChBqDgibCRIJCAYQAyXsUXhBCheSARQImwkSDw38ZFI/Ffrt6z4dIp84PgoL+gIICJsJFexReEEKB1IFCJsJIAEKKmIoCMUNEiMIARIfCAEQzwUYASIUeyJVbmJyZWFrYWJsZSI6dHJ1ZX0oAAoVggESCJsJEgYIHxAwGDgg7gEoHTAAChSCAREI/w8SBggAEAAYACB1KAswAAoVggESCIYQEgYIABAAGAAghAEoAzAACg1qCwjFDRIGCAAQAhgQChSCAREIoBASBggAEAAYACB9KFswAAobchkI9gkSCAjTDRDaHBh7JQBAMkQtAAAAADAAChCCAQ0InA0SBggZEAQYBjAAChSCAREIuxASBggAEAAYACBQKAwwAAoHUgUIxQ0YAQoSahAIyvTUCRIJCAYQAyUAAKBBCg36AgoIyvTUCRUAAKBBChKCAQ8IwbjkCBIGCBkQABgTMAEKD2oNCMG45AgSBggQEAIYAgoYggEVCNTMxQMSBggDEB4YACDSAijiAzAAChKCAQ8IwrjkCBIGCCcQABgZMAEKD2oNCMK45AgSBggQEAIYAgoSggEPCMG45AgSBggHEAAYADABCg+CAQwIHhIGCCsQGxhGMAAKE4IBEAg+EgYIEBAbGBAgcSgjMAAKDIIBCQgyIO8BKC8wAQoPggEMCDsSBggcEAAYADABCguCAQgISyACKAswAAoYkgEVCIKPfhIPDUHaQ7wVAAAAgB1MxR80ChGCAQ4Igo9+EgoKGggIABBAGBIgcAoPggEMCMf3wzEg5AEoMjABChKCAQ8I5pXYMRIGCAoQABgJMAEKF4IBFAi7mNgxEgYIFRAAGAwg5AMoADABChKCAQ8IqKHYMRIGCAcQfRgOMAAKGIIBFQjKmdgxEgYIBxAAGBYg5gMo9gMwAQoSggEPCKya2DESBggUEAAYADABChKCAQ8I+53YMRIGCAAQABgMMAEKHnIcCJWi2DESCQiEDxDABRimHCUAcDJGLQAAAAAwAQoSahAIlaLYMRIJCAYQAyUAAIBBCg+CAQwIOBIGCAAQABgEMAEKGZIBFgjq59UJEg8Na7iCPRVdD+y9HbE/nrwKEoIBDwjq59UJEgYICBALGAEwAAoLGgkIKxAGGHogtAcKCxoJCCMQABh2IL4HCg2CAQoIhKZ9ICsoLTABCgyCAQkIACCzASgdMAEKChoICAAQQhgcIGYKDBoKCAAQJhiKASC4CAqcApIEmAIKBQgAEJoCCgUIARDyBAoFCAsQ+gMKBQgWEMkECgcI//R0EIsECgcIz/x0EIEBCgcIh6Z1EPsCCgcI/K91EOoDCgcIjdx2EI8DCgcIoMF3EIQCCgcIyO54EMMFCgcIk4N5EMoDCgcIgIl6ENgDCgcIvuN6EKsCCgcI0J97EPoBCgcIjI18EPoBCgcIgMF8EKUCCgcI2898ENUCCgcI0dZ8EN8CCgcIsNp8EPMCCgcIgbV9EMgCCggIhcd9EJzMAQoHCJvxfRDrAgoHCNDyfRD+AgoHCOz7fRCaBwoHCLyUfhDZAwoHCNqUfhCsAgoHCIiWfhC7BwoHCMSyfhCnAwoHCL6zfhC0AwoHCN+4fhCqBQoGCNq+fhAACg2CAQoIk4N5ID8oCzABChGCAQ4IiJZ+EgYIGBAUGAMwAAoRggEOCL6zfhIGCAEQABgjMAEKD4IBDAgWEgYIBxAKGAAwAAocchoIyhASCQjtBRDAHhjSEyUAAAxCLQAAJMIwAQoQag4IyhASCQgGEAMlCtfjQAoUggERCLMHEgYIHRAAGA0gaigTMAEKEIIBDQibCRIGCCIQABgEMAEKFIIBEQjGERIGCAAQABgAICcofzAAChCCAQ0I9RASBggREAAYETABChWCARII/RESBggAEAAYACDjASh/MAAKEIIBDQj2CRIGCBQQABgSMAEKFIIBEQiLEhIGCAAQABgAIAQoHDAACgdSBQizByAACgv6AggIyhAVCtfjQAoUggERCO4OEgYIBRAWGCQgKygPMAAKEIIBDQicDRIGCBEQBBgaMAAKFYIBEgjFDRIGCA0QIRgFIMIYKBcwAAoHUgUI7g4gAQoJUgcIuZnVCSABChtyGQgOEgkIjhcQgCYDeyJndWlkZSI6InN1cnZpdmFsIiwidmVyaWZpZWQiOmZhbHNlLCJjb3VudGVycyI6eyJidWlsZF9zaGVsdGVyLnBsYWNlIjozMCwiY2hvcF93b29kLmxvZ3MiOjQsImNyYWZ0aW5nX3RhYmxlLm1ha2UiOjEsImZpcnN0X3BpY2theGUubWFrZSI6MSwiY3JhZnRfc3dvcmQuZ2V0IjoxLCJsaWdodF9pdF91cC5nZXQiOjE2LCJtaW5lX3N0b25lLmJyZWFrIjoyMCwic3RvbmVfdXBncmFkZS5tYWtlIjoxLCJjcmFmdF9mdXJuYWNlLm1ha2UiOjEsIm1pbmVfY29hbC5icmVhayI6NywiaXJvbl9hZ2UuaW5nb3RzIjo1LCJpcm9uX3Rvb2xzLm1ha2UiOjF9LCJjbGFpbWVkIjpbImNob3Bfd29vZCIsImNyYWZ0aW5nX3RhYmxlIiwiZmlyc3RfcGlja2F4ZSIsImNyYWZ0X3N3b3JkIiwibGlnaHRfaXRfdXAiLCJtaW5lX3N0b25lIiwic3RvbmVfdXBncmFkZSIsImJ1aWxkX3NoZWx0ZXIiXX0KEqoCDwgAEAgaCQgBEOwBGCMoAAoLygMICOCrChDgqwoKEooEDwoHCEoQfBjqBxDR1nwYAQoLGgkIABBKGHwg6gcKDoIBCwjQn3sgzgEoFzABChGCAQ4IvrN+EgYIDxAAGBYwAQoYkgEVCKjmfhIPDbNarLwVAAAAAB0o1Ig9ChKKBA8KBwgvEBgYhAcQ0J97GAwKCFIGCNCfeyABCghSBgiC0n4gAQoiwgIfCgpzdGVwLnN0b25lEgcIRRCQBxgVHZqZGT4lAACAPwoUggERCLMHEgYIFBAAGBIgZSgtMAEKFYIBEgj1EBIGCAAQABgIIOICKAAwAQoVggESCNoREgYIABAAGAAgzwEoDzAAChSCAREI7g4SBggbEB4YBCB4KAcwAAoUggERCPwREgYIABAAGAAgXCgNMAAKEIIBDQi6ERIGCAEQARgWMAAKFIIBEQi7EhIGCAAQABgAIBcoGzAAChCCAQ0I9gkSBggaEAAYCTABChKCAQ8I9ZuZBxIGCBYQABgAMAEKFYIBEgihHxIGCCAQABgOIF4o/gMwAQoPggEMCNDG1QkgugMoADABCguyBAgIvr5+ELyUfgoSigQPCgcIXxB+GP4GEIemdRgBCggKBgjalH4QAAoICgYI2pR+EAAKBkIECL6+fgoRggEOCLyUfhIGCA4QABgAMAEKDYIBCgjalH4gbSgtMAEKOsoCNwiok34QARoKCL0GEIAcGLjwASUAAAAALQAAAAAyDw0AAAAAFQAAAIAdAAAAADoICAEQdGgVAACgQQoTYhEIHhINCAESCQgBEMAFGAEoAAoLggEICEYgaCgFMAAKDIIBCQhKIJYDKAUwAAoQggENCMUNEgYIEBAAGBUwAQoQggENCOgJEgYIAxAAGAcwAQoVggESCLoREgYIDBAaGBgg3QEoKTAAChSCAREImwkSBggSEAoYCyBHKC8wAAoQggENCJwNEgYIBxAAGAkwAQocchoI9RASCQiXAxC6HRjXASUAYLHELQAAAAAwAAoVggESCPYJEgYIDxAAGA4g4QIoADABChSCAREIyhMSBggAEAAYACBEKBcwAAoGQgQIhcV9CgeaBAQQhcV9Cje6ATQKLVx5ZWxsb3dcRmx1ZmZ5Q2Fycm90LkxrbE4gaGFzIGxlZnQgdGhlIHNlcnZlcjAAOLgXChWCARIIgbV9EgYIBxAwGD8gMigJMAAKDmoMCIG1fRIGCAAQAhgACghSBgjP/HQgAQoIUgYIgbV9GAAKFoIBEwj8r3USBggYEAAYGiDDASgzMAEKEooEDwoHCAsQfhjgBxCAiXoYAQoSggEPCOGZlQkSBgghEAAYAzABCiByHgiNy/QGEgsIk+YQEIAQGO2HFyUAAHBDLQAAAAAwAQoPag0Ijcv0BhIGCBAQAhgCChKCAQ8I/tLVCRIGCBQQABgMMAEKCAoGCMSyfhAAChSKBBEKCQiBARCGARjYBxC8lH4YAQoLGgkICRA7GHwg7AcKCxoJCAAQOxh+IOwHCgwaCggAEDsYgAEg7AcKC6oCCAgAEAEaAggAChViEwjalH4SDQgBEgkIARC9BRgBKAAKE4oEEAoICFcQigEYlAcQh6Z1GAEKEooEDwoHCEUQeBjOCBC+43oYAQoLGgkIABBFGHggzAgKEYIBDgib8X0SBggAECUYADAACg5qDAjs+30SBggAEAIYEAoVggESCLyUfhIGCCMQABgXIHMoKTABCg5qDAi8lH4SBggAEAIYAAoWggETCNqUfhIGCAAQABhKIOkBKDswAQoPggEMCBYSBggkEAAYKTABCgxqCggWEgYIABACGBAKFYIBEgjP/HQSBghKEAAYAyB1KE0wAQoGUgQIFhgBCghSBgiBtX0gAQoIUgYI7Pt9GAEKCFIGCLyUfhgACg6CAQsIgbV9IOgBKD8wAQoechwIk4N5EgoIuwkQzh8YrPEBJQAAnEItAACAwTAAChWCARIIvrN+EgYIHhBHGGcgACgTMAAKDoIBCwi+43ogpAEoLzABChGCAQ4I2r5+EgYICRAAGBkwAQoLygMICPCvAxDwrwMKDYIBCgiHpnUgDihYMAEKEYIBDgjEsn4SBggXEAAYRzABChSCAREIDhIGCDIQABgQII8BKCEwAQoUYhII0dZ8EgwIARIICAEQGxgOKAAKEYIBDgjalH4SBggREDAYOTAAChGCAQ4I/K91EgYICRAAGBQwAQoVggESCISmfRIGCBQQABgDIH0oQzABChGCAQ4I0dZ8EgYIBxAAGAAwAQoLygMICOCiAxDgogMKCooBBwiDptgxEAIKF4IBFAjH98MxEgYIBhAAGBAg3wEoMDABChKCAQ8I653YMRIGCAwQABgAMAEKEoIBDwiDptgxEgYIABALGAAwAAoSahAIg6bYMRIJCAYQAyUAAHBBChmSARYIg6bYMRIPDQAAAAAVaDF0vh0AAAAAChKCAQ8IoKfYMRIGCBAQABgIMAEKExIRCggIBRCgARitARACGAAgmwIKBUIDCIQgCg+CAQwIOhIGCCAQIBhAMAEKDmIMCLyUfhIGCAESAggAChKKBA8KBwhREH4YlAcQiJZ+GAgKHnIcCIiWfhIKCO0UEOIfGJTlASUAACDBLQAAJMIwAAoOggELCIemdSCGASgXMAEKEYIBDgiAiXoSBggAEAAYDDABCheCARQIqsLVCRIGCAcQABgAIOgCKAAwAQoZkgEWCMzM1QkSDw1FK6I9FcVzlT0ddQSiPQoSggEPCMzM1QkSBggKEAwYCjAACglSBwinndUJIAEKE4oEEAoICAYQgAEYuAcQh6Z1GAEKDBoKCAAQBhiAASC4BwoNggEKCICJeiBJKH8wAQoRggEOCISmfRIGCBEQOBghMAAKDmoMCISmfRIGCAAQAhgQCghSBgiHpnUgAQoIUgYIhKZ9GAEKEYIBDgib8X0SBggNEAAYAjABCglSBwiL/scxIAAKGnIYCB4SCAgmEPAoGJMoJQAA/EItAABwwTAACg+CAQwIPhIGCAAQHhgAMAAKE2IRCDsSDQgBEgkIARC0BRghKAAKJMICIQoKc3RlcC5ncmFzcxIJCLAHEKAIGJA8HT0K1z0lAACAPworwgIoChFnYW1lLm5ldXRyYWwuc3dpbRIJCOYHEM4HGLY9HS/jmjwlDTyEPwoRggEOCMjueBIGCAYQABgWMAEKDmoMCMjueBIGCAAQAhgQChGCAQ4IsNp8EgYIGRAAGAkwAQoIUgYIyO54GAEKCFIGCNHWfCABCgwaCggAEKIBGBIgtAcKDoIBCwjR1nwgsAEoRTABChGCAQ4Im/F9EgYICBAAGAUwAQoTigQQCggIXBCAARjUBxDR1nwYDAoIUgYI0dZ8IAEKCFIGCICJeiABCgz6AgkI/K91LQCAg0MKEYIBDgj8r3USBggAEAoYADAACgwaCgiZNBAsGHYgmgcKJsICIwoMcmFuZG9tLmNsaWNrEgkI4AIQsAcY0DkdmpmZPiUAAAAwAQoLGgkIABBPGBgg4gYKDRoLCAAQjwEYkgEgsggKEYIBDgiI+HwSBggpEAAYSjABChWCARIIktF8EgYIAhA6GAIgcygBMAAKDmoMCJLRfBIGCAAQAhgQChGCAQ4I/K91EgYIExAAGBgwAQoOagwI/K91EgYIABACGAAKDYIBCgiBl30gICgJMAEKCFIGCJLRfBgBCghSBgj8r3UYAAoWggETCJuWfRIGCB0QABgaILwDKAAwAQoVggESCM/8dBIGCBMQABgVIFooFjABCh5yHAiS0XwSCgiRChCAIRiAkwIlAABowi0AAIC/MAAKCIoBBQizBxACCimKAyYIARIaMS4gXGJvbGRcQ3JhenlSYWNjb29uLlVkYWQSAjQ4EgIxMwooigMlCAISGjIuIFxib2xkXEJyYXZlUmFjY29vbi5hRG9KEgIzMxIBMAoQigMNCAgSCUsvRDogMi4zNgoVigMSCAkSDktpbGwgU3RyZWFrOiAwCl66AVsKVUJyYXZlUmFjY29vbi5hRG9KIHdhcyBzbGFpbiBieSBDcmF6eVJhY2Nvb24uVWRhZCBcYm9sZFxcb3JhbmdlXDEzIHBsYXllciBraWxsIHN0cmVhayEwAVABChTCBBEKDw0CTRTBFeF6dkIdbrbAQQoPag0IlPzDMRIGCAAQAhgQCglSBwiU/MMxGAEKIHIeCLvf1QkSCwjYyA0Q+gYYoucaJQAAmkItAAAAADAACg6CAQsIwd/VCSAaKAAwAQojwgIgCgpzdGVwLmdyYXNzEggIlAEQwAcYRR09Ctc9JQAAgD8KEIIBDQjKEBIGCAgQABgaMAEKEIIBDQjoCRIGCAAQABgHMAEKFYIBEgidERIGCBUQABgbIMsDKAEwAQoQag4ImwkSCQgGEAMlrkdxQQoUggERCLMREgYIABAAGAAgPCgKMAAKFYIBEgj2CRIGCA0QABgXIOAIKAIwAQoQggENCO4OEgYICRASGAgwAAoVggESCMUNEgYIAxAXGCcgxBgoADAAChD6Ag0ImwkVrkdxQS0AAH9DCg2CAQoInA0gvAgoADABChSCAREItg0SBggAEAAYACAPKDowAAoQggENCOELEgYIBhAIGAQwAAoVggESCOsMEgYIABAOGAsgywEoDzAAChFqDwj8r3USCQgGEAMlAAAQQAoRggEOCICJehIGCAUQCRgDMAAKaNoCZQib8X0SEUZsdWZmeUNhcnJvdC5Ma2xOGghzdXJ2aXZhbCoPDVZ3zD4VAACAQh0iOPBDNXtslr89JzGIvkIPCgVhbGljZRIEbm9uZTIASgBSFFh5SEV1YjJOQXdvVE5feDlBQUlvCnVqcwib8X0SBggAEAIYEAIYABIPCAoQBToJCAEQjAIYASgAChmSARYI4uXVCRIPDZLNfj0VzcxMPh0+xcs4CgdCBQji5dUJChOqAhAIABADGgoIARDbCBgBKPoDChmSARYI3eXVCRIPDcJ6nD0VYewivh246aY9ChKCAQ8I3eXVCRIGCAQQCRgAMAAKGZIBFgje5dUJEg8Nn7DEvRU8xa29HezXIT0KGZIBFgjg5dUJEg8NKJC2PRUj9Z69HWUBhz0KEoIBDwjg5dUJEgYIBBAHGAgwAAoYahYI4OXVCRIPCAoQBToJCAEQjAIYAigAChmSARYI4eXVCRIPDTm0yL0VxXOVPR06WTM9CglSBwj14NMJIAEKD4IBDAgOEgYIKhAAGA8wAQoPggEMCD4SBggMEB4YPjAAChCCAQ0IzBsSBggAEAAYDTABCg+CAQwIHhIGCBgQABgAMAEKDfoCCgiik9UJLQCAhEMKDfoCCgicu9UJLQAAgUMKEYIBDgiBtX0SBggCEA4YNjAAChGCAQ4Ioe98EgYIHRAAGBkwAQoRggEOCISmfRIGCCQQABgoMAEKEooEDwoHCAsQfhiOBxCh73wYEgoTggEQCA4SBggNEA0YLSBQKAswAQoMagoIDhIGCAAQAhgAChSCAREIPhIGCCIQABgYIJkBKEcwAQoGUgQIDhgACgnKAwYI7EUQ7EUKFYIBEgicDRIGCAsQABgEIL8OKAAwAQoVggESCPANEgYIABAAGAAg/wEoATAAChWCARIIiA4SBggAEAAYACCTASgXMAAKFYIBEgjoCRIGCBgQABgLIOwfKAIwAQoQggENCLMHEgYIDRAAGAIwAQoVggESCOkNEgYIABAAGAAgkgEoAzAAChCCAQ0IzwMSBggMEAAYBjABChCCAQ0I9gkSBggBEAAYBzABClfaAlQIxQ0SD0hhcHB5V2hhbGUuUG1ETxoJYWR2ZW50dXJlKg8NAADgQBUAAHBCHQAAgEE1AAAAAD0AAAAAQgkKB2hlYXRoZXJSDWJvdC0xMC13bWtsNmEKdGpyCMUNEgYIABACGBASBwgBEAIY2AQSBggCEAQqABIGCAMQAhgAEgYIBBACGAASCQgGEAMlAACgQRIGCAcQAhgAEgYICBACGAASBggJEAIYABIGCAoQAhgAEgYIEBACGAASCQgREAMlAAAAABIGCBIQAhgACh96HQjFDRIYChFnZW5lcmljLm1heEhlYWx0aBUAAKBBCr8BYrwBCMUNEiMIARIfCAEQzwUYASIUeyJVbmJyZWFrYWJsZSI6dHJ1ZX0oABIjCAMSHwgBEOoFGAEiFHsiVW5icmVha2FibGUiOnRydWV9KAASIwgEEh8IARDrBRgBIhR7IhAQAhgCCipiKAidERIjCAESHwgBEM8FGAEiFHsiVW5icmVha2FibGUiOnRydWV9KAAKCIoBBQj2CRACCijCAiUKEGdhbWUucGxheWVyLmh1cnQSBwgUEKAHGCYdAACAPyXh3JE/CiXCAiIKDXJhbmRvbS5ib3doaXQSBwgUEKAHGCYdAACAPyVk1Zk/CgVCAwixEgoUggERCLMHEgYIDBAAGAsgKygnMAEKEIIBDQibCRIGCAwQABgMMAEKHHIaCPUQEgkI6AoQgBsYkgwlAABcQi0AALBBMAEKHHIaCOgJEgkIhQQQgB4YwAElAIDqQy0AAJDBMAEKDWoLCOgJEgYIABACGAAKEIIBDQjuDhIGCAkQABgHMAEKEIIBDQj2CRIGCAAQABgVMAEKEGoOCPYJEgkIBhADJTMz8z8KF5IBFAj2CRIPDXhmnLwVx7q4Ph2MebQ+ChWCARIImRISBggAEAAYACC7ASgPMAAKDYIBCgidESCBCigIMAEKDWoLCJ0REgYIABACGBAKFYIBEgisEhIGCAAQABgAIMkBKCcwAAoWggETCLISEgcImAEQTRhXIKoBKCMwAAo2ajQIshISBggAEAIYABIHCAEQAhjYBBIGCAIQBCoAEgYIAxACGAASBggEEAIYABIGCBAQAhgCCgdSBQidERgBCguCAQgIRSAgKAAwAAogch4IwaTdBRILCLX1ARDaGBjUqxklAADgQi0AAAAAMAAKDBoKCCMQUBiAASDwBwoOggELCOz7fSCsASgvMAEKDoIBCwjP/HQg+QEoIzABChKCAQ8Ip/PDMRIGCAAQDRgAMAAKDYIBCgjR1nwgISg0MAEKEYIBDgiN3HYSBgglEAAYGTABCg5qDAiN3HYSBggAEAIYAAoIUgYIjdx2GAAKBgoECDQQAAoNGgsInTcQkwEYnAEgBQoiwgIfCglkaWcuc3RvbmUSCAiXCRDoCRgnHQAAgD8lAACAPwoTYhEINBINCAESCQgBEOYCGAsoAAoJUgcIs8DVCSABCgkKBwinndUJEAAKDRoLCAEQ+y4YmAEg90IKEaoCDggAEAgaCAgBEAEYLCgAChISEAoHCN8BEBYYHhACGAAgmwIKEhIQCgcI3wEQFhggEAIYACCbAgoVggESCMgQEgYIABAAGAAgjQEoDzAAChSCAREI+RASBggAEAAYACA0KBswAAoUggERCIUREgYIABAAGAAgAygTMAAKEIIBDQizBxIGCAQQABgOMAEKDWoLCLMHEgYIABACGAAKFYIBEgjoCRIGCBAQABgYIKQSKA8wAQoQggENCJ0REgYIFRAAGBAwAQoVggESCPYJEgYIGBAAGAAg6A8oADABCgdSBQgQBToICAEQFRgBKAAKCFIGCMjueCAAChiSARUIk4h+Eg8NteCFPRUabOo9HTHqxDsKEYIBDgiTiH4SBggEEAgYADAACgmyBAYIhBMQ9gkKBUIDCIQTChCCAQ0IswcSBggdEA4YITAAChCCAQ0ImwkSBggCEAAYCjABCg1qCwibCRIGCAAQAhgQChWCARII7g4SBggDEAQYDCCyASgMMAAKDYIBCgj2CSDRASgAMAEKEIIBDQi6ERIGCBUQABgbMAEKFYIBEgiAExIGCAAQABgAINABKAswAAoHUgUIswcgAAoHUgUImwkYAQoPggEMCMCk3QUgnAEoADABCglSBwizwNUJIAAKadoCZgjQn3sSEkNoZWVyZnVsUmhpbm8uTHV2aBoIc3Vydml2YWwqDw36FybCFQAAMEEdJWbXQzXD9UjAPap0gr5CDwoFYWxpY2USBG5vbmUyAEoAUhRzZEVnZVlrNGJMUnpSOUh5QUFHWAp1anMI0J97EgYIABACGAASBwgBEAIY2AQSBggCEAQqABIGCAMQAhgAEgYIBBACGAASCQgGEAMlAACgQRIGCAcQAhgAEgYICBACGAASBggJEAIYABIGCAoQAhgAEgYIEBACGAASCQgREAMlAAAAABIGCBIQAhgACiB6HgjQn3sSGAoRZ2VuZXJpYy5tYXhIZWFsdGgVAACgQQpRYk8I0J97Eg0IARIJCAEQzAUYAShCEg0IAxIJCAEQ6gUYASgSEg0IBBIJCAEQ6wUYASgSEg0IBRIJCAEQ7AUYASgSEg0IBhIJCAEQ7QUYASgSChGCAQ4IhcV9EgYIJxA0GAAwAApcmgRZClcIgMh9EAAaA2JvYiIPVklFVE5BTV9OVU1CRVIxMgA4AEAASiQzN2RkZjFmMi1kMmE5LTQ2MGItYWI2NC0yYjMyNGMzM2ZiODNQAHABggEIc3Vydml2YWwKFWITCNCfexINCAESCQgBEMwFGAEoQgoMGgoIABDAARhIIIAHChGCAQ4IiPh8EgYIDRAAGBowAQoOagwIiPh8EgYIABACGBAKFoIBEwiBtX0SBggPEAAYACDgASgxMAEKEWoPCIG1fRIJCAYQAyUAAJxBChKKBA8KBwhTEBgY4AYQ0J97GAgKCFIGCNCfeyAACghSBgjR1nwgAAoIUgYIiPh8GAEKDPoCCQiBtX0VAACcQQoRggEOCNCfexIGCAAQABgYMAEKCrIDBwgKEAIYtQEKCrIDBwgKEAAYtAYKDYIBCgjP/HQgMygZMAEKFYIBEgiBtX0SBggAEAkYByAfKAQwAAoRggEOCPyvdRIGCB4QCxgSMAAKDYIBCgih73wgPCgvMAAKHnIcCISmfRIKCK0WEAAYBjABCgv6AggI4QsVmpl9QQoYggEVCN2wtAcSBggAEB4YACDYAyj+AzAACgsaCQgAEJQBGBogYQoiwgIfCghkaWcud29vZBIJCKgJENgBGIcGHQAAgD8lAACAPwoSggEPCJT8wzESBggDEAAYEjABCg9qDQiU/MMxEgYIABACGAAKCVIHCMf3wzEgAQoJUgcIlPzDMRgACg+CAQwIFBIGCA8QABgkMAAKE4IBEAg4EgYIJhAbGBkgYygXMAAKDIIBCQg6ILMBKFkwAQoNGgsIqwsQmgEYlgEgJQoVYhMIgMF8Eg0IARIJCAEQzAUYAShJChGCAQ4IhKZ9EgYIFhArGB0wAAoTigQQCggIxgEQbBiEBxCAwXwYDAoIUgYIgIl6IAEKGZIBFgi+w9UJEg8N0Ls2PRUAAACAHYU+MTwKIHIeCL7D1QkSCwjm2gIQwAIYi+YBJQAAAAAtAAAAADABChKCAQ8IqIyVCRIGCAEQHhgAMAAKCIoBBQjoCRACCipiKAj2CRIjCAESHwgBEKoFGAEiFHsiVW5icmVha2FibGUiOnRydWV9KAAKDIIBCQizByByKAwwAQoVggESCOgJEgYIABAWGAAgmCIoEDAAChBqDgjoCRIJCAYQAyXhetQ/CheSARQI6AkSDw0AAAAAFevkjD4dAAAAAAoVggESCO8NEgYIABAAGAAg3QEofzAAChWCARII+Q0SBggAEAAYACCYASgDMAAKEIIBDQjPAxIGCAkQABgaMAEKFYIBEgj2CRIGCBAQJxgBIPQcKBswAAoNagsI9gkSBggAEAIYIAoVggESCIIOEgYIABAAGAAguwEoCzAAChCCAQ0IgwISBggIEA4YKTAACgdSBQiDAiABCgv6AggIswctAACNQwoHUgUIswcgAQoUggERCPsPEgYIABAAGAAgWSgVMAAKFYIBEgjFDRIGCAcQABgLIPIVKAUwAQoQggENCJwNEgYIABAaGA0wAAoQag4I7g4SCQgGEAMlAACMQQoQggENCMoQEgYIBRAAGAkwAQoNagsIyhASBggAEAIYAAoL+gIICO4OFQAAjEEKGZIBFgiU2tUJEg8NFG73vBUAAACAHehW1DoKIHIeCJTa1QkSCwiC5QEQgCAY3e8bJQAAAAAtAAAAADABChiSARUI2Z9+Eg8NbJ+BvRUfEdu+HRl9er0KEYIBDgjZn34SBggDEBsYAzAAChGqAg4IAxAkGggIARAVGAEoAAoRqgIOCAMQJRoICAEQFRgBKAAKEaoCDggDECYaCAgBEBUYASgACguqAggIAxAnGgIIAAoSqgIPCAMQKBoJCAEQ2QUYASgACguqAggIAxApGgIIAAoLqgIICBKCAQ8I5M3XMRIGCAsQABguMAEKKMICJQoObW9iLnpvbWJpZS5zYXkSCQiGAxCqARj2Bh0AAIA/Jcd1eD8KCooBBwiHqNgxEAIKKcICJgoPbW9iLnpvbWJpZS5odXJ0EgkIhgMQoAEY+AYdAACAPyW9J3E/CgqKAQcIzqPYMRACCgdCBQjOo9gxCheCARQI5pXYMRIGCAgQABgAICwo/gMwAQoSggEPCLuY2DESBggLEAAYCTABChKCAQ8ImqHYMRIGCBgQABgSMAEKF4IBFAisodgxEgYIExAAGAAg+gIoADABCh5yHAiHqNgxEgkInAwQgAUY4BslALAMRS0AAAAAMAEKEmoQCIeo2DESCQgGEAMlAACYQQoZkgEWCIeo2DESDw38MIe8FS6QoL0dXswGPAoLygMICOTpBRDk6QUKBUIDCKoiCheCARQI/NvVCRIGCBoQABgJIJQBKAAwAQoSggEPCKXJ1QkSBggAEAcYADAAChKCAQ8IrcnVCRIGCAIQEBgAMAAKF4IBFAjXytUJEgYIABAAGAAg2wEoXTAACgdCBQj/wtUJCiLCAh8KCnN0ZXAuc3RvbmUSBwgqEJAHGAcdmpkZPiUAAIA/ChWCARIIxQ0SBggeEA0YAiC6EygGMAAKFYIBEgiIEhIGCAAQABgAINsBKH8wAAoVggESCJwNEgYICBAAGAEghAUoNzABChWCARIInRESBggXEAMYBiDHBigPMAAKFIIBEQimEhIGCAAQABgAIBUoPDAAChWCARII6AkSBggYEAAYCSCOAygqMAEKFIIBEQjqEhIGCAAQABgAIHkoEzAACgv6AggI7g4tAACRQwoQggENCJsJEgYIABAIGAAwAAoNggEKCPUQIIkFKAAwAQocchoI7g4SCQiCAhD+HBiaASUAALzCLQAA4EAwAAobchkI6AkSCAisARDaHBghJQAAREMtAACoQTAAChCCAQ0IuhESBggAEAAYCTABChCCAQ0I9gkSBggGECYYBjAAChCCAQ0ImwkSBggHEAAYBDABChWCARIIww8SBggAEAAYACDUASgLMAAKFYIBEgjFDRIGCAsQABgEIIYfKAQwAQoUggERCPsPEgYIABAAGAAgWSgVMAAKEoIBDwifmtgxEgYICBAAGAAwAQoSggEPCKya2DESBggIEAAYAzABChKCAQ8Iy53YMRIGCAgQABgIMAEKEoIBDwjGn9gxEgYIABAIGAAwAAoPggEMCA4SBggREAAYAjABCgZSBAg6IAEKFWITCNvPfBINCAESCQgBEL4FGAEoCgoSggEPCJ/Z1zESBggKEAAYHDABCg+CAQwIy9rXMSD6AygAMAEKEYIBDgjalH4SBggIABICCAASAggAEi0IARDiBRgBIiJ7IlVuYnJlYWthYmxlIjp0cnVlLCJjb2xvciI6InJlZCJ9KAASLQgBEOMFGAEiInsiVW5icmVha2FibGUiOnRydWUsImNvbG9yIjoicmVkIn0oABItCAEQ5AUYASIieyJVbmJyZWFrYWJsZSI6dHJ1ZSwiY29sb3IiOiJyZWQifSgAEi0IARDlBRgBIiJ7IlVuYnJlYWthYmxlIjp0cnVlLCJjb2xvciI6InJlZCJ9KAASAggAChKqAg8IABACGgkIARC0BRgBKAAKEqoCDwgAEAUaCQgBEKsBGDAoAAoFQgMIiA4KFYIBEgiJDhIGCAAQABgAIP0BKAswAAoQggENCPYJEgYIDxAAGBUwAQoVggESCLEOEgYIABAAGAAguAEoCzAAChWCARIIzwMSBggGEAwYEiDxJSgLMAAKFYIBEgjQDhIGCAAQABgAIN0BKBgwAAoQggENCOgJEgYIDBAzGA8wAAoUggERCIMCEgYIGBAAGAogbygpMAEKFYIBEgjcDhIGCAAQABgAIMQBKA0wAAoVggESCMUNEgYICBAzGBUgiAQoGjAACgv6AggIswctAABKQwoLygMICKC6ARCgugEKChoICAAQPhgWIGQKI8ICIAoJZGlnLnN0b25lEgkI+AMQuAEYqAYdAACAPyUAAIA/CheCARQIi/7HMRIGCD8QABgeIMABKCEwAAoSggEPCJLe1zESBggAEAAYEzAACgtSCQiL/scxoAHkAQoMagoIOhIGCAAQAhgACgZSBAg6GAAKFIIBEQjVEBIGCAAQABgAIGMoGzAAChCCAQ0IswcSBggHEAAYBzABChBqDgjuDhIJCAYQAyXXo4BBChCCAQ0InA0SBggDEAAYBzABChWCARIIxQ0SBggMEBoYIiDSFigkMAAKFIIBEQibCRIGCB4QABgPIEsoCTABCgdSBQibCSAACgv6AggI7g4V16OAQQoHUgUI7g4gAAo4ygI1CKgqEAEaCAggEOAnGN8vJQAAAAAtAAAAADIPDZrQVzwVzcxMPh1UnZe9OgkIARC4BRgBKAAKP2o9CKgqEgYIABACGAASBwgBEAIY2AQSBggCEAQqABIGCAMQAhgAEgYIBBACGAASDwgKEAU6CQgBELgFGAEoAAoXkgEUCKgqEg8NmtBXPBXNzEw+HVSdl70KFoIBEwi8lH4SBggWEAAYCCCLASgzMAEKFoIBEwjP/HQSBggAEAAYJiD+ASglMAEKEYIBDgiN3HYSBggoEAAYCzABChOCARAIlPzDMRIHCIsBEAAYMTAACiByHgiSyNUJEgsIrNsCENoiGI/fASUAAM5CLQAAAAAwAAoZCAQQAhgAEg4IChAFOggIARAPGAEoAAoYkgEVCOyEfhIPDQAAAAAVQmBlvB0AAAAACghSBgjalH4gAAoRggEOCIemdRIGCAMQABgUMAEKDoIBCwiAiXogggEoSDABCg2CAQoIvuN6IEQoSzABChGCAQ4IsNp8EgYITBAvGA8wAAoTigQQCggIWhCGARjWBxDR1nwYBgoIUgYI0dZ8IAAKC8oDCAj8pgMQ/KYDCg6CAQsIz/x0IM4BKDswAQoWggETCJODeRIGCAAQERgCIKsBKH8wAQoJUgcI5M3XMSAAChKCAQ8Iz4PYMRIGCB0QABgUMAEKEoIBDwjRg9gxEgYIDhAAGC8wAQoVggESCLMHEgYIABAAGAwgowEoLTABChWCARIImwkSBggCEAAYDCDiASgbMAEKFIIBEQjjERIGCAAQABgAIDUoADAAChSCAREI8hESBggAEAAYACA3KAswAAoVggESCO4OEgYIDRAAGAIgigEoBDABChCCAQ0IuhESBggBEAMYDDAAChxyGgj2CRIJCJIJEIAfGLcFJQDAmUQtAAAAADABCiByHgieipIJEgsIk5sOEIAbGIWuCiUAALBCLQAAAAAwAQoSggEPCMXG1QkSBggAEAkYADAACgvKAwgIuI0KELiNCgowygItCNkOEAMaCAjpChDwGxgDJf4tiL8t+uZZPzIPDbIY2r8VWVMOQB1GNnI/QM8DCjZqNAjZDhIGCAAQAhgAEgcIARACGNgEEgYIAhAEKgASBggDEAIYABIGCAQQAhgAEgYIEBACGAIKDIIBCQjrDCBXKCMwAQoNagsI6wwSBggAEAIYIAoVggESCIkOEgYIABAAGAAg/QEoCzAAChWCARII9gkSBggMEAAYACDQAigAMAEKDIIBCQjFDSBYKCowAQoVggESCLEOEgYIABAAGAAguAEoCzAAChWCARIIzwMSBggEECEYACDVKihEMAEKDWoLCM8DEgYIABACGAAKFYIBEgjQDhIGCAAQABgAIN0BKBgwAAoMggEJCIMCIFwoETABChSCAREI2Q4SBghVEG4YMCBXKEQwAAo2ajQI2Q4SBggAEAIYABIHCAEQAhjYBBIGCAIQBCoAEgYIAxACGAASBggEEAIYABIGCBAQAhgACgdSBQibCSABCg6CAQsIm/F9IJgBKAEwAQoRggEOCNHWfBIGCCMQABgCMAEKDmoMCNHWfBIGCAAQAhgQCg2CAQoI2pR+IAEoAzABChWCARIIiJZ+EgYIChAAGC4gdygrMAEKDmoMCIiWfhIGCAAQAhgQChKKBA8KBwhKEHwY6gcQ0dZ8GBIKCFIGCNHWfBgBChKKBA8KBwgXEHYY7AcQm/F9GAoqYigInA0SIwgBEh8IARDPBRgBIhR7IlVuYnJlYWthYmxlIjp0cnVlfSgAChBqDgiDAhIJCAYQAyVSuP4/ChxyGgjrDBIJCN4MEIAeGIwSJQAAbEItAAAgwTABChSCAREIkA0SBggAEAAYACASKA0wAAoVggESCOELEgYIDxAAGBIgxwEoFzABCg1qCwicDRIGCAAQAhgQChCCAQ0IxQ0SBggIEAAYBjABCheSARQIyA0SDw21qJq/FTSFBz8dhggxPwoL+gIICIMCFVK4/j8KC/oCCAibCS0AAIpDCgdSBQicDRgBCheSARQIlRgSDw0lY2o9FRps6j0dxHKkvAoMggEJCO4OIAYoNTABChSCAREIuhMSBggAEAAYACB1KA4wAAoVggESCOgJEgYICBAAGBMg9gsoADABChCCAQ0IswcSBggAEA0YADAACgv6AggIswctAACVQwoHUgUImwkgAAoHUgUIuhEgAQoKGggIABA6GBQgagojwgIgCglkaWcuc3RvbmUSCQjYAxCoARjYBh0AAIA/JQAAgD8KF4IBFAiL/scxEgYINRAAGA0giAEoCDAACg+CAQwIkt7XMSCrASgYMAAKCVIHCIv+xzEgAQoXggEUCJrG1zESBggCEAAYGCCeXygAMAEKEIIBDQibCRIGCAQQABgIMAEKDWoLCJsJEgYIABACGBAKDYIBCgjoCSCODigJMAEKEIIBDQjPAxIGCAEQABgHMAEKFIIBEQjbDBIGCAAQABgAIAooCzAAChWCARII6AISBggZEAAYByDgDChFMAEKEIIBDQjrDBIGCAIQABgKMAEKC/oCCAizBy0AAEFDCgdSBQibCRgBCgv6AggI6wwtAAAIQwokwgIhCgpyYW5kb20ucG9wEgkIgwQQ1gcYkAMdzcxMPiVOHTZACgmyBAYI3Q0Q9gkKBUIDCN0NChCCAQ0InA0SBggKEAAYGDABChSCAREItg0SBggAEAAYACAPKDowAAoVggESCMUNEgYICRAEGCog2gMoIzAACgdSBQibCSAACgvKAwgIrKwBEKysAQoUggERCD4SBggAEAAYCCD5ASgHMAEKDGoKCD4SBggAEAIYEAoGUgQIPhgBCguCAQgIRSBMKBUwAAoVggESCPgNEgYIABAAGAsgqgEoAjABCiHKAh4I4tHVCRASGgsI378OEMAjGN+XCiVnvqVALQAAAAAKa2ppCOLR1QkSBggA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`
-  , frameKey = `d90f920f3a399b27`;
+const frameB64 = `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IlVuYnJlYWthYmxlIjp0cnVlfSgAChBqDgiDAhIJCAYQAyVSuP4/ChxyGgjrDBIJCN4MEIAeGIwSJQAAbEItAAAgwTABChSCAREIkA0SBggAEAAYACASKA0wAAoVggESCOELEgYIDxAAGBIgxwEoFzABCg1qCwicDRIGCAAQAhgQChCCAQ0IxQ0SBggIEAAYBjABCheSARQIyA0SDw21qJq/FTSFBz8dhggxPwoL+gIICIMCFVK4/j8KC/oCCAibCS0AAIpDCgdSBQicDRgBCheSARQIlRgSDw0lY2o9FRps6j0dxHKkvAoMggEJCO4OIAYoNTABChSCAREIuhMSBggAEAAYACB1KA4wAAoVggESCOgJEgYICBAAGBMg9gsoADABChCCAQ0IswcSBggAEA0YADAACgv6AggIswctAACVQwoHUgUImwkgAAoHUgUIuhEgAQoKGggIABA6GBQgagojwgIgCglkaWcuc3RvbmUSCQjYAxCoARjYBh0AAIA/JQAAgD8KF4IBFAiL/scxEgYINRAAGA0giAEoCDAACg+CAQwIkt7XMSCrASgYMAAKCVIHCIv+xzEgAQoXggEUCJrG1zESBggCEAAYGCCeXygAMAEKEIIBDQibCRIGCAQQABgIMAEKDWoLCJsJEgYIABACGBAKDYIBCgjoCSCODigJMAEKEIIBDQjPAxIGCAEQABgHMAEKFIIBEQjbDBIGCAAQABgAIAooCzAAChWCARII6AISBggZEAAYByDgDChFMAEKEIIBDQjrDBIGCAIQABgKMAEKC/oCCAizBy0AAEFDCgdSBQibCRgBCgv6AggI6wwtAAAIQwokwgIhCgpyYW5kb20ucG9wEgkIgwQQ1gcYkAMdzcxMPiVOHTZACgmyBAYI3Q0Q9gkKBUIDCN0NChCCAQ0InA0SBggKEAAYGDABChSCAREItg0SBggAEAAYACAPKDowAAoVggESCMUNEgYICRAEGCog2gMoIzAACgdSBQibCSAACgvKAwgIrKwBEKysAQoUggERCD4SBggAEAAYCCD5ASgHMAEKDGoKCD4SBggAEAIYEAoGUgQIPhgBCguCAQgIRSBMKBUwAAoVggESCPgNEgYIABAAGAsgqgEoAjABCiHKAh4I4tHVCRASGgsI378OEMAjGN+XCiVnvqVALQAAAAAKa2ppCOLR1QkSBggA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`,
+	frameKey = `d90f920f3a399b27`;
 function decodeFrameBuffer(e) {
 	try {
 		if (typeof atob == `function`) {
-			let t = atob(e)
-			  , n = new Uint8Array(t.length);
-			for (let e = 0; e < t.length; e++)
-				n[e] = t.charCodeAt(e);
-			return n
+			let t = atob(e),
+				n = new Uint8Array(t.length);
+			for (let e = 0; e < t.length; e++) n[e] = t.charCodeAt(e);
+			return n;
 		}
 		let t = globalThis.Buffer;
-		if (t)
-			return new Uint8Array(t.from(e, `base64`))
+		if (t) return new Uint8Array(t.from(e, `base64`));
 	} catch {}
-	return new Uint8Array
+	return new Uint8Array();
 }
 
 const frameBuffer = decodeFrameBuffer(frameB64);
@@ -9609,9 +10572,9 @@ exports.ClientSocket = class {
 		});
 
 		this.socket = io(_, {
-			transports: ["websocket"],
+			transports: ['websocket'],
 			extraHeaders: {
-				'Origin': 'https://miniblox.io',
+				Origin: 'https://miniblox.io',
 				'User-Agent': USER_AGENT
 			},
 			auth: {
@@ -9628,41 +10591,38 @@ exports.ClientSocket = class {
 			parser,
 			reconnectionDelay: 2e3,
 			randomizationFactor: 0,
-			path: $ || "/socket.io"
+			path: $ || '/socket.io'
 		});
 	}
 	static connect() {
-		this.socket.on("connect", () => {
-			exports.ClientSocket.id = this.socket.id
+		(this.socket.on('connect', () => {
+			exports.ClientSocket.id = this.socket.id;
 		}),
-		this.socket.connect()
+			this.socket.connect());
 	}
 	static disconnect(_) {
-		if (this.disconnectMessage = _,
-			!this.socket) {
-			console.error("CSocket.disconnect: socket is null");
-			return
+		if (((this.disconnectMessage = _), !this.socket)) {
+			console.error('CSocket.disconnect: socket is null');
+			return;
 		}
-		this.socket.disconnect()
+		this.socket.disconnect();
 	}
 	static once(_, $) {
-		this.socket.once(_, $)
+		this.socket.once(_, $);
 	}
 	static on(_, $) {
 		let et = !0;
 		const tt = (...rt) => {
 			try {
-				$.apply(null, rt)
+				$.apply(null, rt);
 			} catch (nt) {
-				if (et)
-					throw et = !1,
-					nt
+				if (et) throw ((et = !1), nt);
 			}
 		};
-		this.socket.on(_, tt)
+		this.socket.on(_, tt);
 	}
 	static sendPacket(_) {
 		var $;
-		($ = this.socket) == null || $.emit(_.constructor.typeName, _)
+		($ = this.socket) == null || $.emit(_.constructor.typeName, _);
 	}
 };

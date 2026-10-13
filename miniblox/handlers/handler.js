@@ -1,5 +1,7 @@
 class Handler {
-	constructor() { this.cleanup(); }
+	constructor() {
+		this.cleanup();
+	}
 	miniblox() {}
 	minecraft(client) {}
 	cleanup() {}

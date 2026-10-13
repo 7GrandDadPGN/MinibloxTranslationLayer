@@ -21,19 +21,20 @@ const SERVER_ID = /(large|small|medium|planet)-[A-z|0-9]+-[A-z|0-9]+/;
  * @return {Promise<string | null>} a server ID if the server resolved the invite code, otherwise `null`
  */
 async function resolveServerID(code) {
-	if (SERVER_ID.test(code))
-		return code; // no need for modifying, this is already a server ID.
+	if (SERVER_ID.test(code)) return code; // no need for modifying, this is already a server ID.
 	const joinCode = JOIN_CODE.exec(code);
 	if (joinCode === null) throw new IllegalArgumentException(`Invalid invite code: ${code}`);
-	const serverId = await fetch("https://session.coolmathblox.ca/launch/invite_code", {
-		method: "POST",
+	const serverId = await fetch('https://session.coolmathblox.ca/launch/invite_code', {
+		method: 'POST',
 		body: JSON.stringify({
 			code: joinCode[2]
 		}),
 		headers: {
-			"Content-Type": "application/json"
+			'Content-Type': 'application/json'
 		}
-	}).then(r => r.json()).then(r => r.serverId);
+	})
+		.then((r) => r.json())
+		.then((r) => r.serverId);
 	return serverId;
 }
 
@@ -49,7 +50,7 @@ async function handleCommand(name, args) {
 		case 'next':
 			// this triggers the server to send a CPacketQueueNext,
 			// see the `miniblox` function in ChatHandler below for how that's handled.
-			ClientSocket.sendPacket(new SPacketQueueNext);
+			ClientSocket.sendPacket(new SPacketQueueNext());
 			break;
 		case 'reloadchunks':
 			world.chunks = [];
@@ -96,20 +97,27 @@ async function handleCommand(name, args) {
 			}
 			break;
 		case 'join': {
-			const code = args.join(" ");
-			const resolved = await resolveServerID(code).then(c => c ?? code).catch(e => {
-				console.error("Error resolving server ID / invite code, trying to connect without resolving. Error:", e);
-				client.write('chat', {
-					message: JSON.stringify({
-						extra: [translateText(
-							"\\red\\Failed to resolve Server ID / Invite Code\\reset\\, trying without resolving! See console logs for error"
-						)],
-						text: ''
-					}),
-					position: 1
+			const code = args.join(' ');
+			const resolved = await resolveServerID(code)
+				.then((c) => c ?? code)
+				.catch((e) => {
+					console.error(
+						'Error resolving server ID / invite code, trying to connect without resolving. Error:',
+						e
+					);
+					client.write('chat', {
+						message: JSON.stringify({
+							extra: [
+								translateText(
+									'\\red\\Failed to resolve Server ID / Invite Code\\reset\\, trying without resolving! See console logs for error'
+								)
+							],
+							text: ''
+						}),
+						position: 1
+					});
+					return code;
 				});
-				return code;
-			});
 			connect(client, true, undefined, undefined, resolved);
 			break;
 		}
@@ -144,10 +152,10 @@ async function handleCommand(name, args) {
 
 const self = class ChatHandler extends Handler {
 	miniblox(_) {
-		ClientSocket.on('CPacketQueueNext', packet => {
+		ClientSocket.on('CPacketQueueNext', (packet) => {
 			connect(client, true, packet.minigameId, JSON.parse(packet.minigameConfig));
 		});
-		ClientSocket.on('CPacketMessage', packet => {
+		ClientSocket.on('CPacketMessage', (packet) => {
 			if (packet.text) {
 				if (packet.id == 'miniblox:game-summary') {
 					if (packet.text.includes('Victory!')) {
@@ -182,7 +190,7 @@ const self = class ChatHandler extends Handler {
 			}
 		});
 
-		ClientSocket.on('CPacketTitle', packet => {
+		ClientSocket.on('CPacketTitle', (packet) => {
 			client.write('title', {
 				action: 2,
 				fadeIn: 6,
@@ -196,12 +204,12 @@ const self = class ChatHandler extends Handler {
 			});
 		});
 
-		ClientSocket.on('CPacketTabComplete', packet => client.write('tab_complete', { matches: packet.matches }));
+		ClientSocket.on('CPacketTabComplete', (packet) => client.write('tab_complete', { matches: packet.matches }));
 	}
 	minecraft(mcClient) {
 		client = mcClient;
 
-		client.on('chat', async packet => {
+		client.on('chat', async (packet) => {
 			/**
 			 * @type {string}
 			 */
@@ -215,16 +223,26 @@ const self = class ChatHandler extends Handler {
 			ClientSocket.sendPacket(new SPacketMessage({ text: msg }));
 		});
 
-		client.on('tab_complete', packet => {
-			if ((packet.text.startsWith('/queue') || packet.text.startsWith('/play')) && packet.text.indexOf(' ') != -1) {
+		client.on('tab_complete', (packet) => {
+			if (
+				(packet.text.startsWith('/queue') || packet.text.startsWith('/play')) &&
+				packet.text.indexOf(' ') != -1
+			) {
 				const split = packet.text.split(' ')[1].toLocaleLowerCase();
 				client.write('tab_complete', {
 					matches: [
-						'skywars', 'eggwars',
-						'spleef', 'survival', 'creative',
-						'duels_bridge', 'blockhunt',
-						'parkour', 'oitq',
-						'kitpvp', 'blitzbuild', 'murder',
+						'skywars',
+						'eggwars',
+						'spleef',
+						'survival',
+						'creative',
+						'duels_bridge',
+						'blockhunt',
+						'parkour',
+						'oitq',
+						'kitpvp',
+						'blitzbuild',
+						'murder',
 						'pvp'
 					].filter((str) => str.substring(0, split.length) == split)
 				});

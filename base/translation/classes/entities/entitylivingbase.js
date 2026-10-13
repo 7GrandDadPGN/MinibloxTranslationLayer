@@ -1,22 +1,22 @@
 const Entity = require('./entity.js');
 
 function convertToByte(num) {
-	num &= 0xFF;
+	num &= 0xff;
 	num = num > 127 ? num - 256 : num;
 	return num;
-};
+}
 
 module.exports = class EntityLivingBase extends Entity {
-	equipment = []
-	attributeMap = []
-	activePotionsMap = {}
+	equipment = [];
+	attributeMap = [];
+	activePotionsMap = {};
 	constructor(index) {
 		super(index);
 		Object.assign(this.dataWatcher.data, {
-			6: {key: 6, value: 20, type: 3},
-			7: {key: 7, value: 0, type: 2},
-			8: {key: 8, value: 0, type: 0},
-			9: {key: 9, value: 0, type: 0}
+			6: { key: 6, value: 20, type: 3 },
+			7: { key: 7, value: 0, type: 2 },
+			8: { key: 8, value: 0, type: 0 },
+			9: { key: 9, value: 0, type: 0 }
 		});
 	}
 	createSpawnPacket() {
@@ -36,7 +36,7 @@ module.exports = class EntityLivingBase extends Entity {
 		});
 	}
 	updateEquipment(slot, item) {
-		this.equipment[slot] = item ?? {blockId: -1};
+		this.equipment[slot] = item ?? { blockId: -1 };
 
 		if (this.isLoaded) {
 			this.world.client.write('entity_equipment', {

@@ -1,27 +1,27 @@
 const DataWatcher = require('../datawatcher.js');
 
 function convertToByte(num) {
-	num &= 0xFF;
+	num &= 0xff;
 	num = num > 127 ? num - 256 : num;
 	return num;
-};
+}
 
 module.exports = class Entity {
-	minecraftId = 2
-	pos = {x: 0, y: 0, z: 0}
-	motion = {x: 0, y: 0, z: 0}
-	yaw = 0
-	pitch = 0
-	isLoaded = false
-	dataWatcher = new DataWatcher(this)
+	minecraftId = 2;
+	pos = { x: 0, y: 0, z: 0 };
+	motion = { x: 0, y: 0, z: 0 };
+	yaw = 0;
+	pitch = 0;
+	isLoaded = false;
+	dataWatcher = new DataWatcher(this);
 	constructor(index) {
 		this.index = index;
 		Object.assign(this.dataWatcher.data, {
-			0: {key: 0, value: 0, type: 0},
-			1: {key: 1, value: 300, type: 1},
-			2: {key: 2, value: '', type: 4},
-			3: {key: 3, value: 0, type: 0},
-			4: {key: 4, value: 0, type: 0}
+			0: { key: 0, value: 0, type: 0 },
+			1: { key: 1, value: 300, type: 1 },
+			2: { key: 2, value: '', type: 4 },
+			3: { key: 3, value: 0, type: 0 },
+			4: { key: 4, value: 0, type: 0 }
 		});
 	}
 	createSpawnPacket() {
@@ -70,7 +70,7 @@ module.exports = class Entity {
 				this.world.client.write('entity_equipment', {
 					entityId: this.minecraftId,
 					slot: i,
-					item: this.equipment[i] ?? {blockId: -1}
+					item: this.equipment[i] ?? { blockId: -1 }
 				});
 			}
 		}
@@ -106,7 +106,7 @@ module.exports = class Entity {
 		}
 	}
 	moveEntity(pos, angles, onGround) {
-		const lastPos = {x: this.pos.x, y: this.pos.y, z: this.pos.z};
+		const lastPos = { x: this.pos.x, y: this.pos.y, z: this.pos.z };
 
 		if (pos != undefined) {
 			if (pos.add) {
@@ -131,19 +131,26 @@ module.exports = class Entity {
 			const diffX = Math.floor(this.pos.x * 32) - Math.floor(lastPos.x * 32);
 			const diffY = Math.floor(this.pos.y * 32) - Math.floor(lastPos.y * 32);
 			const diffZ = Math.floor(this.pos.z * 32) - Math.floor(lastPos.z * 32);
-			const encYaw = convertToByte(this.yaw * 256 / 360);
-			const encPitch = convertToByte(this.pitch * 256 / 360);
+			const encYaw = convertToByte((this.yaw * 256) / 360);
+			const encPitch = convertToByte((this.pitch * 256) / 360);
 
 			if (diffX >= -128 && diffX < 128 && diffY >= -128 && diffY < 128 && diffZ >= -128 && diffZ < 128) {
-				this.world.client.write(pos != undefined && angles != undefined ? 'entity_move_look' : (pos != undefined ? 'rel_entity_move' : 'entity_look'), {
-					entityId: this.minecraftId,
-					dX: diffX,
-					dY: diffY,
-					dZ: diffZ,
-					yaw: encYaw,
-					pitch: encPitch,
-					onGround: onGround ?? false
-				});
+				this.world.client.write(
+					pos != undefined && angles != undefined
+						? 'entity_move_look'
+						: pos != undefined
+							? 'rel_entity_move'
+							: 'entity_look',
+					{
+						entityId: this.minecraftId,
+						dX: diffX,
+						dY: diffY,
+						dZ: diffZ,
+						yaw: encYaw,
+						pitch: encPitch,
+						onGround: onGround ?? false
+					}
+				);
 			} else {
 				this.world.client.write('entity_teleport', {
 					entityId: this.minecraftId,

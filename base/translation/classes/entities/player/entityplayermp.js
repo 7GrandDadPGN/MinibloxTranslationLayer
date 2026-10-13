@@ -1,10 +1,10 @@
 const EntityPlayer = require('./entityplayer.js');
 
 function convertToByte(num) {
-	num &= 0xFF;
+	num &= 0xff;
 	num = num > 127 ? num - 256 : num;
 	return num;
-};
+}
 
 module.exports = class EntityPlayerMP extends EntityPlayer {
 	constructor(index) {
@@ -19,7 +19,7 @@ module.exports = class EntityPlayerMP extends EntityPlayer {
 				this.world.tablist.remove(this.index.toString());
 			}
 
-			this.world.tablist.add(this.index.toString(), {name: this.bot.name ?? 'BOT'}, false);
+			this.world.tablist.add(this.index.toString(), { name: this.bot.name ?? 'BOT' }, false);
 		}
 
 		this.world.client.write('named_entity_spawn', {

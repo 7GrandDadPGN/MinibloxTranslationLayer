@@ -1,7 +1,7 @@
 const { writeString } = require('../../../base/packets/buf_utils');
 
 /**
- * 
+ *
  * @param {string} name the name of the packet.
  * @param {import('../../types/proto').Message} msg packet data
  * @returns {Buffer | undefined} a buffer with data for receive packet, or undefined if it was too long.
@@ -19,4 +19,4 @@ module.exports = function writeReceivePacket(name, msg) {
 	const off = writeString(data, 0, name);
 	writeString(data, off, j);
 	return data;
-}
+};

@@ -1,5 +1,5 @@
 module.exports = class RequestQueue {
-	queued = {}
+	queued = {};
 	queue(x, z, expireTime) {
 		this.queued[x + ',' + z] = Date.now() + expireTime;
 	}

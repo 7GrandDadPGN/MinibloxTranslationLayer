@@ -9,4 +9,4 @@ module.exports = function readSendPacket(buffer) {
 	const { value: json } = readString(buffer, e);
 	const data = JSON.parse(json);
 	return { id, data };
-}
+};

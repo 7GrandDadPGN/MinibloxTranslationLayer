@@ -1,16 +1,16 @@
 const TablistHandler = require('../handlers/tablisthandler.js');
-const EntityPlayerSP = require("./entities/player/entityplayersp.js");
+const EntityPlayerSP = require('./entities/player/entityplayersp.js');
 const RequestQueue = require('./queue.js');
 const Vec3 = require('vec3');
 const VIEW_DISTANCE = 8;
 
 module.exports = class World {
-	local = new EntityPlayerSP()
-	chunkQueue = new RequestQueue()
-	chunks = {}
-	entities = {}
-	nextEntityId = 2
-	expireTime = 1000
+	local = new EntityPlayerSP();
+	chunkQueue = new RequestQueue();
+	chunks = {};
+	entities = {};
+	nextEntityId = 2;
+	expireTime = 1000;
 	constructor(dimensionId, difficulty) {
 		this.dimensionId = dimensionId;
 		this.difficulty = difficulty;
@@ -56,8 +56,10 @@ module.exports = class World {
 		}
 	}
 	update(pos) {
-		const x = pos.x >> 4, z = pos.z >> 4;
-		const loaded = [], requests = [];
+		const x = pos.x >> 4,
+			z = pos.z >> 4;
+		const loaded = [],
+			requests = [];
 
 		for (let checkX = -VIEW_DISTANCE; checkX < VIEW_DISTANCE; checkX++) {
 			for (let checkZ = -VIEW_DISTANCE; checkZ < VIEW_DISTANCE; checkZ++) {
@@ -79,10 +81,10 @@ module.exports = class World {
 		requests.sort((a, b) => {
 			const aDist = Math.sqrt((a[0] - x) * (a[0] - x) + (a[1] - z) * (a[1] - z));
 			const bDist = Math.sqrt((b[0] - x) * (b[0] - x) + (b[1] - z) * (b[1] - z));
-			return bDist - aDist
+			return bDist - aDist;
 		});
 
-		for (; requests.length > 0 && this.chunkQueue.getSize() < 8; ) {
+		for (; requests.length > 0 && this.chunkQueue.getSize() < 8;) {
 			const chunk = requests.pop();
 			this.chunkQueue.queue(chunk[0], chunk[1], this.expireTime);
 
@@ -185,7 +187,9 @@ module.exports = class World {
 
 			this.client.write('block_change', {
 				location: vec,
-				type: (typeof blockData == 'number' ? blockData : blockData[0]) << 4 | (typeof blockData == 'number' ? 0 : blockData[1])
+				type:
+					((typeof blockData == 'number' ? blockData : blockData[0]) << 4) |
+					(typeof blockData == 'number' ? 0 : blockData[1])
 			});
 		}
 	}

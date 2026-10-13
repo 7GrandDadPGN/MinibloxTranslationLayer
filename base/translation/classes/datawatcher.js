@@ -1,5 +1,5 @@
 module.exports = class DataWatcher {
-	data = {}
+	data = {};
 	constructor(entity, defaultData) {
 		this.entity = entity;
 
