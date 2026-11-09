@@ -1,4 +1,7 @@
 > [!WARNING]
+> Discontinued, please use https://github.com/7GrandDadPGN/LarpTranslationLayer for miniblox.
+
+> [!WARNING]
 > As of 02/24/2025, you are required to send a custom movement packet alongside your usual position packets.
 > For an example of this, see MovePacket.java
 
