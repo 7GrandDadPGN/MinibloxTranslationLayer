@@ -158,6 +158,11 @@ module.exports = class World {
 		}
 	}
 	addChunk(chunk) {
+		const old = this.chunks[chunk.x + ',' + chunk.z];
+		if (old != undefined) {
+			old.unload();
+		}
+
 		this.chunkQueue.clear(chunk.x, chunk.z);
 		this.chunks[chunk.x + ',' + chunk.z] = chunk;
 		chunk.world = this;
@@ -175,7 +180,7 @@ module.exports = class World {
 	}
 	setBlock(vec, blockData) {
 		const chunk = this.getChunk(vec.x >> 4, vec.z >> 4);
-		if (this.getChunk(vec.x >> 4, vec.z >> 4)) {
+		if (chunk != undefined) {
 			const relVec = new Vec3(vec.x - (vec.x >> 4) * 16, vec.y, vec.z - (vec.z >> 4) * 16);
 
 			if (typeof blockData == 'number') {
@@ -193,7 +198,7 @@ module.exports = class World {
 	}
 	getBlock(vec) {
 		const chunk = this.getChunk(vec.x >> 4, vec.z >> 4);
-		if (this.getChunk(vec.x >> 4, vec.z >> 4)) {
+		if (chunk != undefined) {
 			return chunk.data.getBlockType(new Vec3(vec.x - (vec.x >> 4) * 16, vec.y, vec.z - (vec.z >> 4) * 16));
 		}
 	}
