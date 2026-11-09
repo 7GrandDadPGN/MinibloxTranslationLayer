@@ -101,17 +101,10 @@ async function handleCommand(name, args) {
 			const resolved = await resolveServerID(code)
 				.then((c) => c ?? code)
 				.catch((e) => {
-					console.error(
-						'Error resolving server ID / invite code, trying to connect without resolving. Error:',
-						e
-					);
+					console.error('Error resolving server ID / invite code, trying to connect without resolving. Error:', e);
 					client.write('chat', {
 						message: JSON.stringify({
-							extra: [
-								translateText(
-									'\\red\\Failed to resolve Server ID / Invite Code\\reset\\, trying without resolving! See console logs for error'
-								)
-							],
+							extra: [translateText('\\red\\Failed to resolve Server ID / Invite Code\\reset\\, trying without resolving! See console logs for error')],
 							text: ''
 						}),
 						position: 1
@@ -224,27 +217,10 @@ const self = class ChatHandler extends Handler {
 		});
 
 		client.on('tab_complete', (packet) => {
-			if (
-				(packet.text.startsWith('/queue') || packet.text.startsWith('/play')) &&
-				packet.text.indexOf(' ') != -1
-			) {
+			if ((packet.text.startsWith('/queue') || packet.text.startsWith('/play')) && packet.text.indexOf(' ') != -1) {
 				const split = packet.text.split(' ')[1].toLocaleLowerCase();
 				client.write('tab_complete', {
-					matches: [
-						'skywars',
-						'eggwars',
-						'spleef',
-						'survival',
-						'creative',
-						'duels_bridge',
-						'blockhunt',
-						'parkour',
-						'oitq',
-						'kitpvp',
-						'blitzbuild',
-						'murder',
-						'pvp'
-					].filter((str) => str.substring(0, split.length) == split)
+					matches: ['skywars', 'eggwars', 'spleef', 'survival', 'creative', 'duels_bridge', 'blockhunt', 'parkour', 'oitq', 'kitpvp', 'blitzbuild', 'murder', 'pvp'].filter((str) => str.substring(0, split.length) == split)
 				});
 				return;
 			}

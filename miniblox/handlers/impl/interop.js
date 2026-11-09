@@ -20,45 +20,7 @@ const SEND_RECV_PACKET_PAYLOAD = true;
 // - you probably don't need them
 // - they send too much data
 // - or are handled well enough by the translation layer
-const C_BLACKLIST = [
-	'CPacketChunkData',
-	'CPacketJoinGame',
-	'CPacketTabComplete',
-	'CPacketSoundEffect',
-	'CPacketBlockUpdate',
-	'CPacketDisconnect',
-	'CPacketPlayerPosLook',
-	'CPacketSpawnPlayer',
-	'CPacketEntityProperties',
-	'CPacketWindowItems',
-	'CPacketMessage',
-	'CPacketUpdateStatus',
-	'CPacketScoreboard',
-	'CPacketPlayerList',
-	'CPacketUpdateHealth',
-	'CPacketEntityPositionAndRotation',
-	'CPacketEntityRelativePositionAndRotation',
-	'CPacketPong',
-	'CPacketTimeUpdate',
-	'CPacketSetExperience',
-	'CPacketOpenShop',
-	'CPacketEntityAction',
-	'CPacketEntityMetadata',
-	'CPacketSetSlot',
-	'CPacketPlayerListDelta',
-	'CPacketEntityEquipment',
-	'CPacketUpdateScoreboard',
-	'CPacketPlayerListPing',
-	'CPacketSpawnEntity',
-	'CPacketDamageIndicator',
-	'CPacketAnimation',
-	'CPacketRemoveEntityEffect',
-	'CPacketEntityEffect',
-	'CPacketEntityStatus',
-	'CPacketDestroyEntities',
-	'CPacketEntityVelocity',
-	'CPacketRespawn'
-];
+const C_BLACKLIST = ['CPacketChunkData', 'CPacketJoinGame', 'CPacketTabComplete', 'CPacketSoundEffect', 'CPacketBlockUpdate', 'CPacketDisconnect', 'CPacketPlayerPosLook', 'CPacketSpawnPlayer', 'CPacketEntityProperties', 'CPacketWindowItems', 'CPacketMessage', 'CPacketUpdateStatus', 'CPacketScoreboard', 'CPacketPlayerList', 'CPacketUpdateHealth', 'CPacketEntityPositionAndRotation', 'CPacketEntityRelativePositionAndRotation', 'CPacketPong', 'CPacketTimeUpdate', 'CPacketSetExperience', 'CPacketOpenShop', 'CPacketEntityAction', 'CPacketEntityMetadata', 'CPacketSetSlot', 'CPacketPlayerListDelta', 'CPacketEntityEquipment', 'CPacketUpdateScoreboard', 'CPacketPlayerListPing', 'CPacketSpawnEntity', 'CPacketDamageIndicator', 'CPacketAnimation', 'CPacketRemoveEntityEffect', 'CPacketEntityEffect', 'CPacketEntityStatus', 'CPacketDestroyEntities', 'CPacketEntityVelocity', 'CPacketRespawn'];
 
 class Interop extends Handler {
 	/**

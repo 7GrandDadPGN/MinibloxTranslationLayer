@@ -1,16 +1,5 @@
 const Handler = require('./../handler.js');
-const {
-	ClientSocket,
-	SPacketPlayerPosLook,
-	SPacketPlayerInput,
-	SPacketEntityAction,
-	SPacketPlayerAbilities,
-	SPacketHeldItemChange,
-	SPacketClick,
-	SPacketRespawn$1,
-	SPacketUseEntity,
-	PBVector3
-} = require('./../../main.js');
+const { ClientSocket, SPacketPlayerPosLook, SPacketPlayerInput, SPacketEntityAction, SPacketPlayerAbilities, SPacketHeldItemChange, SPacketClick, SPacketRespawn$1, SPacketUseEntity, PBVector3 } = require('./../../main.js');
 const ENTITIES = require('./../../types/entities.js');
 const GAMEMODES = require('./../../types/gamemodes.js');
 const { translateItem } = require('./../../utils.js');
@@ -262,12 +251,7 @@ const self = class EntityHandler extends Handler {
 
 					if (packet.sneak != undefined) {
 						entity.sneaking = packet.sneak;
-						entity.dataWatcher.updateObject(
-							0,
-							entity.sneaking
-								? entity.dataWatcher.getObject(0) | (1 << 1)
-								: entity.dataWatcher.getObject(0) & ~(1 << 1)
-						);
+						entity.dataWatcher.updateObject(0, entity.sneaking ? entity.dataWatcher.getObject(0) | (1 << 1) : entity.dataWatcher.getObject(0) & ~(1 << 1));
 					}
 				}
 			}
@@ -411,11 +395,7 @@ const self = class EntityHandler extends Handler {
 					z: packet.pos.z / 32
 				},
 				{
-					yaw: convertAngle(
-						packet.yaw,
-						false,
-						entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer) ? 0 : 180
-					),
+					yaw: convertAngle(packet.yaw, false, entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer) ? 0 : 180),
 					pitch: convertAngle(packet.pitch)
 				},
 				packet.onGround
@@ -437,16 +417,7 @@ const self = class EntityHandler extends Handler {
 					: undefined,
 				packet.yaw != undefined || packet.pitch != undefined
 					? {
-							yaw:
-								packet.yaw != undefined
-									? convertAngle(
-											packet.yaw,
-											false,
-											entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)
-												? 0
-												: 180
-										)
-									: entity.yaw,
+							yaw: packet.yaw != undefined ? convertAngle(packet.yaw, false, entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer) ? 0 : 180) : entity.yaw,
 							pitch: packet.pitch != undefined ? convertAngle(packet.pitch) : entity.pitch
 						}
 					: undefined,

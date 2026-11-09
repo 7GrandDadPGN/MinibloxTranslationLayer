@@ -13,21 +13,8 @@ const self = class TabListHandler extends Handler {
 		if (isLocal) {
 			nameSplit[nameSplit.length - 1] = client.username;
 		}
-		const prefix =
-			(nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(' ')) + ' ' : '').slice(
-				0,
-				14
-			) +
-			translateText(
-				`\\${(entry.color != 'white' ? entry.color : undefined) ?? (isLocal ? 'white' : 'reset')}\\`
-			).slice(0, 16);
-		const suffix =
-			entry.level && entry.level > 0
-				? translateText(`\\${entry.level ? LEVEL_TO_COLOUR[entry.level] : 'white'}\\ (${entry.level})`).slice(
-						0,
-						16
-					)
-				: '';
+		const prefix = (nameSplit.length > 1 ? translateText(nameSplit.slice(0, nameSplit.length - 1).join(' ')) + ' ' : '').slice(0, 14) + translateText(`\\${(entry.color != 'white' ? entry.color : undefined) ?? (isLocal ? 'white' : 'reset')}\\`).slice(0, 16);
+		const suffix = entry.level && entry.level > 0 ? translateText(`\\${entry.level ? LEVEL_TO_COLOUR[entry.level] : 'white'}\\ (${entry.level})`).slice(0, 16) : '';
 
 		if (tabEntry != undefined) {
 			MCHandler.tablist.updatePing(entry.id, entry.ping);

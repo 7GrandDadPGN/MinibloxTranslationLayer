@@ -371,13 +371,7 @@ module.exports = {
 					}
 				}
 			},
-			items: [
-				make_item({ name: 'Random Team', item: 'barrier' }),
-				make_item({ name: 'Red Team', item: 'wool', itemDamage: 14 }),
-				make_item({ name: 'Blue Team', item: 'wool', itemDamage: 11 }),
-				make_item({ name: 'Lime Team', item: 'wool', itemDamage: 5 }),
-				make_item({ name: 'Yellow Team', item: 'wool', itemDamage: 4 })
-			]
+			items: [make_item({ name: 'Random Team', item: 'barrier' }), make_item({ name: 'Red Team', item: 'wool', itemDamage: 14 }), make_item({ name: 'Blue Team', item: 'wool', itemDamage: 11 }), make_item({ name: 'Lime Team', item: 'wool', itemDamage: 5 }), make_item({ name: 'Yellow Team', item: 'wool', itemDamage: 4 })]
 		}
 	}
 };

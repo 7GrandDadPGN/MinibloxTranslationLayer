@@ -187,9 +187,7 @@ module.exports = class World {
 
 			this.client.write('block_change', {
 				location: vec,
-				type:
-					((typeof blockData == 'number' ? blockData : blockData[0]) << 4) |
-					(typeof blockData == 'number' ? 0 : blockData[1])
+				type: ((typeof blockData == 'number' ? blockData : blockData[0]) << 4) | (typeof blockData == 'number' ? 0 : blockData[1])
 			});
 		}
 	}

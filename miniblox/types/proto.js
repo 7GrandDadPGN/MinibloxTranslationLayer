@@ -74,9 +74,7 @@ let Message$2 = class {
 		try {
 			et = JSON.parse(_);
 		} catch (tt) {
-			throw new Error(
-				`cannot decode ${this.getType().typeName} from JSON: ${tt instanceof Error ? tt.message : String(tt)}`
-			);
+			throw new Error(`cannot decode ${this.getType().typeName} from JSON: ${tt instanceof Error ? tt.message : String(tt)}`);
 		}
 		return this.fromJson(et, $);
 	}
@@ -109,10 +107,7 @@ let Message$2 = class {
 };
 function makeMessageType(j, _, $, et) {
 	var tt;
-	const rt =
-			(tt = et == null ? void 0 : et.localName) !== null && tt !== void 0
-				? tt
-				: _.substring(_.lastIndexOf('.') + 1),
+	const rt = (tt = et == null ? void 0 : et.localName) !== null && tt !== void 0 ? tt : _.substring(_.lastIndexOf('.') + 1),
 		nt = {
 			[rt]: function (it) {
 				(j.util.initFields(this), j.util.initPartial(it, this));
@@ -156,21 +151,7 @@ function makeProtoRuntime(j, _, $, et) {
 }
 var ScalarType;
 (function (j) {
-	((j[(j.DOUBLE = 1)] = 'DOUBLE'),
-		(j[(j.FLOAT = 2)] = 'FLOAT'),
-		(j[(j.INT64 = 3)] = 'INT64'),
-		(j[(j.UINT64 = 4)] = 'UINT64'),
-		(j[(j.INT32 = 5)] = 'INT32'),
-		(j[(j.FIXED64 = 6)] = 'FIXED64'),
-		(j[(j.FIXED32 = 7)] = 'FIXED32'),
-		(j[(j.BOOL = 8)] = 'BOOL'),
-		(j[(j.STRING = 9)] = 'STRING'),
-		(j[(j.BYTES = 12)] = 'BYTES'),
-		(j[(j.UINT32 = 13)] = 'UINT32'),
-		(j[(j.SFIXED32 = 15)] = 'SFIXED32'),
-		(j[(j.SFIXED64 = 16)] = 'SFIXED64'),
-		(j[(j.SINT32 = 17)] = 'SINT32'),
-		(j[(j.SINT64 = 18)] = 'SINT64'));
+	((j[(j.DOUBLE = 1)] = 'DOUBLE'), (j[(j.FLOAT = 2)] = 'FLOAT'), (j[(j.INT64 = 3)] = 'INT64'), (j[(j.UINT64 = 4)] = 'UINT64'), (j[(j.INT32 = 5)] = 'INT32'), (j[(j.FIXED64 = 6)] = 'FIXED64'), (j[(j.FIXED32 = 7)] = 'FIXED32'), (j[(j.BOOL = 8)] = 'BOOL'), (j[(j.STRING = 9)] = 'STRING'), (j[(j.BYTES = 12)] = 'BYTES'), (j[(j.UINT32 = 13)] = 'UINT32'), (j[(j.SFIXED32 = 15)] = 'SFIXED32'), (j[(j.SFIXED64 = 16)] = 'SFIXED64'), (j[(j.SINT32 = 17)] = 'SINT32'), (j[(j.SINT64 = 18)] = 'SINT64'));
 })(ScalarType || (ScalarType = {}));
 function varint64read() {
 	let j = 0,
@@ -215,9 +196,7 @@ function int64FromString(j) {
 		tt = 0;
 	function rt(nt, it) {
 		const at = Number(j.slice(nt, it));
-		((tt *= $),
-			(et = et * $ + at),
-			et >= TWO_PWR_32_DBL && ((tt = tt + ((et / TWO_PWR_32_DBL) | 0)), (et = et % TWO_PWR_32_DBL)));
+		((tt *= $), (et = et * $ + at), et >= TWO_PWR_32_DBL && ((tt = tt + ((et / TWO_PWR_32_DBL) | 0)), (et = et % TWO_PWR_32_DBL)));
 	}
 	return (rt(-24, -18), rt(-18, -12), rt(-12, -6), rt(-6), _ ? negate$2(et, tt) : newBits(et, tt));
 }
@@ -237,11 +216,7 @@ function uInt64ToString(j, _) {
 		nt = et + tt * 8147497,
 		it = tt * 2;
 	const at = 1e7;
-	return (
-		rt >= at && ((nt += Math.floor(rt / at)), (rt %= at)),
-		nt >= at && ((it += Math.floor(nt / at)), (nt %= at)),
-		it.toString() + decimalFrom1e7WithLeadingZeros(nt) + decimalFrom1e7WithLeadingZeros(rt)
-	);
+	return (rt >= at && ((nt += Math.floor(rt / at)), (rt %= at)), nt >= at && ((it += Math.floor(nt / at)), (nt %= at)), it.toString() + decimalFrom1e7WithLeadingZeros(nt) + decimalFrom1e7WithLeadingZeros(rt));
 }
 function toUnsigned(j, _) {
 	return {
@@ -285,14 +260,7 @@ function varint32read() {
 }
 function makeInt64Support() {
 	const j = new DataView(new ArrayBuffer(8));
-	if (
-		typeof BigInt == 'function' &&
-		typeof j.getBigInt64 == 'function' &&
-		typeof j.getBigUint64 == 'function' &&
-		typeof j.setBigInt64 == 'function' &&
-		typeof j.setBigUint64 == 'function' &&
-		(typeof process != 'object' || typeof process.env != 'object' || {}.BUF_BIGINT_DISABLE !== '1')
-	) {
+	if (typeof BigInt == 'function' && typeof j.getBigInt64 == 'function' && typeof j.getBigUint64 == 'function' && typeof j.setBigInt64 == 'function' && typeof j.setBigUint64 == 'function' && (typeof process != 'object' || typeof process.env != 'object' || {}.BUF_BIGINT_DISABLE !== '1')) {
 		const tt = BigInt('-9223372036854775808'),
 			rt = BigInt('9223372036854775807'),
 			nt = BigInt('0'),
@@ -386,12 +354,7 @@ function assertFloat32(e) {
 const protoInt64 = makeInt64Support();
 var WireType;
 (function (j) {
-	((j[(j.Varint = 0)] = 'Varint'),
-		(j[(j.Bit64 = 1)] = 'Bit64'),
-		(j[(j.LengthDelimited = 2)] = 'LengthDelimited'),
-		(j[(j.StartGroup = 3)] = 'StartGroup'),
-		(j[(j.EndGroup = 4)] = 'EndGroup'),
-		(j[(j.Bit32 = 5)] = 'Bit32'));
+	((j[(j.Varint = 0)] = 'Varint'), (j[(j.Bit64 = 1)] = 'Bit64'), (j[(j.LengthDelimited = 2)] = 'LengthDelimited'), (j[(j.StartGroup = 3)] = 'StartGroup'), (j[(j.EndGroup = 4)] = 'EndGroup'), (j[(j.Bit32 = 5)] = 'Bit32'));
 })(WireType || (WireType = {}));
 class BinaryWriter {
 	constructor(_) {
@@ -427,11 +390,7 @@ class BinaryWriter {
 		return this.uint32(((_ << 3) | $) >>> 0);
 	}
 	raw(_) {
-		return (
-			this.buf.length && (this.chunks.push(new Uint8Array(this.buf)), (this.buf = [])),
-			this.chunks.push(_),
-			this
-		);
+		return (this.buf.length && (this.chunks.push(new Uint8Array(this.buf)), (this.buf = [])), this.chunks.push(_), this);
 	}
 	uint32(_) {
 		for (assertUInt32(_); _ > 127;) (this.buf.push((_ & 127) | 128), (_ = _ >>> 7));
@@ -502,13 +461,7 @@ class BinaryWriter {
 }
 class BinaryReader {
 	constructor(_, $) {
-		((this.varint64 = varint64read),
-			(this.uint32 = varint32read),
-			(this.buf = _),
-			(this.len = _.length),
-			(this.pos = 0),
-			(this.view = new DataView(_.buffer, _.byteOffset, _.byteLength)),
-			(this.textDecoder = $ ?? new TextDecoder()));
+		((this.varint64 = varint64read), (this.uint32 = varint32read), (this.buf = _), (this.len = _.length), (this.pos = 0), (this.view = new DataView(_.buffer, _.byteOffset, _.byteLength)), (this.textDecoder = $ ?? new TextDecoder()));
 	}
 	tag() {
 		let _ = this.uint32(),
@@ -596,15 +549,7 @@ class BinaryReader {
 function wrapField(j, _) {
 	return _ instanceof Message$2 || !j.fieldWrapper ? _ : j.fieldWrapper.wrapField(_);
 }
-(ScalarType.DOUBLE,
-	ScalarType.FLOAT,
-	ScalarType.INT64,
-	ScalarType.UINT64,
-	ScalarType.INT32,
-	ScalarType.UINT32,
-	ScalarType.BOOL,
-	ScalarType.STRING,
-	ScalarType.BYTES);
+(ScalarType.DOUBLE, ScalarType.FLOAT, ScalarType.INT64, ScalarType.UINT64, ScalarType.INT32, ScalarType.UINT32, ScalarType.BOOL, ScalarType.STRING, ScalarType.BYTES);
 function scalarEquals(j, _, $) {
 	if (_ === $) return !0;
 	if (j == ScalarType.BYTES) {
@@ -741,14 +686,7 @@ function makeBinaryFormatCommon() {
 				let st = j,
 					ot = at.repeated,
 					ct = at.localName;
-				switch (
-					(at.oneof &&
-						((st = st[at.oneof.localName]),
-						st.case != ct && delete st.value,
-						(st.case = ct),
-						(ct = 'value')),
-					at.kind)
-				) {
+				switch ((at.oneof && ((st = st[at.oneof.localName]), st.case != ct && delete st.value, (st.case = ct), (ct = 'value')), at.kind)) {
 					case 'scalar':
 					case 'enum':
 						const dt = at.kind == 'enum' ? ScalarType.INT32 : at.T;
@@ -762,15 +700,7 @@ function makeBinaryFormatCommon() {
 						break;
 					case 'message':
 						const ht = at.T;
-						ot
-							? st[ct].push(readMessageField(_, new ht(), et))
-							: st[ct] instanceof Message$2
-								? readMessageField(_, st[ct], et)
-								: ((st[ct] = readMessageField(_, new ht(), et)),
-									ht.fieldWrapper &&
-										!at.oneof &&
-										!at.repeated &&
-										(st[ct] = ht.fieldWrapper.unwrapField(st[ct])));
+						ot ? st[ct].push(readMessageField(_, new ht(), et)) : st[ct] instanceof Message$2 ? readMessageField(_, st[ct], et) : ((st[ct] = readMessageField(_, new ht(), et)), ht.fieldWrapper && !at.oneof && !at.repeated && (st[ct] = ht.fieldWrapper.unwrapField(st[ct])));
 						break;
 					case 'map':
 						let [pt, ft] = readMapEntry(at, _, et);
@@ -1028,15 +958,13 @@ function makeJsonFormatCommon(j) {
 		makeReadOptions,
 		makeWriteOptions,
 		readMessage($, et, tt, rt) {
-			if (et == null || Array.isArray(et) || typeof et != 'object')
-				throw new Error(`cannot decode message ${$.typeName} from JSON: ${this.debug(et)}`);
+			if (et == null || Array.isArray(et) || typeof et != 'object') throw new Error(`cannot decode message ${$.typeName} from JSON: ${this.debug(et)}`);
 			rt = rt ?? new $();
 			const nt = {};
 			for (const [it, at] of Object.entries(et)) {
 				const st = $.fields.findJsonName(it);
 				if (!st) {
-					if (!tt.ignoreUnknownFields)
-						throw new Error(`cannot decode message ${$.typeName} from JSON: key "${it}" is unknown`);
+					if (!tt.ignoreUnknownFields) throw new Error(`cannot decode message ${$.typeName} from JSON: key "${it}" is unknown`);
 					continue;
 				}
 				let ot = st.localName,
@@ -1044,10 +972,7 @@ function makeJsonFormatCommon(j) {
 				if (st.oneof) {
 					if (at === null && st.kind == 'scalar') continue;
 					const dt = nt[st.oneof.localName];
-					if (dt)
-						throw new Error(
-							`cannot decode message ${$.typeName} from JSON: multiple keys for oneof "${st.oneof.name}" present: "${dt}", "${it}"`
-						);
+					if (dt) throw new Error(`cannot decode message ${$.typeName} from JSON: multiple keys for oneof "${st.oneof.name}" present: "${dt}", "${it}"`);
 					((nt[st.oneof.localName] = it),
 						(ct = ct[st.oneof.localName] =
 							{
@@ -1057,14 +982,10 @@ function makeJsonFormatCommon(j) {
 				}
 				if (st.repeated) {
 					if (at === null) continue;
-					if (!Array.isArray(at))
-						throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(at)}`);
+					if (!Array.isArray(at)) throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(at)}`);
 					const dt = ct[ot];
 					for (const ht of at) {
-						if (ht === null)
-							throw new Error(
-								`cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(ht)}`
-							);
+						if (ht === null) throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(ht)}`);
 						let pt;
 						switch (st.kind) {
 							case 'message':
@@ -1078,10 +999,7 @@ function makeJsonFormatCommon(j) {
 									pt = readScalar(st.T, ht);
 								} catch (ft) {
 									let mt = `cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(ht)}`;
-									throw (
-										ft instanceof Error && ft.message.length > 0 && (mt += `: ${ft.message}`),
-										new Error(mt)
-									);
+									throw (ft instanceof Error && ft.message.length > 0 && (mt += `: ${ft.message}`), new Error(mt));
 								}
 								break;
 						}
@@ -1089,12 +1007,10 @@ function makeJsonFormatCommon(j) {
 					}
 				} else if (st.kind == 'map') {
 					if (at === null) continue;
-					if (Array.isArray(at) || typeof at != 'object')
-						throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(at)}`);
+					if (Array.isArray(at) || typeof at != 'object') throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(at)}`);
 					const dt = ct[ot];
 					for (const [ht, pt] of Object.entries(at)) {
-						if (pt === null)
-							throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: map value null`);
+						if (pt === null) throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: map value null`);
 						let ft;
 						switch (st.V.kind) {
 							case 'message':
@@ -1108,26 +1024,15 @@ function makeJsonFormatCommon(j) {
 									ft = readScalar(st.V.T, pt);
 								} catch (mt) {
 									let _t = `cannot decode map value for field ${$.typeName}.${st.name} from JSON: ${this.debug(at)}`;
-									throw (
-										mt instanceof Error && mt.message.length > 0 && (_t += `: ${mt.message}`),
-										new Error(_t)
-									);
+									throw (mt instanceof Error && mt.message.length > 0 && (_t += `: ${mt.message}`), new Error(_t));
 								}
 								break;
 						}
 						try {
-							dt[
-								readScalar(
-									st.K,
-									st.K == ScalarType.BOOL ? (ht == 'true' ? !0 : ht == 'false' ? !1 : ht) : ht
-								).toString()
-							] = ft;
+							dt[readScalar(st.K, st.K == ScalarType.BOOL ? (ht == 'true' ? !0 : ht == 'false' ? !1 : ht) : ht).toString()] = ft;
 						} catch (mt) {
 							let _t = `cannot decode map key for field ${$.typeName}.${st.name} from JSON: ${this.debug(at)}`;
-							throw (
-								mt instanceof Error && mt.message.length > 0 && (_t += `: ${mt.message}`),
-								new Error(_t)
-							);
+							throw (mt instanceof Error && mt.message.length > 0 && (_t += `: ${mt.message}`), new Error(_t));
 						}
 					}
 				} else
@@ -1135,16 +1040,10 @@ function makeJsonFormatCommon(j) {
 						case 'message':
 							const dt = st.T;
 							if (at === null && dt.typeName != 'google.protobuf.Value') {
-								if (st.oneof)
-									throw new Error(
-										`cannot decode field ${$.typeName}.${st.name} from JSON: null is invalid for oneof field "${it}"`
-									);
+								if (st.oneof) throw new Error(`cannot decode field ${$.typeName}.${st.name} from JSON: null is invalid for oneof field "${it}"`);
 								continue;
 							}
-							ct[ot] instanceof Message$2
-								? ct[ot].fromJson(at, tt)
-								: ((ct[ot] = dt.fromJson(at, tt)),
-									dt.fieldWrapper && !st.oneof && (ct[ot] = dt.fieldWrapper.unwrapField(ct[ot])));
+							ct[ot] instanceof Message$2 ? ct[ot].fromJson(at, tt) : ((ct[ot] = dt.fromJson(at, tt)), dt.fieldWrapper && !st.oneof && (ct[ot] = dt.fieldWrapper.unwrapField(ct[ot])));
 							break;
 						case 'enum':
 							const ht = readEnum(st.T, at, tt.ignoreUnknownFields);
@@ -1155,10 +1054,7 @@ function makeJsonFormatCommon(j) {
 								ct[ot] = readScalar(st.T, at);
 							} catch (pt) {
 								let ft = `cannot decode field ${$.typeName}.${st.name} from JSON: ${this.debug(at)}`;
-								throw (
-									pt instanceof Error && pt.message.length > 0 && (ft += `: ${pt.message}`),
-									new Error(ft)
-								);
+								throw (pt instanceof Error && pt.message.length > 0 && (ft += `: ${pt.message}`), new Error(ft));
 							}
 							break;
 					}
@@ -1181,9 +1077,7 @@ function makeJsonFormatCommon(j) {
 					at !== void 0 && (rt[et.useProtoFieldName ? nt.name : nt.jsonName] = at);
 				}
 			} catch (it) {
-				const at = nt
-						? `cannot encode field ${tt.typeName}.${nt.name} to JSON`
-						: `cannot encode message ${tt.typeName} to JSON`,
+				const at = nt ? `cannot encode field ${tt.typeName}.${nt.name} to JSON` : `cannot encode message ${tt.typeName} to JSON`,
 					st = it instanceof Error ? it.message : String(it);
 				throw new Error(at + (st.length > 0 ? `: ${st}` : ''));
 			}
@@ -1213,12 +1107,7 @@ function readScalar(j, _) {
 			if (_ === 'NaN') return Number.NaN;
 			if (_ === 'Infinity') return Number.POSITIVE_INFINITY;
 			if (_ === '-Infinity') return Number.NEGATIVE_INFINITY;
-			if (
-				_ === '' ||
-				(typeof _ == 'string' && _.trim().length !== _.length) ||
-				(typeof _ != 'string' && typeof _ != 'number')
-			)
-				break;
+			if (_ === '' || (typeof _ == 'string' && _.trim().length !== _.length) || (typeof _ != 'string' && typeof _ != 'number')) break;
 			const $ = Number(_);
 			if (Number.isNaN($) || !Number.isFinite($)) break;
 			return (j == ScalarType.FLOAT && assertFloat32($), $);
@@ -1229,13 +1118,7 @@ function readScalar(j, _) {
 		case ScalarType.UINT32:
 			if (_ === null) return 0;
 			let et;
-			if (
-				(typeof _ == 'number'
-					? (et = _)
-					: typeof _ == 'string' && _.length > 0 && _.trim().length === _.length && (et = Number(_)),
-				et === void 0)
-			)
-				break;
+			if ((typeof _ == 'number' ? (et = _) : typeof _ == 'string' && _.length > 0 && _.trim().length === _.length && (et = Number(_)), et === void 0)) break;
 			return (j == ScalarType.UINT32 ? assertUInt32(et) : assertInt32(et), et);
 		case ScalarType.INT64:
 		case ScalarType.SFIXED64:
@@ -1301,18 +1184,7 @@ function writeScalar(j, _, $) {
 				return (assert$2(typeof _ == 'number'), _ != 0 || $ ? _ : void 0);
 			case ScalarType.FLOAT:
 			case ScalarType.DOUBLE:
-				return (
-					assert$2(typeof _ == 'number'),
-					Number.isNaN(_)
-						? 'NaN'
-						: _ === Number.POSITIVE_INFINITY
-							? 'Infinity'
-							: _ === Number.NEGATIVE_INFINITY
-								? '-Infinity'
-								: _ !== 0 || $
-									? _
-									: void 0
-				);
+				return (assert$2(typeof _ == 'number'), Number.isNaN(_) ? 'NaN' : _ === Number.POSITIVE_INFINITY ? 'Infinity' : _ === Number.NEGATIVE_INFINITY ? '-Infinity' : _ !== 0 || $ ? _ : void 0);
 			case ScalarType.STRING:
 				return (assert$2(typeof _ == 'string'), _.length > 0 || $ ? _ : void 0);
 			case ScalarType.BOOL:
@@ -1322,10 +1194,7 @@ function writeScalar(j, _, $) {
 			case ScalarType.INT64:
 			case ScalarType.SFIXED64:
 			case ScalarType.SINT64:
-				return (
-					assert$2(typeof _ == 'bigint' || typeof _ == 'string' || typeof _ == 'number'),
-					$ || _ != 0 ? _.toString(10) : void 0
-				);
+				return (assert$2(typeof _ == 'bigint' || typeof _ == 'string' || typeof _ == 'number'), $ || _ != 0 ? _.toString(10) : void 0);
 			case ScalarType.BYTES:
 				return (assert$2(_ instanceof Uint8Array), $ || _.byteLength > 0 ? protoBase64.enc(_) : void 0);
 		}
@@ -1399,9 +1268,7 @@ function makeUtilCommon() {
 							if (it === void 0) continue;
 							const at = et.findField(it);
 							let st = nt[tt].value;
-							(at && at.kind == 'message' && !(st instanceof at.T)
-								? (st = new at.T(st))
-								: at && at.kind === 'scalar' && at.T === ScalarType.BYTES && (st = toU8Arr(st)),
+							(at && at.kind == 'message' && !(st instanceof at.T) ? (st = new at.T(st)) : at && at.kind === 'scalar' && at.T === ScalarType.BYTES && (st = toU8Arr(st)),
 								(rt[tt] = {
 									case: it,
 									value: st
@@ -1410,15 +1277,13 @@ function makeUtilCommon() {
 						case 'scalar':
 						case 'enum':
 							let ot = nt[tt];
-							(et.T === ScalarType.BYTES && (ot = et.repeated ? ot.map(toU8Arr) : toU8Arr(ot)),
-								(rt[tt] = ot));
+							(et.T === ScalarType.BYTES && (ot = et.repeated ? ot.map(toU8Arr) : toU8Arr(ot)), (rt[tt] = ot));
 							break;
 						case 'map':
 							switch (et.V.kind) {
 								case 'scalar':
 								case 'enum':
-									if (et.V.T === ScalarType.BYTES)
-										for (const [ht, pt] of Object.entries(nt[tt])) rt[tt][ht] = toU8Arr(pt);
+									if (et.V.T === ScalarType.BYTES) for (const [ht, pt] of Object.entries(nt[tt])) rt[tt][ht] = toU8Arr(pt);
 									else Object.assign(rt[tt], nt[tt]);
 									break;
 								case 'message':
@@ -1435,11 +1300,7 @@ function makeUtilCommon() {
 							if (et.repeated) rt[tt] = nt[tt].map((dt) => (dt instanceof ct ? dt : new ct(dt)));
 							else if (nt[tt] !== void 0) {
 								const dt = nt[tt];
-								ct.fieldWrapper
-									? ct.typeName === 'google.protobuf.BytesValue'
-										? (rt[tt] = toU8Arr(dt))
-										: (rt[tt] = dt)
-									: (rt[tt] = dt instanceof ct ? dt : new ct(dt));
+								ct.fieldWrapper ? (ct.typeName === 'google.protobuf.BytesValue' ? (rt[tt] = toU8Arr(dt)) : (rt[tt] = dt)) : (rt[tt] = dt instanceof ct ? dt : new ct(dt));
 							}
 							break;
 					}
@@ -1620,31 +1481,13 @@ function protoCamelCase(j) {
 	return $.join('');
 }
 const reservedObjectProperties = new Set(['constructor', 'toString', 'toJSON', 'valueOf']),
-	reservedMessageProperties = new Set([
-		'getType',
-		'clone',
-		'equals',
-		'fromBinary',
-		'fromJson',
-		'fromJsonString',
-		'toBinary',
-		'toJson',
-		'toJsonString',
-		'toObject'
-	]),
+	reservedMessageProperties = new Set(['getType', 'clone', 'equals', 'fromBinary', 'fromJson', 'fromJsonString', 'toBinary', 'toJson', 'toJsonString', 'toObject']),
 	fallback = (j) => `${j}$`,
 	safeMessageProperty = (j) => (reservedMessageProperties.has(j) ? fallback(j) : j),
 	safeObjectProperty = (j) => (reservedObjectProperties.has(j) ? fallback(j) : j);
 class InternalOneofInfo {
 	constructor(_) {
-		((this.kind = 'oneof'),
-			(this.repeated = !1),
-			(this.packed = !1),
-			(this.opt = !1),
-			(this.default = void 0),
-			(this.fields = []),
-			(this.name = _),
-			(this.localName = localOneofName(_)));
+		((this.kind = 'oneof'), (this.repeated = !1), (this.packed = !1), (this.opt = !1), (this.default = void 0), (this.fields = []), (this.name = _), (this.localName = localOneofName(_)));
 	}
 	addField(_) {
 		(assert$2(_.oneof === this, `field ${_.name} not one of ${this.name}`), this.fields.push(_));
@@ -1700,17 +1543,7 @@ function normalizeFieldInfosProto3(j) {
 	let rt;
 	for (const nt of typeof j == 'function' ? j() : j) {
 		const it = nt;
-		if (
-			((it.localName = localFieldName(nt.name, nt.oneof !== void 0)),
-			(it.jsonName = (_ = nt.jsonName) !== null && _ !== void 0 ? _ : fieldJsonName(nt.name)),
-			(it.repeated = ($ = nt.repeated) !== null && $ !== void 0 ? $ : !1),
-			(it.packed =
-				(et = nt.packed) !== null && et !== void 0
-					? et
-					: nt.kind == 'enum' ||
-						(nt.kind == 'scalar' && nt.T != ScalarType.BYTES && nt.T != ScalarType.STRING)),
-			nt.oneof !== void 0)
-		) {
+		if (((it.localName = localFieldName(nt.name, nt.oneof !== void 0)), (it.jsonName = (_ = nt.jsonName) !== null && _ !== void 0 ? _ : fieldJsonName(nt.name)), (it.repeated = ($ = nt.repeated) !== null && $ !== void 0 ? $ : !1), (it.packed = (et = nt.packed) !== null && et !== void 0 ? et : nt.kind == 'enum' || (nt.kind == 'scalar' && nt.T != ScalarType.BYTES && nt.T != ScalarType.STRING)), nt.oneof !== void 0)) {
 			const at = typeof nt.oneof == 'string' ? nt.oneof : nt.oneof.name;
 			((!rt || rt.name != at) && (rt = new InternalOneofInfo(at)), (it.oneof = rt), rt.addField(it));
 		}
@@ -1732,10 +1565,7 @@ function makeBinaryFormatProto2() {
 						const at = j[tt.oneof.localName];
 						if (at.case !== it) continue;
 						rt = at.value;
-					} else if (((rt = j[it]), rt === void 0 && !tt.oneof && !tt.opt))
-						throw new Error(
-							`cannot encode field ${et.typeName}.${tt.name} to binary: required field not set`
-						);
+					} else if (((rt = j[it]), rt === void 0 && !tt.oneof && !tt.opt)) throw new Error(`cannot encode field ${et.typeName}.${tt.name} to binary: required field not set`);
 					switch (tt.kind) {
 						case 'scalar':
 						case 'enum':
@@ -1755,9 +1585,7 @@ function makeBinaryFormatProto2() {
 					}
 				}
 			} catch (rt) {
-				let nt = tt
-						? `cannot encode field ${et.typeName}.${tt == null ? void 0 : tt.name} to binary`
-						: `cannot encode message ${et.typeName} to binary`,
+				let nt = tt ? `cannot encode field ${et.typeName}.${tt == null ? void 0 : tt.name} to binary` : `cannot encode message ${et.typeName} to binary`,
 					it = rt instanceof Error ? rt.message : String(rt);
 				throw new Error(nt + (it.length > 0 ? `: ${it}` : ''));
 			}
@@ -1828,13 +1656,7 @@ function normalizeFieldInfosProto2(j) {
 	let rt;
 	for (const nt of typeof j == 'function' ? j() : j) {
 		const it = nt;
-		if (
-			((it.localName = localFieldName(nt.name, nt.oneof !== void 0)),
-			(it.jsonName = (_ = nt.jsonName) !== null && _ !== void 0 ? _ : fieldJsonName(nt.name)),
-			(it.repeated = ($ = nt.repeated) !== null && $ !== void 0 ? $ : !1),
-			(it.packed = (et = nt.packed) !== null && et !== void 0 ? et : !1),
-			nt.oneof !== void 0)
-		) {
+		if (((it.localName = localFieldName(nt.name, nt.oneof !== void 0)), (it.jsonName = (_ = nt.jsonName) !== null && _ !== void 0 ? _ : fieldJsonName(nt.name)), (it.repeated = ($ = nt.repeated) !== null && $ !== void 0 ? $ : !1), (it.packed = (et = nt.packed) !== null && et !== void 0 ? et : !1), nt.oneof !== void 0)) {
 			const at = typeof nt.oneof == 'string' ? nt.oneof : nt.oneof.name;
 			((!rt || rt.name != at) && (rt = new InternalOneofInfo(at)), (it.oneof = rt), rt.addField(it));
 		}

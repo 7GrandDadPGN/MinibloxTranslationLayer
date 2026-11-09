@@ -135,22 +135,15 @@ module.exports = class Entity {
 			const encPitch = convertToByte((this.pitch * 256) / 360);
 
 			if (diffX >= -128 && diffX < 128 && diffY >= -128 && diffY < 128 && diffZ >= -128 && diffZ < 128) {
-				this.world.client.write(
-					pos != undefined && angles != undefined
-						? 'entity_move_look'
-						: pos != undefined
-							? 'rel_entity_move'
-							: 'entity_look',
-					{
-						entityId: this.minecraftId,
-						dX: diffX,
-						dY: diffY,
-						dZ: diffZ,
-						yaw: encYaw,
-						pitch: encPitch,
-						onGround: onGround ?? false
-					}
-				);
+				this.world.client.write(pos != undefined && angles != undefined ? 'entity_move_look' : pos != undefined ? 'rel_entity_move' : 'entity_look', {
+					entityId: this.minecraftId,
+					dX: diffX,
+					dY: diffY,
+					dZ: diffZ,
+					yaw: encYaw,
+					pitch: encPitch,
+					onGround: onGround ?? false
+				});
 			} else {
 				this.world.client.write('entity_teleport', {
 					entityId: this.minecraftId,

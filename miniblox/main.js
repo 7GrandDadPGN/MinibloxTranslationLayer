@@ -345,15 +345,7 @@ class CPacketEntityVelocity extends Message {
 exports.CPacketEntityVelocity = CPacketEntityVelocity;
 class CPacketChunkData extends Message {
 	constructor(CPacketChunkData) {
-		(super(),
-			(this.x = 0),
-			(this.z = 0),
-			(this.cells = []),
-			(this.tileEntities = []),
-			(this.dimension = 0),
-			(this.biomes = []),
-			(this.hash = ``),
-			proto2.util.initPartial(CPacketChunkData, this));
+		(super(), (this.x = 0), (this.z = 0), (this.cells = []), (this.tileEntities = []), (this.dimension = 0), (this.biomes = []), (this.hash = ``), proto2.util.initPartial(CPacketChunkData, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -426,13 +418,7 @@ class CPacketChunkData extends Message {
 exports.CPacketChunkData = CPacketChunkData;
 class PBCell extends Message {
 	constructor(PBCell) {
-		(super(),
-			(this.y = 0),
-			(this.bitsPerEntry = 0),
-			(this.palette = []),
-			(this.bitArray = new Uint8Array()),
-			(this.blockRefCount = 0),
-			proto2.util.initPartial(PBCell, this));
+		(super(), (this.y = 0), (this.bitsPerEntry = 0), (this.palette = []), (this.bitArray = new Uint8Array()), (this.blockRefCount = 0), proto2.util.initPartial(PBCell, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -491,12 +477,7 @@ class PBCell extends Message {
 exports.PBCell = PBCell;
 class PBTileEntity extends Message {
 	constructor(PBTileEntity) {
-		(super(),
-			(this.x = 0),
-			(this.y = 0),
-			(this.z = 0),
-			(this.nbt = new Uint8Array()),
-			proto2.util.initPartial(PBTileEntity, this));
+		(super(), (this.x = 0), (this.y = 0), (this.z = 0), (this.nbt = new Uint8Array()), proto2.util.initPartial(PBTileEntity, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -588,16 +569,7 @@ class CPacketEntityEquipment extends Message {
 }
 exports.CPacketEntityEquipment = CPacketEntityEquipment;
 const ItemSlots = (function (e) {
-	return (
-		(e[(e.UNDEFINED_SLOT = 0)] = `UNDEFINED_SLOT`),
-		(e[(e.MAIN_HAND = 1)] = `MAIN_HAND`),
-		(e[(e.OFF_HAND = 2)] = `OFF_HAND`),
-		(e[(e.HELMET = 3)] = `HELMET`),
-		(e[(e.CHESTPLATE = 4)] = `CHESTPLATE`),
-		(e[(e.LEGGINGS = 5)] = `LEGGINGS`),
-		(e[(e.BOOTS = 6)] = `BOOTS`),
-		e
-	);
+	return ((e[(e.UNDEFINED_SLOT = 0)] = `UNDEFINED_SLOT`), (e[(e.MAIN_HAND = 1)] = `MAIN_HAND`), (e[(e.OFF_HAND = 2)] = `OFF_HAND`), (e[(e.HELMET = 3)] = `HELMET`), (e[(e.CHESTPLATE = 4)] = `CHESTPLATE`), (e[(e.LEGGINGS = 5)] = `LEGGINGS`), (e[(e.BOOTS = 6)] = `BOOTS`), e);
 })({});
 proto2.util.setEnumType(ItemSlots, `Equipment.Slot`, [
 	{
@@ -776,12 +748,7 @@ class CPacketRemoveEntityEffect extends Message {
 exports.CPacketRemoveEntityEffect = CPacketRemoveEntityEffect;
 class SPacketUpdateInventory extends Message {
 	constructor(SPacketUpdateInventory) {
-		(super(),
-			(this.main = []),
-			(this.armor = []),
-			(this.offHand = []),
-			(this.extra = []),
-			proto2.util.initPartial(SPacketUpdateInventory, this));
+		(super(), (this.main = []), (this.armor = []), (this.offHand = []), (this.extra = []), proto2.util.initPartial(SPacketUpdateInventory, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -1312,16 +1279,7 @@ class SPacketClick extends Message {
 exports.SPacketClick = SPacketClick;
 
 const EnumFace = (function (e) {
-	return (
-		(e[(e.UNDEFINED_FACE = 0)] = `UNDEFINED_FACE`),
-		(e[(e.DOWN = 1)] = `DOWN`),
-		(e[(e.UP = 2)] = `UP`),
-		(e[(e.NORTH = 3)] = `NORTH`),
-		(e[(e.SOUTH = 4)] = `SOUTH`),
-		(e[(e.WEST = 5)] = `WEST`),
-		(e[(e.EAST = 6)] = `EAST`),
-		e
-	);
+	return ((e[(e.UNDEFINED_FACE = 0)] = `UNDEFINED_FACE`), (e[(e.DOWN = 1)] = `DOWN`), (e[(e.UP = 2)] = `UP`), (e[(e.NORTH = 3)] = `NORTH`), (e[(e.SOUTH = 4)] = `SOUTH`), (e[(e.WEST = 5)] = `WEST`), (e[(e.EAST = 6)] = `EAST`), e);
 })({});
 proto2.util.setEnumType(EnumFace, `PBEnumFacing`, [
 	{
@@ -1534,15 +1492,7 @@ class SPacketClickWindow extends Message {
 exports.SPacketClickWindow = SPacketClickWindow;
 
 const BreakActionTypes = (function (e) {
-	return (
-		(e[(e.START_DESTROY_BLOCK = 0)] = `START_DESTROY_BLOCK`),
-		(e[(e.ABORT_DESTROY_BLOCK = 1)] = `ABORT_DESTROY_BLOCK`),
-		(e[(e.STOP_DESTROY_BLOCK = 2)] = `STOP_DESTROY_BLOCK`),
-		(e[(e.DROP_ALL_ITEMS = 3)] = `DROP_ALL_ITEMS`),
-		(e[(e.DROP_ITEM = 4)] = `DROP_ITEM`),
-		(e[(e.RELEASE_USE_ITEM = 5)] = `RELEASE_USE_ITEM`),
-		e
-	);
+	return ((e[(e.START_DESTROY_BLOCK = 0)] = `START_DESTROY_BLOCK`), (e[(e.ABORT_DESTROY_BLOCK = 1)] = `ABORT_DESTROY_BLOCK`), (e[(e.STOP_DESTROY_BLOCK = 2)] = `STOP_DESTROY_BLOCK`), (e[(e.DROP_ALL_ITEMS = 3)] = `DROP_ALL_ITEMS`), (e[(e.DROP_ITEM = 4)] = `DROP_ITEM`), (e[(e.RELEASE_USE_ITEM = 5)] = `RELEASE_USE_ITEM`), e);
 })({});
 proto2.util.setEnumType(BreakActionTypes, `PBAction`, [
 	{
@@ -1625,12 +1575,7 @@ class SPacketPlayerAction extends Message {
 }
 exports.SPacketPlayerAction = SPacketPlayerAction;
 const UseTypes = (function (e) {
-	return (
-		(e[(e.INTERACT = 0)] = `INTERACT`),
-		(e[(e.ATTACK = 1)] = `ATTACK`),
-		(e[(e.INTERACT_AT = 2)] = `INTERACT_AT`),
-		e
-	);
+	return ((e[(e.INTERACT = 0)] = `INTERACT`), (e[(e.ATTACK = 1)] = `ATTACK`), (e[(e.INTERACT_AT = 2)] = `INTERACT_AT`), e);
 })({});
 proto2.util.setEnumType(UseTypes, `SPacketUseEntity.Action`, [
 	{
@@ -2684,10 +2629,7 @@ class PBCosmetics extends Message {
 exports.PBCosmetics = PBCosmetics;
 class CPacketServerInfo extends Message {
 	constructor(CPacketServerInfo) {
-		(super(),
-			(this.playerPermissionEntries = []),
-			(this.recentPlayers = []),
-			proto2.util.initPartial(CPacketServerInfo, this));
+		(super(), (this.playerPermissionEntries = []), (this.recentPlayers = []), proto2.util.initPartial(CPacketServerInfo, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5634,11 +5576,7 @@ class CPacketPlotsData extends Message {
 exports.CPacketPlotsData = CPacketPlotsData;
 class CPacketChunkUnchanged extends Message {
 	constructor(CPacketChunkUnchanged) {
-		(super(),
-			(this.x = 0),
-			(this.z = 0),
-			(this.dimension = 0),
-			proto2.util.initPartial(CPacketChunkUnchanged, this));
+		(super(), (this.x = 0), (this.z = 0), (this.dimension = 0), proto2.util.initPartial(CPacketChunkUnchanged, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -5963,18 +5901,7 @@ class CPacketCollectItem extends Message {
 exports.CPacketCollectItem = CPacketCollectItem;
 class CPacketModContent extends Message {
 	constructor(CPacketModContent) {
-		(super(),
-			(this.items = []),
-			(this.sprites = []),
-			(this.armor = []),
-			(this.controls = []),
-			(this.blocks = []),
-			(this.projectiles = []),
-			(this.entities = []),
-			(this.sounds = []),
-			(this.particles = []),
-			(this.slots = []),
-			proto2.util.initPartial(CPacketModContent, this));
+		(super(), (this.items = []), (this.sprites = []), (this.armor = []), (this.controls = []), (this.blocks = []), (this.projectiles = []), (this.entities = []), (this.sounds = []), (this.particles = []), (this.slots = []), proto2.util.initPartial(CPacketModContent, this));
 	}
 	static {
 		this.runtime = proto2;
@@ -10204,10 +10131,7 @@ exports.BitArray = class {
 		assign(this, 'data');
 		if ($ <= 0) throw new Error('bits per value must at least 1');
 		if ($ > 32) throw new Error(`${$} bits per value exceeds 32`);
-		((this.capacity = _),
-			(this.bitsPerValue = $),
-			(this.valuesPerLong = Math.floor(64 / $)),
-			(this.valueMask = (1 << $) - 1));
+		((this.capacity = _), (this.bitsPerValue = $), (this.valuesPerLong = Math.floor(64 / $)), (this.valueMask = (1 << $) - 1));
 		const tt = new ArrayBuffer(Math.ceil(_ / this.valuesPerLong) * 8);
 		if (((this.data = new Uint32Array(tt)), et)) {
 			if (et.byteLength !== tt.byteLength) throw new Error('initial data length does not match buffer length');
@@ -10292,14 +10216,8 @@ function attemptInflate(data, dict = frameBuffer) {
 
 function hashString(input) {
 	let t = 1779033703 ^ input.length;
-	for (let n = 0; n < input.length; n++)
-		((t = Math.imul(t ^ input.charCodeAt(n), 3432918353)), (t = (t << 13) | (t >>> 19)));
-	return () => (
-		(t = Math.imul(t ^ (t >>> 16), 2246822507)),
-		(t = Math.imul(t ^ (t >>> 13), 3266489909)),
-		(t ^= t >>> 16),
-		t >>> 0
-	);
+	for (let n = 0; n < input.length; n++) ((t = Math.imul(t ^ input.charCodeAt(n), 3432918353)), (t = (t << 13) | (t >>> 19)));
+	return () => ((t = Math.imul(t ^ (t >>> 16), 2246822507)), (t = Math.imul(t ^ (t >>> 13), 3266489909)), (t ^= t >>> 16), t >>> 0);
 }
 
 function transformHash(e) {
@@ -10325,32 +10243,16 @@ function hashString2(e) {
 		i = 2773480762;
 	for (let a = 0; a < e.length; a++) {
 		let o = e.charCodeAt(a);
-		((t = n ^ Math.imul(t ^ o, 597399067)),
-			(n = r ^ Math.imul(n ^ o, 2869860233)),
-			(r = i ^ Math.imul(r ^ o, 951274213)),
-			(i = t ^ Math.imul(i ^ o, 2716044179)));
+		((t = n ^ Math.imul(t ^ o, 597399067)), (n = r ^ Math.imul(n ^ o, 2869860233)), (r = i ^ Math.imul(r ^ o, 951274213)), (i = t ^ Math.imul(i ^ o, 2716044179)));
 	}
-	return (
-		(t = Math.imul(r ^ (t >>> 18), 597399067)),
-		(n = Math.imul(i ^ (n >>> 22), 2869860233)),
-		(r = Math.imul(t ^ (r >>> 17), 951274213)),
-		(i = Math.imul(n ^ (i >>> 19), 2716044179)),
-		[(t ^ n ^ r ^ i) >>> 0, (n ^ t) >>> 0, (r ^ t) >>> 0, (i ^ t) >>> 0]
-	);
+	return ((t = Math.imul(r ^ (t >>> 18), 597399067)), (n = Math.imul(i ^ (n >>> 22), 2869860233)), (r = Math.imul(t ^ (r >>> 17), 951274213)), (i = Math.imul(n ^ (i >>> 19), 2716044179)), [(t ^ n ^ r ^ i) >>> 0, (n ^ t) >>> 0, (r ^ t) >>> 0, (i ^ t) >>> 0]);
 }
 
 function computeFinalHash(e, t, n, r) {
 	return () => {
 		((e |= 0), (t |= 0), (n |= 0), (r |= 0));
 		let i = (((e + t) | 0) + r) | 0;
-		return (
-			(r = (r + 1) | 0),
-			(e = t ^ (t >>> 9)),
-			(t = (n + (n << 3)) | 0),
-			(n = (n << 21) | (n >>> 11)),
-			(n = (n + i) | 0),
-			(i >>> 0) / 4294967296
-		);
+		return ((r = (r + 1) | 0), (e = t ^ (t >>> 9)), (t = (n + (n << 3)) | 0), (n = (n << 21) | (n >>> 11)), (n = (n + i) | 0), (i >>> 0) / 4294967296);
 	};
 }
 
@@ -10383,8 +10285,7 @@ function obfuscatePacketRoutine(e, version, n = 101, r = 64) {
 		} else {
 			let [o, s, c, l] = hashString2(`mb-perm|v${version}|lo|${e}`),
 				[u, d, f, p] = hashString2(`mb-perm|v${version}|hi|${e}`);
-			(sortHash(perm, 0, a, computeFinalHash(o, s, c, l)),
-				n > r && sortHash(perm, r, n, computeFinalHash(u, d, f, p)));
+			(sortHash(perm, 0, a, computeFinalHash(o, s, c, l)), n > r && sortHash(perm, r, n, computeFinalHash(u, d, f, p)));
 		}
 
 	let invPerm = Array(n);
@@ -10406,9 +10307,7 @@ function setPacketData(seed, version) {
 	for (let packet of Object.keys(NAME_TO_ID)) {
 		let packetId = NAME_TO_ID[packet],
 			mappedIndex = packetId < 101 ? perm[packetId] : packetId;
-		((nameToId[packet] = mappedIndex),
-			(idToPacket[mappedIndex] = ID_TO_PACKET[packetId]),
-			(idToName[mappedIndex] = packet));
+		((nameToId[packet] = mappedIndex), (idToPacket[mappedIndex] = ID_TO_PACKET[packetId]), (idToName[mappedIndex] = packet));
 	}
 
 	Object.assign(PacketData, {
@@ -10429,22 +10328,7 @@ function createCombinedArray(data) {
 
 class ClientEncoder {
 	constructor() {
-		assign(
-			this,
-			'encode',
-			(packet) => (
-				(packet.t = packet.type),
-				(packet.d = packet.data),
-				delete packet.type,
-				delete packet.nsp,
-				delete packet.data,
-				packet.t === 2 &&
-					packet.d[1] &&
-					packet.d[1].toBinary &&
-					((packet.d[1] = packet.d[1].toBinary()), (packet.d[0] = PacketData.nameToId[packet.d[0]])),
-				[encode(packet)]
-			)
-		);
+		assign(this, 'encode', (packet) => ((packet.t = packet.type), (packet.d = packet.data), delete packet.type, delete packet.nsp, delete packet.data, packet.t === 2 && packet.d[1] && packet.d[1].toBinary && ((packet.d[1] = packet.d[1].toBinary()), (packet.d[0] = PacketData.nameToId[packet.d[0]])), [encode(packet)]));
 	}
 }
 
@@ -10465,15 +10349,11 @@ class ClientDecoder extends Decoder {
 						packet = PacketData.idToPacket[packetId];
 
 					if (compressFlag) {
-						if (
-							((isCombined = packet.typeName === 'ClientBoundCombined' && frameBuffer.byteLength > 0),
-							isCombined && FrameDecodeData.prime)
-						) {
+						if (((isCombined = packet.typeName === 'ClientBoundCombined' && frameBuffer.byteLength > 0), isCombined && FrameDecodeData.prime)) {
 							let combinedFlag = data[0],
 								subData = data.subarray(1);
 							if (combinedFlag === 1) {
-								if (FrameDecodeData.prev == null)
-									throw Error(`primed combined frame arrived with no prev-frame state`);
+								if (FrameDecodeData.prev == null) throw Error(`primed combined frame arrived with no prev-frame state`);
 								data = attemptInflate(subData, createCombinedArray(FrameDecodeData.prev));
 							} else {
 								data = attemptInflate(subData);

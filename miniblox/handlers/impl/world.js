@@ -1,16 +1,5 @@
 const Handler = require('./../handler.js');
-const {
-	ClientSocket,
-	SPacketRequestChunk,
-	SPacketUseItem,
-	SPacketPlaceBlock,
-	SPacketBreakBlock,
-	SPacketPlayerAction,
-	SPacketClick,
-	SPacketUpdateSign,
-	BitArray,
-	PBBlockPos
-} = require('./../../main.js');
+const { ClientSocket, SPacketRequestChunk, SPacketUseItem, SPacketPlaceBlock, SPacketBreakBlock, SPacketPlayerAction, SPacketClick, SPacketUpdateSign, BitArray, PBBlockPos } = require('./../../main.js');
 const { BLOCKS, BLOCK_ID } = require('./../../types/blocks.js');
 const Chunk = require('prismarine-chunk')('1.8.9');
 const ProxyChunk = require('../../../base/translation/classes/chunk.js');
